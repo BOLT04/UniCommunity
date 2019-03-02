@@ -3,6 +3,7 @@
           package="pt.isel.unicommunityprototype">
 
     <application
+            android:name=".UniCommunityApplication"
             android:allowBackup="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/app_name"
@@ -23,8 +24,10 @@
         <activity android:name=".activity.ForumActivity">
         </activity>
         <activity
-            android:name=".activity.CreatePostActivity"
-            android:label="Create Post">
+                android:name=".activity.CreatePostActivity"
+                android:label="Create Post">
+        </activity>
+        <activity android:name=".activity.PostDetailsActivity">
         </activity>
     </application>
 

@@ -15,7 +15,8 @@
             android:id="@+id/descText"
             android:text="Description" android:layout_marginStart="36dp" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="24dp" app:layout_constraintTop_toBottomOf="@+id/nameText"
-            android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"/>
+            android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/forumCheckBox"/>
     <EditText
             android:layout_width="80dp"
             android:layout_height="45dp"
@@ -29,35 +30,50 @@
     <CheckBox
             android:text="Forum"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/forumCheckBox" tools:layout_editor_absoluteY="221dp"
-            tools:layout_editor_absoluteX="77dp"/>
+            android:layout_height="wrap_content" android:id="@+id/forumCheckBox"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/sumariosCheckBox"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintHorizontal_bias="0.189"
+    />
     <CheckBox
             android:text="Sumarios"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/sumariosCheckBox"
-            tools:layout_editor_absoluteY="268dp"
-            tools:layout_editor_absoluteX="73dp"/>
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/recursosCheckBox" app:layout_constraintHorizontal_bias="0.187"
+            android:layout_marginBottom="28dp"/>
     <CheckBox
             android:text="Recursos"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/recursosCheckBox"
-            tools:layout_editor_absoluteY="312dp"
-            tools:layout_editor_absoluteX="73dp"/>
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/anunciosCheckBox" app:layout_constraintHorizontal_bias="0.165"
+            android:layout_marginBottom="24dp"/>
     <CheckBox
             android:text="Anuncios"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/anunciosCheckBox"
-            tools:layout_editor_absoluteY="353dp"
-            tools:layout_editor_absoluteX="77dp"/>
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginBottom="28dp"
+            app:layout_constraintBottom_toTopOf="@+id/bibliografiaCheckBox"
+            app:layout_constraintHorizontal_bias="0.139"/>
     <CheckBox
             android:text="Bibliografia"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/bibliografiaCheckBox"
-            tools:layout_editor_absoluteY="396dp"
-            tools:layout_editor_absoluteX="77dp"/>
+            android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintHorizontal_bias="0.154" android:layout_marginBottom="104dp"
+            app:layout_constraintBottom_toBottomOf="parent"/>
     <Button
             android:text="Create"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" tools:layout_editor_absoluteY="447dp"
-            tools:layout_editor_absoluteX="158dp" android:id="@+id/createBtn"/>
+            android:layout_height="wrap_content"
+            android:id="@+id/createBtn" app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/bibliografiaCheckBox"/>
 </android.support.constraint.ConstraintLayout>

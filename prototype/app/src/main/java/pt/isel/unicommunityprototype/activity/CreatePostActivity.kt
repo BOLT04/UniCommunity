@@ -5,25 +5,29 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_create_post.*
 import pt.isel.unicommunityprototype.R
-import pt.isel.unicommunityprototype.repository.Repository
+import pt.isel.unicommunityprototype.kotlinx.getUniApplication
 
 class CreatePostActivity : AppCompatActivity() {
-
-    val repo = Repository() // TODO: this will be changed to be a dependency given by DI
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_post)
 
+        val app = getUniApplication()
+
+        val boardTitle = intent.getStringExtra("boardTitle")
+        val boardId = intent.getIntExtra("boardId", 0)
         //todo: do we add more information on names like create_postBtn or is it implicit by the context we are in
         createBtn.setOnClickListener {
             val title = titleTxtView.text.toString()
             val content = contentTxtView.text.toString()
 
-            repo.createPost(title, content)
+            val postId = app.repository.createPost(boardId, title, content)
 
-            //startActivity(Intent(this, PostDetailsActivity::class.java))
-
+            val intent = Intent(this, PostDetailsActivity::class.java)
+            intent.putExtra("postId", postId)
+            intent.putExtra("boardTitle", boardTitle)
+            startActivity(intent)
         }
     }
 }
