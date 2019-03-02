@@ -1,8 +1,10 @@
-package pt.isel.unicommunityprototype
+package pt.isel.unicommunityprototype.activity
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_create_board.*
+import pt.isel.unicommunityprototype.R
 import pt.isel.unicommunityprototype.model.*
 import pt.isel.unicommunityprototype.repository.Repository
 
@@ -26,11 +28,14 @@ class CreateBoardActivity : AppCompatActivity() {
             if (bibliografiaCheckBox.isChecked)
                 modules.add(Bibliografia())
 
-            repo.createBoard(
+            val board = repo.createBoard(
                 nameText.text.toString(),
                 descText.text.toString(),
                 modules
             )
+
+            //TODO: how to send board above to activity
+            startActivity(Intent(this, BoardDetailsActivity::class.java))
         }
     }
 }
