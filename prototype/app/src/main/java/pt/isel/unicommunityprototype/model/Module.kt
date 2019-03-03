@@ -1,6 +1,6 @@
 package pt.isel.unicommunityprototype.model
 
-abstract sealed class Module(val name: String)
+sealed class Module(val name: String)
 
 class Anuncios: Module("Anuncios")
 class Sumarios: Module("Sumarios")

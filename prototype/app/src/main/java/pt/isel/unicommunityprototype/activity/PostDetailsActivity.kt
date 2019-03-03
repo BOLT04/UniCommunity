@@ -1,6 +1,6 @@
 package pt.isel.unicommunityprototype.activity
 
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_post_details.*
 import pt.isel.unicommunityprototype.R
@@ -22,6 +22,7 @@ class PostDetailsActivity : AppCompatActivity() {
         // Set all information based on post instance
         forumNameTxtView.text = boardTitle
         authorTextView.text = post?.author?.name
+        dateTxtView.text = post?.date.toString()
         postTitleTxtView.text = post?.title
         postContentTxtView.setText(post?.content)
     }

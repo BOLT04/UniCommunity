@@ -29,6 +29,10 @@
         </activity>
         <activity android:name=".activity.PostDetailsActivity">
         </activity>
+        <activity
+                android:name=".activity.UserPanelActivity"
+                android:label="User panel">
+        </activity>
     </application>
 
 </manifest>

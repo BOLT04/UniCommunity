@@ -1,0 +1,42 @@
+package pt.isel.unicommunityprototype.adapter
+
+import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
+import pt.isel.unicommunityprototype.model.Board //TODO: are dependencies correct: Adapter (Presentation) -> data layer
+import pt.isel.unicommunityprototype.viewmodel.UserPanelViewModel
+
+class BoardsAdapter(private val viewModel: UserPanelViewModel,
+                    private val listener: OnBoardClickListener
+) : RecyclerView.Adapter<BoardsViewHolder>() {
+
+    override fun getItemCount() = viewModel.boards.value?.size ?: 0
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BoardsViewHolder {
+        val view = LayoutInflater
+                .from(parent.context)
+                .inflate(android.R.layout.simple_list_item_1, parent, false) as View
+
+        return BoardsViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: BoardsViewHolder, position: Int) {
+        //TODO: get() same as elementAt()? holder.bindTo(viewModel.teams.value?.get(position), listener)
+        holder.bindTo(viewModel.boards.value?.elementAt(position), listener)
+    }
+
+    interface OnBoardClickListener {
+        fun onBoardClick(board: Board?)
+    }
+}
+
+class BoardsViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    private val boardNameView: TextView = view.findViewById(android.R.id.text1)
+
+    fun bindTo(board: Board?, listener: BoardsAdapter.OnBoardClickListener) {
+        boardNameView.text = board?.name
+        itemView.setOnClickListener { listener.onBoardClick(board) }
+    }
+}

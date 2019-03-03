@@ -20,5 +20,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" tools:layout_editor_absoluteY="108dp"
             tools:layout_editor_absoluteX="148dp" android:id="@+id/createBoardBtn"/>
+    <Button
+            android:text="Go to User panel (Boards)"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" tools:layout_editor_absoluteY="177dp"
+            tools:layout_editor_absoluteX="110dp" android:id="@+id/gotoUserPanelBtn"/>
 
 </android.support.constraint.ConstraintLayout>

@@ -1,13 +1,12 @@
 package pt.isel.unicommunityprototype.activity
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_create_board.*
 import pt.isel.unicommunityprototype.R
 import pt.isel.unicommunityprototype.kotlinx.getUniApplication
 import pt.isel.unicommunityprototype.model.*
-import pt.isel.unicommunityprototype.repository.Repository
 
 class CreateBoardActivity : AppCompatActivity() {
 

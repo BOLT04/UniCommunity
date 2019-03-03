@@ -1,6 +1,7 @@
 package pt.isel.unicommunityprototype.repository
 
 import pt.isel.unicommunityprototype.model.*
+import java.util.*
 
 //TODO: THe interface of the Repository will be asynchronous later
 class Repository {
@@ -31,13 +32,15 @@ class Repository {
 
     fun getBoardById(id: Int) = boards[id]
 
+    fun getAllBoards() = boards.values
+
 
     var postId = 1 // TODO: later change this id incrementation -> back end
     fun createPost(
             boardId: Int,
             title: String,
             content: String?) : Int {                                   //TODO: how to take out the double bang on user???
-        val p = Post(postId++, title, content, boards[boardId]?.forum, currentUser!!) // TODO: the problem with Forum() is that each new post as a new forum instance when it should be the same...all posts are created within the same forum
+        val p = Post(postId++, title, content, boards[boardId]?.forum, currentUser!!, Date()) // TODO: the problem with Forum() is that each new post as a new forum instance when it should be the same...all posts are created within the same forum
         posts[p.id] = p
 
         return p.id

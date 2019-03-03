@@ -1,10 +1,9 @@
 package pt.isel.unicommunityprototype.activity
 
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import kotlinx.android.synthetic.main.activity_board_details.*
-import kotlinx.android.synthetic.main.activity_create_post.*
 import pt.isel.unicommunityprototype.R
 import pt.isel.unicommunityprototype.kotlinx.getUniApplication
 
