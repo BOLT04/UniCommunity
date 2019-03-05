@@ -32,5 +32,11 @@ class BoardDetailsActivity : AppCompatActivity() {
             intent.putExtra("boardId", boardId)
             startActivity(intent)
         }
+
+        createAnnouncementBtn.setOnClickListener {
+            val intent = Intent(this, CreateAnnouncementActivity::class.java)
+            intent.putExtra("boardId", boardId)
+            startActivity(intent)
+        }
     }
 }

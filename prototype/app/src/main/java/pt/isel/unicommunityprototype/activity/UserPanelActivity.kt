@@ -3,7 +3,7 @@ package pt.isel.unicommunityprototype.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.support.v7.widget.LinearLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_user_panel.*
 import pt.isel.unicommunityprototype.R
@@ -27,13 +27,14 @@ class UserPanelActivity : AppCompatActivity() {
         val viewModel = getViewModel(USER_PANEL_VIEW_MODEL_KEY) {
             UserPanelViewModel(app, app.repository)
         }
-        val intent = Intent(this, BoardDetailsActivity::class.java)
+        val intent = Intent(this, BoardDetailsWithTabsActivity::class.java)
 
         val listener = object : BoardsAdapter.OnBoardClickListener {
             override fun onBoardClick(board: Board?) {
                 // Update current board?
                 //app.repository.team = team!!
                 //app.chatBoard.associateTeam(team)
+                intent.putExtra("boardId", board?.id)
                 startActivity(intent)
             }
         }

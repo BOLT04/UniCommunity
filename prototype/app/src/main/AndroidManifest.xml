@@ -10,6 +10,13 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
+        <activity
+                android:name=".activity.BoardDetailsWithTabsActivity"
+                android:label="@string/title_activity_board_details_with_tabs"
+                android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".activity.CreateAnnouncementActivity">
+        </activity>
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -19,7 +26,9 @@
         </activity>
         <activity android:name=".activity.CreateBoardActivity">
         </activity>
-        <activity android:name=".activity.BoardDetailsActivity">
+        <activity
+                android:name=".activity.BoardDetailsActivity"
+                android:label="Board Details">
         </activity>
         <activity android:name=".activity.ForumActivity">
         </activity>

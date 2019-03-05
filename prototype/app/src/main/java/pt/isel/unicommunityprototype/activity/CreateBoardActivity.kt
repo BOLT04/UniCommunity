@@ -38,7 +38,7 @@ class CreateBoardActivity : AppCompatActivity() {
                 forum
             )
 
-            val intent = Intent(this, BoardDetailsActivity::class.java)
+            val intent = Intent(this, BoardDetailsWithTabsActivity::class.java)
             intent.putExtra("boardId", boardId)
             startActivity(intent)
         }
