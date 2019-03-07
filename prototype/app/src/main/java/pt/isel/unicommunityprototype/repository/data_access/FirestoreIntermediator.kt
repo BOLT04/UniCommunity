@@ -36,6 +36,8 @@ class FirestoreIntermediator(
             }
     }
 
+    //codigo de subcrever listener numa certa col (estar a ouvir por notificaçoes de uma determinada board)
+    // Assumes the boardId given already was checked to include a "Anuncios" blackboard
     fun registerListenerForAnnouncement(boardId: Int) {
         boardsCol
             .document(boardId.toString())
@@ -58,5 +60,4 @@ class FirestoreIntermediator(
                     }
             })
     }
-    //codigo de subcrever listener numa certa col (estar a ouvir por notificaçoes de uma determinada board)
 }

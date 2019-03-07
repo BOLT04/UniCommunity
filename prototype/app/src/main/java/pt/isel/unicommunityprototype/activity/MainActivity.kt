@@ -17,7 +17,8 @@ class MainActivity : AppCompatActivity() {
         val app = getUniApplication()
 
         //TODO: this line below will be elsewhere...it cant be in activity
-        app.repository.currentUser = Student(42934, "Sergiu", "42934@alunos.isel.pt")
+        app.repository.currentUser = Student(42934, "Sergiu", "42934@alunos.isel.pt", emptyList())
+        app.repository.registerListener()
 
         createBoardBtn.setOnClickListener {
             startActivity(Intent(this, CreateBoardActivity::class.java))

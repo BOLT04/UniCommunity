@@ -12,6 +12,7 @@ class Repository(val firestore: FirestoreIntermediator) {
     private val posts = hashMapOf<Int, Post>()
     private val announcements = hashMapOf<Int, Announcement>()
 
+    // Represents the user logged in the device
     var currentUser: User? = null
 
     //TODO: Later in API
@@ -62,6 +63,14 @@ class Repository(val firestore: FirestoreIntermediator) {
         return a.id
     }
 
+    //TODO: should this function be in repository if it has to do with Cloud Firestore functionality?? Isn't this another
+    //responsibility for the Repository class??
+    fun registerListener() {
+        currentUser?.boards?.forEach {
+            if (it.getAnunciosBlackboard() != null)
+                firestore.registerListenerForAnnouncement(it.id)
+        }
+    }
     // Como seria a criaçao das outras cenas...
     //fun createSumario(boardId: Any, title: String, content: String): Int {
 }
