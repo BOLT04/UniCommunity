@@ -7,7 +7,7 @@ import kotlinx.android.synthetic.main.activity_board_details.*
 import pt.isel.unicommunityprototype.R
 import pt.isel.unicommunityprototype.kotlinx.getUniApplication
 
-class BoardDetailsActivity : AppCompatActivity() {
+class BoardViewActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

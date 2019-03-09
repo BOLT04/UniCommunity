@@ -14,4 +14,7 @@ data class Board(
 
         return null
     }
+
+    //TODO: should this be a get property??
+    fun getModulesSize() = modules.size
 }

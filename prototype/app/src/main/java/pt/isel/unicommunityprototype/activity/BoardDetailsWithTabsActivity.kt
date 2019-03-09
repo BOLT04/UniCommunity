@@ -1,5 +1,6 @@
 package pt.isel.unicommunityprototype.activity
 
+import android.content.Intent
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
@@ -15,12 +16,18 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.tabs.TabItem
 
 import pt.isel.unicommunityprototype.R
 import kotlinx.android.synthetic.main.activity_board_details_with_tabs.*
+import kotlinx.android.synthetic.main.fragment_board_details_forum_tab.view.*
 import kotlinx.android.synthetic.main.fragment_board_details_with_tabs.*
 import kotlinx.android.synthetic.main.fragment_board_details_with_tabs.view.*
+import pt.isel.unicommunityprototype.adapter.PostsAdapter
+import pt.isel.unicommunityprototype.kotlinx.getUniApplication
+import pt.isel.unicommunityprototype.model.Board
+import pt.isel.unicommunityprototype.model.Post
 
 class BoardDetailsWithTabsActivity : AppCompatActivity() {
 
@@ -39,9 +46,15 @@ class BoardDetailsWithTabsActivity : AppCompatActivity() {
         setContentView(R.layout.activity_board_details_with_tabs)
 
         setSupportActionBar(toolbar)
+
+        val app = getUniApplication()
+        val boardId = intent.getIntExtra("boardId", 0)
+        val board = app.repository.getBoardById(boardId)
+        supportActionBar?.title = board?.name
+
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
-        mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager)
+        mSectionsPagerAdapter = SectionsPagerAdapter(supportFragmentManager, board)
 
         // Set up the ViewPager with the sections adapter.
         container.adapter = mSectionsPagerAdapter
@@ -83,18 +96,19 @@ class BoardDetailsWithTabsActivity : AppCompatActivity() {
      * A [FragmentPagerAdapter] that returns a fragment corresponding to
      * one of the sections/tabs/pages.
      */
-    inner class SectionsPagerAdapter(fm: FragmentManager) : FragmentPagerAdapter(fm) {
+    inner class SectionsPagerAdapter(
+        fm: FragmentManager,
+        val board: Board? //TODO: we need this since getItem() needs to know what tab its in to choose the fragment layout
+    ) : FragmentPagerAdapter(fm) {
 
         override fun getItem(position: Int): Fragment {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
+
             return PlaceholderFragment.newInstance(position + 1)
         }
 
-        override fun getCount(): Int {
-            // Show 3 total pages.
-            return 5
-        }
+        override fun getCount() = board?.getModulesSize()!! //TODO: how to take out double bang?
     }
 
     /**
@@ -109,10 +123,12 @@ class BoardDetailsWithTabsActivity : AppCompatActivity() {
             val rootView = inflater.inflate(R.layout.fragment_board_details_with_tabs, container, false)
             rootView.section_label.text = getString(R.string.section_format, arguments?.getInt(ARG_SECTION_NUMBER))
 
+            /*
             rootView.createTabBtn.setOnClickListener {
                 tabs.addTab(tabs.newTab())//TODO: HOW DO I KNOW WHAT I HAVE ACCESS...apparently i cant access tabs here since is null!!!
                 //TODO: i know tabs is the id for the TabLayout in BoardDetailsWithTabsActivity so.... maybe since this is its fragment i have access to the activity...but how????
             }
+            */
 
             return rootView
         }
@@ -137,4 +153,32 @@ class BoardDetailsWithTabsActivity : AppCompatActivity() {
             }
         }
     }
+/*
+    inner class ForumFragment : Fragment() { //TODO: do I have to use the keywork inner for this@BoardDetailsWithTabsActivity to work???
+
+        override fun onCreateView(
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
+        ): View? {
+            val rootView = inflater.inflate(R.layout.fragment_board_details_forum_tab, container, false)
+
+            rootView.postsRecyclerView.setHasFixedSize(true)
+            rootView.postsRecyclerView.layoutManager = LinearLayoutManager(this@BoardDetailsWithTabsActivity)
+
+            val intent = Intent(this@BoardDetailsWithTabsActivity, PostDetailsActivity::class.java)
+            val listener = object : PostsAdapter.OnPostClickListener {
+                override fun onPostClick(post: Post?) {
+                    // Update current board?
+                    //app.repository.team = team!!
+                    //app.chatBoard.associateTeam(team)
+                    intent.putExtra("boardId", post?.id)
+                    startActivity(intent)
+                }
+            }
+            //rootView.postsRecyclerView.adapter = PostsAdapter(viewModel, listener)
+
+            return rootView
+        }
+    }
+*/
 }

@@ -67,7 +67,8 @@ class Repository(val firestore: FirestoreIntermediator) {
     //responsibility for the Repository class??
     fun registerListener() {
         currentUser?.boards?.forEach {
-            if (it.getAnunciosBlackboard() != null)
+            // TODO: is this a business rule?? We only want students to be notified of announcements, not the teachers that publish them
+            if (it.getAnunciosBlackboard() != null && currentUser is Student)
                 firestore.registerListenerForAnnouncement(it.id)
         }
     }

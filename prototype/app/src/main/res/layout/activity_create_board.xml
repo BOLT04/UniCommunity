@@ -15,8 +15,8 @@
             android:id="@+id/descText"
             android:text="Description" android:layout_marginStart="36dp" app:layout_constraintStart_toStartOf="parent"
             android:layout_marginTop="24dp" app:layout_constraintTop_toBottomOf="@+id/nameText"
-            android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginBottom="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/forumCheckBox"/>
+            android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.057"/>
     <EditText
             android:layout_width="80dp"
             android:layout_height="45dp"
@@ -24,9 +24,10 @@
             android:text="Name"
             android:ems="10"
             android:id="@+id/nameText" android:layout_marginStart="36dp"
-            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="16dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="32dp"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"/>
+            android:layout_marginEnd="8dp" app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.048"/>
     <CheckBox
             android:text="Forum"
             android:layout_width="wrap_content"
@@ -34,16 +35,16 @@
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
             android:layout_marginBottom="8dp" app:layout_constraintBottom_toTopOf="@+id/sumariosCheckBox"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            app:layout_constraintHorizontal_bias="0.189"
-    />
+            app:layout_constraintHorizontal_bias="0.149"
+            android:layout_marginTop="8dp" app:layout_constraintTop_toBottomOf="@+id/textView3"/>
     <CheckBox
             android:text="Sumarios"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/sumariosCheckBox"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            app:layout_constraintBottom_toTopOf="@+id/recursosCheckBox" app:layout_constraintHorizontal_bias="0.187"
-            android:layout_marginBottom="28dp"/>
+            app:layout_constraintBottom_toTopOf="@+id/recursosCheckBox" app:layout_constraintHorizontal_bias="0.161"
+            android:layout_marginBottom="8dp"/>
     <CheckBox
             android:text="Recursos"
             android:layout_width="wrap_content"
@@ -76,4 +77,51 @@
             android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp" android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@+id/bibliografiaCheckBox"/>
+    <TextView
+            android:text="Choose manually"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView3"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/textView4"/>
+    <HorizontalScrollView
+            android:layout_width="395dp"
+            android:layout_height="162dp"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
+            android:id="@+id/horizontalScrollView" app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/descText">
+
+        <LinearLayout
+                android:layout_width="wrap_content" android:layout_height="match_parent"
+                      android:orientation="horizontal">
+            <Button
+                    android:text="Teacher Template"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" tools:layout_editor_absoluteY="190dp"
+                    android:id="@+id/teacherTemplateBtn" app:layout_constraintStart_toStartOf="@+id/horizontalScrollView"
+                    android:layout_marginStart="8dp"/>
+
+            <Button
+                    android:text="Communication Template"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" tools:layout_editor_absoluteY="188dp"
+                    tools:layout_editor_absoluteX="212dp" android:id="@+id/comTemplateBtn"/>
+        </LinearLayout>
+
+
+    </HorizontalScrollView>
+    <TextView
+            android:text="OR"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView4"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="196dp" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/horizontalScrollView"
+            app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"/>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

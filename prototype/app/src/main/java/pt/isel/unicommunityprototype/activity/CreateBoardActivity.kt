@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_create_board.*
 import pt.isel.unicommunityprototype.R
+import pt.isel.unicommunityprototype.UniCommunityApplication
 import pt.isel.unicommunityprototype.kotlinx.getUniApplication
 import pt.isel.unicommunityprototype.model.*
 
@@ -15,6 +16,14 @@ class CreateBoardActivity : AppCompatActivity() {
         setContentView(R.layout.activity_create_board)
 
         val app = getUniApplication()
+
+        teacherTemplateBtn.setOnClickListener {
+                                                                                // TODO: instantiate forum just like this???
+            navigateToBoardDetails(app, ModuleTemplate.createTeacherTemplate(), Forum())
+        }
+        comTemplateBtn.setOnClickListener {
+            navigateToBoardDetails(app, ModuleTemplate.createComTemplate(), Forum())
+        }
 
         createBtn.setOnClickListener {
             val modules = mutableListOf<Module>()
@@ -31,16 +40,20 @@ class CreateBoardActivity : AppCompatActivity() {
             if (bibliografiaCheckBox.isChecked)
                 modules.add(Bibliografia())
 
-            val boardId = app.repository.createBoard(
-                nameText.text.toString(),
-                descText.text.toString(),
-                modules,
-                forum
-            )
-
-            val intent = Intent(this, BoardDetailsWithTabsActivity::class.java)
-            intent.putExtra("boardId", boardId)
-            startActivity(intent)
+            navigateToBoardDetails(app, modules, forum)
         }
+    }
+
+    fun navigateToBoardDetails(app : UniCommunityApplication, modules: MutableList<Module>, forum: Forum?) {
+        val boardId = app.repository.createBoard(
+            nameText.text.toString(),
+            descText.text.toString(),
+            modules,
+            forum
+        )
+
+        val intent = Intent(this, BoardDetailsWithTabsActivity::class.java)
+        intent.putExtra("boardId", boardId)
+        startActivity(intent)
     }
 }

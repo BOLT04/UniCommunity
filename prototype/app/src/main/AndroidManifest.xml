@@ -27,7 +27,7 @@
         <activity android:name=".activity.CreateBoardActivity">
         </activity>
         <activity
-                android:name=".activity.BoardDetailsActivity"
+                android:name=".activity.BoardViewActivity"
                 android:label="Board Details">
         </activity>
         <activity android:name=".activity.ForumActivity">
