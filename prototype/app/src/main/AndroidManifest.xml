@@ -42,6 +42,8 @@
                 android:name=".activity.UserPanelActivity"
                 android:label="User panel">
         </activity>
+
+        <activity android:name=".activity.BoardViewWithRecyclerViewActivity"></activity>
     </application>
 
 </manifest>

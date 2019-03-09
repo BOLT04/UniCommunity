@@ -27,7 +27,7 @@ class UserPanelActivity : AppCompatActivity() {
         val viewModel = getViewModel(USER_PANEL_VIEW_MODEL_KEY) {
             UserPanelViewModel(app, app.repository)
         }
-        val intent = Intent(this, BoardDetailsWithTabsActivity::class.java)
+        val intent = Intent(this, BoardViewWithRecyclerViewActivity::class.java)
 
         val listener = object : BoardsAdapter.OnBoardClickListener {
             override fun onBoardClick(board: Board?) {

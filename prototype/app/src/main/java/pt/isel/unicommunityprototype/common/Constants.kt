@@ -1,6 +1,7 @@
 package pt.isel.unicommunityprototype.common
 
 const val USER_PANEL_VIEW_MODEL_KEY = "User Panel view model key"
+const val BOARD_VIEW_MODEL_KEY = "Board view model key"
 
 //INTENTS
 const val PRIVATE_PROFILE = "PrivateProfile"
