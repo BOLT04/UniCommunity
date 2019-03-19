@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import ReactMarkdown from 'react-markdown'
 import BoardHeader from './BoardHeader'
 import ModulesView from './ModulesView'
 
-const input = '# This is a header\n\nAnd this is a paragraph'
+//const input = '# This is a header\n\nAnd this is a paragraph'
 // <ReactMarkdown source={input} />
 class BoardView extends Component {
   static propTypes = {

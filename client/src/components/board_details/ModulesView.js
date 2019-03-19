@@ -1,12 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { Accordion, Icon } from 'semantic-ui-react'
+import { Accordion, Icon, Transition } from 'semantic-ui-react'
 
 import ReactMarkdown from 'react-markdown'
 
 export default class ModulesView extends Component {
-    state = { activeIndex: 0 }
+    state = { activeIndex: 0, visible: true }
 
     static propTypes = {
         board: PropTypes.object
@@ -17,11 +17,14 @@ export default class ModulesView extends Component {
         const { activeIndex } = this.state
         const newIndex = activeIndex === index ? -1 : index
     
-        this.setState({ activeIndex: newIndex })
+        this.setState({ 
+            activeIndex: newIndex,
+            visible: !this.state.visible
+        })
     }
 
     render() {
-        const { activeIndex } = this.state
+        const { activeIndex, visible } = this.state
         const { board } = this.props
 
         return (
@@ -31,13 +34,15 @@ export default class ModulesView extends Component {
                         <Icon name='dropdown' />
                         {board.modules[0].name}
                     </Accordion.Title>
-                    <Accordion.Content active={activeIndex === 0}>
-                        <h4>{board.modules[0].content[0].name}</h4>
-                        <ReactMarkdown source={board.modules[0].content[0].text} />
+                    <Transition visible={visible} animation='slide down' duration={500}>
+                        <Accordion.Content active={activeIndex === 0}>
+                            <h4>{board.modules[0].content[0].name}</h4>
+                            <ReactMarkdown source={board.modules[0].content[0].text} />
 
-                        <h4>{board.modules[0].content[1].name}</h4>
-                        <ReactMarkdown source={board.modules[0].content[1].text} />
-                    </Accordion.Content>
+                            <h4>{board.modules[0].content[1].name}</h4>
+                            <ReactMarkdown source={board.modules[0].content[1].text} />
+                        </Accordion.Content>
+                    </Transition>
 
                     <Accordion.Title active={activeIndex === 1} index={1} onClick={this.handleClick}>
                         <Icon name='dropdown' />

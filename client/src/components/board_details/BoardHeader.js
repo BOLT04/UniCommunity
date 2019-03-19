@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-class BoardHeader extends Component {
+export default class BoardHeader extends Component {
     static propTypes = {
         board: PropTypes.object
     }
 
     render() {
         return (
-            <div >
+            <div>
                 <h4 className="ui blue header">{this.props.board.name}</h4>
                 <div className="ui secondary pointing menu">
                     <a className="item active">
@@ -30,5 +30,3 @@ class BoardHeader extends Component {
         )
     }
 }
-
-export default BoardHeader
