@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 class NavBar extends Component {
   render() {
     return (
-      <div className="ui secondary menu">
+      <div className="ui secondary stackable menu">
         <a className="active item">
           Home
         </a>
@@ -13,6 +13,9 @@ class NavBar extends Component {
         </a>
         <Link to="/board/create" className="item">
             Create Board
+        </Link>
+        <Link to="/board" className="item">
+            Board
         </Link>
         <div className="right menu">
           <div className="item">

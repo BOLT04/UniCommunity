@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 import { Grid, Checkbox } from 'semantic-ui-react'
 
 import './css/BoardTemplate.css'
@@ -110,7 +110,7 @@ class BoardTemplate extends Component {
     if (activeElem)
       activeElem.classList.remove('template-item-active')
     
-    if (e.target != activeElem) { // then it means the user choose another template
+    if (e.target !== activeElem) { // then it means the user choose another template
       e.target.classList.remove('template-item-active:hover')
       e.target.classList.add('template-item-active')  
     }
