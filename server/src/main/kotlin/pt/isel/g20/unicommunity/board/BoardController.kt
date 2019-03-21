@@ -9,7 +9,7 @@ import pt.isel.g20.unicommunity.board.model.BoardResponse
 import pt.isel.g20.unicommunity.board.service.IBoardService
 
 private const val LIST_BOARDS_ROUTE = "/api/boards"
-private const val GET_BOARD_ROUTE = "/api/boards/{board-name}"
+private const val GET_BOARD_ROUTE = "/api/boards/{boardId}"
 
 @RestController
 class BoardController(private val service: IBoardService) {
@@ -22,21 +22,20 @@ class BoardController(private val service: IBoardService) {
     fun createBoard(@RequestBody boardDto: BoardDto): BoardLinksResponse {
         service.createBoard(boardDto.toModel())
 
-        val boardName = boardDto.name.replace(' ', '+')
         return BoardLinksResponse(
-                "$LIST_BOARDS_ROUTE/$boardName"
+                "$LIST_BOARDS_ROUTE/${boardDto.id}"
         )
     }
 
-    @RequestMapping("/api/boards/{board-name}", method = [RequestMethod.GET])
-    fun getBoardByName(@PathVariable(value="board-name") name: String) : BoardResponse {
-        val board = service.getBoardByName(name)
+    @RequestMapping(GET_BOARD_ROUTE, method = [RequestMethod.GET])
+    fun getBoardById(@PathVariable(value="boardId") boardId: String) : BoardResponse {
+        val board = service.getBoardById(boardId)
                 ?: throw ResponseStatusException(
                         HttpStatus.BAD_REQUEST,
-                        "A board with the given name couldn't be found.")
+                        "A board with the given ID couldn't be found.")
 
-        return BoardResponse(board.name, board.description,
-                "$LIST_BOARDS_ROUTE/${board.name}"
+        return BoardResponse(board.id, board.name, board.description,
+                "$LIST_BOARDS_ROUTE/${board.id}"
         )
     }
 }

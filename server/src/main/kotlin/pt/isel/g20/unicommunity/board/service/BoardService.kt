@@ -14,9 +14,10 @@ class BoardService : IBoardService {
     override fun getAllBoards() = boards.values
 
     @Synchronized
-    override fun createBoard(board: Board) {
+    override fun createBoard(board: Board): Board {
         boards[board.name] = board
+        return board
     }
 
-    override fun getBoardByName(boardName: String) = boards[boardName]
+    override fun getBoardById(boardId: String) = boards[boardId]
 }
