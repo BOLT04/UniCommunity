@@ -6,6 +6,7 @@ import Footer from './Footer'
 import Login from './Login'
 import CreateBoard from './CreateBoard'
 import BoardView from './board_details/BoardView'
+import BackToTopButton from './BackToTopButton'
 //import Board from './Board'
 
 const boardDummy = {
@@ -58,6 +59,7 @@ export default class App extends Component {
           </div>
 
           <Footer />
+          <BackToTopButton />
         </div> 
       </Router>
     )
