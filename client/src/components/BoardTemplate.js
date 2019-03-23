@@ -103,6 +103,10 @@ class BoardTemplate extends Component {
 
   //TODO: Do I need to make all this code to have clickable templates...I need to manage this functionality
   //TODO: or does it exist already made?
+
+
+//TODO: change this to Toggle button using Semantic UI!!!!
+
   activateTemplate = e => {
     const activeElem = document.querySelector('.template-item-active')
 
