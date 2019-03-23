@@ -7,6 +7,7 @@ import Login from './Login'
 import CreateBoard from './CreateBoard'
 import BoardView from './board_details/BoardView'
 import BackToTopButton from './BackToTopButton'
+import Home from './Home'
 //import Board from './Board'
 
 const boardDummy = {
@@ -44,6 +45,7 @@ export default class App extends Component {
     return (
       <Router>   
         <div className="App">
+
           <div className="ui container">
             <NavBar /> 
             
@@ -57,6 +59,7 @@ export default class App extends Component {
             
             {/*<Route path="/board" component={Board}/> */}
           </div>
+          <Route path="/" component={Home}/>
 
           <Footer />
           <BackToTopButton />

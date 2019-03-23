@@ -20,9 +20,7 @@ export default class Footer extends Component {
                             <div className="ui inverted link list">
                                 <a href="https://www.freepik.com/free-photos-vectors/logo">Logo vector created by freepik - www.freepik.com</a>
                                 <a href="#" className="item">Banana Pre-Order</a>
-                                <a href="#" className="item">DNA FAQ</a>
-                                <a href="#" className="item">How To Access</a>
-                                <a href="#" className="item">Favorite X-Men</a>
+                                
                             </div>
                         </div>
                         <div className="seven wide column">
