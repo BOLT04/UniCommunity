@@ -3,13 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "react": "^16.8.4",
-    "react-dom": "^16.8.4",
+    "immutable": "^4.0.0-rc.12",
+    "react": "^16.8.5",
+    "react-dom": "^16.8.5",
     "react-markdown": "^4.0.6",
     "react-router-dom": "^4.4.0",
     "react-scripts": "2.1.8",
     "semantic-ui-css": "^2.4.1",
-    "semantic-ui-react": "^0.86.0"
+    "semantic-ui-react": "^0.86.0",
+    "slate": "^0.44.12",
+    "slate-react": "^0.21.18"
   },
   "scripts": {
     "start": "react-scripts start",

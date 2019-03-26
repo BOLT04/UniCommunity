@@ -8,6 +8,7 @@ import CreateBoard from './CreateBoard'
 import BoardView from './board_details/BoardView'
 import BackToTopButton from './BackToTopButton'
 import Home from './Home'
+import CreatePost from './post/CreatePost'
 
 import NavBarApiMock from '../api/NavBarApiMock'
 
@@ -49,6 +50,7 @@ export default class App extends Component {
   render() {
     return (
       <Router>   
+        <CreatePost />
         <div className="App">
 
           <div className="ui container">

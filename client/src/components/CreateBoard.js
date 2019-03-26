@@ -3,7 +3,7 @@ import { Input, Form, TextArea, Button } from 'semantic-ui-react'
 
 import BoardTemplate from './BoardTemplate'
 
-class CreateBoard extends Component {
+export default class CreateBoard extends Component {
   //TODO: should these props be in the object "state" of react?? and use this.setState()????
   titleVal = ""
   descVal = ""
@@ -54,5 +54,3 @@ class CreateBoard extends Component {
     console.log(this.templates)
   }
 }
-
-export default CreateBoard
