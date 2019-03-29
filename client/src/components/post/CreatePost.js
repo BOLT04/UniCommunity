@@ -1,6 +1,6 @@
+/*
 import React, { Component } from 'react'
 
-import { Editor } from 'slate-react'
 import { Value } from 'slate'
 
 // Create our initial value.
@@ -37,6 +37,30 @@ export default class CreatePost extends Component {
     }
 
     render = () => (
-        <Editor value={this.state.value} onChange={this.onChange} />
+        
     )
+}
+*/
+
+
+'use strict';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import MdEditor from 'react-markdown-editor-lite'
+ 
+const mock_content = "Hello.\n\n * This is markdown.\n * It is fun\n * Love it or leave it."
+export default class CreatePost extends React.Component {
+  handleEditorChange ({html, md}) {    
+    console.log('handleEditorChange', html, md)
+  }
+  render() {
+    return (      
+      <div style={{height: 500}}>
+        <MdEditor
+          value={mock_content}
+          onChange={this.handleEditorChange} 
+        />                
+      </div>
+    )
+  }
 }
