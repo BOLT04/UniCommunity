@@ -1,42 +1,52 @@
+'use strict'
 import React, { Component } from 'react'
 
-import { Editor } from 'slate-react'
-import { Value } from 'slate'
+import { Input, Form, TextArea, Button } from 'semantic-ui-react'
 
-// Create our initial value.
-const initialValue = Value.fromJSON({
-    document: {
-        nodes: [
-            {
-                object: 'block',
-                type: 'paragraph',
-                nodes: [
-                    {
-                        object: 'text',
-                        leaves: [
-                            {
-                                text: 'A line of text in a paragraph.',
-                            },
-                        ],
-                    },
-                ],
-            },
-        ],
-    },
-})
-
+import MdEditor from 'react-markdown-editor-lite'
+ 
 export default class CreatePost extends Component {
-    // Set the initial value when the app is first constructed.
-    state = {
-        value: initialValue
-    }
+  //TODO: should these props be in the object "state" of react?? and use this.setState()????
+  titleVal = ""
+  mdEditor = null
 
-    // On change, update the app's React state with the new editor value.
-    onChange = ({ value }) => {
-        this.setState({ value })
-    }
+  handleEditorChange({html, text}) {    
+    console.log('handleEditorChange', html, text)
+  }
 
-    render = () => (
-        <Editor value={this.state.value} onChange={this.onChange} />
+  onTitleChange = e => {
+    this.titleVal = e.target.value
+  }
+
+  // An arrow function is used because this function is used in an onClick prop, meaning there 
+  // is no need to use Function::bind() to capture "this".
+  submitCreatePostReq = () => {
+    console.log(this.titleVal)
+    console.log(this.mdEditor.getMdValue())
+  }
+
+  render() {
+    return (      
+      <div style={{height: 500}}>
+        <h1 className="ui header">Create a Post</h1>
+        <Form>
+          <Form.Field>
+            <label>Title</label>
+            <Input 
+              name="title"
+              onChange={this.onTitleChange}
+            />   
+          </Form.Field>
+          <Form.Field>
+            <MdEditor
+              ref={node => this.mdEditor = node}
+              onChange={this.handleEditorChange} 
+            />
+          </Form.Field>
+        </Form>
+
+        <Button content='Post' primary style={{marginTop: 10}} onClick={this.submitCreatePostReq}/>
+      </div>
     )
+  }
 }

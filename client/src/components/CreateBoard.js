@@ -17,6 +17,14 @@ export default class CreateBoard extends Component {
     this.descVal = e.target.value
   }
 
+  submitCreateBoardReq() {
+    console.log(this.descVal)
+    console.log(this.titleVal)
+
+    this.boardTemplate.updatePropsTemplates()
+    console.log(this.templates)
+  }
+
 //TODO: is getting the ref of BoardTemplate and do: this.boardTemplate.updateTemplates() the best solution??
 
   render() {// TODO: Adjacent JSX elements must be wrapped  in an enclosing tag??? Why must there be a div?
@@ -44,13 +52,5 @@ export default class CreateBoard extends Component {
         <Button content='Create' primary style={{marginTop: 10}} onClick={this.submitCreateBoardReq.bind(this)}/>
       </div>
     )
-  }
-
-  submitCreateBoardReq() {
-    console.log(this.descVal)
-    console.log(this.titleVal)
-
-    this.boardTemplate.updatePropsTemplates()
-    console.log(this.templates)
   }
 }
