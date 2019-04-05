@@ -50,13 +50,13 @@ export default class App extends Component {
   render() {
     return (
       <Router>   
-        <CreatePost />
         <div className="App">
-
           <div className="ui container">
             <NavBar api={new NavBarApiMock()} /> 
             
             <Route exact path="/login" component={Login} />
+
+            <Route exact path="/post" component={CreatePost} />
             
             <Route exact path="/board/create" component={CreateBoard} />
             {/* //TODO: this boardDummy will not be here bc we dont have the board object here, only
