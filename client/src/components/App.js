@@ -9,6 +9,7 @@ import BoardView from './board_details/BoardView'
 import BackToTopButton from './BackToTopButton'
 import Home from './Home'
 import CreatePost from './post/CreatePost'
+import Feed from './feed/Feed'
 
 import NavBarApiMock from '../api/NavBarApiMock'
 
@@ -38,7 +39,20 @@ export default class App extends Component {
             />
           </div>
           <Route exact path="/" component={Home} />
-
+          
+          <Feed feedItemList={[
+            {
+              name: "Anuncio 1", 
+              shortDesc: 'Avaliação das Resoluções das Séries de Exercícios e Notas Finais da Turma LI51D', 
+              author: "Carlos Martins",
+              feedItemHref: "/boards/DAW-1819-v/announcements/1",
+              userProfileHref: "/users/101/profile"
+            }, 
+            {
+              name: "A",
+              author: "Jose simao"}]}
+          />
+          
           <Footer />
           <BackToTopButton />
         </div> 
