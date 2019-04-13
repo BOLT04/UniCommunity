@@ -7,12 +7,15 @@ import Login from './Login'
 import CreateBoard from './CreateBoard'
 import BoardView from './board_details/BoardView'
 import BackToTopButton from './BackToTopButton'
-import Home from './Home'
+import Home from './home_page/Home'
 import CreatePost from './post/CreatePost'
-import Feed from './feed/Feed'
 
 import NavBarApiMock from '../api/NavBarApiMock'
+import HomeApiMock from '../api/HomeApiMock'
 
+//TODO: The App component might have too many responsabilities, because it has the one commented below
+//TODO: plus it serves as the Service Locator, the one responsible to give all components their dependencies,
+// and we are currently instantiating the API mocks in here...
 /**
  * This is the root component of the application (used in index.js).
  * The responsibility of this component is to setup the React Router with all Routes and their components.
@@ -38,19 +41,8 @@ export default class App extends Component {
               <BoardView {...props} />} 
             />
           </div>
-          <Route exact path="/" component={Home} />
-          
-          <Feed feedItemList={[
-            {
-              name: "Anuncio 1", 
-              shortDesc: 'Avaliação das Resoluções das Séries de Exercícios e Notas Finais da Turma LI51D', 
-              author: "Carlos Martins",
-              feedItemHref: "/boards/DAW-1819-v/announcements/1",
-              userProfileHref: "/users/101/profile"
-            }, 
-            {
-              name: "A",
-              author: "Jose simao"}]}
+          <Route exact path="/" render={props => 
+              <Home {...props} api={new HomeApiMock()} />} 
           />
           
           <Footer />

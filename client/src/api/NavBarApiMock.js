@@ -1,8 +1,8 @@
 import NavBarApi from './NavBarApi'
 
-export default class NavBarApiMock extends NavBarApi{
+export default class NavBarApiMock extends NavBarApi {
 
-    getNavigationMenu = () => Promise.resolve({
+    fetchNavigationMenu = () => Promise.resolve({
         _links: {
             self: { href: "/" }, 
             signup: { href: "/signup" }, 
