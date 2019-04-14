@@ -49,7 +49,10 @@ export default class ModulesView extends Component {
                             <ReactMarkdown source={board.modules[0].content[0].text} />
 
                             <h4>{board.modules[0].content[1].name}</h4>
-                            <ReactMarkdown source={board.modules[0].content[1].text} />
+                            {board.modules[0].content[1].text}
+
+                            <h4>{board.modules[0].content[2].name}</h4>
+                            <ReactMarkdown source={board.modules[0].content[2].text} />
                         </Accordion.Content>
                     </Transition>
 

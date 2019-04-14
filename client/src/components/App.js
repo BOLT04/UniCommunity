@@ -12,6 +12,7 @@ import CreatePost from './post/CreatePost'
 
 import NavBarApiMock from '../api/NavBarApiMock'
 import HomeApiMock from '../api/HomeApiMock'
+import CreateBoardApiMock from '../api/CreateBoardApiMock'
 
 //TODO: The App component might have too many responsabilities, because it has the one commented below
 //TODO: plus it serves as the Service Locator, the one responsible to give all components their dependencies,
@@ -32,7 +33,8 @@ export default class App extends Component {
 
             <Route exact path="/post" component={CreatePost} />
             
-            <Route exact path="/board/create" component={CreateBoard} 
+            <Route exact path="/board/create" render={props => 
+              <CreateBoard {...props} api={new CreateBoardApiMock()} />} 
             />
             {/* //TODO: this boardDummy will not be here bc we dont have the board object here, only
             when the user clicks on button createBoard of CreateBoard component...so this lambda

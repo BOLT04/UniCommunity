@@ -23,7 +23,7 @@ export default class Home extends Component {
   }
 
   async componentWillMount() {
-    const rsp = await this.props.api.fetchHome()
+    const rsp = await this.props.api.fetchHomeAsync()
 
     const feedItemList = await rspToFeedItemListAsync(rsp)
 /*

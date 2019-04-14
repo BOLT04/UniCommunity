@@ -31,7 +31,7 @@ const body = Promise.resolve({
 
 export default class HomeApiMock extends HomeApi {
 
-    fetchHome = () => {
+    fetchHomeAsync = async () => {
         const rsp = new Response()
         rsp.json = () => body
         rsp.headers.append('Content-Type', 'application/hal+json')

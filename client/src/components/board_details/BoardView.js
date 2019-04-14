@@ -4,9 +4,9 @@ import PropTypes from 'prop-types'
 import BoardHeader from './BoardHeader'
 import ModulesView from './ModulesView'
 
-//const input = '# This is a header\n\nAnd this is a paragraph'
-// <ReactMarkdown source={input} />
-class BoardView extends Component {
+export default class BoardView extends Component {
+  //TODO: how do I specify the entrance of the model (board) to this component? 
+  //TODO: I dont want it to be in props.location.state.board because that is coupled to CreateBoard component!
   /*static propTypes = {
     board: PropTypes.object
   }*/
@@ -22,6 +22,4 @@ class BoardView extends Component {
       </div>
       )
     }
-  }
-  
-  export default BoardView
+}
