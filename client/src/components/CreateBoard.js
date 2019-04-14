@@ -48,7 +48,16 @@ export default class CreateBoard extends Component {
     this.descVal = e.target.value
   }
 
-  submitCreateBoardReq() {
+  // TODO: I think I'm now realizing (when trying to make tests for this component) that this class might
+  //include too much logic, for example to test the logic in submitCreateBoardReq that is a event handler...
+  //i can't really know if the function was called... Perhaps a wrapper around this component should be made
+  //that knows how to handle api requests, and this component is just concerned with visual rendering!
+  //Meaning that this component receives the submitBtnHandler through props.
+  
+  /**
+   * Makes a request to the API using the object received on props, to create a board.
+   */
+  submitBtnHandler() {
     console.log(this.descVal)
     console.log(this.titleVal)
 
@@ -84,7 +93,13 @@ export default class CreateBoard extends Component {
           ref={boardTemplate => this.boardTemplate = boardTemplate} 
           templates={this.templates}/>
 
-        <Button content='Create' primary style={{marginTop: 10}} onClick={this.submitCreateBoardReq.bind(this)}/>
+        <Button
+          id= 'submitBtn'
+          content='Create' 
+          primary 
+          style={{marginTop: 10}} 
+          onClick={this.submitBtnHandler.bind(this)}
+        />
       </div>
     )
   }
