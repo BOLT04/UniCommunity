@@ -14,12 +14,29 @@ object Uri {
     const val SINGLE_USER_ROUTE = "$USERS_ROUTE/{userId}"
 
     //Templates
-    private val singleProjectTemplate = UriTemplate(SINGLE_USER_ROUTE)
+    private val singleUserTemplate = UriTemplate(SINGLE_USER_ROUTE)
 
     //Getters
     fun forAllUsers() =
             URI(USERS_ROUTE)
 
     fun forSingleUser(userId: Long) =
-            singleProjectTemplate.expand(userId)
+            singleUserTemplate.expand(userId)
+
+
+//BOARDS
+
+    //Paths
+    const val BOARDS_ROUTE = "/boards"
+    const val SINGLE_BOARD_ROUTE = "$BOARDS_ROUTE/{boardId}"
+
+    //Templates
+    private val singleBoardTemplate = UriTemplate(SINGLE_BOARD_ROUTE)
+
+    //Getters
+    fun forAllBoards() =
+            URI(BOARDS_ROUTE)
+
+    fun forSingleBoard(boardId: Long) =
+            singleBoardTemplate.expand(boardId)
 }

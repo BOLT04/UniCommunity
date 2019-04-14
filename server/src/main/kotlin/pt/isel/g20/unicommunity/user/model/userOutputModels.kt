@@ -2,12 +2,6 @@ package pt.isel.g20.unicommunity.user.model
 
 import pt.isel.g20.unicommunity.hateoas.*
 
-class UserLinksResponse(selfLink: String) : HalObject(mapOf("self" to Link(selfLink))
-)
-
-class UserResponse(val id: Int, val name: String, val email: String, val githubId:String?, selfLink: String) : HalObject(mapOf("self" to Link(selfLink))
-)
-
 class SingleUserResponse(user: User)
     : HalObject(
         mapOf(

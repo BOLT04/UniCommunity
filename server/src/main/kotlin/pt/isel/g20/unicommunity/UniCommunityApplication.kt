@@ -6,7 +6,7 @@ import org.springframework.boot.runApplication
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
 @EnableJpaRepositories("pt.isel.g20.unicommunity.repository")
-@EntityScan("pt.isel.g20.unicommunity.user.model")
+@EntityScan
 @SpringBootApplication
 class UniCommunityApplication
 
