@@ -1,41 +1,100 @@
 package pt.isel.g20.unicommunity.blackboard
 
+import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.server.ResponseStatusException
+import pt.isel.g20.unicommunity.blackBlackboard.model.MultipleBlackboardsResponse
+import pt.isel.g20.unicommunity.blackBlackboard.model.SingleBlackboardResponse
+import pt.isel.g20.unicommunity.blackboard.exception.NotFoundBlackboardException
 import pt.isel.g20.unicommunity.blackboard.model.BlackboardDto
-import pt.isel.g20.unicommunity.blackboard.model.BlackboardLinksResponse
-import pt.isel.g20.unicommunity.blackboard.model.BlackboardResponse
 import pt.isel.g20.unicommunity.blackboard.service.IBlackboardService
-
-private const val LIST_BLACKBOARDS_ROUTE = "/api/blackboards"
-private const val GET_BOARD_ROUTE = "/api/blackboards/{bbId}"
+import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
+import pt.isel.g20.unicommunity.hateoas.Uri
+import pt.isel.g20.unicommunity.hateoas.Uri.BLACKBOARDS_ROUTE
+import pt.isel.g20.unicommunity.hateoas.Uri.SINGLE_BLACKBOARD_ROUTE
+import java.util.concurrent.TimeUnit
 
 @RestController
 class BlackboardController(private val service: IBlackboardService) {
 
-    @GetMapping(path = [LIST_BLACKBOARDS_ROUTE])
-    fun getAllBlackboards() = service.getAllBlackboards()
+    @GetMapping(path = [BLACKBOARDS_ROUTE])
+    fun getAllBlackboards(@PathVariable boardId: Long) =
+            service.getAllBlackboards(boardId).let {
+                ResponseEntity
+                        .ok()
+                        .cacheControl(
+                                CacheControl
+                                        .maxAge(1, TimeUnit.HOURS)
+                                        .cachePrivate())
+                        .eTag(it.hashCode().toString())
+                        .body(MultipleBlackboardsResponse(boardId, it))
+            }
 
-    @PostMapping(path = [LIST_BLACKBOARDS_ROUTE], produces = ["application/hal+json"])
+    @GetMapping(path = [SINGLE_BLACKBOARD_ROUTE])
+    fun getBlackboardById(@PathVariable boardId: Long, @PathVariable bbId: Long) =
+            service.getBlackboardById(boardId, bbId).let {
+                ResponseEntity
+                        .ok()
+                        .cacheControl(
+                                CacheControl
+                                        .maxAge(1, TimeUnit.HOURS)
+                                        .cachePrivate())
+                        .eTag(it.hashCode().toString())
+                        .body(SingleBlackboardResponse(it))
+            }
+
+    @PostMapping(path = [BLACKBOARDS_ROUTE], produces = ["application/hal+json"])
     @ResponseStatus(HttpStatus.CREATED)
-    fun createBlackboard(@RequestBody blackboardDto: BlackboardDto): BlackboardLinksResponse {
-        service.createBlackboard(blackboardDto.toModel())
+    fun createBlackboard(@PathVariable boardId: Long, @RequestBody blackboardDto: BlackboardDto) =
+            service.createBlackboard(boardId, blackboardDto.name, blackboardDto.notificationLevel, blackboardDto.description).let {
+                ResponseEntity
+                        .created(Uri.forSingleBlackboard(it.boardId, it.id))
+                        .cacheControl(
+                                CacheControl
+                                        .maxAge(1, TimeUnit.HOURS)
+                                        .cachePrivate())
+                        .eTag(it.hashCode().toString())
+                        .body(SingleBlackboardResponse(it))
+            }
 
-        return BlackboardLinksResponse(
-                "$LIST_BLACKBOARDS_ROUTE/${blackboardDto.id}"
-        )
-    }
+    @PutMapping(path = [SINGLE_BLACKBOARD_ROUTE])
+    fun editBlackboard(@PathVariable boardId: Long, @PathVariable bbId: Long, @RequestBody blackboardDto: BlackboardDto) =
+            service.editBlackboard(boardId, bbId, blackboardDto.name, blackboardDto.notificationLevel, blackboardDto.description).let {
+                ResponseEntity
+                        .ok()
+                        .cacheControl(
+                                CacheControl
+                                        .maxAge(1, TimeUnit.HOURS)
+                                        .cachePrivate())
+                        .eTag(it.hashCode().toString())
+                        .body(SingleBlackboardResponse(it))
+            }
 
-    @RequestMapping(GET_BOARD_ROUTE, method = [RequestMethod.GET])
-    fun getBlackboardById(@PathVariable(value="bbId") boardId: String) : BlackboardResponse {
-        val blackboard = service.getBlackboardById(boardId)
-                ?: throw ResponseStatusException(
-                        HttpStatus.BAD_REQUEST,
-                        "A blackboard with the given ID couldn't be found.")
 
-        return BlackboardResponse(blackboard.id, blackboard.name, blackboard.description, blackboard.notificationLevel,
-                "$LIST_BLACKBOARDS_ROUTE/${blackboard.id}"
-        )
-    }
+    @DeleteMapping(path = [SINGLE_BLACKBOARD_ROUTE])
+    fun deleteBlackboard(@PathVariable boardId: Long, @PathVariable bbId: Long) =
+            service.deleteBlackboard(boardId, bbId).let {
+                ResponseEntity
+                        .ok()
+                        .cacheControl(
+                                CacheControl
+                                        .maxAge(1, TimeUnit.HOURS)
+                                        .cachePrivate())
+                        .eTag(it.hashCode().toString())
+                        .body(SingleBlackboardResponse(it))
+            }
+
+
+    @ExceptionHandler
+    fun handleNotFoundBlackboardException(e: NotFoundBlackboardException) =
+            ResponseEntity
+                    .notFound()
+                    .build<String>()
+
+    @ExceptionHandler
+    fun handleNotFoundBoardException(e: NotFoundBoardException) =
+            ResponseEntity
+                    .notFound()
+                    .build<String>()
 }

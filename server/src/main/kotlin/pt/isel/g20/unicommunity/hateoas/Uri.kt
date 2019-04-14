@@ -39,4 +39,22 @@ object Uri {
 
     fun forSingleBoard(boardId: Long) =
             singleBoardTemplate.expand(boardId)
+
+
+//BLACKBOARDS
+
+    //Paths
+    const val BLACKBOARDS_ROUTE = "$SINGLE_BOARD_ROUTE/blackboards"
+    const val SINGLE_BLACKBOARD_ROUTE = "$BLACKBOARDS_ROUTE/{bbId}"
+
+    //Templates
+    private val singleBlackboardTemplate = UriTemplate(SINGLE_BLACKBOARD_ROUTE)
+    private val multipleBlackboardTemplate = UriTemplate(BLACKBOARDS_ROUTE)
+
+    //Getters
+    fun forAllBlackboards(boardId: Long) =
+            multipleBlackboardTemplate.expand(boardId)
+
+    fun forSingleBlackboard(boardId: Long, bbId: Long) =
+            singleBlackboardTemplate.expand(boardId, bbId)
 }
