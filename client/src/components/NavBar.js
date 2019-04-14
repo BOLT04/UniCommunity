@@ -9,13 +9,27 @@ export default class NavBar extends Component {
     api: PropTypes.instanceOf(NavBarApi)
   }
 
-  state = {
-    navMenu: {}
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      navMenu: {}
+    }
   }
 
- componentDidMount() {
-    //const rsp = await this.props.api.getNavigationMenu()
-    //const navMenu = rsp._links
+  //TODO:if the state is initialized here, then componentWillMount() wont be called...but why tho???
+  /*state = {
+    navMenu: {}
+  }
+*/
+  async componentWillMount() {
+    const rsp = await this.props.api.fetchNavigationMenu()
+    const navMenu = rsp._links
+
+    this.setState({ navMenu })
+  }
+
+  componentDidMount() {
     console.log(`componentDidMount 1: ${this.state}`)
     this.setState({ navMenu: 1 })
     console.log(`componentDidMount 2: ${this.state}`)
