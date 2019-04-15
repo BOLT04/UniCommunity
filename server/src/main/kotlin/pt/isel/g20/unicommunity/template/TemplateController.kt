@@ -29,7 +29,7 @@ class TemplateController(private val service: ITemplateService) {
     }
 
     @RequestMapping(GET_TEMPLATE_ROUTE, method = [RequestMethod.GET])
-    fun getProjectByName(@PathVariable(value="template-name") name: String) : TemplateResponse {
+    fun getTemplateByName(@PathVariable(value="template-name") name: String) : TemplateResponse {
         val template = service.getTemplateByName(name)
                 ?: throw ResponseStatusException(
                         HttpStatus.BAD_REQUEST,
