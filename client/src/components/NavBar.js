@@ -62,8 +62,6 @@ export default class NavBar extends Component {
                 <button className="ui primary basic button">Log in</button>
               </Link>
           }
-          
-          <button className="ui secondary basic button">Sign up</button>
 
           <button className="ui red basic button">Logout</button>
 

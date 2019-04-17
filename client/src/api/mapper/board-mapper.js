@@ -1,6 +1,18 @@
+import React from 'react'
+import Forum from '../../components/board_details/Forum'
 // Maps a response of the endpoint 'Create a Board' to the model representation of a Board in the UI.
 
 import fetchBlackboardAsync from '../BlackBoardApi'
+
+//TODO: if this is how its done, meaning i only have representations for modules that I know, for example Forum,
+//todo: then i can only render those modules => i cant render user created modules!
+const relsRegistery = {
+    '/rels/forum': {
+        clientHref: '/forum',
+        serverHref: null,
+        //onClick: (...props) => <Forum {...props}/>
+    }
+}
 
 /**
  * 
@@ -17,8 +29,14 @@ export default async function rspToBoardAsync(rsp) {//TODO: maybe move these con
         board.name = body.name
         board.description = body.description
 
-        if (body._links) {
-            //todo: this
+        if (body._links) {//TODO: i dont know what to do here...
+            Object.keys(body._links)
+                .forEach(prop => {
+                    const relObj = relsRegistery[prop]
+                    if (relObj)
+                        relObj.serverHref = body._links[prop].href
+                })
+            board.forumLinks = relsRegistery['/rels/forum']
         }
 
         // Check if the blackboards rel is present

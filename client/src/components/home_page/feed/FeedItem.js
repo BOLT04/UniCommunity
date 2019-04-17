@@ -1,7 +1,7 @@
 import React from 'react'
 import { List, Image } from 'semantic-ui-react'
 
-export default function Feed({ feedItem }) {
+export default function FeedItem({ feedItem }) {
     
     function decideContent() {
         return feedItem.shortDesc !== undefined

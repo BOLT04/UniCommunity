@@ -47,8 +47,10 @@ export default class App extends Component {
               <Home {...props} api={new HomeApiMock()} />} 
           />
           
+          {/* //TODO: THESE componentes were buggy so are not being used for the moment
           <Footer />
           <BackToTopButton />
+          */}
         </div> 
       </BrowserRouter>
     )

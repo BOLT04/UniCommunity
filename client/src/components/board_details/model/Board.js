@@ -13,8 +13,9 @@
  *     text: string
  * }
  */
-export default function Board(name, description, modules) {
+export default function Board(name, description, modules, forumLinks) {
     this.name = name
     this.description = description
     this.modules = modules
+    this.forumLinks = forumLinks
 }

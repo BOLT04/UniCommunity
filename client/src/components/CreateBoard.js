@@ -28,7 +28,7 @@ export default class CreateBoard extends Component {
 
     const rsp = await this.props.api.createBoardAsync()
     const board = await rspToBoardAsync(rsp)
-
+    console.log(board)
     this.props.history.push(`/board`, {board})
   }
 

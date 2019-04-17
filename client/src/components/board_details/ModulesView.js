@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { Accordion, Icon, Transition } from 'semantic-ui-react'
+import { Accordion, Icon, Transition, Button } from 'semantic-ui-react'
 
 import ReactMarkdown from 'react-markdown'
 
@@ -32,18 +32,51 @@ export default class ModulesView extends Component {
         }))
     }
 
+    moduleToAccordion(module, index) {
+        const { activeIndex, visible } = this.state
+        const isActive = activeIndex === index
+
+        return (
+            <>
+                <Accordion.Title active={isActive} index={index} onClick={this.handleClick}>
+                    <Icon name='dropdown' />
+                    {module.name}
+                    <Button floated='right'>Create</Button>                
+                </Accordion.Title>
+                <Transition visible={visible} animation='slide down' duration={500}>
+                    <Accordion.Content active={isActive}>
+                        {module.content.map(item => (
+                            <>
+                                <h4>{item.name}</h4>
+                                <ReactMarkdown source={item.text} />
+                            </>
+                        ))}
+
+                    </Accordion.Content>
+                </Transition>
+            </>
+        )
+    }
+
     render() {
         const { activeIndex, visible } = this.state
         const { board } = this.props
 
+        const activeMap = {
+            0: 
+        }
+
         return (
             <div>
-                <Accordion fluid styled>
+                <Accordion fluid styled exclusive={false}>
+                    {/*board.modules.map(moduleToAccordion)*/}
                     <Accordion.Title active={activeIndex === 0} index={0} onClick={this.handleClick}>
                         <Icon name='dropdown' />
                         {board.modules[0].name}
+                        <Button floated='right'>Create</Button>
+                        
                     </Accordion.Title>
-                    <Transition visible={visible} animation='slide down' duration={500}>
+                    <Transition visible={activeIndex === 0} animation='slide down' duration={500}>
                         <Accordion.Content active={activeIndex === 0}>
                             <h4>{board.modules[0].content[0].name}</h4>
                             <ReactMarkdown source={board.modules[0].content[0].text} />
@@ -60,9 +93,12 @@ export default class ModulesView extends Component {
                         <Icon name='dropdown' />
                         What kinds of dogs are there?
                     </Accordion.Title>
-                    <Accordion.Content active={activeIndex === 1}>
-                        <p>here...</p>
-                    </Accordion.Content>
+                    <Transition visible={activeIndex === 1} animation='slide down' duration={500}>
+                        <Accordion.Content active={activeIndex === 1}>
+                            <p>here...</p>
+                        </Accordion.Content>
+                    </Transition>
+                    
                 </Accordion>
             </div>
         )
