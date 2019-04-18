@@ -5,6 +5,9 @@ import { Input, Form, TextArea, Button } from 'semantic-ui-react'
 
 import MdEditor from 'react-markdown-editor-lite'
  
+import { createForumPostsAsync } from '../../api/ForumApi'
+import rspToBoardAsync from '../../api/mapper/board-mapper'
+
 export default class CreatePost extends Component {
   //TODO: should these props be in the object "state" of react?? and use this.setState()????
   titleVal = ""
@@ -20,9 +23,25 @@ export default class CreatePost extends Component {
 
   // An arrow function is used because this function is used in an onClick prop, meaning there 
   // is no need to use Function::bind() to capture "this".
-  submitCreatePostReq = () => {
+  submitCreatePostReq = async () => {
     console.log(this.titleVal)
     console.log(this.mdEditor.getMdValue())
+
+    const rsp = await createForumPostsAsync('', this.titleVal, this.mdEditor.getMdValue())
+
+    //TODO: move this code that handles hal+json and responses from the API to another place,
+    //todo: in this class its only logic related to this component
+    
+    //TODO: the idea behind looking at these links is to know if we can navigate/redirect to the board view
+    //todo: if the server says we can't (doesnt include the link on the response) then we cant.
+    if (rsp._links) {
+      const boardUrl = rsp._links['up']
+      if (boardUrl) {
+        const rsp = await this.props.api.getBoardAsync(boardUrl)
+        const board = await rspToBoardAsync(rsp)
+        this.props.history.push(`/board`, { board })
+      }
+    }
   }
 
   render() {

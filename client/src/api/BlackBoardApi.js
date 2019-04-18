@@ -20,13 +20,14 @@ const blackboardDummy = {
         "self": { "href": "/boards/1/blackboards/1" },
         "/rels/nav": { "href": "/" },
         "/rels/blackboards": { "href": "/boards/1/blackboards" },
-        "/rels/board": { "href": "/boards/1" }
+        "/rels/board": { "href": "/boards/1" },
+        "/rels/createBlackboardItem": { "href": "/boards/1/blackboards/1/items" } 
     }
 }
 
 /**
 
- * Returns a Blackboard model object. Format:
+ * Returns a Blackboard response object. Format:
  * {
  *    name: string,
  *    content: array<Item>

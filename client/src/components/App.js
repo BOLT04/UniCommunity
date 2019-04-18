@@ -23,6 +23,8 @@ import CreateBoardApiMock from '../api/CreateBoardApiMock'
  */
 export default class App extends Component {
   render() {
+    const createBoardApi = new CreateBoardApiMock()
+
     return (
       <BrowserRouter>   
         <div className="App">
@@ -31,10 +33,12 @@ export default class App extends Component {
             
             <Route exact path="/login" component={Login} />
 
-            <Route exact path="/post" component={CreatePost} />
+            <Route exact path="/posts/new" render={props => 
+              <CreatePost {...props} api={createBoardApi} />} 
+            />
             
             <Route exact path="/board/create" render={props => 
-              <CreateBoard {...props} api={new CreateBoardApiMock()} />} 
+              <CreateBoard {...props} api={createBoardApi} />} 
             />
             {/* //TODO: this boardDummy will not be here bc we dont have the board object here, only
             when the user clicks on button createBoard of CreateBoard component...so this lambda

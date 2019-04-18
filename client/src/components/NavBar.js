@@ -45,9 +45,6 @@ export default class NavBar extends Component {
         <Link to="/board/create" className="item">
           Create Board
         </Link>
-        <Link to="/post" className="item">
-          Create Post
-        </Link>
         <div className="right menu">
           <div className="item">
             <div className="ui icon input">

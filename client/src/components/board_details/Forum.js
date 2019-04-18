@@ -44,9 +44,12 @@ export default class Forum extends Component {
     }
 
     render() {
+//TODO: clean this up later
+        const posts = this.props.posts || this.state.posts
+
         return (
-            <List divided link verticalAlign='middle' size='big'>
-                {this.state.posts.map(post => <ForumItem post={post} />)}      
+            <List divided link verticalAlign='middle'>
+                {posts.map(post => <ForumItem post={post} key={post.href}/>)}      
             </List>
         )
     }
@@ -86,6 +89,6 @@ function ForumItem({ post }) {
     return (
         <List.Item>
             { decideContent() }    
-      </List.Item>
+        </List.Item>
     )
 }

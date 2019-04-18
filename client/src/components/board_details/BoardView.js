@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { Tab, Header, Icon, Image, Menu, Segment, Sidebar, Grid } from 'semantic-ui-react'
+import { Route } from 'react-router-dom'
 
+import { Tab, Header, Icon, Image, Menu, Segment, Sidebar, Grid } from 'semantic-ui-react'
 
 import ModulesView from './ModulesView'
 import Forum from './Forum'
@@ -48,39 +49,13 @@ export default class BoardView extends Component {
         <p>{board.description}</p>
         <div className="ui divider"></div>
 
-        <Grid celled>
-          <Grid.Row>
-            <Grid.Column width={3}>
-              <h4>Actions</h4>
-              <Sidebar.Pushable as={Segment}>
-    <Sidebar as={Menu} animation='overlay' icon='labeled' inverted vertical visible width='thin'>
-      <Menu.Item as='a'>
-        <Icon name='home' />
-        Forum
-      </Menu.Item>
-      <Menu.Item as='a'>
-        <Icon name='gamepad' />
-        Games
-      </Menu.Item>
-    </Sidebar>
-
-    <Sidebar.Pusher>
-      <Segment basic>
-        <Header as='h3'>Application Content</Header>
-        <Image src='/images/wireframe/paragraph.png' />
-      </Segment>
-    </Sidebar.Pusher>
-  </Sidebar.Pushable>
-            </Grid.Column>
-
-            <Grid.Column width={13}>
+      
             {/*
               <Tab menu={{ secondary: true, pointing: true }} panes={buildPanes()} />
             */}
-            <ModulesView board={board} />
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
+          <ModulesView board={board} />
+          
+          {/*<Route exact path={`/${board.name}/forum/posts/new`} component={CreatePost} />*/}
       </>
     )
   }

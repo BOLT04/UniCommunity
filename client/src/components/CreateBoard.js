@@ -19,14 +19,23 @@ export default class CreateBoard extends Component {
     this.descVal = e.target.value
   }
 
-  async submitCreateBoardReq() {
+  submitCreateBoardReq = async () => {
     console.log(this.descVal)
     console.log(this.titleVal)
 
     this.boardTemplate.updatePropsTemplates()
     console.log(this.templates)
 
+    debugger
+    console.log(this.props.api)
+    this.props.api.createBoardAsync()
+      .then(rsp => {
+        debugger
+        console.log(rsp)
+      })
+
     const rsp = await this.props.api.createBoardAsync()
+    console.log(rsp)
     const board = await rspToBoardAsync(rsp)
     console.log(board)
     this.props.history.push(`/board`, {board})
@@ -56,7 +65,7 @@ export default class CreateBoard extends Component {
           ref={boardTemplate => this.boardTemplate = boardTemplate} 
           templates={this.templates}/>
 
-        <Button content='Create' primary style={{marginTop: 10}} onClick={this.submitCreateBoardReq.bind(this)}/>
+        <Button content='Create' primary style={{marginTop: 10}} onClick={this.submitCreateBoardReq}/>
       </div>
     )
   }
