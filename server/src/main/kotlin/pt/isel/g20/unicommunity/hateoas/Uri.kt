@@ -75,4 +75,22 @@ object Uri {
 
     fun forSingleBlackboardItem(boardId: Long, bbId: Long, itemId: Long) =
             singleBlackboardItemTemplate.expand(boardId, bbId, itemId)
+
+
+//FORUMITEMS
+
+    //Paths
+    const val FORUMITEMS_ROUTE = "$SINGLE_BOARD_ROUTE/forum/posts"
+    const val SINGLE_FORUMITEM_ROUTE = "$FORUMITEMS_ROUTE/{forumItemId}"
+
+    //Templates
+    private val singleForumItemTemplate = UriTemplate(SINGLE_FORUMITEM_ROUTE)
+    private val multipleForumItemsTemplate = UriTemplate(FORUMITEMS_ROUTE)
+
+    //Getters
+    fun forAllForumItems(boardId: Long) =
+            multipleForumItemsTemplate.expand(boardId)
+
+    fun forSingleForumItem(boardId: Long, forumItemId: Long) =
+            singleForumItemTemplate.expand(boardId, forumItemId)
 }

@@ -24,7 +24,7 @@ class BlackboardService(
             notificationLevel: String,
             description: String?
     ): Blackboard {
-        val board = boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
+        boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
 
         val blackboard =
                 if(description != null)
