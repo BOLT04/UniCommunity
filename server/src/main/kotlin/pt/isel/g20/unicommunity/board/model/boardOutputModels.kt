@@ -6,7 +6,8 @@ class SingleBoardResponse(board: Board)
     : HalObject(
         mapOf(
                 "self" to Link(Uri.forSingleBoard(board.id).toString()),
-                "states" to Link(Uri.forAllBoards().toString())
+                Rels.GET_MULTIPLE_FORUMITEMS to Link(Uri.forAllForumItems(board.id).toString()),
+                Rels.GET_MULTIPLE_BLACKBOARDS to Link(Uri.forAllBlackboards(board.id).toString())
         )
 ){
     val name : String = board.name
@@ -15,15 +16,13 @@ class SingleBoardResponse(board: Board)
 
 
 class MultipleBoardsResponse(
-        Boards : Iterable<Board>
+        boards : Iterable<Board>
 ): JsonCollection(
         version = "1.0",
         href = Uri.forAllBoards().toString(),
         links = listOf(
-                CollectionLink(
-                        rel = "/rels/createBoards",
-                        href = "/Boards"
-                )
+                CollectionLink("self","/http://localhost:3000/boards"),
+                CollectionLink(Rels.NAVIGATION, "/http://localhost:3000/navigation")
         ),
-        items = Boards.map { Item( Uri.forSingleBoard(it.id).toString()) }
+        items = boards.map { Item( Uri.forSingleBoard(it.id).toString()) }
 )

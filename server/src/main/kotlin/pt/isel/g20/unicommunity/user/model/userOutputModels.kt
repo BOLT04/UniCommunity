@@ -6,7 +6,7 @@ class SingleUserResponse(user: User)
     : HalObject(
         mapOf(
                 "self" to Link(Uri.forSingleUser(user.id).toString()),
-                "states" to Link(Uri.forAllUsers().toString())
+                Rels.GET_MULTIPLE_USERS to Link(Uri.forAllUsers().toString())
         )
 ){
     val name : String = user.name
@@ -21,10 +21,8 @@ class MultipleUsersResponse(
         version = "1.0",
         href = Uri.forAllUsers().toString(),
         links = listOf(
-                CollectionLink(
-                        rel = "/rels/createUsers",
-                        href = "/users"
-                )
+                CollectionLink("self","/http://localhost:3000/users"),
+                CollectionLink(Rels.NAVIGATION, "/http://localhost:3000/navigation")
         ),
         items = users.map { Item( Uri.forSingleUser(it.id).toString()) }
 )
