@@ -7,7 +7,9 @@ class SingleBoardResponse(board: Board)
         mapOf(
                 "self" to Link(Uri.forSingleBoard(board.id).toString()),
                 Rels.GET_MULTIPLE_FORUMITEMS to Link(Uri.forAllForumItems(board.id).toString()),
-                Rels.GET_MULTIPLE_BLACKBOARDS to Link(Uri.forAllBlackboards(board.id).toString())
+                Rels.GET_MULTIPLE_BLACKBOARDS to Link(Uri.forAllBlackboards(board.id).toString()),
+                Rels.CREATE_BLACKBOARD to Link(Uri.forAllBoards().toString()),
+                Rels.CREATE_FORUMITEM to Link(Uri.forAllForumItems(board.id).toString())
         )
 ){
     val name : String = board.name

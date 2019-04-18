@@ -9,7 +9,8 @@ class SingleBlackboardResponse(blackboard: Blackboard)
                 "self" to Link(Uri.forSingleBlackboard(blackboard.boardId, blackboard.id).toString()),
                 Rels.NAVIGATION to Link("/navigation"),
                 Rels.GET_MULTIPLE_BLACKBOARDS to Link(Uri.forAllBlackboards(blackboard.boardId).toString()),
-                Rels.GET_SINGLE_BOARD to Link(Uri.forSingleBoard(blackboard.boardId).toString())
+                Rels.GET_SINGLE_BOARD to Link(Uri.forSingleBoard(blackboard.boardId).toString()),
+                Rels.CREATE_BLACKBOARDITEM to Link(Uri.forAllBlackboards(blackboard.boardId).toString())
         )
 ){
     val name : String = blackboard.name
