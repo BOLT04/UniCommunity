@@ -2,5 +2,5 @@
 // which is important for the Home Component.
 // Used for type checking with React PropTypes.
 export default function HomeApi() {
-    this.fetchHome = () => {}// TODO: plz make up a better name, maybe entryPoint() or something
+    this.fetchHomeAsync = () => {}// TODO: plz make up a better name, maybe entryPoint() or something
 }

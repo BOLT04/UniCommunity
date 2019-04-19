@@ -23,7 +23,7 @@ export default class NavBar extends Component {
   }
 */
   async componentWillMount() {
-    const rsp = await this.props.api.fetchNavigationMenu()
+    const rsp = await this.props.api.fetchNavigationMenuAsync()
     const navMenu = rsp._links
 
     this.setState({ navMenu })
@@ -42,17 +42,8 @@ export default class NavBar extends Component {
         <Link to="/" className="active item">
           Home
         </Link>
-        <a className="item">
-          Messages
-        </a>
         <Link to="/board/create" className="item">
           Create Board
-        </Link>
-        <Link to="/post" className="item">
-          Create Post
-        </Link>
-        <Link to="/board" className="item">
-          Board
         </Link>
         <div className="right menu">
           <div className="item">
@@ -68,8 +59,6 @@ export default class NavBar extends Component {
                 <button className="ui primary basic button">Log in</button>
               </Link>
           }
-          
-          <button className="ui secondary basic button">Sign up</button>
 
           <button className="ui red basic button">Logout</button>
 

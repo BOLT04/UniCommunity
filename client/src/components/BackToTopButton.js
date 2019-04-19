@@ -5,10 +5,10 @@ import { Button, Icon, Sticky } from 'semantic-ui-react'
 import './css/BackToTopButton.css'
 
 //TODO: This is being called a lot of times! Is it a good solution?
-window.addEventListener('scroll', e => {
+/*window.addEventListener('scroll', e => {
     document.getElementById('backToTopBtn')
         .classList.remove("hidden")
-})
+})*/
 
 export default class BackToTopButton extends Component {
 

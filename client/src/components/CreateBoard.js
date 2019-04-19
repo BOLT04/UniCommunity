@@ -3,39 +3,9 @@ import { Input, Form, TextArea, Button } from 'semantic-ui-react'
 
 import BoardTemplate from './BoardTemplate'
 
-const boardDummy = {
-  name: "PDM",
-  modules: [
-    {
-      name: "Sumarios",
-      content: [
-        {
-          name: "18/02/2019 - Course introduction",
-          text: `* Syllabus, teaching methodology and bibliography.\n  * [Evaluation](https://github.com/isel-leic-daw/1819v-public/wiki/evaluation)\n  * [Resources](https://github.com/isel-leic-daw/1819v-public/wiki/resources)
-          `
-        },
-        {
-          name: "20/02/2019 - Designing Web APIs: Introduction",
-          text: `* Web APIs (or HTTP APIs): Concept and Motivation\n* The [Architecture of the World Wide Web](https://www.w3.org/TR/webarch/)\n* The HTTP protocol: Introduction\n* Documentation:\n  * ["Introduction to Web APIs"](https://github.com/isel-leic-daw/1819v-public/wiki/Web-APIs)\n  * ["Designing evolvable Web APIs: Chapter 1"](https://www.oreilly.com/library/view/designing-evolvable-web/9781449337919/ch01.html)`
-        }
-      ]
-    },
-    {
-      name: "Sumarios",
-      content: [
-        {
-          name: "18/02/2019 - Course introduction",
-          text: `* Syllabus, teaching methodology and bibliography.\n  * [Evaluation](https://github.com/isel-leic-daw/1819v-public/wiki/evaluation)\n  * [Resources](https://github.com/isel-leic-daw/1819v-public/wiki/resources)
-          `
-        }
-      ]
-    }
-  ]
-}
-
+import rspToBoardAsync from '../api/mapper/board-mapper'
 
 export default class CreateBoard extends Component {
-  //TODO: should these props be in the object "state" of react?? and use this.setState()????
   titleVal = ""
   descVal = ""
   templates = [] //array<string>
@@ -55,25 +25,35 @@ export default class CreateBoard extends Component {
   //Meaning that this component receives the submitBtnHandler through props.
   
   /**
-   * Makes a request to the API using the object received on props, to create a board.
+   * Makes a request to the API using the object received on props called api, to create a board.
    */
-  submitBtnHandler() {
+  submitCreateBoardReq = async () => {
     console.log(this.descVal)
     console.log(this.titleVal)
 
     this.boardTemplate.updatePropsTemplates()
     console.log(this.templates)
 
-    const board = boardDummy
+    debugger
+    console.log(this.props.api)
+    this.props.api.createBoardAsync()
+      .then(rsp => {
+        debugger
+        console.log(rsp)
+      })
 
+    const rsp = await this.props.api.createBoardAsync()
+    console.log(rsp)
+    const board = await rspToBoardAsync(rsp)
+    console.log(board)
     this.props.history.push(`/board`, {board})
   }
 
 //TODO: is getting the ref of BoardTemplate and do: this.boardTemplate.updateTemplates() the best solution??
 
-  render() {// TODO: Adjacent JSX elements must be wrapped  in an enclosing tag??? Why must there be a div?
+  render() {
     return (
-      <div>
+      <>
         <h1 className="ui header">Create a board</h1>
         <Form>
           <Form.Field>
@@ -91,16 +71,16 @@ export default class CreateBoard extends Component {
         
         <BoardTemplate 
           ref={boardTemplate => this.boardTemplate = boardTemplate} 
-          templates={this.templates}/>
+          templates={this.templates}
+        />
 
         <Button
-          id= 'submitBtn'
           content='Create' 
           primary 
           style={{marginTop: 10}} 
-          onClick={this.submitBtnHandler.bind(this)}
+          onClick={this.submitCreateBoardReq}
         />
-      </div>
+      </>
     )
   }
 }

@@ -11,9 +11,7 @@
     "react-router-dom": "^4.4.0",
     "react-scripts": "2.1.8",
     "semantic-ui-css": "^2.4.1",
-    "semantic-ui-react": "^0.86.0",
-    "slate": "^0.44.12",
-    "slate-react": "^0.21.18"
+    "semantic-ui-react": "^0.86.0"
   },
   "scripts": {
     "start": "react-scripts start",
