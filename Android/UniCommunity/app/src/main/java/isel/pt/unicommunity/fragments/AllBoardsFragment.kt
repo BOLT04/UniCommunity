@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import isel.pt.unicommunity.MainActivity
 
 import isel.pt.unicommunity.R
 import isel.pt.unicommunity.adapters.AllBoardsAdapter
@@ -55,13 +56,16 @@ class AllBoardsFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        val viewModel = (activity as AppCompatActivity).getViewModel("boardID"){
+        val viewModel = (activity as AppCompatActivity).getViewModel("allBoards"){
             AllBoardsViewModel(/*id!!*/)//TODO double bangs onde e que ha mesmo a verificaçao
         }
 
         recyclerView.layoutManager = LinearLayoutManager(activity)
         val onBoardClickListener = object : BoardClickListener {
             override fun onClickListener(smallBoardItem: SmallBoardItem?) {
+
+                (activity as MainActivity).navigateTo(BoardMenuFragment())
+
                 Toast.makeText(activity, smallBoardItem?.name ?: "nullsmall board item", Toast.LENGTH_LONG).show()
             }
         }
@@ -106,7 +110,7 @@ class AllBoardsFragment : Fragment() {
      * for more information.
      */
    /* interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
+        // TODO: Update argument type and title
         fun onFragmentInteraction(uri: Uri)
     }*/
 

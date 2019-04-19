@@ -49,7 +49,7 @@ class AllBoardsItemViewHolder(
 
     fun bindToView(smallBoardItem : SmallBoardItem?){
 
-        name.text = smallBoardItem?.name ?: "no name"
+        name.text = smallBoardItem?.name ?: "no title"
         desc.text = smallBoardItem?.desc ?: "no desc" //todo seems shady
 
         layout.setOnClickListener{onBoardClickListener.onClickListener(smallBoardItem)}

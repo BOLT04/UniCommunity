@@ -11,6 +11,9 @@ import android.view.MenuItem
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import isel.pt.unicommunity.fragments.*
+import isel.pt.unicommunity.kotlinx.getViewModel
+import isel.pt.unicommunity.viewmodel.AllBoardsViewModel
+import isel.pt.unicommunity.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import java.lang.RuntimeException
 
@@ -19,6 +22,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     lateinit var omeFragment : Fragment
     lateinit var allBoardsFragment: Fragment
     lateinit var myBoardsFragment: Fragment
+    lateinit var profile: Fragment
+
+
+    lateinit var viewModel : MainViewModel
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -30,6 +39,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 .setAction("Action", null).show()
         }*/
 
+         viewModel = getViewModel("MainActivity"){
+            MainViewModel(/*id!!*/)//TODO double bangs onde e que ha mesmo a verificaçao
+        }
+
 
         val toggle = ActionBarDrawerToggle(
             this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
@@ -40,6 +53,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         omeFragment= HomeFragment()
         allBoardsFragment = AllBoardsFragment()
         myBoardsFragment= MyBoardsFragment()
+        profile = ProfileFragment()
 
 
 
@@ -50,9 +64,11 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START)) {
             drawer_layout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
         }
+        else
+            if(!viewModel.navigateBack(supportFragmentManager))
+                super.onBackPressed()
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -77,11 +93,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_home -> {
                 Log.v("testing", "camera")
 
+                navigateTo(omeFragment)
+/*
+
                 supportFragmentManager.beginTransaction().replace(
                     R.id.fragment_container,
                     omeFragment
                 ).commit()
-
+*/
                 /*
 
                 Toast.makeText(this,"camera", Toast.LENGTH_LONG).show()
@@ -90,24 +109,33 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_my_boards -> {
                 Log.v("testing", "camera")
-
+                navigateTo(allBoardsFragment)
+/*
                 supportFragmentManager.beginTransaction().replace(
                     R.id.fragment_container,
                     allBoardsFragment
                 ).commit()
-
+*/
             }
             R.id.nav_all_boards -> {
                 Log.v("testing", "camera")
+                navigateTo(myBoardsFragment)
 
+/*
                 supportFragmentManager.beginTransaction().replace(
                     R.id.fragment_container,
                     myBoardsFragment
                 ).commit()
-
+*/
             }
-            R.id.nav_manage -> {
-
+            R.id.nav_profile -> {
+                navigateTo(profile)
+/*
+                supportFragmentManager.beginTransaction().replace(
+                    R.id.fragment_container,
+                    profile
+                ).commit()
+*/
             }
             R.id.nav_share -> {
 
@@ -120,6 +148,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
     }
+
+    fun navigateTo(fragment: Fragment, reseting : Boolean =false){
+        viewModel.navigateTo(fragment, supportFragmentManager)
+    }
+
+
+
 }
 
 
