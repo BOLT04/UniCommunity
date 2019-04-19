@@ -77,6 +77,19 @@ object Uri {
             singleBlackboardItemTemplate.expand(boardId, bbId, itemId)
 
 
+//FORUM
+
+    //Paths
+    const val FORUM_ROUTE = "$SINGLE_BOARD_ROUTE/forum"
+
+    //Templates
+    private val singleForumTemplate = UriTemplate(FORUM_ROUTE)
+
+    //Getters
+    fun forSingleForum(boardId: Long) =
+            singleForumTemplate.expand(boardId)
+
+
 //FORUMITEMS
 
     //Paths

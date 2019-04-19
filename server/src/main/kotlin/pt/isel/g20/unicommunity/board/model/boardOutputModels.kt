@@ -8,8 +8,7 @@ class SingleBoardResponse(board: Board)
                 "self" to Link(Uri.forSingleBoard(board.id).toString()),
                 Rels.GET_MULTIPLE_FORUMITEMS to Link(Uri.forAllForumItems(board.id).toString()),
                 Rels.GET_MULTIPLE_BLACKBOARDS to Link(Uri.forAllBlackboards(board.id).toString()),
-                Rels.CREATE_BLACKBOARD to Link(Uri.forAllBoards().toString()),
-                Rels.CREATE_FORUMITEM to Link(Uri.forAllForumItems(board.id).toString())
+                Rels.GET_SINGLE_FORUM to Link(Uri.forSingleForum(board.id).toString())
         )
 ){
     val name : String = board.name

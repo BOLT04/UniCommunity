@@ -10,6 +10,11 @@ object Rels {
     const val GET_MULTIPLE_BOARDS = "$RELS_PREFIX/getBoards"
     const val EDIT_BOARD = "$RELS_PREFIX/editBoard"
     const val DELETE_BOARD = "$RELS_PREFIX/deleteBoard"
+
+    const val CREATE_FORUM = "$RELS_PREFIX/createForum"
+    const val GET_SINGLE_FORUM = "$RELS_PREFIX/getForum"
+    const val EDIT_FORUM = "$RELS_PREFIX/editForum"
+    const val DELETE_FORUM = "$RELS_PREFIX/deleteForum"    
     
     const val CREATE_FORUMITEM = "$RELS_PREFIX/createForumItem"
     const val GET_SINGLE_FORUMITEM = "$RELS_PREFIX/getForumItem"
