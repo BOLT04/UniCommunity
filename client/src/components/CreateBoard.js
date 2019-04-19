@@ -6,7 +6,6 @@ import BoardTemplate from './BoardTemplate'
 import rspToBoardAsync from '../api/mapper/board-mapper'
 
 export default class CreateBoard extends Component {
-  //TODO: should these props be in the object "state" of react?? and use this.setState()????
   titleVal = ""
   descVal = ""
   templates = [] //array<string>
@@ -19,6 +18,15 @@ export default class CreateBoard extends Component {
     this.descVal = e.target.value
   }
 
+  // TODO: I think I'm now realizing (when trying to make tests for this component) that this class might
+  //include too much logic, for example to test the logic in submitCreateBoardReq that is a event handler...
+  //i can't really know if the function was called... Perhaps a wrapper around this component should be made
+  //that knows how to handle api requests, and this component is just concerned with visual rendering!
+  //Meaning that this component receives the submitBtnHandler through props.
+  
+  /**
+   * Makes a request to the API using the object received on props called api, to create a board.
+   */
   submitCreateBoardReq = async () => {
     console.log(this.descVal)
     console.log(this.titleVal)
@@ -43,9 +51,9 @@ export default class CreateBoard extends Component {
 
 //TODO: is getting the ref of BoardTemplate and do: this.boardTemplate.updateTemplates() the best solution??
 
-  render() {// TODO: Adjacent JSX elements must be wrapped  in an enclosing tag??? Why must there be a div?
+  render() {
     return (
-      <div>
+      <>
         <h1 className="ui header">Create a board</h1>
         <Form>
           <Form.Field>
@@ -63,10 +71,16 @@ export default class CreateBoard extends Component {
         
         <BoardTemplate 
           ref={boardTemplate => this.boardTemplate = boardTemplate} 
-          templates={this.templates}/>
+          templates={this.templates}
+        />
 
-        <Button content='Create' primary style={{marginTop: 10}} onClick={this.submitCreateBoardReq}/>
-      </div>
+        <Button
+          content='Create' 
+          primary 
+          style={{marginTop: 10}} 
+          onClick={this.submitCreateBoardReq}
+        />
+      </>
     )
   }
 }
