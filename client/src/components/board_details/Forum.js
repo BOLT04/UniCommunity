@@ -63,14 +63,14 @@ function ForumItem({ post }) {
                 <List.Header as='a'>
                     {post.author !== undefined &&
                         <div>
-                            Published by <strong>{post.author}</strong> at {post.createdAt}
+                            Published by <strong>{post.author}</strong> at {post.createdAt.toLocaleString()}
                         </div>
                     } 
                     {' '}
-                    {post.name}
+                    {post.title}
                 </List.Header>
                 <List.Description>
-                    {post.smallDesc}
+                    <ReactMarkdown source={post.smallDesc} />
                 </List.Description>
             </>
         )

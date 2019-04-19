@@ -100,7 +100,7 @@ export default class ModulesView extends Component {
 
                 <Transition visible={isActive} animation='slide down' duration={500}>
                     <Accordion.Content active={isActive}>
-                        <Forum />
+                        <Forum posts={posts}/>
                     </Accordion.Content>
                 </Transition>
             </div>

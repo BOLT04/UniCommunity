@@ -72,7 +72,7 @@ export async function createForumPostsAsync(url, title, content) {
         "data" : [
             {"name" : "title", "value" : title, "prompt" : "?"},
             {"name" : "id", "value" : postId, "prompt" : "?"},
-            {"name" : "smallDesc", "value" : `${content.substring(0, 10)}...`, "prompt" : "?"},
+            {"name" : "smallDesc", "value" : `${content.substring(0, 40)}...`, "prompt" : "?"},
             {"name TODO: como meter os recursos aqui" : "resources", "value" : [] , "prompt" : "?"},
             {"name" : "author", "value" : "David", "prompt" : "?"},
             {"name" : "createdAt", "value" : new Date(), "prompt" : "?"}
