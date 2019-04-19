@@ -33,11 +33,30 @@ const body = {
   }
 }
 
+//Format: {1: {boardObject}}
+const boards = { }
+
 export default class CreateBoardApiMock extends CreateBoardApi {
 
-  createBoardAsync = async () => {// todo remove repeated code in all mocks
+  boardId = 1
+
+  createBoardAsync = async (name, description) => {// todo remove repeated code in all mocks
+    const { boardId } = this
+    const board = { 
+      name, 
+      description,
+      _links: {
+        self: { href: `/boards/${boardId}` },
+        '/rels/nav': { href: '/' },
+        '/rels/blackboards': { href: `/boards/${boardId}/blackboards` },
+        '/rels/forum': { href: `/boards/${boardId}/forum/posts` }
+      }
+    }
+
+    ++boardId
+    
     const rsp = new Response()
-    rsp.json = () => body
+    rsp.json = () => board
     rsp.headers.append('Content-Type', 'application/hal+json')
     
     return rsp
@@ -54,6 +73,7 @@ export default class CreateBoardApiMock extends CreateBoardApi {
   }*/
 
   getBoardAsync = async (id) => {//TODO: implement mock
+    const body = boards[id]
     const rsp = new Response()
     rsp.json = () => body
     rsp.headers.append('Content-Type', 'application/hal+json')
