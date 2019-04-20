@@ -3,4 +3,5 @@
 export default function CreateBoardApi() {//TODO: refactor this to BoardsApi
     this.createBoardAsync = async () => {}
     this.getBoardAsync = async () => {}
+    this.getTemplatesAsync = async () => {}
 }

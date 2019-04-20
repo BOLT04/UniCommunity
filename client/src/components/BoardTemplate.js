@@ -4,9 +4,19 @@ import { Grid, Checkbox } from 'semantic-ui-react'
 
 import './css/BoardTemplate.css'
 
-class BoardTemplate extends Component {
+import rspToTemplatesAsync from '../api/mapper/template-mapper'
+
+export default class BoardTemplate extends Component {
   static propTypes = {
-    templates: PropTypes.arrayOf(PropTypes.string)
+    modules: PropTypes.arrayOf(PropTypes.string),
+    activateTemplate: PropTypes.func
+  }
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      templates: []
+    }
   }
 
   //TODO: this is subject to change since the name of the template might not be the identifier (maybe an id INSTEAD)
@@ -20,7 +30,12 @@ class BoardTemplate extends Component {
     ]
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    const rsp = await this.props.api.getTemplatesAsync()
+    const templates = await rspToTemplatesAsync(rsp)
+
+    this.setState({ templates })
+
     //TODO: make a request to the api to know the available templates and their info
     /*GET /api/user/BOLT/board+templates
     response: [
@@ -43,7 +58,20 @@ class BoardTemplate extends Component {
 
   onChangeCheckBox = e => {
     console.log(e.target.innerHTML) // TODO: is there a better way of doing this?
+    this.props.addToModules(e.target.innerHTML)
     //this.props.templates.push()
+  }
+
+  templateToRow = template => {
+    return (
+      <Grid.Column width={8} className="template-item" onClick={this.activateTemplate.bind(this, template.id)} style={{marginTop: 10}}>
+          {/*
+        <Image src='/images/wireframe/paragraph.png' />
+        */
+          }
+        {template.name}
+      </Grid.Column>
+    )
   }
 
   render() {
@@ -52,25 +80,7 @@ class BoardTemplate extends Component {
         <h5 className="ui header">Templates</h5>
         <Grid>
           <Grid.Row>
-            <Grid.Column width={8} className="template-item" onClick={this.activateTemplate}>
-              {/*
-              <Image src='/images/wireframe/paragraph.png' />
-              */
-              }
-              Teacher Template
-            </Grid.Column>
-            <Grid.Column width={8} className="template-item" onClick={this.activateTemplate}>
-              Basic Template
-            </Grid.Column>
-          </Grid.Row>
-
-          <Grid.Row>
-            <Grid.Column width={8} className="template-item" onClick={this.activateTemplate}>
-              1 Template
-            </Grid.Column>
-            <Grid.Column width={8} className="template-item" onClick={this.activateTemplate}>
-              Teacher2 Template
-            </Grid.Column>
+            {this.state.templates.map(this.templateToRow)}
           </Grid.Row>
         </Grid>
 
@@ -78,22 +88,22 @@ class BoardTemplate extends Component {
         <Grid>
           <Grid.Row>
             <Grid.Column width={8}>
-              <Checkbox label='Sumarios' onChange={this.onChangeCheckBox}/>
+              <Checkbox label='Sumarios' onChange={this.onChangeCheckBox} />
             </Grid.Column>
             <Grid.Column width={8}>
-              <Checkbox label='Recursos' />
+              <Checkbox label='Recursos' onChange={this.onChangeCheckBox} />
             </Grid.Column>
             <Grid.Column width={8}>
-              <Checkbox label='Bibliografia' />
+              <Checkbox label='Bibliografia' onChange={this.onChangeCheckBox} />
             </Grid.Column>
           </Grid.Row>
 
           <Grid.Row>
             <Grid.Column width={8}>
-              <Checkbox label='Anuncios' />
+              <Checkbox label='Anuncios' onChange={this.onChangeCheckBox} />
             </Grid.Column>
             <Grid.Column width={8}>
-              <Checkbox label='Forum' />
+              <Checkbox label='Forum' onChange={this.onChangeCheckBox} />
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -105,35 +115,34 @@ class BoardTemplate extends Component {
   //TODO: or does it exist already made?
 
 
-//TODO: change this to Toggle button using Semantic UI!!!!
+  //TODO: change this to Toggle button using Semantic UI!!!!
 
-  activateTemplate = e => {
+  // No need for arrow function since Function.bind is being used.
+  activateTemplate(templateId, e) {
     const activeElem = document.querySelector('.template-item-active')
 
     // Deactivate the current template.
     if (activeElem)
       activeElem.classList.remove('template-item-active')
-    
+
     if (e.target !== activeElem) { // then it means the user choose another template
       e.target.classList.remove('template-item-active:hover')
-      e.target.classList.add('template-item-active')  
+      e.target.classList.add('template-item-active')
     }
+
+    console.log(templateId)
+    this.props.activateTemplate(templateId) // update parent's state.
   }
 
   updatePropsTemplates() {
     //TODO: is this valid duplicated code (redundant)?
-    const activeElem = document.querySelector('.template-item-active') 
-    if (activeElem)
+    const activeElem = document.querySelector('.template-item-active')
+    /*if (activeElem)
       this.templates[activeElem.innerHTML]
-        .forEach(templateName => this.props.templates.push(templateName))
+        .forEach(templateName => this.props.modules.push(templateName))
     else
-    // TODO: is there a better way of getting all checked boxes ?
+      // TODO: is there a better way of getting all checked boxes ?
       document.querySelectorAll(".ui.checkbox.checked label")
-        .forEach(label => this.props.templates.push(label.innerHTML))
+        .forEach(label => this.props.modules.push(label.innerHTML))*/
   }
 }
-
-
-
-
-export default BoardTemplate
