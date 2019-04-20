@@ -7,21 +7,7 @@ import fetchForumPostsAsync from '../ForumApi'
 
 import { itemsToModelRepr } from './common'
 
-//TODO: if this is how its done, meaning i only have representations for modules that I know, for example Forum,
-//todo: then i can only render those modules => i cant render user created modules!
-const relsRegistery = {
-    '/rels/forum': {
-        clientHref: '/forum',
-        serverHref: null
-    },
-    '/rels/createBlackboardItem': {
-        clientHref: '/blackboardItem/new',
-        serverHref: null
-    },
-    '/rels/createPost': {
-        clientHref: '/posts/new'
-    }
-}
+import relsRegistery from '../../common/rels-registery'
 
 /**
  * 

@@ -4,9 +4,10 @@ export default class NavBarApiMock extends NavBarApi {
 
     fetchNavigationMenuAsync = async () => Promise.resolve({
         _links: {
-            self: { href: "/" }, 
-            signup: { href: "/signup" }, 
-            login: { href: "/login" } 
+            "self": { "href": "/" },
+            "/rels/home": { "href": "/home" },
+            "/rels/login": { "href": "/login" } ,
+            "/rels/createBoard": { "href": "/boards" }
         }  
     })
 }
