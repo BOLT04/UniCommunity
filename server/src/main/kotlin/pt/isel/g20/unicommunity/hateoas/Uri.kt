@@ -106,4 +106,21 @@ object Uri {
 
     fun forSingleForumItem(boardId: Long, forumItemId: Long) =
             singleForumItemTemplate.expand(boardId, forumItemId)
+
+
+//TEMPLATES
+
+    //Paths
+    const val TEMPLATES_ROUTE = "/templates"
+    const val SINGLE_TEMPLATE_ROUTE = "$TEMPLATES_ROUTE/{templateId}"
+
+    //Templates
+    private val singleTemplateTemplate = UriTemplate(SINGLE_TEMPLATE_ROUTE)
+
+    //Getters
+    fun forAllTemplates() =
+            URI(TEMPLATES_ROUTE)
+
+    fun forSingleTemplate(templateId: Long) =
+            singleTemplateTemplate.expand(templateId)
 }

@@ -1,42 +1,103 @@
 package pt.isel.g20.unicommunity.template
 
+import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.server.ResponseStatusException
+import pt.isel.g20.unicommunity.hateoas.Uri
+import pt.isel.g20.unicommunity.hateoas.Uri.SINGLE_TEMPLATE_ROUTE
+import pt.isel.g20.unicommunity.hateoas.Uri.TEMPLATES_ROUTE
+import pt.isel.g20.unicommunity.template.exception.NotFoundTemplateException
+import pt.isel.g20.unicommunity.template.model.MultipleTemplatesResponse
+import pt.isel.g20.unicommunity.template.model.SingleTemplateResponse
 import pt.isel.g20.unicommunity.template.model.TemplateDto
-import pt.isel.g20.unicommunity.template.model.TemplateLinksResponse
-import pt.isel.g20.unicommunity.template.model.TemplateResponse
 import pt.isel.g20.unicommunity.template.service.ITemplateService
-
-private const val LIST_TEMPLATES_ROUTE = "/templates"
-private const val GET_TEMPLATE_ROUTE = "/api/templates/{template-name}"
+import java.util.concurrent.TimeUnit
 
 @RestController
 class TemplateController(private val service: ITemplateService) {
 
-    @GetMapping(path = [LIST_TEMPLATES_ROUTE])
-    fun getAllTemplates() = service.getAllTemplates()
+    @GetMapping(path = [TEMPLATES_ROUTE])
+    fun getAllTemplates() =
+            service.getAllTemplates().let {
+                val multipleTemplatesResponse = MultipleTemplatesResponse(it)
 
-    @PostMapping(path = [LIST_TEMPLATES_ROUTE], produces = ["application/hal+json"])
+                ResponseEntity
+                        .ok()
+                        .cacheControl(
+                                CacheControl
+                                        .maxAge(1, TimeUnit.HOURS)
+                                        .cachePrivate())
+                        .eTag(multipleTemplatesResponse.hashCode().toString())
+                        .body(multipleTemplatesResponse)
+            }
+
+    @GetMapping(path = [SINGLE_TEMPLATE_ROUTE])
+    fun getTemplateById(@PathVariable templateId: Long) =
+            service.getTemplateById(templateId).let {
+                val singleTemplateResponse = SingleTemplateResponse(it)
+
+                ResponseEntity
+                        .ok()
+                        .cacheControl(
+                                CacheControl
+                                        .maxAge(1, TimeUnit.HOURS)
+                                        .cachePrivate())
+                        .eTag(singleTemplateResponse.hashCode().toString())
+                        .body(singleTemplateResponse)
+            }
+
+    @PostMapping(path = [TEMPLATES_ROUTE], produces = ["application/hal+json"])
     @ResponseStatus(HttpStatus.CREATED)
-    fun createTemplate(@RequestBody templateDto: TemplateDto): TemplateLinksResponse {
-        service.createTemplate(templateDto.toModel())
+    fun createTemplate(@RequestBody templateDto: TemplateDto) =
+            service.createTemplate(templateDto.name, templateDto.hasForum, templateDto.blackboardNames).let {
+                val singleTemplateResponse = SingleTemplateResponse(it)
 
-        val templateName = templateDto.name.replace(' ', '+')
-        return TemplateLinksResponse(
-                "$LIST_TEMPLATES_ROUTE/$templateName"
-        )
-    }
+                ResponseEntity
+                        .created(Uri.forSingleTemplate(it.id))
+                        .cacheControl(
+                                CacheControl
+                                        .maxAge(1, TimeUnit.HOURS)
+                                        .cachePrivate())
+                        .eTag(singleTemplateResponse.hashCode().toString())
+                        .body(singleTemplateResponse)
+            }
 
-    @RequestMapping(GET_TEMPLATE_ROUTE, method = [RequestMethod.GET])
-    fun getTemplateByName(@PathVariable(value="template-name") name: String) : TemplateResponse {
-        val template = service.getTemplateByName(name)
-                ?: throw ResponseStatusException(
-                        HttpStatus.BAD_REQUEST,
-                        "A template with the given name couldn't be found.")
+    @PutMapping(path = [SINGLE_TEMPLATE_ROUTE])
+    fun editTemplate(@PathVariable templateId: Long, @RequestBody templateDto: TemplateDto) =
+            service.editTemplate(templateId, templateDto.hasForum, templateDto.blackboardNames).let {
+                val singleTemplateResponse = SingleTemplateResponse(it)
 
-        return TemplateResponse(template.name, template.modules,
-                "$LIST_TEMPLATES_ROUTE/${template.name}"
-        )
-    }
+                ResponseEntity
+                        .ok()
+                        .cacheControl(
+                                CacheControl
+                                        .maxAge(1, TimeUnit.HOURS)
+                                        .cachePrivate())
+                        .eTag(singleTemplateResponse.hashCode().toString())
+                        .body(singleTemplateResponse)
+            }
+
+
+    @DeleteMapping(path = [SINGLE_TEMPLATE_ROUTE])
+    fun deleteTemplate(@PathVariable templateId: Long) =
+            service.deleteTemplate(templateId).let {
+                val singleTemplateResponse = SingleTemplateResponse(it)
+
+                ResponseEntity
+                        .ok()
+                        .cacheControl(
+                                CacheControl
+                                        .maxAge(1, TimeUnit.HOURS)
+                                        .cachePrivate())
+                        .eTag(singleTemplateResponse.hashCode().toString())
+                        .body(singleTemplateResponse)
+            }
+
+
+    @ExceptionHandler
+    fun handleNotFoundTemplateException(e: NotFoundTemplateException) =
+            ResponseEntity
+                    .notFound()
+                    .build<String>()
 }

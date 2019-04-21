@@ -13,6 +13,7 @@ class SingleBoardResponse(board: Board)
 ){
     val name : String = board.name
     val description : String? = board.description
+    val templateId: Long = board.templateId
 }
 
 
@@ -22,8 +23,8 @@ class MultipleBoardsResponse(
         version = "1.0",
         href = Uri.forAllBoards().toString(),
         links = listOf(
-                CollectionLink("self","/http://localhost:3000/boards"),
-                CollectionLink(Rels.NAVIGATION, "/http://localhost:3000/navigation")
+                CollectionLink("self","/http://localhost:8080/boards"),
+                CollectionLink(Rels.NAVIGATION, "/http://localhost:8080/navigation")
         ),
         items = boards.map { Item( Uri.forSingleBoard(it.id).toString()) }
 )
