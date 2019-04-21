@@ -5,20 +5,23 @@ import org.springframework.stereotype.Service
 import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
 import pt.isel.g20.unicommunity.board.model.Board
 import pt.isel.g20.unicommunity.repository.BoardRepository
+import pt.isel.g20.unicommunity.repository.TemplateRepository
+import pt.isel.g20.unicommunity.template.exception.NotFoundTemplateException
 
 @Service
-class BoardService(val boardsRepo: BoardRepository) : IBoardService {
+class BoardService(val boardsRepo: BoardRepository, val templatesRepo: TemplateRepository) : IBoardService {
     override fun getAllBoards(): Iterable<Board> = boardsRepo.findAll()
 
     override fun getBoardById(boardId: Long) = boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
 
-    override fun createBoard(name: String, description: String?): Board {
+    override fun createBoard(name: String, templateId: Long, description: String?): Board {
+        templatesRepo.findByIdOrNull(templateId) ?: throw NotFoundTemplateException()
 
         val board =
                 if(description != null)
-                    Board(name, description)
+                    Board(name, templateId, description)
                 else
-                    Board(name)
+                    Board(name, templateId)
 
         return boardsRepo.save(board)
     }

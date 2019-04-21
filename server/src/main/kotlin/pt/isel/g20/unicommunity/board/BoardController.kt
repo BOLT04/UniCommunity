@@ -46,7 +46,7 @@ class BoardController(private val service: IBoardService) {
     @PostMapping(path = [BOARDS_ROUTE], produces = ["application/hal+json"])
     @ResponseStatus(HttpStatus.CREATED)
     fun createBoard(@RequestBody boardDto: BoardDto) =
-            service.createBoard(boardDto.name, boardDto.description).let {
+            service.createBoard(boardDto.name, boardDto.templateId, boardDto.description).let {
                 ResponseEntity
                         .created(Uri.forSingleBoard(it.id))
                         .cacheControl(

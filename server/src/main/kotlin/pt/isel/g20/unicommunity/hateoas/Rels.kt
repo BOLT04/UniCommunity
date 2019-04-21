@@ -3,8 +3,13 @@ package pt.isel.g20.unicommunity.hateoas
 object Rels {
     const val RELS_PREFIX = "/rels"
 
-    const val NAVIGATION = "$RELS_PREFIX/navigation"
-    
+    const val NAVIGATION = "$RELS_PREFIX/"
+    const val HOME = "$RELS_PREFIX/home"
+    const val LOGIN = "$RELS_PREFIX/login"
+    const val LOGOUT = "$RELS_PREFIX/logout"
+    const val MY_BOARDS = "$RELS_PREFIX/myBoards"
+    const val USER_PROFILE = "$RELS_PREFIX/userProfile"
+
     const val CREATE_BOARD = "$RELS_PREFIX/createBoard"
     const val GET_SINGLE_BOARD = "$RELS_PREFIX/getBoard"
     const val GET_MULTIPLE_BOARDS = "$RELS_PREFIX/getBoards"

@@ -1,22 +1,40 @@
 package pt.isel.g20.unicommunity.template.service
 
-import org.slf4j.LoggerFactory
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import pt.isel.g20.unicommunity.repository.TemplateRepository
+import pt.isel.g20.unicommunity.template.exception.NotFoundTemplateException
 import pt.isel.g20.unicommunity.template.model.Template
 
 @Service
-class TemplateService : ITemplateService {
-    val templates = hashMapOf<String, Template>()
+class TemplateService(val templatesRepo: TemplateRepository) : ITemplateService {
+    override fun getAllTemplates(): Iterable<Template> = templatesRepo.findAll()
 
-    private val logger = LoggerFactory.getLogger(TemplateService::class.java)
+    override fun getTemplateById(templateId: Long) = templatesRepo.findByIdOrNull(templateId) ?: throw NotFoundTemplateException()
 
-    @Synchronized
-    override fun getAllTemplates() = templates.values
+    override fun createTemplate(name: String, hasForum: Boolean, blackboardNames: String): Template {
 
-    @Synchronized
-    override fun createTemplate(template: Template) {
-        templates[template.name] = template
+        val template = Template(name, hasForum, blackboardNames)
+
+        return templatesRepo.save(template)
     }
 
-    override fun getTemplateByName(templateName: String) = templates[templateName]
+    override fun editTemplate(templateId: Long, hasForum: Boolean?, blackboardNames: String?): Template {
+        val template = getTemplateById(templateId)
+
+        if(hasForum != null)
+            template.hasForum = hasForum
+
+        if(blackboardNames != null)
+            template.blackboardNames = blackboardNames
+
+        return templatesRepo.save(template)
+    }
+
+    override fun deleteTemplate(templateId: Long): Template {
+        val template = getTemplateById(templateId)
+        templatesRepo.delete(template)
+        return template
+    }
+
 }
