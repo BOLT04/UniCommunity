@@ -68,7 +68,7 @@ export async function createForumPostsAsync(url, title, content) {
     ++postId
 
     const postItem =  {
-        "href" : `http://localhost:3000/boards/1/forum/posts/1${postId}`,
+        "href" : `http://localhost:3000/boards/1/forum/posts/${postId}`,
         "data" : [
             {"name" : "title", "value" : title, "prompt" : "?"},
             {"name" : "id", "value" : postId, "prompt" : "?"},
@@ -78,7 +78,7 @@ export async function createForumPostsAsync(url, title, content) {
             {"name" : "createdAt", "value" : new Date(), "prompt" : "?"}
         ],
         "links" : [
-            {"rel" : "self", "href" : `http://localhost:3000/boards/1/forum/posts/1${postId}`, "prompt" : "?"},
+            {"rel" : "self", "href" : `http://localhost:3000/boards/1/forum/posts/${postId}`, "prompt" : "?"},
             {"rel" : "up", "href" : "http://localhost:3000/boards/DAW/forum", "prompt" : "?" },
             {"rel" : "menu", "href" : "http://localhost:3000/menu"}
         ]
@@ -88,7 +88,7 @@ export async function createForumPostsAsync(url, title, content) {
 
     return {
         _links: {
-            "self": { "href": `http://localhost:3000/boards/1/forum/posts/1${postId}` },
+            "self": { "href": `http://localhost:3000/boards/1/forum/posts/${postId}` },
             "collection": { "href": "/api/boards/1/forum/posts" },
             "up": { "href": "/boards/1" }
         }

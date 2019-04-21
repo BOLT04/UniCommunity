@@ -14,6 +14,8 @@ import NavBarApiMock from '../api/NavBarApiMock'
 import HomeApiMock from '../api/HomeApiMock'
 import CreateBoardApiMock from '../api/CreateBoardApiMock'
 
+import CreateBoardApiImpl from '../api/CreateBoardApiImpl'
+
 //TODO: The App component might have too many responsabilities, because it has the one commented below
 //TODO: plus it serves as the Service Locator, the one responsible to give all components their dependencies,
 // and we are currently instantiating the API mocks in here...
@@ -23,7 +25,7 @@ import CreateBoardApiMock from '../api/CreateBoardApiMock'
  */
 export default class App extends Component {
   render() {
-    const createBoardApi = new CreateBoardApiMock()
+    const createBoardApi = new CreateBoardApiImpl()
 
     return (
       <BrowserRouter>   

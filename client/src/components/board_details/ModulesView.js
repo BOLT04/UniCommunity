@@ -34,11 +34,14 @@ export default class ModulesView extends Component {
             visible: !state.visible
         }))
     }
-
+//TODO: maybe the way to clean code is through a function contentSupp, since that is the main difference between
+//todo: blackboards and forum
     /**
      * @param {Function} contentSupp??? - A funtion that returns the tree of React elements to be children of
      * Accordion.Content, given a.
      */
+
+
     moduleToAccordion = (module, index) => {
         const { activeIndex, visible } = this.state
         const isActive = activeIndex === index
@@ -59,8 +62,13 @@ export default class ModulesView extends Component {
                 <Accordion.Title active={isActive} index={index} onClick={this.handleClick}>
                     <Icon name='dropdown' />
                     {module.name}
-
                 </Accordion.Title>
+
+{/* <Link 
+                    to={{
+                        pathname: module.createLink.clientHref,
+                        state: {board: this.props.board}
+                    }}> */}
 
                 <Link to={module.createLink.clientHref}>
                     <Button primary icon floated='right' labelPosition='right' style={{ marginTop: -35 }} >
@@ -108,29 +116,18 @@ export default class ModulesView extends Component {
     }
 
     render() {
-        /*function forumModule() {
-            return (
-                <Accordion.Title active={isActive} index={index} onClick={this.handleClick}>
-                    <Icon name='dropdown' />
-                    {module.name}            
-                </Accordion.Title>
-                        <Forum />
-            )
-        }*/
-
         const { board } = this.props
 
         return (
-            <div>
+            <>
                 <Accordion fluid styled exclusive={false}>
                     {board.modules.blackboards.map(this.moduleToAccordion)}
 
-                    {
+                    {board.modules.forum != undefined &&
                         this.renderForum(board.modules.forum, board.modules.blackboards.length)
-                        /*board.forumLinks !== undefined && forumModule() */}
+                    }
                 </Accordion>
-
-            </div>
+            </>
         )
     }
 }

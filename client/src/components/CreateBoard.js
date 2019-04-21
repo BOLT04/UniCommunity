@@ -8,7 +8,8 @@ import rspToBoardAsync from '../api/mapper/board-mapper'
 export default class CreateBoard extends Component {
   titleVal = ""
   descVal = ""
-  templates = [] //array<string>
+  modules = [] //array<string>
+  templateId = null
 
   onTitleChange = e => {
     this.titleVal = e.target.value
@@ -32,17 +33,26 @@ export default class CreateBoard extends Component {
     console.log(this.titleVal)
 
     this.boardTemplate.updatePropsTemplates()
-    console.log(this.templates)
+    console.log(this.modules)
+    console.log(this.templateId)
 
-    debugger
-    console.log(this.props.api)
-    this.props.api.createBoardAsync()
-      .then(rsp => {
-        debugger
-        console.log(rsp)
-      })
+    // Validate user input
+    // In case the user chooses neither options
+    if (this.templateId == null && this.modules.length == 0)
+      throw Error('please specify the modules manually or choose a template')
+    
+    // In case the user chooses both options
+    if (this.templateId != null && this.modules.length > 0) 
+      throw Error('please choose only one option: choose modules manually or choose a template')
 
-    const rsp = await this.props.api.createBoardAsync()
+    const modulesObj = {}// TODO: find a better name. This object contains the optional params that go to the request body: templateId or an array of module names (string)
+
+    if (this.templateId != null)
+      modulesObj.templateId = this.templateId
+    else if (this.modules.length != 0)
+      modulesObj.moduleNames = this.modules
+
+    const rsp = await this.props.api.createBoardAsync(this.titleVal, this.descVal, modulesObj)
     console.log(rsp)
     const board = await rspToBoardAsync(rsp)
     console.log(board)
@@ -70,8 +80,10 @@ export default class CreateBoard extends Component {
         </Form>
         
         <BoardTemplate 
-          ref={boardTemplate => this.boardTemplate = boardTemplate} 
-          templates={this.templates}
+          ref={boardTemplate => this.boardTemplate = boardTemplate}
+          api={this.props.api}
+          addToModules={moduleName => this.modules.push(moduleName)}
+          activateTemplate= {templateId => this.templateId = templateId}
         />
 
         <Button

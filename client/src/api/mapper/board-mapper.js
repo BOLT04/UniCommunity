@@ -5,21 +5,9 @@ import Forum from '../../components/board_details/Forum'
 import fetchBlackboardAsync from '../BlackBoardApi'
 import fetchForumPostsAsync from '../ForumApi'
 
-//TODO: if this is how its done, meaning i only have representations for modules that I know, for example Forum,
-//todo: then i can only render those modules => i cant render user created modules!
-const relsRegistery = {
-    '/rels/forum': {
-        clientHref: '/forum',
-        serverHref: null
-    },
-    '/rels/createBlackboardItem': {
-        clientHref: '/blackboardItem/new',
-        serverHref: null
-    },
-    '/rels/createPost': {
-        clientHref: '/posts/new'
-    }
-}
+import { itemsToModelRepr } from './common'
+
+import relsRegistery from '../../common/rels-registery'
 
 /**
  * 
@@ -106,7 +94,7 @@ async function fetchForumAsync(forumLink) {
     //TODO: what if the self link isnt there... we need to be prepared for that and put content = [] maybe
     const { collection: { links, items } } =  await fetchForumPostsAsync(forumLink)
 
-    const posts = itemsToPostRepr(items)
+    const posts = itemsToModelRepr(items)
 
     let createPostHref
     // Check if the link to create a post exists
@@ -120,21 +108,4 @@ async function fetchForumAsync(forumLink) {
     })
 
     return { createPostHref, posts }
-}
-
-/**
- * Returns an array with posts. Each post has the format specified by the server:
- * 
- * @param {array} items - items array with the format specified in the media type: Collections+json
- */
-function itemsToPostRepr(items) {
-    return items.map(({ href, data }) => {
-        const post = { href }
-
-        data.forEach(dataObj => {
-            post[dataObj.name] = dataObj.value
-        })
-
-        return post
-    })
 }
