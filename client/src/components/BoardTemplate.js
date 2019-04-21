@@ -31,29 +31,12 @@ export default class BoardTemplate extends Component {
   }
 
   async componentDidMount() {
-    const rsp = await this.props.api.getTemplatesAsync()
-    const templates = await rspToTemplatesAsync(rsp)
-
+    const rsp = await this.props.api.getTemplatesAsync('http://localhost:8080/templates') //TODO: remove hardcoded url
+    //TODO: catch error in case the promise is rejected
+    const templates = await rsp.json()
+    console.log(templates)
+    
     this.setState({ templates })
-
-    //TODO: make a request to the api to know the available templates and their info
-    /*GET /api/user/BOLT/board+templates
-    response: [
-      {
-        name: "Teacher Template",
-        modules: [
-          "Sumarios", "Anuncios"...
-        ]
-      },
-      {
-        name: "Basic Template",
-        modules: [
-          "Anuncios"
-        ]
-      }
-      ...
-    ]
-    */
   }
 
   onChangeCheckBox = e => {
@@ -63,6 +46,7 @@ export default class BoardTemplate extends Component {
   }
 
   templateToRow = template => {
+    console.log(template)
     return (
       <Grid.Column width={8} className="template-item" onClick={this.activateTemplate.bind(this, template.id)} style={{marginTop: 10}}>
           {/*

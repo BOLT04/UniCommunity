@@ -7,7 +7,7 @@ import pt.isel.g20.unicommunity.hateoas.Uri
 
 class NavigationResponse()
     : HalObject(
-        mapOf(
+        mutableMapOf(
                 "self" to Link("/"),
                 Rels.HOME to Link("/home"),
                 Rels.LOGOUT to Link("/logout"),
@@ -19,7 +19,7 @@ class NavigationResponse()
 
 class HomeResponse()
     : HalObject(
-        mapOf(
+        mutableMapOf(
                 "self" to Link("/home"),
                 Rels.GET_MULTIPLE_BOARDS to Link("/boards")
         )

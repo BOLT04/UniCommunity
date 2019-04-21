@@ -4,7 +4,7 @@ import pt.isel.g20.unicommunity.hateoas.*
 
 class SingleForumResponse(forum: Forum)
     : HalObject(
-        mapOf(
+        mutableMapOf(
                 "self" to Link(Uri.forSingleForum(forum.boardId).toString()),
                 Rels.NAVIGATION to Link("/navigation"),
                 Rels.GET_SINGLE_BOARD to Link(Uri.forSingleBoard(forum.boardId).toString()),

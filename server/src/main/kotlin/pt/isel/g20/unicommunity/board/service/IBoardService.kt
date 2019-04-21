@@ -11,7 +11,12 @@ interface IBoardService {
     fun getBoardById(boardId: Long): Board
 
     @Throws(NotFoundTemplateException::class)
-    fun createBoard(name: String, templateId: Long, description: String?): Board
+    fun createBoard(
+            name: String,
+            templateId: Long?,
+            description: String?,
+            blackboardNames: List<String>?,
+            hasForum: Boolean?): Board
 
     @Throws(NotFoundBoardException::class)
     fun editBoard(boardId: Long, name: String?, description: String?): Board

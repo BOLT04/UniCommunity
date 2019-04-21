@@ -1,5 +1,6 @@
 package pt.isel.g20.unicommunity.blackboard.model
 
+import pt.isel.g20.unicommunity.board.model.Board
 import javax.persistence.*
 
 @Entity
@@ -12,6 +13,9 @@ class Blackboard(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    var board: Board? = null
 
     constructor() : this(0, "", "", null)
 

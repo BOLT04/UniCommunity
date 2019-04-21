@@ -52,7 +52,10 @@ export default class CreateBoard extends Component {
     else if (this.modules.length != 0)
       modulesObj.moduleNames = this.modules
 
-    const rsp = await this.props.api.createBoardAsync(this.titleVal, this.descVal, modulesObj)
+    debugger
+    //TODO: remove hardcoded url
+    
+    const rsp = await this.props.api.createBoardAsync('http://localhost:8080/boards', this.titleVal, this.descVal, modulesObj)
     console.log(rsp)
     const board = await rspToBoardAsync(rsp)
     console.log(board)

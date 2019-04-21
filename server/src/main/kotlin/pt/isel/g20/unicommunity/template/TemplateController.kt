@@ -10,6 +10,7 @@ import pt.isel.g20.unicommunity.hateoas.Uri.TEMPLATES_ROUTE
 import pt.isel.g20.unicommunity.template.exception.NotFoundTemplateException
 import pt.isel.g20.unicommunity.template.model.MultipleTemplatesResponse
 import pt.isel.g20.unicommunity.template.model.SingleTemplateResponse
+import pt.isel.g20.unicommunity.template.model.Template
 import pt.isel.g20.unicommunity.template.model.TemplateDto
 import pt.isel.g20.unicommunity.template.service.ITemplateService
 import java.util.concurrent.TimeUnit
@@ -20,16 +21,15 @@ class TemplateController(private val service: ITemplateService) {
     @GetMapping(path = [TEMPLATES_ROUTE])
     fun getAllTemplates() =
             service.getAllTemplates().let {
-                val multipleTemplatesResponse = MultipleTemplatesResponse(it)
-
+                val templates = it.map { SingleTemplateResponse(it) }
                 ResponseEntity
                         .ok()
                         .cacheControl(
                                 CacheControl
                                         .maxAge(1, TimeUnit.HOURS)
                                         .cachePrivate())
-                        .eTag(multipleTemplatesResponse.hashCode().toString())
-                        .body(multipleTemplatesResponse)
+                        .eTag(templates.hashCode().toString())
+                        .body(templates)
             }
 
     @GetMapping(path = [SINGLE_TEMPLATE_ROUTE])

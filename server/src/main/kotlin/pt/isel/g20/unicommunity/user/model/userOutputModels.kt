@@ -4,7 +4,7 @@ import pt.isel.g20.unicommunity.hateoas.*
 
 class SingleUserResponse(user: User)
     : HalObject(
-        mapOf(
+        mutableMapOf(
                 "self" to Link(Uri.forSingleUser(user.id).toString()),
                 Rels.GET_MULTIPLE_USERS to Link(Uri.forAllUsers().toString())
         )

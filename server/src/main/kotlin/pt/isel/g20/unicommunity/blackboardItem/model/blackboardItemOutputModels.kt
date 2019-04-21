@@ -4,7 +4,7 @@ import pt.isel.g20.unicommunity.hateoas.*
 
 class SingleBlackboardItemResponse(bbItem: BlackboardItem)
     : HalObject(
-        mapOf(
+        mutableMapOf(
                 "self" to Link(Uri.forSingleBlackboardItem(bbItem.boardId, bbItem.bbId, bbItem.id ).toString()),
                 Rels.GET_SINGLE_BLACKBOARD to Link(Uri.forSingleBlackboard(bbItem.boardId, bbItem.bbId).toString()),
                 Rels.GET_SINGLE_BOARD to Link(Uri.forSingleBoard(bbItem.boardId).toString())

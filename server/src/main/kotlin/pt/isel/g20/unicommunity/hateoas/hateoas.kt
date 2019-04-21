@@ -16,11 +16,20 @@ data class Link @JsonCreator constructor(
         val href: String,
         val templated: Boolean? = null)
 
+open class HalResourceObject
+
 /**
  * Abstract class to be used as a base class for HAL representations.
+ *
+ * The fields of this class can't be "vals" because the child classes initialize them in the init block, since they
+ * sometimes need to make validations to the model object before creating a link.
  */
-abstract class HalObject(val _links: Map<String, Link>)
-
+abstract class HalObject(
+    var _links: MutableMap<String, Link>? = null,
+    var _embedded: MutableMap<String, List<HalResourceObject>>? = null)// TODO: how to make embedded an array OR object
+{
+    constructor() : this(null, null)
+}
 
 /**
  * Abstract class to be used as a base class for HAL-FORMS representations.

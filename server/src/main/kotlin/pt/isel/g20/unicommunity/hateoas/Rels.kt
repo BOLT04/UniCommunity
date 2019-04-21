@@ -3,7 +3,7 @@ package pt.isel.g20.unicommunity.hateoas
 object Rels {
     const val RELS_PREFIX = "/rels"
 
-    const val NAVIGATION = "$RELS_PREFIX/"
+    const val NAVIGATION = "$RELS_PREFIX/nav"
     const val HOME = "$RELS_PREFIX/home"
     const val LOGIN = "$RELS_PREFIX/login"
     const val LOGOUT = "$RELS_PREFIX/logout"

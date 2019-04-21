@@ -6,6 +6,8 @@ import java.net.URI
 object Uri {
     const val LINK_RELATIONS_ROUTE = "/rels"
 
+// Navigation
+    const val NAVIGATION_ROUTE = "/"
 
 //USERS
 

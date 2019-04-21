@@ -1,7 +1,7 @@
 //TODO: if this is how its done, meaning i only have representations for modules that I know, for example Forum,
 //todo: then i can only render those modules => i cant render user created modules!
 const relsRegistery = {
-    '/rels/forum': {
+    '/rels/getForum': {
         clientHref: '/forum',
         serverHref: null
     },

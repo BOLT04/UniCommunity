@@ -15,6 +15,9 @@ export default class CreateBoardApiImpl extends CreateBoardApi {
 
     return await fetch(url, {
       method: 'post',
+      headers: {
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify(body)
     })
   }
@@ -24,6 +27,6 @@ export default class CreateBoardApiImpl extends CreateBoardApi {
   }
 
   getTemplatesAsync = async (url) => {
-    return await fetch(url)
+    return fetch(url)
   }
 }
