@@ -8,7 +8,7 @@ import pt.isel.g20.unicommunity.template.model.TemplateLinksResponse
 import pt.isel.g20.unicommunity.template.model.TemplateResponse
 import pt.isel.g20.unicommunity.template.service.ITemplateService
 
-private const val LIST_TEMPLATES_ROUTE = "/api/templates"
+private const val LIST_TEMPLATES_ROUTE = "/templates"
 private const val GET_TEMPLATE_ROUTE = "/api/templates/{template-name}"
 
 @RestController

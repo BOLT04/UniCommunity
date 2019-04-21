@@ -4,8 +4,8 @@ import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import pt.isel.g20.unicommunity.blackBlackboard.model.MultipleBlackboardsResponse
-import pt.isel.g20.unicommunity.blackBlackboard.model.SingleBlackboardResponse
+import pt.isel.g20.unicommunity.blackboard.model.MultipleBlackboardsResponse
+import pt.isel.g20.unicommunity.blackboard.model.SingleBlackboardResponse
 import pt.isel.g20.unicommunity.blackboard.exception.NotFoundBlackboardException
 import pt.isel.g20.unicommunity.blackboard.model.BlackboardDto
 import pt.isel.g20.unicommunity.blackboard.service.IBlackboardService

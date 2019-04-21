@@ -12,7 +12,7 @@ class SingleBoardResponse(board: Board)
         )
 ){
     val name : String = board.name
-    val description : String = board.description
+    val description : String? = board.description
 }
 
 

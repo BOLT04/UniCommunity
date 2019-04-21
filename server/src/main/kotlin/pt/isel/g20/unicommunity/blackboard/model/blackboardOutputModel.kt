@@ -1,6 +1,5 @@
-package pt.isel.g20.unicommunity.blackBlackboard.model
+package pt.isel.g20.unicommunity.blackboard.model
 
-import pt.isel.g20.unicommunity.blackboard.model.Blackboard
 import pt.isel.g20.unicommunity.hateoas.*
 
 class SingleBlackboardResponse(blackboard: Blackboard)
@@ -14,7 +13,7 @@ class SingleBlackboardResponse(blackboard: Blackboard)
         )
 ){
     val name : String = blackboard.name
-    val description : String = blackboard.description
+    val description : String? = blackboard.description
     val notificationLevel: String = blackboard.notificationLevel
 }
 
