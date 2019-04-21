@@ -2,7 +2,6 @@ import CreateBoardApi from './CreateBoardApi'
 
 export default class CreateBoardApiImpl extends CreateBoardApi {
 
-
   createBoardAsync = async (url, name, description, { templateId, moduleNames }) => {// todo remove repeated code in all mocks
     // Construct request body
     const body = {
@@ -20,15 +19,11 @@ export default class CreateBoardApiImpl extends CreateBoardApi {
     })
   }
 
-  getBoardAsync = async (url, id) => {
+  getBoardAsync = async (url) => {
     return await fetch(url)
   }
 
-  getTemplatesAsync = async () => {
-    const rsp = new Response()
-    rsp.json = () => templates
-    rsp.headers.append('Content-Type', 'application/vnd.collection+json')
-
-    return rsp
+  getTemplatesAsync = async (url) => {
+    return await fetch(url)
   }
 }

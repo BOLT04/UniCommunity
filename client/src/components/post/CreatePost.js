@@ -28,7 +28,7 @@ export default class CreatePost extends Component {
     console.log(this.mdEditor.getMdValue())
 
     const rsp = await createForumPostsAsync('', this.titleVal, this.mdEditor.getMdValue())
-
+    console.log(rsp)
     //TODO: move this code that handles hal+json and responses from the API to another place,
     //todo: in this class its only logic related to this component
     

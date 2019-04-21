@@ -128,7 +128,10 @@ export default class CreateBoardApiMock extends CreateBoardApi {
       }
     }
 
+    console.log(boards)
+    boards[boardId] = board
     ++this.boardId
+    console.log(boards)
     
     const rsp = new Response()
     rsp.json = () => board
@@ -147,8 +150,11 @@ export default class CreateBoardApiMock extends CreateBoardApi {
     return rsp
   }*/
 
-  getBoardAsync = async (id) => {
+  getBoardAsync = async (url, id) => {
+    console.log(boards)
+    
     const body = boards[id]
+    console.log(body)
     const rsp = new Response()
     rsp.json = () => body
     rsp.headers.append('Content-Type', 'application/hal+json')
