@@ -1,21 +1,15 @@
 package pt.isel.g20.unicommunity.blackboardItem.model
 
+import pt.isel.g20.unicommunity.blackboard.model.Blackboard
 import javax.persistence.*
 
 @Entity
 class BlackboardItem(
-    boardId: Long,
-    bbId: Long,
     name: String,
     content: String) {
 
-    @Column
-    var boardId: Long = boardId
-        private set
-
-    @Column
-    var bbId: Long = bbId
-        private set
+    @ManyToOne
+    var blackboard: Blackboard? = null
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,23 +22,11 @@ class BlackboardItem(
     @Column
     var content: String = content
 
-    constructor() : this(0, 0, 0, "", "")
+    constructor() : this( 0, "", "")
 
-    constructor(boardId: Long, bbId: Long, id: Long, name: String, content: String)
-            : this(boardId, bbId, name, content) {
-        this.boardId = boardId
-        this.bbId = bbId
+    constructor(id: Long, name: String, content: String)
+            : this(name, content) {
         this.id = id
-        this.name = name
-        this.content = content
-    }
-
-    fun setBoardId(boardId: Int) {
-        this.boardId = boardId.toLong()
-    }
-
-    fun setBbId(bbId: Int) {
-        this.bbId = bbId.toLong()
     }
 
     fun setId(id: Int) {

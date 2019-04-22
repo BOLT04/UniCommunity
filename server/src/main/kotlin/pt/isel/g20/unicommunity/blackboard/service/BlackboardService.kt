@@ -4,6 +4,7 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import pt.isel.g20.unicommunity.blackboard.exception.NotFoundBlackboardException
 import pt.isel.g20.unicommunity.blackboard.model.Blackboard
+import pt.isel.g20.unicommunity.blackboardItem.model.BlackboardItem
 import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
 import pt.isel.g20.unicommunity.repository.BlackboardRepository
 import pt.isel.g20.unicommunity.repository.BoardRepository
@@ -24,13 +25,15 @@ class BlackboardService(
             notificationLevel: String,
             description: String?
     ): Blackboard {
-        boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
+        val board = boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
 
         val blackboard =
                 if(description != null)
-                    Blackboard(boardId, name, description, notificationLevel)
+                    Blackboard(name, description, notificationLevel)
                 else
-                    Blackboard(boardId, name, notificationLevel)
+                    Blackboard(name, notificationLevel)
+
+        blackboard.board = board
 
         return blackboardsRepo.save(blackboard)
     }

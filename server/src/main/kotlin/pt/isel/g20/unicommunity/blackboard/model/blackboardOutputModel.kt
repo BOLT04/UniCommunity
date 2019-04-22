@@ -5,11 +5,11 @@ import pt.isel.g20.unicommunity.hateoas.*
 class SingleBlackboardResponse(blackboard: Blackboard)
     : HalObject(
         mutableMapOf(
-                "self" to Link(Uri.forSingleBlackboard(blackboard.boardId, blackboard.id).toString()),
+                "self" to Link(Uri.forSingleBlackboard(blackboard.board!!.id, blackboard.id).toString()),
                 Rels.NAVIGATION to Link("/navigation"),
-                Rels.GET_MULTIPLE_BLACKBOARDS to Link(Uri.forAllBlackboards(blackboard.boardId).toString()),
-                Rels.GET_SINGLE_BOARD to Link(Uri.forSingleBoard(blackboard.boardId).toString()),
-                Rels.CREATE_BLACKBOARDITEM to Link(Uri.forAllBlackboards(blackboard.boardId).toString())
+                Rels.GET_MULTIPLE_BLACKBOARDS to Link(Uri.forAllBlackboards(blackboard.board!!.id).toString()),
+                Rels.GET_SINGLE_BOARD to Link(Uri.forSingleBoard(blackboard.board!!.id).toString()),
+                Rels.CREATE_BLACKBOARDITEM to Link(Uri.forAllBlackboards(blackboard.board!!.id).toString())
         )
 ){
     val name : String = blackboard.name
@@ -28,5 +28,5 @@ class MultipleBlackboardsResponse(
                 CollectionLink("self","/http://localhost:3000/boards/$boardId/blackboards"),
                 CollectionLink(Rels.NAVIGATION, "/http://localhost:3000/navigation")
         ),
-        items = blackboards.map { Item( Uri.forSingleBlackboard(it.boardId, it.id).toString()) }
+        items = blackboards.map { Item( Uri.forSingleBlackboard(it.board!!.id, it.id).toString()) }
 )

@@ -8,16 +8,21 @@ import javax.persistence.*
 class Board(
     @Column(nullable = false) var name: String,
     @Column var templateId: Long?,// TODO: this is probably not necessary
-    @Column var description: String? = null,
-    var forum: Forum?,
-
-    @OneToMany(fetch = FetchType.LAZY)
-    val blackBoards: MutableList<Blackboard>
+    @Column var description: String? = null
 ) {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0
 
-    constructor() : this("", 0, null, null, mutableListOf())
+    @OneToOne
+    @JoinColumn
+    var forum: Forum? = null
+
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn
+    val blackBoards: MutableList<Blackboard> = mutableListOf()
+
+    constructor() : this("", 0, null)
+    constructor(name: String, templateId: Long) : this(name, templateId, null)
 }

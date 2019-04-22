@@ -5,5 +5,5 @@ import com.fasterxml.jackson.annotation.JsonCreator
 data class TemplateDto @JsonCreator constructor(
         val name: String,
         val hasForum: Boolean,
-        val blackboardNames: List<String>
+        val blackboardNames: String
 )

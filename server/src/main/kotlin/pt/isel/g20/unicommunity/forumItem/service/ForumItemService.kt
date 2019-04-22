@@ -3,14 +3,17 @@ package pt.isel.g20.unicommunity.forumItem.service
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
+import pt.isel.g20.unicommunity.forum.exception.NotFoundForumException
 import pt.isel.g20.unicommunity.forumItem.exception.NotFoundForumItemException
 import pt.isel.g20.unicommunity.forumItem.model.ForumItem
 import pt.isel.g20.unicommunity.repository.ForumItemRepository
 import pt.isel.g20.unicommunity.repository.BoardRepository
+import pt.isel.g20.unicommunity.repository.ForumRepository
 
 @Service
 class ForumItemService(
         val forumItemsRepo: ForumItemRepository,
+        val forumsRepo: ForumRepository,
         val boardsRepo: BoardRepository
 ) : IForumItemService {
     override fun getAllForumItems(boardId: Long): Iterable<ForumItem> = forumItemsRepo.findAll()
@@ -24,8 +27,11 @@ class ForumItemService(
             content: String
     ): ForumItem {
         boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
+        val forum = forumsRepo.findByIdOrNull(boardId) ?: throw NotFoundForumException()
 
-        val forumItem = ForumItem(boardId, name, content)
+        val forumItem = ForumItem(name, content)
+
+        forumItem.forum = forum
 
         return forumItemsRepo.save(forumItem)
     }

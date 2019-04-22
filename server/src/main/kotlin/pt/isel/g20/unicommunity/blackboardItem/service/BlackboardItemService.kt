@@ -31,9 +31,11 @@ class BlackboardItemService(
     ): BlackboardItem {
         boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
 
-        blackboardsRepo.findByIdOrNull(bbId) ?: throw NotFoundBlackboardException()
+        val blackboard = blackboardsRepo.findByIdOrNull(bbId) ?: throw NotFoundBlackboardException()
 
-        val blackboardItem = BlackboardItem(boardId, bbId, name, content)
+        val blackboardItem = BlackboardItem(name, content)
+
+        blackboardItem.blackboard = blackboard
         return blackboardItemsRepo.save(blackboardItem)
     }
 

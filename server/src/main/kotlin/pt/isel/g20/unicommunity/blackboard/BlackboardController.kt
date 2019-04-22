@@ -49,7 +49,7 @@ class BlackboardController(private val service: IBlackboardService) {
     fun createBlackboard(@PathVariable boardId: Long, @RequestBody blackboardDto: BlackboardDto) =
             service.createBlackboard(boardId, blackboardDto.name, blackboardDto.notificationLevel, blackboardDto.description).let {
                 ResponseEntity
-                        .created(Uri.forSingleBlackboard(it.boardId, it.id))
+                        .created(Uri.forSingleBlackboard(it.board!!.id, it.id))
                         .cacheControl(
                                 CacheControl
                                         .maxAge(1, TimeUnit.HOURS)

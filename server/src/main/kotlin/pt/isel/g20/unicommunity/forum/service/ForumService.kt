@@ -20,13 +20,15 @@ class ForumService(
             boardId: Long,
             allowImagePosts: Boolean?
     ): Forum {
-        boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
+        val board = boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
 
         val forum =
                 if(allowImagePosts != null)
                     Forum(boardId, allowImagePosts)
                 else
                     Forum(boardId)
+
+        forum.board = board
 
         return forumsRepo.save(forum)
     }
