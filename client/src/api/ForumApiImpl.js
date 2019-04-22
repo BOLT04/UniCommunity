@@ -21,7 +21,7 @@ export async function createForumPostsAsync(url, title, content) {
         content
     }
 
-    return await fetch(url, {
+    return fetch(url, {
         method: 'post',
         headers: {
             "Content-Type": "application/json"

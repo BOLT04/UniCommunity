@@ -99,7 +99,12 @@ export default class ModulesView extends Component {
                     Forum
                 </Accordion.Title>
 
-                <Link to={createPostHrefObj.clientHref}>
+                <Link 
+                    to={{
+                        pathname: createPostHrefObj.clientHref,
+                        state: {createPostUrl: createPostHrefObj.serverHref}
+                    }}
+                >
                     <Button primary icon floated='right' labelPosition='right' style={{ marginTop: -35 }} >
                         <Icon name='plus' />
                         Create new

@@ -19,7 +19,7 @@ import relsRegistery from '../../common/rels-registery'
 export default async function rspToBoardAsync(rsp) {//TODO: maybe move these constants strings to another file. Like how its done on the server
     const contentType = rsp.headers.get('Content-Type')
     let board = {}
-
+    
     if (contentType.includes('application/hal+json')) {
         // Sanity check. In the HTTP request we sent the header Accept, so we check if the server does support it.
         const body = await rsp.json()
@@ -29,7 +29,7 @@ export default async function rspToBoardAsync(rsp) {//TODO: maybe move these con
         board.modules = { }
 
         let forumLink
-        debugger
+      
         if (body._links) {//TODO: i dont know what to do here...
             /*
             Object.keys(body._links)
@@ -43,12 +43,9 @@ export default async function rspToBoardAsync(rsp) {//TODO: maybe move these con
            const forumRel = 'http://localhost:8080/rels/getForumItems'// TODO: can this be hardcoded here?
            if (body._links[forumRel] && relsRegistery['/rels/getForumItems']) //TODO: fix hardcoded relsRegistery[forumRel]
                forumLink = body._links[forumRel].href
-           console.log(forumLink)
-           console.log(body._links[forumRel])
         }
 
         // Check if the blackboards rel is present
-        debugger
         if (body._embedded) {
             const blackboardsArr = body._embedded['http://localhost:8080/rels/getBlackboards']
             if (blackboardsArr)
@@ -99,12 +96,9 @@ async function halItemToBlackboardItemAsync({ name, _links }) {
  */
 async function fetchForumAsync(forumLink) {
     //TODO: what if the self link isnt there... we need to be prepared for that and put content = [] maybe
-    console.log('forumLink is ' + forumLink)
     const rsp =  await fetchForumPostsAsync(forumLink)
     const { collection: { links, items } } = await rsp.json()
 
-    debugger
-    
     const posts = items.length == 0 ? [] : itemsToModelRepr(items)
 
     let createPostHrefObj

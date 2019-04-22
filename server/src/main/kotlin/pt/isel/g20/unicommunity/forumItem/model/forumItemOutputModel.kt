@@ -27,5 +27,26 @@ class MultipleForumItemsResponse(
                 CollectionLink(Rels.NAVIGATION, "http://localhost:8080/navigation"), //TODO: Clean up hardcoded string and prefix with localhost etc...and this is maybe later configured (domain and port) in application.properties
                 CollectionLink(Rels.CREATE_FORUMITEM, "http://localhost:8080"+Uri.forAllForumItems(boardId).toString())
         ),
-        items = forumItems.map { Item( Uri.forSingleForumItem(it.forum!!.board!!.id, it.id).toString()) }
+        items = forumItems.map {
+            Item(
+                href = Uri.forSingleForumItem(it.forum!!.board!!.id, it.id).toString(),
+                data = listOf(
+                    Data(name= "title", value= it.name),
+                    Data(name= "id", value= it.id.toString()),
+                    Data(name= "smallDesc", value= it.content)
+                    //Data(name= "author", value= it.author)//TODO: criar estas props no objeto
+                    //Data(name= "createdAt", value= it.createdDate.toLocaleString())
+                ),
+                links = listOf(//TODO: clean up this code. The links should be the same as the ones from a single forum item response
+                    CollectionLink(
+                        rel= "self",//TODO: fix hardcoded prefix below
+                        href= "http://localhost:8080"+ Uri.forSingleForumItem(boardId, it.id)
+                    ),
+                    CollectionLink(
+                        rel= Rels.NAVIGATION,
+                        href= "http://localhost:8080"+ Uri.NAVIGATION_ROUTE
+                    )
+                )
+            )
+        }
 )

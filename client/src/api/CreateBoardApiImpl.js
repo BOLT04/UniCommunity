@@ -23,7 +23,7 @@ export default class CreateBoardApiImpl extends CreateBoardApi {
   }
 
   getBoardAsync = async (url) => {
-    return await fetch(url)
+    return fetch('http://localhost:8080' + url)//todo: REMOVE prefix
   }
 
   getTemplatesAsync = async (url) => {

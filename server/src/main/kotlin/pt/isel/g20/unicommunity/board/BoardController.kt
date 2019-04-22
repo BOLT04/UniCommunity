@@ -30,7 +30,7 @@ class BoardController(private val service: IBoardService) {
                         .body(MultipleBoardsResponse(it))
             }
 
-    @GetMapping(path = [SINGLE_BOARD_ROUTE])
+    @GetMapping(path = [SINGLE_BOARD_ROUTE], produces = ["application/hal+json"])
     fun getBoardById(@PathVariable boardId: Long) =
             service.getBoardById(boardId).let {
                 ResponseEntity
