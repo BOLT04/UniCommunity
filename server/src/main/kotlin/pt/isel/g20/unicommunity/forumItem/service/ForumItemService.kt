@@ -30,7 +30,7 @@ class ForumItemService(
         boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
         val forum = forumsRepo.findByIdOrNull(boardId) ?: throw NotFoundForumException()
 
-        val forumItem = ForumItem(name, content)
+        val forumItem = ForumItem(name, content, "Luis Vaz")
 
         forumItem.forum = forum
         forum.items.add(forumItem)

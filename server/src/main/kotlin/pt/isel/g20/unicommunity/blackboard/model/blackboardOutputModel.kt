@@ -33,3 +33,8 @@ class MultipleBlackboardsResponse(
         ),
         items = blackboards.map { Item( Uri.forSingleBlackboard(it.board!!.id, it.id).toString()) }
 )
+
+class PartialBlackboardObject(
+        val name: String,
+        val _links: Map<String, Link>
+) : HalResourceObject()

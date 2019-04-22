@@ -1,6 +1,5 @@
-package pt.isel.g20.unicommunity.blackBlackboard.model
+package pt.isel.g20.unicommunity.forumItem.model
 
-import pt.isel.g20.unicommunity.forumItem.model.ForumItem
 import pt.isel.g20.unicommunity.hateoas.*
 
 class SingleForumItemResponse(forumItem: ForumItem)
@@ -13,6 +12,8 @@ class SingleForumItemResponse(forumItem: ForumItem)
 ){
     val name : String = forumItem.name
     val content : String = forumItem.content
+    val author : String = forumItem.author
+    val createdAt : String = forumItem.createdAt.toString()
 }
 
 
@@ -23,7 +24,7 @@ class MultipleForumItemsResponse(
         version = "1.0",
         href = Uri.forAllForumItems(boardId).toString(),
         links = listOf(
-                CollectionLink("self","http://localhost:8080/boards/$boardId/forum/posts"),//TODO: decide posts or submissions
+                CollectionLink("self","http://localhost:8080/boards/$boardId/forum/posts"),
                 CollectionLink(Rels.NAVIGATION, "http://localhost:8080/navigation"), //TODO: Clean up hardcoded string and prefix with localhost etc...and this is maybe later configured (domain and port) in application.properties
                 CollectionLink(Rels.CREATE_FORUMITEM, "http://localhost:8080"+Uri.forAllForumItems(boardId).toString())
         ),
@@ -33,9 +34,9 @@ class MultipleForumItemsResponse(
                 data = listOf(
                     Data(name= "title", value= it.name),
                     Data(name= "id", value= it.id.toString()),
-                    Data(name= "smallDesc", value= it.content)
-                    //Data(name= "author", value= it.author)//TODO: criar estas props no objeto
-                    //Data(name= "createdAt", value= it.createdDate.toLocaleString())
+                    Data(name= "smallDesc", value= it.content),
+                    Data(name= "author", value= it.author),
+                    Data(name= "createdAt", value= it.createdAt.toString())
                 ),
                 links = listOf(//TODO: clean up this code. The links should be the same as the ones from a single forum item response
                     CollectionLink(

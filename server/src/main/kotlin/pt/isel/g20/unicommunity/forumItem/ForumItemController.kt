@@ -4,11 +4,11 @@ import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import pt.isel.g20.unicommunity.blackBlackboard.model.MultipleForumItemsResponse
-import pt.isel.g20.unicommunity.blackBlackboard.model.SingleForumItemResponse
 import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
 import pt.isel.g20.unicommunity.forumItem.exception.NotFoundForumItemException
 import pt.isel.g20.unicommunity.forumItem.model.ForumItemDto
+import pt.isel.g20.unicommunity.forumItem.model.MultipleForumItemsResponse
+import pt.isel.g20.unicommunity.forumItem.model.SingleForumItemResponse
 import pt.isel.g20.unicommunity.forumItem.service.IForumItemService
 import pt.isel.g20.unicommunity.hateoas.CollectionObject
 import pt.isel.g20.unicommunity.hateoas.Uri
