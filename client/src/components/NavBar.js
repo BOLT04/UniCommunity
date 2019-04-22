@@ -44,7 +44,7 @@ export default class NavBar extends Component {
     //TODO: later this probably receives an array of registeries to include multiple links on the right menu like: Search bar, Logout, Login, user profile, etc
     function buildRightMenu(reg) {
       return (
-        <div className="right menu">
+        <div className="right menu" key={reg.name}>
           {/*
           <div className="item">
             <div className="ui icon input">
@@ -54,7 +54,7 @@ export default class NavBar extends Component {
           </div>
           */}
 
-          <Link to={reg.clientHref}>
+          <Link to={reg.clientHref}  >
             <button className={reg.class}>{reg.name}</button>
           </Link>
 {/*
@@ -73,7 +73,11 @@ export default class NavBar extends Component {
             return buildRightMenu(reg)
           else
             return (
-              <Link to={reg.clientHref} className={`${index == 0 ? 'active' : ''} item`}>
+              <Link 
+                key={reg.name} 
+                to={reg.clientHref} 
+                className={`${index == 0 ? 'active' : ''} item`}
+              >
                 {reg.name}
               </Link>
             )
