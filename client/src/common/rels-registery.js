@@ -1,3 +1,7 @@
+import config from '../unicommunity-config.json'
+// TODO: this code is repeated in index.js. Is this that big of a problem?
+const baseUri = `http://${config.serverHost}:${config.serverPort}`
+
 //TODO: if this is how its done, meaning i only have representations for modules that I know, for example Forum,
 //todo: then i can only render those modules => i cant render user created modules!
 const relsRegistery = {
@@ -24,6 +28,14 @@ const relsRegistery = {
     },
     '/rels/getBlackboards': {
         //TODO:
+    },
+    // The property "propName" is used to specify the property's name of the object in each component's state
+    // For example in App.js it will define state.home.navUrl
+    [`${baseUri}/rels/nav`]: {
+        propName: "navUrl"
+    },
+    [`${baseUri}/rels/feed`]: {
+        propName: "feedUrl"
     }
 }
 

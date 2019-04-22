@@ -24,8 +24,8 @@ export default class NavBar extends Component {
     navMenu: {}
   }
 */
-  async componentWillMount() {
-    const rsp = await this.props.api.fetchNavigationMenuAsync()
+  async componentWillMount() {//TODO: change to make api calls in componentDidMount
+    const rsp = await this.props.api.fetchNavigationMenuAsync(this.props.navMenuUrl)
     const navMenu = rsp._links
 
     this.setState({ navMenu })

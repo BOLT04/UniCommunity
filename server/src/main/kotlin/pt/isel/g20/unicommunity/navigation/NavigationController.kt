@@ -7,16 +7,16 @@ import pt.isel.g20.unicommunity.navigation.model.HomeResponse
 import pt.isel.g20.unicommunity.navigation.model.NavigationResponse
 
 @RestController
-class NavigationController() {
+class NavigationController {
 
-    @GetMapping(path = ["/"])
+    @GetMapping(path = ["/"], produces= ["application/hal+json"])
     fun getNavigation() =
         ResponseEntity
                 .ok()
                 .body(NavigationResponse())
 
 
-    @GetMapping(path = ["/home"])
+    @GetMapping(path = ["/home"], produces= ["application/hal+json"])
     fun getHome() =
             ResponseEntity
                     .ok()
