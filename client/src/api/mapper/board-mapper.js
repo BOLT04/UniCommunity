@@ -2,8 +2,11 @@ import React from 'react'
 import Forum from '../../components/board_details/Forum'
 // Maps a response of the endpoint 'Create a Board' to the model representation of a Board in the UI.
 
-import fetchBlackboardAsync from '../BlackBoardApi'
-import fetchForumPostsAsync from '../ForumApi'
+//todo: REMOVE MOCKS
+//import fetchBlackboardAsync from '../BlackBoardApi'
+//import fetchForumPostsAsync from '../ForumApi'
+import fetchForumPostsAsync from '../ForumApiImpl'
+import fetchBlackboardAsync from '../BlackBoardApiImpl'
 
 import { itemsToModelRepr } from './common'
 
@@ -17,7 +20,7 @@ export default async function rspToBoardAsync(rsp) {//TODO: maybe move these con
     const contentType = rsp.headers.get('Content-Type')
     let board = {}
 
-    if (contentType === 'application/hal+json') {
+    if (contentType.includes('application/hal+json')) {
         // Sanity check. In the HTTP request we sent the header Accept, so we check if the server does support it.
         const body = await rsp.json()
 
@@ -26,6 +29,7 @@ export default async function rspToBoardAsync(rsp) {//TODO: maybe move these con
         board.modules = { }
 
         let forumLink
+        debugger
         if (body._links) {//TODO: i dont know what to do here...
             /*
             Object.keys(body._links)
@@ -36,15 +40,17 @@ export default async function rspToBoardAsync(rsp) {//TODO: maybe move these con
                 })
             board.forumLinks = relsRegistery['/rels/forum']
             */
-           const forumRel = '/rels/forum'
-           if (body._links[forumRel] && relsRegistery[forumRel]) 
+           const forumRel = 'http://localhost:8080/rels/getForumItems'// TODO: can this be hardcoded here?
+           if (body._links[forumRel] && relsRegistery['/rels/getForumItems']) //TODO: fix hardcoded relsRegistery[forumRel]
                forumLink = body._links[forumRel].href
-           
+           console.log(forumLink)
+           console.log(body._links[forumRel])
         }
 
         // Check if the blackboards rel is present
+        debugger
         if (body._embedded) {
-            const blackboardsArr = body._embedded['http://localhost:8080/rels/blackboards']
+            const blackboardsArr = body._embedded['http://localhost:8080/rels/getBlackboards']
             if (blackboardsArr)
                 board.modules.blackboards = await Promise.all(
                     blackboardsArr.map(async i => 
@@ -62,12 +68,13 @@ export default async function rspToBoardAsync(rsp) {//TODO: maybe move these con
 
 async function halItemToBlackboardItemAsync({ name, _links }) {
     //TODO: what if the self link isnt there... we need to be prepared for that and put content = [] maybe
-    const { content, _links: blackboardLinks } =  await fetchBlackboardAsync(_links.self.href)
+    const rsp =  await fetchBlackboardAsync(_links.self.href)
+    const { items, _links: blackboardLinks } = await rsp.json()
 
-    const blackboardItem = { name, content }
+    const blackboardItem = { name, items }
 
-    const serverHref = blackboardLinks['/rels/createBlackboardItem']
-    const registery = relsRegistery['/rels/createBlackboardItem']
+    const serverHref = blackboardLinks['http://localhost:8080/rels/createBlackboardItem']
+    const registery = relsRegistery['/rels/createBlackboardItem']// todo: http://localhost:8080
     // If the response includes a link to create an item and its registered, add it to the object to return
     if (serverHref && registery) 
         blackboardItem.createLink = {
@@ -92,20 +99,25 @@ async function halItemToBlackboardItemAsync({ name, _links }) {
  */
 async function fetchForumAsync(forumLink) {
     //TODO: what if the self link isnt there... we need to be prepared for that and put content = [] maybe
-    const { collection: { links, items } } =  await fetchForumPostsAsync(forumLink)
+    console.log('forumLink is ' + forumLink)
+    const rsp =  await fetchForumPostsAsync(forumLink)
+    const { collection: { links, items } } = await rsp.json()
 
-    const posts = itemsToModelRepr(items)
+    debugger
+    
+    const posts = items.length == 0 ? [] : itemsToModelRepr(items)
 
-    let createPostHref
+    let createPostHrefObj
     // Check if the link to create a post exists
     links.forEach(l => {
-        const registery = relsRegistery['/rels/createPost']
-        if (l.rel === '/rels/createPost' && registery)
-            createPostHref = {
+        const rel = 'http://localhost:8080/rels/createForumItem'
+        const registery = relsRegistery[rel]
+        if (l.rel === rel && registery)
+            createPostHrefObj = {
                 clientHref: registery.clientHref,
                 serverHref: l.href
             }
     })
 
-    return { createPostHref, posts }
+    return { createPostHrefObj, posts }
 }

@@ -23,8 +23,9 @@ class MultipleForumItemsResponse(
         version = "1.0",
         href = Uri.forAllForumItems(boardId).toString(),
         links = listOf(
-                CollectionLink("self","/http://localhost:3000/boards/$boardId/forum/submissions"),
-                CollectionLink(Rels.NAVIGATION, "/http://localhost:3000/navigation")
+                CollectionLink("self","http://localhost:8080/boards/$boardId/forum/posts"),//TODO: decide posts or submissions
+                CollectionLink(Rels.NAVIGATION, "http://localhost:8080/navigation"), //TODO: Clean up hardcoded string and prefix with localhost etc...and this is maybe later configured (domain and port) in application.properties
+                CollectionLink(Rels.CREATE_FORUMITEM, "http://localhost:8080"+Uri.forAllForumItems(boardId).toString())
         ),
         items = forumItems.map { Item( Uri.forSingleForumItem(it.forum!!.board!!.id, it.id).toString()) }
 )

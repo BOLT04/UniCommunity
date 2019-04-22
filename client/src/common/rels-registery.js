@@ -1,15 +1,15 @@
 //TODO: if this is how its done, meaning i only have representations for modules that I know, for example Forum,
 //todo: then i can only render those modules => i cant render user created modules!
 const relsRegistery = {
-    '/rels/getForum': {
-        clientHref: '/forum',
+    '/rels/getForumItems': {
+        clientHref: '/forum',//TODO: is this being used?
         serverHref: null
     },
     '/rels/createBlackboardItem': {
         clientHref: '/blackboardItem/new',
         serverHref: null
     },
-    '/rels/createPost': {
+    'http://localhost:8080/rels/createForumItem': {
         clientHref: '/posts/new'
     },
     '/rels/createBoard': {
@@ -21,6 +21,9 @@ const relsRegistery = {
         name: 'Log in',
         class: 'ui primary basic button',
         toDisplayOnRight: true // TODO: this property is unique to the rels belonging to navbar, so should they be separated in another object?
+    },
+    '/rels/getBlackboards': {
+        //TODO:
     }
 }
 

@@ -24,6 +24,7 @@ open class HalResourceObject
  * The fields of this class can't be "vals" because the child classes initialize them in the init block, since they
  * sometimes need to make validations to the model object before creating a link.
  */
+@JsonInclude(JsonInclude.Include.NON_NULL)
 abstract class HalObject(
     var _links: MutableMap<String, Link>? = null,
     var _embedded: MutableMap<String, List<HalResourceObject>>? = null)// TODO: how to make embedded an array OR object

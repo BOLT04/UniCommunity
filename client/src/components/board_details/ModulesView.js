@@ -42,16 +42,16 @@ export default class ModulesView extends Component {
      */
 
 
-    moduleToAccordion = (module, index) => {
+    blackboardToAccordion = (blackboard, index) => {
         const { activeIndex, visible } = this.state
         const isActive = activeIndex === index
 
         function decideContent() {
-            return module.name !== 'Forum'
-                ? module.content.map(item => (
+            return blackboard.name !== 'Forum'
+                ? blackboard.items.map(item => (
                     <>
                         <h4>{item.name}</h4>
-                        <ReactMarkdown source={item.text} />
+                        <ReactMarkdown source={item.content} />
                     </>
                 ))
                 : <Forum />
@@ -61,7 +61,7 @@ export default class ModulesView extends Component {
             <div key={index}>
                 <Accordion.Title active={isActive} index={index} onClick={this.handleClick}>
                     <Icon name='dropdown' />
-                    {module.name}
+                    {blackboard.name}
                 </Accordion.Title>
 
 {/* <Link 
@@ -70,7 +70,7 @@ export default class ModulesView extends Component {
                         state: {board: this.props.board}
                     }}> */}
 
-                <Link to={module.createLink.clientHref}>
+                <Link to={blackboard.createLink.clientHref}>
                     <Button primary icon floated='right' labelPosition='right' style={{ marginTop: -35 }} >
                         <Icon name='plus' />
                         Create new
@@ -88,7 +88,7 @@ export default class ModulesView extends Component {
     }
 
     //TODO: remove redundant code later.
-    renderForum({ posts, createPostHref }, index) {
+    renderForum({ posts, createPostHrefObj }, index) {
         const { activeIndex } = this.state
         const isActive = activeIndex === index
 
@@ -99,7 +99,7 @@ export default class ModulesView extends Component {
                     Forum
                 </Accordion.Title>
 
-                <Link to={createPostHref.clientHref}>
+                <Link to={createPostHrefObj.clientHref}>
                     <Button primary icon floated='right' labelPosition='right' style={{ marginTop: -35 }} >
                         <Icon name='plus' />
                         Create new
@@ -117,11 +117,11 @@ export default class ModulesView extends Component {
 
     render() {
         const { board } = this.props
-
+console.log(board)
         return (
             <>
                 <Accordion fluid styled exclusive={false}>
-                    {board.modules.blackboards.map(this.moduleToAccordion)}
+                    {board.modules.blackboards.map(this.blackboardToAccordion)}
 
                     {board.modules.forum != undefined &&
                         this.renderForum(board.modules.forum, board.modules.blackboards.length)

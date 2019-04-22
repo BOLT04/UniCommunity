@@ -5,8 +5,8 @@ import javax.persistence.*
 
 @Entity
 class BlackboardItem(
-    name: String,
-    content: String) {
+        @Column var name: String,
+        @Column var content: String) {
 
     @ManyToOne
     var blackboard: Blackboard? = null
@@ -15,12 +15,6 @@ class BlackboardItem(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0
         private set
-
-    @Column
-    var name: String = name
-
-    @Column
-    var content: String = content
 
     constructor() : this( 0, "", "")
 

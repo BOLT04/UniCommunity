@@ -7,12 +7,15 @@
  * @param {array} items - items array with the format specified in the media type: Collections+json
  */
 export function itemsToModelRepr(items) {
-    return items.map(({ href, data }) => {
+    return items.map(({ href, data, links }) => {
         const obj = { href }
 
-        data.forEach(dataObj => {
-            obj[dataObj.name] = dataObj.value
-        })
+        if (data)
+            data.forEach(dataObj => {
+                obj[dataObj.name] = dataObj.value
+            })
+        
+        //TODO: use links
 
         return obj
     })

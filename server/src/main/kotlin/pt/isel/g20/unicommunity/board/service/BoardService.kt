@@ -22,6 +22,7 @@ class BoardService(
 
     override fun getBoardById(boardId: Long) = boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
 
+    //TODO: this is creating a forum item post also!
     override fun createBoard(
             name: String,
             templateId: Long?,

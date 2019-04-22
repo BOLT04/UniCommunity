@@ -1,7 +1,8 @@
 package pt.isel.g20.unicommunity.hateoas
 
 object Rels {
-    const val RELS_PREFIX = "/rels"
+    //TODO: temporary prefix
+    const val RELS_PREFIX = "http://localhost:8080/rels"
 
     const val NAVIGATION = "$RELS_PREFIX/nav"
     const val HOME = "$RELS_PREFIX/home"

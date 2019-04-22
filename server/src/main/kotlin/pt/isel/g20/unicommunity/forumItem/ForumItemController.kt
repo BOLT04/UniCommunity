@@ -10,6 +10,7 @@ import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
 import pt.isel.g20.unicommunity.forumItem.exception.NotFoundForumItemException
 import pt.isel.g20.unicommunity.forumItem.model.ForumItemDto
 import pt.isel.g20.unicommunity.forumItem.service.IForumItemService
+import pt.isel.g20.unicommunity.hateoas.CollectionObject
 import pt.isel.g20.unicommunity.hateoas.Uri
 import pt.isel.g20.unicommunity.hateoas.Uri.FORUMITEMS_ROUTE
 import pt.isel.g20.unicommunity.hateoas.Uri.SINGLE_FORUMITEM_ROUTE
@@ -19,16 +20,18 @@ import java.util.concurrent.TimeUnit
 class ForumItemController(private val service: IForumItemService) {
 
     @GetMapping(path = [FORUMITEMS_ROUTE])
-    fun getAllForumItems(@PathVariable boardId: Long) =
+    fun getAllForumItems(@PathVariable boardId: Long) : ResponseEntity<CollectionObject> =
             service.getAllForumItems(boardId).let {
+                val rsp = CollectionObject(MultipleForumItemsResponse(boardId, it))
+
                 ResponseEntity
                         .ok()
                         .cacheControl(
                                 CacheControl
                                         .maxAge(1, TimeUnit.HOURS)
                                         .cachePrivate())
-                        .eTag(it.hashCode().toString())
-                        .body(MultipleForumItemsResponse(boardId, it))
+                        .eTag(rsp.hashCode().toString())
+                        .body(rsp)
             }
 
     @GetMapping(path = [SINGLE_FORUMITEM_ROUTE])
