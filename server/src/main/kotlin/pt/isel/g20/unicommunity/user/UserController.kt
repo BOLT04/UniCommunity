@@ -14,9 +14,10 @@ import pt.isel.g20.unicommunity.user.service.IUserService
 import java.util.concurrent.TimeUnit
 
 @RestController
+@RequestMapping(produces = ["application/hal+json", "application/json", "application/vnd.collection+json"])
 class UserController(private val service: IUserService) {
 
-    @GetMapping(path = [USERS_ROUTE])
+    @GetMapping(path = [USERS_ROUTE], produces = ["application/vnd.collection+json"])
     fun getAllUsers() =
             service.getAllUsers().let {
                 ResponseEntity
@@ -29,7 +30,7 @@ class UserController(private val service: IUserService) {
                         .body(MultipleUsersResponse(it))
             }
 
-    @GetMapping(path = [SINGLE_USER_ROUTE])
+    @GetMapping(path = [SINGLE_USER_ROUTE], produces = ["application/hal+json"])
     fun getUserById(@PathVariable userId: Long) =
             service.getUserById(userId).let {
                 ResponseEntity
@@ -56,7 +57,7 @@ class UserController(private val service: IUserService) {
                         .body(SingleUserResponse(it))
             }
 
-    @PutMapping(path = [SINGLE_USER_ROUTE])
+    @PutMapping(path = [SINGLE_USER_ROUTE], produces = ["application/hal+json"])
     fun editUser(@PathVariable userId: Long, @RequestBody userDto: UserDto) =
             service.editUser(userId, userDto.name, userDto.email, userDto.password, userDto.githubId).let {
                 ResponseEntity
@@ -70,7 +71,7 @@ class UserController(private val service: IUserService) {
             }
 
 
-    @DeleteMapping(path = [SINGLE_USER_ROUTE])
+    @DeleteMapping(path = [SINGLE_USER_ROUTE], produces = ["application/hal+json"])
     fun deleteUser(@PathVariable userId: Long) =
             service.deleteUser(userId).let {
                 ResponseEntity
