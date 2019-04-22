@@ -46,7 +46,7 @@ export default class Forum extends Component {
     render() {
 //TODO: clean this up later
         const posts = this.props.posts || this.state.posts
-console.log(posts)
+
         return (
             <List divided link verticalAlign='middle'>
                 {posts.map(post => <ForumItem post={post} key={post.href}/>)}      

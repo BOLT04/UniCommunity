@@ -60,6 +60,7 @@ export default class CreatePost extends Component {
             <label>Title</label>
             <Input 
               name="title"
+              value=""
               onChange={this.onTitleChange}
             />   
           </Form.Field>

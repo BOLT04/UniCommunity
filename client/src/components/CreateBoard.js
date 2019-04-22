@@ -8,7 +8,8 @@ import rspToBoardAsync from '../api/mapper/board-mapper'
 export default class CreateBoard extends Component {
   titleVal = ""
   descVal = ""
-  modules = [] //array<string>
+  blackboardNames = [] //array<string>
+  hasForum = false
   templateId = null
 
   onTitleChange = e => {
@@ -33,27 +34,29 @@ export default class CreateBoard extends Component {
     console.log(this.titleVal)
 
     this.boardTemplate.updatePropsTemplates()
-    console.log(this.modules)
+    console.log(this.blackboardNames)
     console.log(this.templateId)
 
     // Validate user input
     // In case the user chooses neither options
-    if (this.templateId == null && this.modules.length == 0)
+    if (this.templateId == null && this.blackboardNames.length == 0)
       throw Error('please specify the modules manually or choose a template')
     
     // In case the user chooses both options
-    if (this.templateId != null && this.modules.length > 0) 
+    if (this.templateId != null && this.blackboardNames.length > 0) 
       throw Error('please choose only one option: choose modules manually or choose a template')
 
     const modulesObj = {}// TODO: find a better name. This object contains the optional params that go to the request body: templateId or an array of module names (string)
 
     if (this.templateId != null)
       modulesObj.templateId = this.templateId
-    else if (this.modules.length != 0)
-      modulesObj.moduleNames = this.modules
-
+    else if (this.blackboardNames.length != 0) {
+      modulesObj.blackboardNames = this.blackboardNames
+      modulesObj.hasForum = this.hasForum
+    }
     //TODO: remove hardcoded url
     
+    debugger
     const rsp = await this.props.api.createBoardAsync('http://localhost:8080/boards', this.titleVal, this.descVal, modulesObj)
     console.log(rsp)
     const board = await rspToBoardAsync(rsp)
@@ -84,7 +87,8 @@ export default class CreateBoard extends Component {
         <BoardTemplate 
           ref={boardTemplate => this.boardTemplate = boardTemplate}
           api={this.props.api}
-          addToModules={moduleName => this.modules.push(moduleName)}
+          addToModules={moduleName => this.blackboardNames.push(moduleName)}
+          updateHasForum={hasForum => this.hasForum = hasForum}
           activateTemplate= {templateId => this.templateId = templateId}
         />
 

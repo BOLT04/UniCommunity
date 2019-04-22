@@ -12,7 +12,7 @@ class SingleBoardResponse(board: Board)
     : HalObject(mutableMapOf(), mutableMapOf()) {
     val name : String = board.name
     val description : String? = board.description
-    val templateId: Long = board.templateId!!// TODO: this is probably not necessary
+    //val templateId: Long = board.templateId!!// TODO: this is probably not necessary. This cant have a double bang because when the board is not created with a template its null
 
     init {
         super._links?.putAll(sequenceOf(

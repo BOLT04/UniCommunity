@@ -2,7 +2,7 @@ import CreateBoardApi from './CreateBoardApi'
 
 export default class CreateBoardApiImpl extends CreateBoardApi {
 
-  createBoardAsync = async (url, name, description, { templateId, moduleNames }) => {// todo remove repeated code in all mocks
+  createBoardAsync = async (url, name, description, { templateId, blackboardNames, hasForum }) => {// todo remove repeated code in all mocks
     // Construct request body
     const body = {
       name,
@@ -10,8 +10,10 @@ export default class CreateBoardApiImpl extends CreateBoardApi {
     }
     if (templateId != undefined)
       body.templateId = templateId
-    else
-      body.moduleNames = moduleNames
+    else {// TODO: is there a way to do this cleaner in es6?
+      body.blackboardNames = blackboardNames
+      body.hasForum = hasForum
+    }
 
     return await fetch(url, {
       method: 'post',
