@@ -49,7 +49,7 @@ class ForumItemController(private val service: IForumItemService) {
     fun createForumItem(@PathVariable boardId: Long, @RequestBody ForumItemDto: ForumItemDto) =
             service.createForumItem(boardId, ForumItemDto.name, ForumItemDto.content).let {
                 ResponseEntity
-                        .created(Uri.forSingleForumItem(it.boardId, it.id))
+                        .created(Uri.forSingleForumItem(it.forum!!.board!!.id, it.id))
                         .cacheControl(
                                 CacheControl
                                         .maxAge(1, TimeUnit.HOURS)

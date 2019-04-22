@@ -1,10 +1,10 @@
 package pt.isel.g20.unicommunity.forumItem.model
 
+import pt.isel.g20.unicommunity.forum.model.Forum
 import javax.persistence.*
 
 @Entity
 class ForumItem(
-    var boardId: Long,
     @Column(nullable = false) var name: String,
     @Column(nullable = false) var content: String
 ) {
@@ -13,6 +13,9 @@ class ForumItem(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0
 
-    constructor() :this(0, "", "")
+    @ManyToOne
+    var forum: Forum? = null
+
+    constructor() :this("", "")
 }
 

@@ -50,7 +50,7 @@ class BlackboardItemController(private val service: IBlackboardItemService) {
     fun createBlackboardItem(@PathVariable boardId: Long, @PathVariable bbId: Long, @RequestBody itemDto: BlackboardItemDto) =
             service.createBlackboardItem(boardId, bbId, itemDto.name, itemDto.content).let {
                 ResponseEntity
-                        .created(Uri.forSingleBlackboardItem(it.boardId, it.bbId, it.id))
+                        .created(Uri.forSingleBlackboardItem(it.blackboard!!.board!!.id, it.blackboard!!.id, it.id))
                         .cacheControl(
                                 CacheControl
                                         .maxAge(1, TimeUnit.HOURS)

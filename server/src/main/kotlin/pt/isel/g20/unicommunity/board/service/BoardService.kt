@@ -51,7 +51,7 @@ class BoardService(
         } else if (blackboardNames != null && blackboardNames.isNotEmpty())
             blackboards.addAll(blackboardNames)
 
-        val board = Board(name, templateId, description, null, mutableListOf())
+        val board = Board(name, templateId, description)
 
         val newBoard = boardsRepo.save(board)
         // Create all board modules
