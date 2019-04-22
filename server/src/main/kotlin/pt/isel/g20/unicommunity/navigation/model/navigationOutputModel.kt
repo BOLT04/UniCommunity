@@ -13,7 +13,8 @@ class NavigationResponse()
                 Rels.LOGOUT to Link("/logout"),
                 Rels.USER_PROFILE to Link("/profile"),
                 Rels.MY_BOARDS to Link("/myBoards"),
-                Rels.GET_MULTIPLE_BOARDS to Link(Uri.forAllBoards().toString())
+                Rels.GET_MULTIPLE_BOARDS to Link(Uri.forAllBoards().toString()),
+                Rels.CREATE_BOARD to Link("/createBoard")
         )
 )
 
