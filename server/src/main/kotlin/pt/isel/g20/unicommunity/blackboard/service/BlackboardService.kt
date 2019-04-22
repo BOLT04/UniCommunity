@@ -24,13 +24,15 @@ class BlackboardService(
             notificationLevel: String,
             description: String?
     ): Blackboard {
-        boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
+        val board = boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
 
         val blackboard =
                 if(description != null)
-                    Blackboard(boardId, name, description, notificationLevel)
+                    Blackboard(name, description, notificationLevel)
                 else
-                    Blackboard(boardId, name, notificationLevel)
+                    Blackboard(name, notificationLevel)
+
+        blackboard.board = board
 
         return blackboardsRepo.save(blackboard)
     }

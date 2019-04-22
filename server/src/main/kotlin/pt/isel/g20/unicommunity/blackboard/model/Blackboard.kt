@@ -5,7 +5,6 @@ import javax.persistence.*
 
 @Entity
 class Blackboard(
-        var boardId: Long,
         @Column(nullable = false) var name: String,
         @Column var notificationLevel: String,
         @Column var description: String? = null) {
@@ -17,10 +16,10 @@ class Blackboard(
     @ManyToOne(fetch = FetchType.LAZY)
     var board: Board? = null
 
-    constructor() : this(0, "", "", null)
+    constructor() : this("", "", null)
 
-    constructor(boardId: Long, id: Long, name: String, description: String, notificationLevel: String)
-        : this(boardId, name, notificationLevel, description) {
+    constructor(id: Long, name: String, description: String, notificationLevel: String)
+        : this(name, notificationLevel, description) {
 
         this.id = id
     }

@@ -9,9 +9,13 @@ class Board(
     @Column(nullable = false) var name: String,
     @Column var templateId: Long?,// TODO: this is probably not necessary
     @Column var description: String? = null,
+
+    @OneToOne
+    @JoinColumn
     var forum: Forum?,
 
     @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn
     val blackBoards: MutableList<Blackboard>
 ) {
 

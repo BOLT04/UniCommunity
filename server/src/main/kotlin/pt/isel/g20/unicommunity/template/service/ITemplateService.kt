@@ -9,10 +9,10 @@ interface ITemplateService {
     @Throws(NotFoundTemplateException::class)
     fun getTemplateById(templateId: Long): Template
 
-    fun createTemplate(name: String, hasForum: Boolean, blackboardNames: List<String>): Template
+    fun createTemplate(name: String, hasForum: Boolean, blackboardNames: String): Template
 
     @Throws(NotFoundTemplateException::class)
-    fun editTemplate(templateId: Long, hasForum: Boolean?, blackboardNames: List<String>?): Template
+    fun editTemplate(templateId: Long, hasForum: Boolean?, blackboardNames: String?): Template
 
     @Throws(NotFoundTemplateException::class)
     fun deleteTemplate(templateId: Long):Template

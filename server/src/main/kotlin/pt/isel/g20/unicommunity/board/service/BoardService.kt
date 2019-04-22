@@ -54,7 +54,6 @@ class BoardService(
         val board = Board(name, templateId, description, null, mutableListOf())
 
         val newBoard = boardsRepo.save(board)
-
         // Create all board modules
         if (hasForumAux) {
             val forum = forumService.createForum(newBoard.id, true)
@@ -62,11 +61,11 @@ class BoardService(
         }
 
         newBoard.blackBoards.addAll(
-            blackboards.map {
-                blackboardService.createBlackboard(newBoard.id, it, "TODO", "TODO")
-        })
+                blackboards.map {
+                    blackboardService.createBlackboard(newBoard.id, it, "TODO", "TODO")
+                })
 
-        return newBoard
+        return boardsRepo.save(newBoard)
     }
 
     override fun editBoard(boardId: Long, name: String?, description: String?): Board {
