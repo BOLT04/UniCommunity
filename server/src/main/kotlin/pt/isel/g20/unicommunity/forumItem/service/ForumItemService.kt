@@ -16,7 +16,8 @@ class ForumItemService(
         val forumsRepo: ForumRepository,
         val boardsRepo: BoardRepository
 ) : IForumItemService {
-    override fun getAllForumItems(boardId: Long): Iterable<ForumItem> = forumItemsRepo.findAll()
+    override fun getAllForumItems(boardId: Long): Iterable<ForumItem> =
+            forumsRepo.findByIdOrNull(boardId)?.items ?: throw NotFoundForumException()
 
     override fun getForumItemById(boardId: Long, forumItemId: Long) =
             forumItemsRepo.findByIdOrNull(forumItemId) ?: throw NotFoundForumItemException()
@@ -32,8 +33,11 @@ class ForumItemService(
         val forumItem = ForumItem(name, content)
 
         forumItem.forum = forum
+        forum.items.add(forumItem)
+        val newForumItem = forumItemsRepo.save(forumItem)
+        forumsRepo.save(forum)
 
-        return forumItemsRepo.save(forumItem)
+        return newForumItem
     }
 
     override fun editForumItem(
