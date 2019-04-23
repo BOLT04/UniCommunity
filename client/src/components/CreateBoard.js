@@ -54,7 +54,7 @@ export default class CreateBoard extends Component {
       modulesObj.blackboardNames = this.blackboardNames
       modulesObj.hasForum = this.hasForum
     }
-    
+    debugger
     // TODO: is there a way to easily document that this component receives this.props.location.state.serverHref
     //todo: from the Link component used in NavBar.js available in React router?
     const rsp = await this.props.api.createBoardAsync(this.props.location.state.serverHref, this.titleVal, this.descVal, modulesObj)

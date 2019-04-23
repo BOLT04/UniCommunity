@@ -8,6 +8,7 @@ export default class HomeApiImpl extends HomeApi {
      * @param {string} url     - Entry point path for the server HTTP API. Example: /home
      */
     constructor(baseUri, url) {
+        super()
         this.homeUrl = `${baseUri}${url}`
     }
 

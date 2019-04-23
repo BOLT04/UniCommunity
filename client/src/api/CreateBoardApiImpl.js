@@ -1,5 +1,8 @@
 import CreateBoardApi from './CreateBoardApi'
 
+import config from '../unicommunity-config.json'
+const baseUri = `http://${config.serverHost}:${config.serverPort}` //TODO: this is repeated in many places. Find a way to clean it.
+
 export default class CreateBoardApiImpl extends CreateBoardApi {
 
   // TODO: implement using hal+forms
@@ -18,7 +21,8 @@ export default class CreateBoardApiImpl extends CreateBoardApi {
       body.hasForum = hasForum
     }
 
-    return await fetch(url, {
+    debugger
+    return await fetch(`${baseUri}${url}`, {
       method: 'post',
       headers: {
         "Content-Type": "application/json"

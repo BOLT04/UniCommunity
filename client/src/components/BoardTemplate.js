@@ -45,9 +45,10 @@ export default class BoardTemplate extends Component {
     //this.props.templates.push()
   }
 
-  onForumChangeCheckBox = e => {
+  onForumChangeCheckBox = (e, { checked }) => {
     console.log(e.target)
-    this.props.updateHasForum(e.target.innerHTML)
+
+    this.props.updateHasForum(checked)
   }
 
   templateToRow = template => {

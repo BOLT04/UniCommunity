@@ -71,9 +71,9 @@ export default class Home extends Component {
 
         <HomeStepsContent />
 
-
+        {/* //TODO: not fully implemented on the server yet
         <Feed feedItemList={this.state.feedItemList} />
-
+        */}
       </div>
     )
   }

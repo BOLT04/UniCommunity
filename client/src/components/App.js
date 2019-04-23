@@ -90,7 +90,7 @@ export default class App extends Component {
           </div>
 
           <Route exact path="/" render={props => 
-            <Home {...props} api={this.api} />} 
+            <Home {...props} api={this.props.api} />} 
           />
           
           {/* //TODO: THESE componentes were buggy so are not being used for the moment

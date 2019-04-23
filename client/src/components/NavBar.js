@@ -27,8 +27,9 @@ export default class NavBar extends Component {
 */
   async componentWillMount() {//TODO: change to make api calls in componentDidMount
     const rsp = await this.props.api.fetchNavigationMenuAsync(this.props.navMenuUrl)
-    const navMenu = rsp._links
-
+    const rspObj = await rsp.json()
+    const navMenu = rspObj._links
+    console.log('yo ' + navMenu)
     this.setState({ navMenu })
   }
 
@@ -71,8 +72,9 @@ export default class NavBar extends Component {
       )
     }
 
-    return Object
-      .keys(navMenu)
+    console.log(navMenu)
+    
+    return Object.keys(navMenu)
       .map((prop, index) => {// TODO: for now, the active item starts by being the first prop...this is assuming /home is the first prop
         const reg = relsRegistery[prop]
         if (reg)
