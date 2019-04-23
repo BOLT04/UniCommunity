@@ -17,8 +17,10 @@ class BlackboardItemService(
         val blackboardsRepo: BlackboardRepository,
         val blackboardItemsRepo: BlackboardItemRepository
 ) : IBlackboardItemService {
-    override fun getAllBlackboardItems(boardId: Long, bbId: Long): Iterable<BlackboardItem> =
-            blackboardItemsRepo.findAll()
+    override fun getAllBlackboardItems(boardId: Long, bbId: Long): Iterable<BlackboardItem> {
+            boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
+            return blackboardsRepo.findByIdOrNull(bbId)?.items ?: throw NotFoundBlackboardException()
+    }
 
     override fun getBlackboardItemById(boardId: Long, bbId: Long, itemId: Long) =
             blackboardItemsRepo.findByIdOrNull(itemId) ?: throw NotFoundBlackboardItemException()
@@ -36,7 +38,11 @@ class BlackboardItemService(
         val blackboardItem = BlackboardItem(name, content)
 
         blackboardItem.blackboard = blackboard
-        return blackboardItemsRepo.save(blackboardItem)
+        blackboard.items.add(blackboardItem)
+        val newBlackboardItem =  blackboardItemsRepo.save(blackboardItem)
+        blackboardsRepo.save(blackboard)
+
+        return newBlackboardItem
     }
 
     override fun editBlackboardItem(boardId: Long, bbId: Long, itemId: Long, name: String?, content: String?): BlackboardItem {

@@ -14,9 +14,10 @@ import pt.isel.g20.unicommunity.hateoas.Uri.FORUM_ROUTE
 import java.util.concurrent.TimeUnit
 
 @RestController
+@RequestMapping(produces = ["application/hal+json", "application/json", "application/vnd.collection+json"])
 class ForumController(private val service: IForumService) {
 
-    @GetMapping(path = [FORUM_ROUTE])
+    @GetMapping(path = [FORUM_ROUTE], produces = ["application/hal+json"])
     fun getForumById(@PathVariable boardId: Long) =
             service.getForumById(boardId).let {
                 ResponseEntity
@@ -43,7 +44,7 @@ class ForumController(private val service: IForumService) {
                         .body(SingleForumResponse(it))
             }
 
-    @PutMapping(path = [FORUM_ROUTE])
+    @PutMapping(path = [FORUM_ROUTE], produces = ["application/hal+json"])
     fun editForum(@PathVariable boardId: Long, @RequestBody forumDto: ForumDto) =
             service.editForum(boardId, forumDto.allowImagePosts).let {
                 ResponseEntity
@@ -57,7 +58,7 @@ class ForumController(private val service: IForumService) {
             }
 
 
-    @DeleteMapping(path = [FORUM_ROUTE])
+    @DeleteMapping(path = [FORUM_ROUTE], produces = ["application/hal+json"])
     fun deleteForum(@PathVariable boardId: Long) =
             service.deleteForum(boardId).let {
                 ResponseEntity

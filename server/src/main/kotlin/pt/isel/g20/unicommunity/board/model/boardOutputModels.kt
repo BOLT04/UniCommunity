@@ -1,18 +1,12 @@
 package pt.isel.g20.unicommunity.board.model
 
+import pt.isel.g20.unicommunity.blackboard.model.PartialBlackboardObject
 import pt.isel.g20.unicommunity.hateoas.*
-
-//TODO: move to blackboards
-class PartialBlackboardObject(
-        val name: String,
-        val _links: Map<String, Link>
-) : HalResourceObject()
 
 class SingleBoardResponse(board: Board)
     : HalObject(mutableMapOf(), mutableMapOf()) {
     val name : String = board.name
     val description : String? = board.description
-    //val templateId: Long = board.templateId!!// TODO: this is probably not necessary. This cant have a double bang because when the board is not created with a template its null
 
     init {
         super._links?.putAll(sequenceOf(

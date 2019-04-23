@@ -15,9 +15,10 @@ import pt.isel.g20.unicommunity.hateoas.Uri.SINGLE_BOARD_ROUTE
 import java.util.concurrent.TimeUnit
 
 @RestController
+@RequestMapping(produces = ["application/hal+json", "application/json", "application/vnd.collection+json"])
 class BoardController(private val service: IBoardService) {
 
-    @GetMapping(path = [BOARDS_ROUTE])
+    @GetMapping(path = [BOARDS_ROUTE], produces = ["application/vnd.collection+json"])
     fun getAllBoards() =
             service.getAllBoards().let {
                 ResponseEntity
@@ -62,7 +63,7 @@ class BoardController(private val service: IBoardService) {
                         .body(SingleBoardResponse(it))
             }
 
-    @PutMapping(path = [SINGLE_BOARD_ROUTE])
+    @PutMapping(path = [SINGLE_BOARD_ROUTE], produces = ["application/hal+json"])
     fun editBoard(@PathVariable boardId: Long, @RequestBody boardDto: BoardDto) =
             service.editBoard(boardId, boardDto.name, boardDto.description).let {
                 ResponseEntity
@@ -76,7 +77,7 @@ class BoardController(private val service: IBoardService) {
             }
 
 
-    @DeleteMapping(path = [SINGLE_BOARD_ROUTE])
+    @DeleteMapping(path = [SINGLE_BOARD_ROUTE], produces = ["application/hal+json"])
     fun deleteBoard(@PathVariable boardId: Long) =
             service.deleteBoard(boardId).let {
                 ResponseEntity

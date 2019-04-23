@@ -15,6 +15,8 @@ class SingleBlackboardResponse(blackboard: Blackboard)
     val name : String = blackboard.name
     val description : String? = blackboard.description
     val notificationLevel: String = blackboard.notificationLevel
+
+    //TODO: TRATAR DESSE MAPEAMENTO
     val items = blackboard.items
 }
 
@@ -31,3 +33,8 @@ class MultipleBlackboardsResponse(
         ),
         items = blackboards.map { Item( Uri.forSingleBlackboard(it.board!!.id, it.id).toString()) }
 )
+
+class PartialBlackboardObject(
+        val name: String,
+        val _links: Map<String, Link>
+) : HalResourceObject()
