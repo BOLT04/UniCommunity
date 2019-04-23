@@ -46,8 +46,6 @@ export default class BoardTemplate extends Component {
   }
 
   onForumChangeCheckBox = (e, { checked }) => {
-    console.log(e.target)
-
     this.props.updateHasForum(checked)
   }
 

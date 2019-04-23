@@ -21,7 +21,6 @@ export default class CreateBoardApiImpl extends CreateBoardApi {
       body.hasForum = hasForum
     }
 
-    debugger
     return await fetch(`${baseUri}${url}`, {
       method: 'post',
       headers: {

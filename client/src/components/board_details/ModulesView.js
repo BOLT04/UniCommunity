@@ -122,7 +122,8 @@ export default class ModulesView extends Component {
 
     render() {
         const { board } = this.props
-console.log(board)
+        console.log(board)
+        
         return (
             <>
                 <Accordion fluid styled exclusive={false}>
