@@ -16,7 +16,7 @@ const relsRegistery = {
     'http://localhost:8080/rels/createForumItem': {
         clientHref: '/posts/new'
     },
-    '/rels/createBoard': {
+    [`${baseUri}/rels/createBoard`]: {
         clientHref: '/board/create',
         name: 'Create Board', // TODO: this property is unique to the rels belonging to navbar, so should they be separated in another object?
     },
@@ -32,7 +32,7 @@ const relsRegistery = {
     // The property "propName" is used to specify the property's name of the object in each component's state
     // For example in App.js it will define state.home.navUrl
     [`${baseUri}/rels/nav`]: {
-        propName: "navUrl"
+        propName: "navMenuUrl"
     },
     [`${baseUri}/rels/feed`]: {
         propName: "feedUrl"

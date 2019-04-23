@@ -8,7 +8,8 @@ import relsRegistery from '../common/rels-registery'
 
 export default class NavBar extends Component {
   static propTypes = {
-    api: PropTypes.instanceOf(NavBarApi)
+    api: PropTypes.instanceOf(NavBarApi),
+    navMenuUrl: PropTypes.string
   }
 
   constructor(props) {
@@ -31,18 +32,19 @@ export default class NavBar extends Component {
     this.setState({ navMenu })
   }
 
-  componentDidMount() {
+  /*componentDidMount() {
     console.log(`componentDidMount 1: ${this.state}`)
     this.setState({ navMenu: 1 })
     console.log(`componentDidMount 2: ${this.state}`)
   }
+*/
 
   buildLinks() {
     const { navMenu } = this.state
 
     //TODO: right now this only supports one link with the property: "toDisplayOnRight", since it would create another div on the next link with the same prop.
     //TODO: later this probably receives an array of registeries to include multiple links on the right menu like: Search bar, Logout, Login, user profile, etc
-    function buildRightMenu(reg) {
+    function buildRightMenu(reg, serverHref) {
       return (
         <div className="right menu" key={reg.name}>
           {/*
@@ -54,7 +56,12 @@ export default class NavBar extends Component {
           </div>
           */}
 
-          <Link to={reg.clientHref}  >
+          <Link 
+            to={{
+              pathname: reg.clientHref,
+              state: { serverHref }
+            }}
+          >
             <button className={reg.class}>{reg.name}</button>
           </Link>
 {/*
@@ -70,12 +77,15 @@ export default class NavBar extends Component {
         const reg = relsRegistery[prop]
         if (reg)
           if (reg.toDisplayOnRight)
-            return buildRightMenu(reg)
+            return buildRightMenu(reg, navMenu[prop].href)
           else
             return (
               <Link 
                 key={reg.name} 
-                to={reg.clientHref} 
+                to={{
+                  pathname: reg.clientHref,
+                  state: { serverHref: navMenu[prop].href }
+                }}
                 className={`${index == 0 ? 'active' : ''} item`}
               >
                 {reg.name}

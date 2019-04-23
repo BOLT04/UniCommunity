@@ -2,6 +2,9 @@ import CreateBoardApi from './CreateBoardApi'
 
 export default class CreateBoardApiImpl extends CreateBoardApi {
 
+  // TODO: implement using hal+forms
+  //todo: for this this method receives 2 urls, one for the createBoard endpoint and another to get the hal forms
+  //todo: specifyng if its a post, the headers, etc
   createBoardAsync = async (url, name, description, { templateId, blackboardNames, hasForum }) => {// todo remove repeated code in all mocks
     // Construct request body
     const body = {

@@ -11,9 +11,7 @@ import BackToTopButton from './BackToTopButton'
 import Home from './home_page/Home'
 import CreatePost from './post/CreatePost'
 
-import NavBarApiMock from '../api/NavBarApiMock'
 import HomeApi from '../api/HomeApi'
-import CreateBoardApiMock from '../api/CreateBoardApiMock'
 
 import NavBarApiImpl from '../api/NavBarApiImpl'
 import CreateBoardApiImpl from '../api/CreateBoardApiImpl'
@@ -46,31 +44,36 @@ export default class App extends Component {
       Object
         .keys(rspObj._links)
         .forEach(prop => {
-          if (prop === 'self'){
-            home.url = rspObj._links[prop].href
-            return
-          }
-
           const reg = relsRegistery[prop]
+
           if (reg) 
-            home[reg.propName] = rspObj._links[prop].href
-          
+            home[reg.propName] = rspObj._links[prop].href     
         })
     }
+
+    if (rspObj._embedded) {
+      //todo: use this for feed
+    }
+
+    this.setState({ home })
   }
 
   render() {
     const createBoardApi = new CreateBoardApiImpl()
     const { home } = this.state
+
+    //TODO: this component depends on the propnames defined in rels-registery because it knows navMenuUrl...
+    //TODO: is there a way to avoid this dependency?
     return (
       <BrowserRouter>   
         <div className="App">
           <div className="ui container">
-            {home.navUrl && 
+            {home.navMenuUrl && 
               <NavBar
-                navMenuUrl={home.navUrl}
+                navMenuUrl={home.navMenuUrl}
                 api={new NavBarApiImpl()} /> 
             }
+
             <Route exact path="/login" component={Login} />
 
             <Route exact path="/posts/new" render={props => 
@@ -85,8 +88,9 @@ export default class App extends Component {
               <BoardView {...props} />} 
             />
           </div>
+
           <Route exact path="/" render={props => 
-              <Home {...props} api={this.api} />} 
+            <Home {...props} api={this.api} />} 
           />
           
           {/* //TODO: THESE componentes were buggy so are not being used for the moment
