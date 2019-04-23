@@ -17,7 +17,6 @@ class NavigationController() {
                 .ok()
                 .body(NavigationResponse())
 
-
     @GetMapping(path = ["/home"], produces = ["application/hal+json"])
     fun getHome() =
             ResponseEntity

@@ -60,12 +60,12 @@ export default class CreatePost extends Component {
             <label>Title</label>
             <Input 
               name="title"
-              value=""
               onChange={this.onTitleChange}
             />   
           </Form.Field>
           <Form.Field>
             <MdEditor
+              value=""
               ref={node => this.mdEditor = node}
               onChange={this.handleEditorChange} 
             />
