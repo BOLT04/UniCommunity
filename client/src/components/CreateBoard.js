@@ -88,7 +88,21 @@ export default class CreateBoard extends Component {
         <BoardTemplate 
           ref={boardTemplate => this.boardTemplate = boardTemplate}
           api={this.props.api}
-          addToModules={moduleName => this.blackboardNames.push(moduleName)}
+          addToModules={moduleName => {
+            this.blackboardNames.push(moduleName)
+
+            this.boardTemplate.setState({templates: [
+              {
+                "name": "ah pois",
+                "id": 1,
+                "hasForum": true,
+                "blackboardNames": [
+                    "O STATE DE UM COMPONENTE NÃO É PRIVADO"
+                ]
+            }
+            ]})
+            console.log(this.boardTemplate.state)
+          }}
           updateHasForum={hasForum => this.hasForum = hasForum}
           activateTemplate= {templateId => this.templateId = templateId}
         />

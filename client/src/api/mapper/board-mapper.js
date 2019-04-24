@@ -12,9 +12,11 @@ import { itemsToModelRepr } from './common'
 
 import relsRegistery from '../../common/rels-registery'
 
+import Board from '../../components/board_details/model/Board'
+
 /**
- * 
- * @param {object} rsp Represents the response of the API that comes in HAL+JSON format.
+ * @returns {Board}    The board object that represents the UI.
+ * @param {Response} rsp Represents the response of the API that comes in HAL+JSON format.
  */
 export default async function rspToBoardAsync(rsp) {//TODO: maybe move these constants strings to another file. Like how its done on the server
     const contentType = rsp.headers.get('Content-Type')
