@@ -66,8 +66,8 @@ export default class App extends Component {
     //TODO: is there a way to avoid this dependency?
     return (
       <BrowserRouter>   
-        <div className="App">
-          <div className="ui container">
+        <div className="App" style={{ display:"flex", minHeight:"100vh", flexDirection:"column" }}>
+          <div className="ui container" style={{ flex:1 }}>
             {home.navMenuUrl && 
               <NavBar
                 navMenuUrl={home.navMenuUrl}
@@ -93,8 +93,9 @@ export default class App extends Component {
             <Home {...props} api={this.props.api} />} 
           />
           
-          {/* //TODO: THESE componentes were buggy so are not being used for the moment
+          {
           <Footer />
+          /* //TODO: THESE componentes were buggy so are not being used for the moment
           <BackToTopButton />
           */}
         </div> 
