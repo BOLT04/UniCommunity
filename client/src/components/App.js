@@ -6,7 +6,9 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import NavBar from './NavBar'
 import Footer from './Footer'
 import Login from './Login'
+
 import CreateBoard from './CreateBoard'
+import AllBoards from './AllBoards'
 import BoardView from './board_details/BoardView'
 import BackToTopButton from './BackToTopButton'
 import Home from './home_page/Home'
@@ -84,6 +86,10 @@ export default class App extends Component {
             <Switch>
               <Route exact path='/login' component={Login} />
               
+              <Route exact path='/boards' render={props => 
+                <AllBoards {...props} api={createBoardApi} />} 
+              />
+
               <Route exact path='/boards/new' render={props => 
                 <CreateBoard {...props} api={createBoardApi} />} 
               />
