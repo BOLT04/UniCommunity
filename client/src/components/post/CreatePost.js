@@ -1,5 +1,6 @@
 'use strict'
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 import { Input, Form, TextArea, Button } from 'semantic-ui-react'
 
@@ -8,9 +9,15 @@ import MdEditor from 'react-markdown-editor-lite'
 import { createForumPostsAsync } from '../../api/ForumApiImpl'
 import rspToBoardAsync from '../../api/mapper/board-mapper'
 
+import routes from '../../common/routes'
+import CreateBoardApi from '../../api/CreateBoardApi';
+
 export default class CreatePost extends Component {
-  //TODO: should these props be in the object "state" of react?? and use this.setState()????
-  titleVal = ""
+  static propTypes = {
+    api: PropTypes.instanceOf(CreateBoardApi),
+  }
+
+  titleVal = ''
   mdEditor = null
 
   handleEditorChange({html, text}) {    
@@ -27,7 +34,6 @@ export default class CreatePost extends Component {
     console.log(this.titleVal)
     console.log(this.mdEditor.getMdValue())
 
-    //TODO: take out hardcoded url
     const url = this.props.location.state.createPostUrl
 
     const rsp = await createForumPostsAsync(url, this.titleVal, this.mdEditor.getMdValue())
@@ -41,12 +47,17 @@ export default class CreatePost extends Component {
     if (rspObj._links) {
       const boardUrl = rspObj._links['http://localhost:8080/rels/getBoard']//todo: REMOVE HARDCODED
       if (boardUrl) {
+        // TODO: I think this should be refactored and moved to BoardView. So that this component isn't responsible
+        //for making requests to a board
         console.log(this.props.api)
         const rsp2 = await this.props.api.getBoardAsync(boardUrl.href)
 
         const board = await rspToBoardAsync(rsp2)
+    
+        board.id = 1 // TODO: remove when this is in server impl.
+    
         debugger
-        this.props.history.push(`/board`, { board })
+        this.props.history.push(routes.getBoardUri(board.id), {board})
       }
     }
   }
@@ -54,18 +65,18 @@ export default class CreatePost extends Component {
   render() {
     return (      
       <div style={{height: 500}}>
-        <h1 className="ui header">Create a Post</h1>
+        <h1 className='ui header'>Create a Post</h1>
         <Form>
           <Form.Field>
             <label>Title</label>
             <Input 
-              name="title"
+              name='title'
               onChange={this.onTitleChange}
             />   
           </Form.Field>
           <Form.Field>
             <MdEditor
-              value=""
+              value=''
               ref={node => this.mdEditor = node}
               onChange={this.handleEditorChange} 
             />

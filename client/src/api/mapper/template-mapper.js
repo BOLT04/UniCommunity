@@ -1,4 +1,4 @@
-import { itemsToModelRepr } from './common'
+import { itemsToModelRepr } from '../../common/common'
 
 /**
  * 

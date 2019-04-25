@@ -1,3 +1,5 @@
+import { buildUri } from '../common/common'
+
 /**
  * Returns an array of Small Forum Posts response object. Format:
  * {
@@ -28,4 +30,8 @@ export async function createForumPostsAsync(url, title, content) {
         },
         body: JSON.stringify(body)
     })
+}
+
+export async function getForumPostAsync(relativeUrl) {
+    return fetch(buildUri(relativeUrl))
 }
