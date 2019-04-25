@@ -10,8 +10,8 @@ import React from 'react'
  */
 export default function ForumPostHeader({ post: {author, createdAt} }) {
     return (
-        <>
+        <span style={{fontSize: 10, color: 'gray'}}>
             Published by <strong>{author}</strong> at {createdAt.toLocaleString()}  
-        </>
+        </span>
     )
 }

@@ -8,30 +8,35 @@ import fetchForumPostsAsync from '../ForumApiImpl'
 import fetchBlackboardAsync from '../BlackBoardApiImpl'
 
 import { itemsToModelRepr } from '../../common/common'
+import { APPLICATION_HAL_JSON } from '../../common/constants'
 
 import relsRegistery from '../../common/rels-registery'
 
 import Board from '../../components/board_details/model/Board'
 
+import { MappingError } from '../../common/errors'
+
 /**
- * @returns {Board}    The board object that represents the UI.
- * @param {Response} rsp Represents the response of the API that comes in HAL+JSON format.
+ * @throws {MappingError} - Throws this exception in case the Content-Type header isn't the correct one.
+ * @returns {Board}       - The board object that represents the UI.
+ * @param {Response} rsp  - Represents the response of the API that comes in HAL+JSON format.
  */
 export default async function rspToBoardAsync(rsp) {//TODO: maybe move these constants strings to another file. Like how its done on the server
     const contentType = rsp.headers.get('Content-Type')
-    let board = {}
     
-    if (contentType.includes('application/hal+json')) {
+    if (contentType.includes(APPLICATION_HAL_JSON)) {
         // Sanity check. In the HTTP request we sent the header Accept, so we check if the server does support it.
-        const body = await rsp.json()
+        const { name, description, _links, _embedded } = await rsp.json()
 
-        board.name = body.name
-        board.description = body.description
-        board.modules = { }
+        let board = {
+            name,
+            description,
+            modules: {}
+        }
 
         let forumLink
       
-        if (body._links) {//TODO: i dont know what to do here...
+        if (_links) {//TODO: i dont know what to do here...
             /*
             Object.keys(body._links)
                 .forEach(prop => {
@@ -42,13 +47,13 @@ export default async function rspToBoardAsync(rsp) {//TODO: maybe move these con
             board.forumLinks = relsRegistery['/rels/forum']
             */
            const forumRel = 'http://localhost:8080/rels/getForumItems'// TODO: can this be hardcoded here?
-           if (body._links[forumRel] && relsRegistery['/rels/getForumItems']) //TODO: fix hardcoded relsRegistery[forumRel]
-               forumLink = body._links[forumRel].href
+           if (_links[forumRel] && relsRegistery['/rels/getForumItems']) //TODO: fix hardcoded relsRegistery[forumRel]
+               forumLink = _links[forumRel].href
         }
 
         // Check if the blackboards rel is present
-        if (body._embedded) {
-            const blackboardsArr = body._embedded['http://localhost:8080/rels/getBlackboards']
+        if (_embedded) {
+            const blackboardsArr = _embedded['http://localhost:8080/rels/getBlackboards']
             if (blackboardsArr)
                 board.modules.blackboards = await Promise.all(
                     blackboardsArr.map(async i => 
@@ -59,9 +64,11 @@ export default async function rspToBoardAsync(rsp) {//TODO: maybe move these con
 
         // Make a request to get the forum and add it to the modules array
         board.modules.forum = await fetchForumAsync(forumLink)
+
+        return board
     }
 
-    return board
+    throw new MappingError()
 }
 
 async function halItemToBlackboardItemAsync({ name, _links }) {
