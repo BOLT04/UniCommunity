@@ -1,9 +1,14 @@
 import React, { Component } from 'react'
 
+import { Icon } from 'semantic-ui-react'
+
 export default class Footer extends Component {
     render() {
         return (
-            <div className="ui sticky inverted vertical footer segment">
+            <div className="ui inverted vertical footer segment">
+                <div class="ui inverted center aligned segment">
+                    <Icon name='copyright' /> 2018-2019 UniCommunity
+                </div>
                 <div className="ui container">
                     <div className="ui stackable inverted divided equal height stackable grid">
                         <div className="three wide column">
