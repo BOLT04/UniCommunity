@@ -1,3 +1,4 @@
+'use strict'
 // This module contains functions that are used by multiple modules.
 
 /**

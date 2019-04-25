@@ -1,3 +1,4 @@
+'use strict'
 import { itemsToModelRepr } from '../../common/common'
 
 /**

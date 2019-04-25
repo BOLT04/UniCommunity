@@ -17,7 +17,7 @@ const relsRegistery = {
         clientHref: '/posts/new'
     },
     [`${baseUri}/rels/createBoard`]: {
-        clientHref: '/board/create',
+        clientHref: '/boards/new',
         name: 'Create Board', // TODO: this property is unique to the rels belonging to navbar, so should they be separated in another object?
     },
     '/rels/login': {

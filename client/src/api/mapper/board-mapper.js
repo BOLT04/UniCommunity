@@ -1,5 +1,4 @@
-import React from 'react'
-import Forum from '../../components/board_details/Forum'
+'use strict'
 // Maps a response of the endpoint 'Create a Board' to the model representation of a Board in the UI.
 
 //todo: REMOVE MOCKS
@@ -8,7 +7,7 @@ import Forum from '../../components/board_details/Forum'
 import fetchForumPostsAsync from '../ForumApiImpl'
 import fetchBlackboardAsync from '../BlackBoardApiImpl'
 
-import { itemsToModelRepr } from './common'
+import { itemsToModelRepr } from '../../common/common'
 
 import relsRegistery from '../../common/rels-registery'
 
@@ -101,8 +100,9 @@ async function fetchForumAsync(forumLink) {
     const rsp =  await fetchForumPostsAsync(forumLink)
     const { collection: { links, items } } = await rsp.json()
 
+    debugger
     const posts = items.length == 0 ? [] : itemsToModelRepr(items)
-
+    debugger
     let createPostHrefObj
     // Check if the link to create a post exists
     links.forEach(l => {

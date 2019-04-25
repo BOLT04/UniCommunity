@@ -1,3 +1,4 @@
+'use strict'
 /**
  * @param {string} name        - The name of the board
  * @param {string} description - The description text of the board

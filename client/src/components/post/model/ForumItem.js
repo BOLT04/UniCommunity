@@ -1,3 +1,4 @@
+'use strict'
 /**
  * A forum item represents a post on the forum of a board.
  * @param {string} name      - The name of the forum item.
