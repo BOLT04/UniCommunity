@@ -34,7 +34,7 @@ class BlackboardItemService(
 
         val blackboard = blackboardsRepo.findByIdOrNull(bbId) ?: throw NotFoundBlackboardException()
 
-        val blackboardItem = BlackboardItem(name, content)
+        val blackboardItem = BlackboardItem(name, content, "David")
 
         blackboardItem.blackboard = blackboard
         blackboard.items.add(blackboardItem)

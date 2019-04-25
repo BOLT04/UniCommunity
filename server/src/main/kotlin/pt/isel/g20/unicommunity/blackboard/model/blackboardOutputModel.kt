@@ -7,9 +7,11 @@ class SingleBlackboardResponse(blackboard: Blackboard)
         mutableMapOf(
                 "self" to Link(Uri.forSingleBlackboard(blackboard.board!!.id, blackboard.id).toString()),
                 Rels.NAVIGATION to Link("/navigation"),
-                Rels.GET_MULTIPLE_BLACKBOARDS to Link(Uri.forAllBlackboards(blackboard.board!!.id).toString()),
                 Rels.GET_SINGLE_BOARD to Link(Uri.forSingleBoard(blackboard.board!!.id).toString()),
-                Rels.CREATE_BLACKBOARDITEM to Link(Uri.forAllBlackboards(blackboard.board!!.id).toString())
+                Rels.CREATE_BLACKBOARDITEM to Link(Uri.forAllBlackboards(blackboard.board!!.id).toString()),
+                Rels.GET_MULTIPLE_BLACKBOARDS to Link(Uri.forAllBlackboards(blackboard.board!!.id).toString()),
+                Rels.EDIT_BLACKBOARD to Link(Uri.forSingleBoard(blackboard.board!!.id).toString()),
+                Rels.DELETE_BLACKBOARD to Link(Uri.forSingleBoard(blackboard.board!!.id).toString())
         )
 ){
     val name : String = blackboard.name

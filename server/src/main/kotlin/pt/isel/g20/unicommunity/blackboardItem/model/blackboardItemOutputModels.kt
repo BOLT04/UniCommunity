@@ -7,11 +7,17 @@ class SingleBlackboardItemResponse(bbItem: BlackboardItem)
         mutableMapOf(
                 "self" to Link(Uri.forSingleBlackboardItem(bbItem.blackboard!!.board!!.id, bbItem.blackboard!!.id, bbItem.id ).toString()),
                 Rels.GET_SINGLE_BLACKBOARD to Link(Uri.forSingleBlackboard(bbItem.blackboard!!.board!!.id, bbItem.blackboard!!.id).toString()),
-                Rels.GET_SINGLE_BOARD to Link(Uri.forSingleBoard(bbItem.blackboard!!.board!!.id).toString())
+                Rels.GET_SINGLE_BOARD to Link(Uri.forSingleBoard(bbItem.blackboard!!.board!!.id).toString()),
+                Rels.CREATE_BLACKBOARDITEM to Link(Uri.forAllBlackboardItems(bbItem.blackboard!!.board!!.id, bbItem.blackboard!!.id).toString()),
+                Rels.GET_MULTIPLE_BLACKBOARDITEMS to Link(Uri.forAllBlackboardItems(bbItem.blackboard!!.board!!.id, bbItem.blackboard!!.id).toString()),
+                Rels.EDIT_BLACKBOARDITEM to Link(Uri.forSingleBlackboardItem(bbItem.blackboard!!.board!!.id, bbItem.blackboard!!.id, bbItem.id).toString()),
+                Rels.DELETE_BLACKBOARDITEM to Link(Uri.forSingleBlackboardItem(bbItem.blackboard!!.board!!.id, bbItem.blackboard!!.id, bbItem.id).toString())
         )
 ){
     val name : String = bbItem.name
     val content : String = bbItem.content
+    val author: String = bbItem.author
+    val createdAt: String = bbItem.createdAt.toString()
 }
 
 

@@ -22,7 +22,8 @@ class HomeResponse
     : HalObject(
         mutableMapOf(
                 "self" to Link("/home"),
-                Rels.GET_MULTIPLE_BOARDS to Link("/boards"),
+                Rels.GET_SINGLE_BOARD to Link("/boards"),
+                Rels.GET_MULTIPLE_BOARDS to Link("/boards/{boardId}"),
                 Rels.NAVIGATION to Link(Uri.NAVIGATION_ROUTE)
         )
 )

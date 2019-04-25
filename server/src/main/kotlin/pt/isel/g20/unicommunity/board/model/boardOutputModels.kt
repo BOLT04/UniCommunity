@@ -10,9 +10,13 @@ class SingleBoardResponse(board: Board)
 
     init {
         super._links?.putAll(sequenceOf(
-            "self" to Link(Uri.forSingleBoard(board.id).toString()),
-            Rels.NAVIGATION to Link(Uri.NAVIGATION_ROUTE),
-            Rels.GET_MULTIPLE_BLACKBOARDS to Link(Uri.forAllBlackboards(board.id).toString())
+                "self" to Link(Uri.forSingleBoard(board.id).toString()),
+                Rels.NAVIGATION to Link(Uri.NAVIGATION_ROUTE),
+                Rels.GET_MULTIPLE_BLACKBOARDS to Link(Uri.forAllBlackboards(board.id).toString()),
+                Rels.CREATE_BOARD to Link(Uri.forAllBoards().toString()),
+                Rels.GET_MULTIPLE_BOARDS to Link(Uri.forAllBoards().toString()),
+                Rels.EDIT_BOARD to Link(Uri.forSingleBoard(board.id).toString()),
+                Rels.DELETE_BOARD to Link(Uri.forSingleBoard(board.id).toString())
         ))
         if (board.forum != null) {
             super._links?.putAll(sequenceOf(
