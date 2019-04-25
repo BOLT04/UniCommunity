@@ -1,6 +1,7 @@
+'use strict'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { BrowserRouter, Route } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 import NavBar from './NavBar'
 import Footer from './Footer'
@@ -9,7 +10,9 @@ import CreateBoard from './CreateBoard'
 import BoardView from './board_details/BoardView'
 import BackToTopButton from './BackToTopButton'
 import Home from './home_page/Home'
+
 import CreatePost from './post/CreatePost'
+import PostDetails from './post/PostDetails'
 
 import HomeApi from '../api/HomeApi'
 
@@ -35,27 +38,31 @@ export default class App extends Component {
   }
 
   async componentDidMount() {
-    const rsp = await this.props.api.fetchHomeAsync()
-    const rspObj = await rsp.json()
+    try {
+      const rsp = await this.props.api.fetchHomeAsync()
+      const rspObj = await rsp.json()
 
-    const home = {}
-    //TODO: move this to another place: This code is coupled to hal+json bc of the links 
-    if (rspObj._links) {
-      Object
-        .keys(rspObj._links)
-        .forEach(prop => {
-          const reg = relsRegistery[prop]
+      const home = {}
+      //TODO: move this to another place: This code is coupled to hal+json bc of the links 
+      if (rspObj._links) {
+        Object
+          .keys(rspObj._links)
+          .forEach(prop => {
+            const reg = relsRegistery[prop]
 
-          if (reg) 
-            home[reg.propName] = rspObj._links[prop].href     
-        })
+            if (reg) 
+              home[reg.propName] = rspObj._links[prop].href     
+          })
+      }
+
+      if (rspObj._embedded) {
+        //todo: use this for feed
+      }
+
+      this.setState({ home })
+    } catch(e) {
+      alert('Couldn\'t contact the server')//TODO: render an error page instead of this 
     }
-
-    if (rspObj._embedded) {
-      //todo: use this for feed
-    }
-
-    this.setState({ home })
   }
 
   render() {
@@ -74,22 +81,29 @@ export default class App extends Component {
                 api={new NavBarApiImpl()} /> 
             }
 
-            <Route exact path="/login" component={Login} />
+            <Switch>
+              <Route exact path='/login' component={Login} />
+              
+              <Route exact path='/boards/new' render={props => 
+                <CreateBoard {...props} api={createBoardApi} />} 
+              />
 
-            <Route exact path="/posts/new" render={props => 
-              <CreatePost {...props} api={createBoardApi} />} 
-            />
-            
-            <Route exact path="/board/create" render={props => 
-              <CreateBoard {...props} api={createBoardApi} />} 
-            />
+              <Route exact path='/boards/:id' render={props => 
+                <BoardView {...props} />} 
+              />
 
-            <Route exact path="/board" render={props => 
-              <BoardView {...props} />} 
-            />
+{/*//TODO: The URL for CreatePost should be /boards/:id/posts/new, since its an new post in the context of a board*/}
+              <Route exact path='/posts/new' render={props => 
+                <CreatePost {...props} api={createBoardApi} />} 
+              />
+
+              <Route exact path='/boards/:boardId/posts/:postId' render={props => 
+                <PostDetails {...props} />} 
+              />
+            </Switch>
           </div>
 
-          <Route exact path="/" render={props => 
+          <Route exact path='/' render={props => 
             <Home {...props} api={this.props.api} />} 
           />
           

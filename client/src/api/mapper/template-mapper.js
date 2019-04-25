@@ -1,13 +1,14 @@
-import { itemsToModelRepr } from './common'
-
+'use strict'
+import { itemsToModelRepr } from '../../common/common'
+import { COLLECTION_JSON } from '../../common/constants'
 /**
  * 
  * @param {object} rsp Represents the response of the API that comes in HAL+JSON format.
  */
-export default async function rspToTemplatesAsync(rsp) {//TODO: maybe move these constants strings to another file. Like how its done on the server, MimeType class?
+export default async function rspToTemplatesAsync(rsp) {
     const contentType = rsp.headers.get('Content-Type')
 
-    if (contentType === 'application/vnd.collection+json') {
+    if (contentType.includes(COLLECTION_JSON)) {
         // Sanity check. In the HTTP request we sent the header Accept, so we check if the server does support it.
         const { collection: { items } } = await rsp.json()
 

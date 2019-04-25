@@ -1,9 +1,12 @@
+'use strict'
 import React, { Component } from 'react'
 import { Input, Form, TextArea, Button } from 'semantic-ui-react'
 
 import BoardTemplate from './BoardTemplate'
 
 import rspToBoardAsync from '../api/mapper/board-mapper'
+
+import routes from '../common/routes'
 
 export default class CreateBoard extends Component {
   titleVal = ""
@@ -39,18 +42,19 @@ export default class CreateBoard extends Component {
 
     // Validate user input
     // In case the user chooses neither options
-    if (this.templateId == null && this.blackboardNames.length == 0)
+    debugger
+    if (this.templateId == null && (this.blackboardNames.length == 0 && !this.hasForum))
       throw Error('please specify the modules manually or choose a template')
     
     // In case the user chooses both options
-    if (this.templateId != null && this.blackboardNames.length > 0) 
+    if (this.templateId != null && (this.blackboardNames.length > 0 || this.hasForum)) 
       throw Error('please choose only one option: choose modules manually or choose a template')
 
     const modulesObj = {}// TODO: find a better name. This object contains the optional params that go to the request body: templateId or an array of module names (string)
 
     if (this.templateId != null)
       modulesObj.templateId = this.templateId
-    else if (this.blackboardNames.length != 0) {
+    else if (this.blackboardNames.length > 0) {
       modulesObj.blackboardNames = this.blackboardNames
       modulesObj.hasForum = this.hasForum
     }
@@ -61,8 +65,13 @@ export default class CreateBoard extends Component {
     console.log(rsp)
     const board = await rspToBoardAsync(rsp)
     console.log(board)
+    
+    
+    board.id = 1 // TODO: remove when this is in server impl.
+    
+    
     debugger
-    this.props.history.push(`/board`, {board})
+    this.props.history.push(routes.getBoardUri(board.id), {board})
   }
 
 //TODO: is getting the ref of BoardTemplate and do: this.boardTemplate.updateTemplates() the best solution??
@@ -88,21 +97,7 @@ export default class CreateBoard extends Component {
         <BoardTemplate 
           ref={boardTemplate => this.boardTemplate = boardTemplate}
           api={this.props.api}
-          addToModules={moduleName => {
-            this.blackboardNames.push(moduleName)
-
-            this.boardTemplate.setState({templates: [
-              {
-                "name": "ah pois",
-                "id": 1,
-                "hasForum": true,
-                "blackboardNames": [
-                    "O STATE DE UM COMPONENTE NÃO É PRIVADO"
-                ]
-            }
-            ]})
-            console.log(this.boardTemplate.state)
-          }}
+          addToModules={moduleName => this.blackboardNames.push(moduleName)}
           updateHasForum={hasForum => this.hasForum = hasForum}
           activateTemplate= {templateId => this.templateId = templateId}
         />
