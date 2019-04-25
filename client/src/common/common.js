@@ -30,6 +30,4 @@ const baseUri = `http://${config.serverHost}:${config.serverPort}`
  * Builds the uri to use in a fetch request.
  * @param {string} relativeUrl - The relative url to be prefixed by the base uri.
  */
-export function buildUri(relativeUrl) {
-    return `${baseUri}${relativeUrl}`
-}
+export const buildUri = relativeUrl => `${baseUri}${relativeUrl}`

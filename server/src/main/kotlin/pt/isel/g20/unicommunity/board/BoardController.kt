@@ -9,6 +9,7 @@ import pt.isel.g20.unicommunity.board.model.BoardDto
 import pt.isel.g20.unicommunity.board.model.MultipleBoardsResponse
 import pt.isel.g20.unicommunity.board.model.SingleBoardResponse
 import pt.isel.g20.unicommunity.board.service.IBoardService
+import pt.isel.g20.unicommunity.hateoas.CollectionObject
 import pt.isel.g20.unicommunity.hateoas.Uri
 import pt.isel.g20.unicommunity.hateoas.Uri.BOARDS_ROUTE
 import pt.isel.g20.unicommunity.hateoas.Uri.SINGLE_BOARD_ROUTE
@@ -28,7 +29,7 @@ class BoardController(private val service: IBoardService) {
                                         .maxAge(1, TimeUnit.HOURS)
                                         .cachePrivate())
                         .eTag(it.hashCode().toString())
-                        .body(MultipleBoardsResponse(it))
+                        .body(CollectionObject(MultipleBoardsResponse(it)))
             }
 
     @GetMapping(path = [SINGLE_BOARD_ROUTE], produces = ["application/hal+json"])

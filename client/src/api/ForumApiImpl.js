@@ -33,6 +33,4 @@ export async function createForumPostsAsync(url, title, content) {
     })
 }
 
-export async function getForumPostAsync(relativeUrl) {
-    return fetch(buildUri(relativeUrl))
-}
+export const getForumPostAsync = async relativeUrl => fetch(buildUri(relativeUrl))

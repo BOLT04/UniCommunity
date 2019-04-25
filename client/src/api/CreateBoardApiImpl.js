@@ -1,4 +1,6 @@
+'use strict'
 import CreateBoardApi from './CreateBoardApi'
+import { buildUri } from '../common/common'
 
 import config from '../unicommunity-config.json'
 const baseUri = `http://${config.serverHost}:${config.serverPort}` //TODO: this is repeated in many places. Find a way to clean it.
@@ -33,6 +35,8 @@ export default class CreateBoardApiImpl extends CreateBoardApi {
   getBoardAsync = async (url) => {
     return fetch('http://localhost:8080' + url)//todo: REMOVE prefix
   }
+
+  getAllBoardsAsync = async relativeUrl => fetch(buildUri(relativeUrl))
 
   getTemplatesAsync = async (url) => {
     return fetch(url)

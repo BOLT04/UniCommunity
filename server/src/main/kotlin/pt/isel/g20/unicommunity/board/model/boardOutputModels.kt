@@ -46,5 +46,5 @@ class MultipleBoardsResponse(
                 CollectionLink("self","/http://localhost:8080/boards"),
                 CollectionLink(Rels.NAVIGATION, "/http://localhost:8080/navigation")
         ),
-        items = boards.map { Item( Uri.forSingleBoard(it.id).toString()) }
+        items = boards.map { Item( Uri.forSingleBoard(it.id).toString()) }//TODO: add more info about the board, like its name and description
 )

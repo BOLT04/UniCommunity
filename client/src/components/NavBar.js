@@ -25,20 +25,13 @@ export default class NavBar extends Component {
     navMenu: {}
   }
 */
-  async componentWillMount() {//TODO: change to make api calls in componentDidMount
+  async componentDidMount() {
     const rsp = await this.props.api.fetchNavigationMenuAsync(this.props.navMenuUrl)
     const rspObj = await rsp.json()
     const navMenu = rspObj._links
 
     this.setState({ navMenu })
   }
-
-  /*componentDidMount() {
-    console.log(`componentDidMount 1: ${this.state}`)
-    this.setState({ navMenu: 1 })
-    console.log(`componentDidMount 2: ${this.state}`)
-  }
-*/
 
   buildLinks() {
     const { navMenu } = this.state
@@ -62,8 +55,9 @@ export default class NavBar extends Component {
               pathname: reg.clientHref,
               state: { serverHref }
             }}
+            className='item'
           >
-            <button className={reg.class}>{reg.name}</button>
+            {reg.name}
           </Link>
 {/*
           <button className="ui red basic button">Logout</button>
