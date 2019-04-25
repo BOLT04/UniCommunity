@@ -1,11 +1,10 @@
-package pt.isel.g20.unicommunity.BlackboardItem.service
+package pt.isel.g20.unicommunity.blackboardItem.service
 
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import pt.isel.g20.unicommunity.blackboard.exception.NotFoundBlackboardException
 import pt.isel.g20.unicommunity.blackboardItem.exception.NotFoundBlackboardItemException
 import pt.isel.g20.unicommunity.blackboardItem.model.BlackboardItem
-import pt.isel.g20.unicommunity.blackboardItem.service.IBlackboardItemService
 import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
 import pt.isel.g20.unicommunity.repository.BlackboardItemRepository
 import pt.isel.g20.unicommunity.repository.BlackboardRepository
@@ -45,7 +44,13 @@ class BlackboardItemService(
         return newBlackboardItem
     }
 
-    override fun editBlackboardItem(boardId: Long, bbId: Long, itemId: Long, name: String?, content: String?): BlackboardItem {
+    override fun editBlackboardItem(
+            boardId: Long,
+            bbId: Long,
+            itemId: Long,
+            name: String?,
+            content: String?
+    ): BlackboardItem {
         val blackboardItem = getBlackboardItemById(boardId, bbId, itemId)
 
         if(name != null)
