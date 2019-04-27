@@ -66,6 +66,23 @@ export default class Forum extends Component {
 function ForumItem({ post, board }) {
     const boardId = board.id
 
+    function decideContent() {
+        return (
+            <List.Content style={{marginTop: 10}}>
+                {post.smallDesc !== undefined
+                    ? buildWithoutDesc() 
+                    : 
+                        <Link to={{
+                            pathname: routes.getPostDetailsUri(boardId, post.id),
+                            state: {getPostUrl: post.href}
+                        }}>
+                            <List.Header as='a'>{post.name}</List.Header>
+                        </Link>
+                }    
+            </List.Content>
+        )
+    }
+
     function buildWithoutDesc() {
         return ( 
             <Link to={{
@@ -85,16 +102,6 @@ function ForumItem({ post, board }) {
                     <ReactMarkdown source={post.smallDesc} />
                 </List.Description>
             </Link>
-        )
-    }
-    function decideContent() {
-        return (
-            <List.Content style={{marginTop: 10}}>
-                {post.smallDesc !== undefined
-                    ? buildWithoutDesc() 
-                    : <List.Header as='a'>{post.name}</List.Header>
-                }    
-            </List.Content>
         )
     }
 

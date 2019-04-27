@@ -6,7 +6,7 @@ import { List, Loader } from 'semantic-ui-react'
 
 import rspToBoardsListAsync from '../api/mapper/allBoards-mapper'
 import CreateBoardApi from '../api/CreateBoardApi'
-import BoardListItem from './BoardListItem'
+import { BoardListItem } from './BoardListItem'
 
 export default class CreateBoard extends Component {
   static propTypes = {

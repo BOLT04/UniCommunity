@@ -1,14 +1,13 @@
 'use strict'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Link } from "react-router-dom"
 
-import { Accordion, Icon, Transition, Button } from 'semantic-ui-react'
+import { Accordion, Icon, Transition } from 'semantic-ui-react'
 
 import ReactMarkdown from 'react-markdown'
 
 import Forum from './Forum'
-import CreateModuleButton from './CreateModuleButton'
+import { CreateModuleButton } from './CreateModuleButton'
 
 /**
  * This component is used to display the modules/blackboards of a Board, for example the Summary and

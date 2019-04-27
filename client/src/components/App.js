@@ -109,6 +109,8 @@ export default class App extends Component {
             </Switch>
           </div>
 
+{/*//todo: Since App.js is getting too big, a Home component will be created to substitute some features of
+//todo: this App.js, and the component below will be called HomeContent, since it displays the content of the home page (img, etc) */}
           <Route exact path='/' render={props => 
             <Home {...props} api={this.props.api} />} 
           />

@@ -13,13 +13,11 @@ import ReactMarkdown from 'react-markdown'
  * If it is then the proper component will be used to render it.
  * } 
  */
-export default function Header({ className, header, content, inMd }) {
-    return (
-        <>
-            <h4 className={className}>
-                {header}
-            </h4>
-            {inMd ? <ReactMarkdown source={content} /> : <p>{content}</p> }
-        </>
-    )
-}
+export const Header = ({ className, header, content, inMd }) => (
+    <>
+        <h4 className={className}>
+            {header}
+        </h4>
+        {inMd ? <ReactMarkdown source={content} /> : <p>{content}</p> }
+    </>
+)
