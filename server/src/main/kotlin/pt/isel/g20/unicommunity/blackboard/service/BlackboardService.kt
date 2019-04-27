@@ -30,7 +30,7 @@ class BlackboardService(
 
         val blackboard =
                 if(description != null)
-                    Blackboard(name, description, notificationLevel)
+                    Blackboard(name, notificationLevel, description)
                 else
                     Blackboard(name, notificationLevel)
 

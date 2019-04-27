@@ -17,8 +17,6 @@ class SingleBlackboardResponse(blackboard: Blackboard)
     val name : String = blackboard.name
     val description : String? = blackboard.description
     val notificationLevel: String = blackboard.notificationLevel
-
-    //TODO: TRATAR DESSE MAPEAMENTO
     val items = blackboard.items
 }
 

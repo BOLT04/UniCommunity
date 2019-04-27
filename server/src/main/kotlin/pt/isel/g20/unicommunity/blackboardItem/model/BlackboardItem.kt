@@ -1,5 +1,7 @@
 package pt.isel.g20.unicommunity.blackboardItem.model
 
+import com.fasterxml.jackson.annotation.JsonFormat
+import com.fasterxml.jackson.annotation.JsonIgnore
 import org.hibernate.annotations.CreationTimestamp
 import pt.isel.g20.unicommunity.blackboard.model.Blackboard
 import java.util.*
@@ -12,6 +14,7 @@ class BlackboardItem(
         @Column(nullable = false) var author: String
 ) {
 
+    @JsonIgnore
     @ManyToOne
     var blackboard: Blackboard? = null
 
@@ -20,6 +23,7 @@ class BlackboardItem(
     var id: Long = 0
         private set
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm:ss.SSSZ", locale = "en_GB")
     @Column
     @CreationTimestamp
     var createdAt: Date? = null

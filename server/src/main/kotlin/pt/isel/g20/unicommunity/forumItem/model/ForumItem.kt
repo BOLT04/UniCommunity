@@ -1,5 +1,6 @@
 package pt.isel.g20.unicommunity.forumItem.model
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import org.hibernate.annotations.CreationTimestamp
 import pt.isel.g20.unicommunity.forum.model.Forum
 import java.util.*
@@ -19,6 +20,7 @@ class ForumItem(
     @ManyToOne
     var forum: Forum? = null
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm:ss.SSSZ", locale = "en_GB")
     @Column
     @CreationTimestamp
     var createdAt: Date? = null
