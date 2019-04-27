@@ -1,16 +1,22 @@
+'use strict'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 
 import { Accordion, Icon, Transition, List } from 'semantic-ui-react'
 
 import ReactMarkdown from 'react-markdown'
 
+import routes from '../../common/routes'
+
 /**
- * This component is used to display the modules/blackboards of a Board, for example the Summary and
- * Announcements.
+ * This component is used to display the Forum module of a Board.
  */
 export default class Forum extends Component {
-    
+    static propTypes = {
+        board: PropTypes.object
+    }
+
     state = {
         posts: []
     }
@@ -49,17 +55,23 @@ export default class Forum extends Component {
 
         return (
             <List divided link verticalAlign='middle'>
-                {posts.map(post => <ForumItem post={post} key={post.href}/>)}      
+                { posts.map(post => 
+                    <ForumItem board={this.props.board} post={post} key={post.href} />)
+                }      
             </List>
         )
     }
 }
 
-function ForumItem({ post }) {
-    
+function ForumItem({ post, board }) {
+    const boardId = board.id
+
     function buildWithoutDesc() {
         return ( 
-            <>
+            <Link to={{
+                pathname: routes.getPostDetailsUri(boardId, post.id),
+                state: {getPostUrl: post.href}
+            }}>
                 <List.Header as='a'>
                     {post.author !== undefined &&
                         <div>
@@ -72,7 +84,7 @@ function ForumItem({ post }) {
                 <List.Description>
                     <ReactMarkdown source={post.smallDesc} />
                 </List.Description>
-            </>
+            </Link>
         )
     }
     function decideContent() {

@@ -1,5 +1,4 @@
-import React from 'react'
-import Forum from '../../components/board_details/Forum'
+'use strict'
 // Maps a response of the endpoint 'Create a Board' to the model representation of a Board in the UI.
 
 //todo: REMOVE MOCKS
@@ -8,29 +7,36 @@ import Forum from '../../components/board_details/Forum'
 import fetchForumPostsAsync from '../ForumApiImpl'
 import fetchBlackboardAsync from '../BlackBoardApiImpl'
 
-import { itemsToModelRepr } from './common'
+import { itemsToModelRepr } from '../../common/common'
+import { APPLICATION_HAL_JSON } from '../../common/constants'
 
 import relsRegistery from '../../common/rels-registery'
 
+import Board from '../../components/board_details/model/Board'
+
+import { MappingError } from '../../common/errors'
+
 /**
- * 
- * @param {object} rsp Represents the response of the API that comes in HAL+JSON format.
+ * @throws {MappingError} - Throws this exception in case the Content-Type header isn't the correct one.
+ * @returns {Board}       - The board object that represents the UI.
+ * @param {Response} rsp  - Represents the response of the API that comes in HAL+JSON format.
  */
 export default async function rspToBoardAsync(rsp) {//TODO: maybe move these constants strings to another file. Like how its done on the server
     const contentType = rsp.headers.get('Content-Type')
-    let board = {}
-
-    if (contentType.includes('application/hal+json')) {
+    
+    if (contentType.includes(APPLICATION_HAL_JSON)) {
         // Sanity check. In the HTTP request we sent the header Accept, so we check if the server does support it.
-        const body = await rsp.json()
+        const { name, description, _links, _embedded } = await rsp.json()
 
-        board.name = body.name
-        board.description = body.description
-        board.modules = { }
+        let board = {
+            name,
+            description,
+            modules: {}
+        }
 
         let forumLink
-        debugger
-        if (body._links) {//TODO: i dont know what to do here...
+      
+        if (_links) {//TODO: i dont know what to do here...
             /*
             Object.keys(body._links)
                 .forEach(prop => {
@@ -41,16 +47,13 @@ export default async function rspToBoardAsync(rsp) {//TODO: maybe move these con
             board.forumLinks = relsRegistery['/rels/forum']
             */
            const forumRel = 'http://localhost:8080/rels/getForumItems'// TODO: can this be hardcoded here?
-           if (body._links[forumRel] && relsRegistery['/rels/getForumItems']) //TODO: fix hardcoded relsRegistery[forumRel]
-               forumLink = body._links[forumRel].href
-           console.log(forumLink)
-           console.log(body._links[forumRel])
+           if (_links[forumRel] && relsRegistery['/rels/getForumItems']) //TODO: fix hardcoded relsRegistery[forumRel]
+               forumLink = _links[forumRel].href
         }
 
         // Check if the blackboards rel is present
-        debugger
-        if (body._embedded) {
-            const blackboardsArr = body._embedded['http://localhost:8080/rels/getBlackboards']
+        if (_embedded) {
+            const blackboardsArr = _embedded['http://localhost:8080/rels/getBlackboards']
             if (blackboardsArr)
                 board.modules.blackboards = await Promise.all(
                     blackboardsArr.map(async i => 
@@ -61,9 +64,11 @@ export default async function rspToBoardAsync(rsp) {//TODO: maybe move these con
 
         // Make a request to get the forum and add it to the modules array
         board.modules.forum = await fetchForumAsync(forumLink)
+
+        return board
     }
 
-    return board
+    throw new MappingError()
 }
 
 async function halItemToBlackboardItemAsync({ name, _links }) {
@@ -99,14 +104,12 @@ async function halItemToBlackboardItemAsync({ name, _links }) {
  */
 async function fetchForumAsync(forumLink) {
     //TODO: what if the self link isnt there... we need to be prepared for that and put content = [] maybe
-    console.log('forumLink is ' + forumLink)
     const rsp =  await fetchForumPostsAsync(forumLink)
     const { collection: { links, items } } = await rsp.json()
 
     debugger
-    
     const posts = items.length == 0 ? [] : itemsToModelRepr(items)
-
+    debugger
     let createPostHrefObj
     // Check if the link to create a post exists
     links.forEach(l => {

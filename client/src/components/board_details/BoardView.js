@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-
 import ModulesView from './ModulesView'
+import Header from '../Header'
 
 export default class BoardView extends Component {
   //TODO: how do I specify the entrance of the model (board) to this component? 
@@ -14,12 +14,16 @@ export default class BoardView extends Component {
   //TODO: is there a better way of passing props than below? Like BoardHearder already have access to parent 
   //props?
   render() {
+    console.log(this.props.match)
     const { board } = this.props.location.state
 
     return (
       <>
-        <h4 className="ui blue header">{board.name}</h4>
-        <p>{board.description}</p>
+        <Header 
+          className='ui blue header'
+          header={board.name}
+          content={board.description}
+        />
         <div className="ui divider"></div>
 
         <ModulesView board={board} />

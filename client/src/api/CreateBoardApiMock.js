@@ -115,16 +115,6 @@ export default class CreateBoardApiMock extends CreateBoardApi {
     return rsp
   }
 
-  /*async createBoardAsync() {//TODO: why dis no work...its the same as above😵😵😵😵
-    const rsp = new Response()
-    console.log('ooopa')
-    rsp.json = () => body
-    rsp.headers.append('Content-Type', 'application/hal+json')
-
-    console.log('ooo')
-    return rsp
-  }*/
-
   getBoardAsync = async (url) => {
     console.log(boards)
     

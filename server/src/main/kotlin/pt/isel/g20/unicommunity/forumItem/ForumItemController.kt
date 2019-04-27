@@ -4,11 +4,11 @@ import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import pt.isel.g20.unicommunity.blackBlackboard.model.MultipleForumItemsResponse
-import pt.isel.g20.unicommunity.blackBlackboard.model.SingleForumItemResponse
 import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
 import pt.isel.g20.unicommunity.forumItem.exception.NotFoundForumItemException
 import pt.isel.g20.unicommunity.forumItem.model.ForumItemDto
+import pt.isel.g20.unicommunity.forumItem.model.MultipleForumItemsResponse
+import pt.isel.g20.unicommunity.forumItem.model.SingleForumItemResponse
 import pt.isel.g20.unicommunity.forumItem.service.IForumItemService
 import pt.isel.g20.unicommunity.hateoas.CollectionObject
 import pt.isel.g20.unicommunity.hateoas.Uri
@@ -17,9 +17,10 @@ import pt.isel.g20.unicommunity.hateoas.Uri.SINGLE_FORUMITEM_ROUTE
 import java.util.concurrent.TimeUnit
 
 @RestController
+@RequestMapping(produces = ["application/hal+json", "application/json", "application/vnd.collection+json"])
 class ForumItemController(private val service: IForumItemService) {
 
-    @GetMapping(path = [FORUMITEMS_ROUTE])
+    @GetMapping(path = [FORUMITEMS_ROUTE], produces = ["application/vnd.collection+json"])
     fun getAllForumItems(@PathVariable boardId: Long) : ResponseEntity<CollectionObject> =
             service.getAllForumItems(boardId).let {
                 val rsp = CollectionObject(MultipleForumItemsResponse(boardId, it))
@@ -34,7 +35,7 @@ class ForumItemController(private val service: IForumItemService) {
                         .body(rsp)
             }
 
-    @GetMapping(path = [SINGLE_FORUMITEM_ROUTE])
+    @GetMapping(path = [SINGLE_FORUMITEM_ROUTE], produces = ["application/hal+json"])
     fun getForumItemById(@PathVariable boardId: Long, @PathVariable forumItemId: Long) =
             service.getForumItemById(boardId, forumItemId).let {
                 ResponseEntity
@@ -61,8 +62,12 @@ class ForumItemController(private val service: IForumItemService) {
                         .body(SingleForumItemResponse(it))
             }
 
-    @PutMapping(path = [SINGLE_FORUMITEM_ROUTE])
-    fun editForumItem(@PathVariable boardId: Long, @PathVariable forumItemId: Long, @RequestBody ForumItemDto: ForumItemDto) =
+    @PutMapping(path = [SINGLE_FORUMITEM_ROUTE], produces = ["application/hal+json"])
+    fun editForumItem(
+            @PathVariable boardId: Long,
+            @PathVariable forumItemId: Long,
+            @RequestBody ForumItemDto: ForumItemDto
+    ) =
             service.editForumItem(boardId, forumItemId, ForumItemDto.name, ForumItemDto.content).let {
                 ResponseEntity
                         .ok()
@@ -75,7 +80,7 @@ class ForumItemController(private val service: IForumItemService) {
             }
 
 
-    @DeleteMapping(path = [SINGLE_FORUMITEM_ROUTE])
+    @DeleteMapping(path = [SINGLE_FORUMITEM_ROUTE], produces = ["application/hal+json"])
     fun deleteForumItem(@PathVariable boardId: Long, @PathVariable forumItemId: Long) =
             service.deleteForumItem(boardId, forumItemId).let {
                 ResponseEntity

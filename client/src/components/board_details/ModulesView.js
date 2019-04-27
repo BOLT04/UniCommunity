@@ -1,3 +1,4 @@
+'use strict'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from "react-router-dom"
@@ -7,6 +8,7 @@ import { Accordion, Icon, Transition, Button } from 'semantic-ui-react'
 import ReactMarkdown from 'react-markdown'
 
 import Forum from './Forum'
+import CreateModuleButton from './CreateModuleButton'
 
 /**
  * This component is used to display the modules/blackboards of a Board, for example the Summary and
@@ -64,18 +66,7 @@ export default class ModulesView extends Component {
                     {blackboard.name}
                 </Accordion.Title>
 
-{/* <Link 
-                    to={{
-                        pathname: module.createLink.clientHref,
-                        state: {board: this.props.board}
-                    }}> */}
-
-                <Link to={blackboard.createLink.clientHref}>
-                    <Button primary icon floated='right' labelPosition='right' style={{ marginTop: -35 }} >
-                        <Icon name='plus' />
-                        Create new
-                    </Button>
-                </Link>
+                <CreateModuleButton linkToObj={blackboard.createLink.clientHref} />
 
                 <Transition visible={isActive} animation='slide down' duration={500}>
                     <Accordion.Content active={isActive}>
@@ -88,9 +79,18 @@ export default class ModulesView extends Component {
     }
 
     //TODO: remove redundant code later.
-    renderForum({ posts, createPostHrefObj }, index) {
+    renderForum(board) {
+        const { posts, createPostHrefObj } = board.modules.forum
+        
         const { activeIndex } = this.state
+        const index = board.modules.blackboards.length
         const isActive = activeIndex === index
+        
+        const linkToObj = {
+            pathname: createPostHrefObj.clientHref,
+            state: { createPostUrl: createPostHrefObj.serverHref }
+        }
+        console.log(linkToObj.pathname)
 
         return (
             <div key={index}>
@@ -99,16 +99,11 @@ export default class ModulesView extends Component {
                     Forum
                 </Accordion.Title>
 
-                <Link to={createPostHrefObj.clientHref}>
-                    <Button primary icon floated='right' labelPosition='right' style={{ marginTop: -35 }} >
-                        <Icon name='plus' />
-                        Create new
-                    </Button>
-                </Link>
+                <CreateModuleButton linkToObj={linkToObj} />
 
                 <Transition visible={isActive} animation='slide down' duration={500}>
                     <Accordion.Content active={isActive}>
-                        <Forum posts={posts}/>
+                        <Forum board={board} posts={posts}/>
                     </Accordion.Content>
                 </Transition>
             </div>
@@ -117,14 +112,16 @@ export default class ModulesView extends Component {
 
     render() {
         const { board } = this.props
-console.log(board)
+        console.log(board)
+        
         return (
             <>
                 <Accordion fluid styled exclusive={false}>
-                    {board.modules.blackboards.map(this.blackboardToAccordion)}
+                    {board.modules.blackboards != undefined &&
+                        board.modules.blackboards.map(this.blackboardToAccordion)}
 
                     {board.modules.forum != undefined &&
-                        this.renderForum(board.modules.forum, board.modules.blackboards.length)
+                        this.renderForum(board)
                     }
                 </Accordion>
             </>

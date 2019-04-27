@@ -45,6 +45,10 @@ export default class BoardTemplate extends Component {
     //this.props.templates.push()
   }
 
+  onForumChangeCheckBox = (e, { checked }) => {
+    this.props.updateHasForum(checked)
+  }
+
   templateToRow = template => {
     console.log(template)
     return (
@@ -87,7 +91,7 @@ export default class BoardTemplate extends Component {
               <Checkbox label='Anuncios' onChange={this.onChangeCheckBox} />
             </Grid.Column>
             <Grid.Column width={8}>
-              <Checkbox label='Forum' onChange={this.onChangeCheckBox} />
+              <Checkbox label='Forum' onChange={this.onForumChangeCheckBox} />
             </Grid.Column>
           </Grid.Row>
         </Grid>
@@ -106,9 +110,10 @@ export default class BoardTemplate extends Component {
     const activeElem = document.querySelector('.template-item-active')
 
     // Deactivate the current template.
-    if (activeElem)
+    if (activeElem) {
       activeElem.classList.remove('template-item-active')
-
+      templateId = null
+    }
     if (e.target !== activeElem) { // then it means the user choose another template
       e.target.classList.remove('template-item-active:hover')
       e.target.classList.add('template-item-active')

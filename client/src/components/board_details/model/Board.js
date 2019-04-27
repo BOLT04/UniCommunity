@@ -1,10 +1,11 @@
+'use strict'
 /**
- * @param {string} name - The name of the board
+ * @param {string} name        - The name of the board
  * @param {string} description - The description text of the board
- * @param {Object[]} modules - The modules array of the board. Each modules is an object with the format:
+ * @param {Object} modules     - A container object for the modules of the board. The object has the format:
  * {
  *     blackboards: Blackboard[],
- *     forumPosts: array
+ *     forum: array
  * }
  * Blackboard:
  * {

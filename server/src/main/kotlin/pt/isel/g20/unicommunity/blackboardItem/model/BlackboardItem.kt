@@ -1,13 +1,20 @@
 package pt.isel.g20.unicommunity.blackboardItem.model
 
+import com.fasterxml.jackson.annotation.JsonFormat
+import com.fasterxml.jackson.annotation.JsonIgnore
+import org.hibernate.annotations.CreationTimestamp
 import pt.isel.g20.unicommunity.blackboard.model.Blackboard
+import java.util.*
 import javax.persistence.*
 
 @Entity
 class BlackboardItem(
         @Column var name: String,
-        @Column var content: String) {
+        @Column var content: String,
+        @Column(nullable = false) var author: String
+) {
 
+    @JsonIgnore
     @ManyToOne
     var blackboard: Blackboard? = null
 
@@ -16,10 +23,15 @@ class BlackboardItem(
     var id: Long = 0
         private set
 
-    constructor() : this( 0, "", "")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm:ss.SSSZ", locale = "en_GB")
+    @Column
+    @CreationTimestamp
+    var createdAt: Date? = null
 
-    constructor(id: Long, name: String, content: String)
-            : this(name, content) {
+    constructor() : this( "", "", "Luis Vaz")
+
+    constructor(id: Long, name: String, content: String, author: String)
+            : this(name, content, author) {
         this.id = id
     }
 

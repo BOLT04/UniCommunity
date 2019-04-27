@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Link } from "react-router-dom"
+import { Link } from 'react-router-dom'
 
 import NavBarApi from '../api/NavBarApi'
 
@@ -8,7 +8,8 @@ import relsRegistery from '../common/rels-registery'
 
 export default class NavBar extends Component {
   static propTypes = {
-    api: PropTypes.instanceOf(NavBarApi)
+    api: PropTypes.instanceOf(NavBarApi),
+    navMenuUrl: PropTypes.string
   }
 
   constructor(props) {
@@ -24,17 +25,12 @@ export default class NavBar extends Component {
     navMenu: {}
   }
 */
-  async componentWillMount() {
-    const rsp = await this.props.api.fetchNavigationMenuAsync()
-    const navMenu = rsp._links
+  async componentDidMount() {
+    const rsp = await this.props.api.fetchNavigationMenuAsync(this.props.navMenuUrl)
+    const rspObj = await rsp.json()
+    const navMenu = rspObj._links
 
     this.setState({ navMenu })
-  }
-
-  componentDidMount() {
-    console.log(`componentDidMount 1: ${this.state}`)
-    this.setState({ navMenu: 1 })
-    console.log(`componentDidMount 2: ${this.state}`)
   }
 
   buildLinks() {
@@ -42,9 +38,9 @@ export default class NavBar extends Component {
 
     //TODO: right now this only supports one link with the property: "toDisplayOnRight", since it would create another div on the next link with the same prop.
     //TODO: later this probably receives an array of registeries to include multiple links on the right menu like: Search bar, Logout, Login, user profile, etc
-    function buildRightMenu(reg) {
+    function buildRightMenu(reg, serverHref) {
       return (
-        <div className="right menu">
+        <div className="right menu" key={reg.name}>
           {/*
           <div className="item">
             <div className="ui icon input">
@@ -54,8 +50,14 @@ export default class NavBar extends Component {
           </div>
           */}
 
-          <Link to={reg.clientHref}>
-            <button className={reg.class}>{reg.name}</button>
+          <Link 
+            to={{
+              pathname: reg.clientHref,
+              state: { serverHref }
+            }}
+            className='item'
+          >
+            {reg.name}
           </Link>
 {/*
           <button className="ui red basic button">Logout</button>
@@ -63,17 +65,23 @@ export default class NavBar extends Component {
         </div>
       )
     }
-
-    return Object
-      .keys(navMenu)
+    
+    return Object.keys(navMenu)
       .map((prop, index) => {// TODO: for now, the active item starts by being the first prop...this is assuming /home is the first prop
         const reg = relsRegistery[prop]
         if (reg)
           if (reg.toDisplayOnRight)
-            return buildRightMenu(reg)
+            return buildRightMenu(reg, navMenu[prop].href)
           else
             return (
-              <Link to={reg.clientHref} className={`${index == 0 ? 'active' : ''} item`}>
+              <Link 
+                key={reg.name} 
+                to={{
+                  pathname: reg.clientHref,
+                  state: { serverHref: navMenu[prop].href }
+                }}
+                className={`${index == 0 ? 'active' : ''} item`}
+              >
                 {reg.name}
               </Link>
             )

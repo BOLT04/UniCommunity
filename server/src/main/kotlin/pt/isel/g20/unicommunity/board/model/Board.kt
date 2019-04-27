@@ -7,7 +7,10 @@ import javax.persistence.*
 @Entity
 class Board(
     @Column(nullable = false) var name: String,
-    @Column var templateId: Long?,// TODO: this is probably not necessary
+
+    // TODO: Devia criar a relacao com o template e ter aqui uma referencia para o template?
+    @Column var templateId: Long?,
+
     @Column var description: String? = null
 ) {
 
