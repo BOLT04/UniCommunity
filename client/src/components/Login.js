@@ -4,7 +4,7 @@ import { Link } from "react-router-dom"
 import { Input, Form, TextArea, Button } from 'semantic-ui-react'
 import './css/Login.css'
 
-import auth from 'auth'
+import auth from './auth'
 
 export default class Login extends Component {
   

@@ -8,7 +8,11 @@ function Auth() {
 
     this.login = async relativeUrl => {
         const rsp = await fetch(buildUri(relativeUrl))
-        //todo: what is in the rsp from the API
+        //todo: what is in the rsp from the API. It should be info about the user
+        const user = {
+            username: 'Dabe'
+        }
+        this.user = user
 
         const success = true //todo: change this later
         authenticated = true
@@ -21,6 +25,7 @@ function Auth() {
         //todo: what is in the rsp from the API
 
         authenticated = false
+        this.user = null
 
         return true
     }

@@ -1,4 +1,3 @@
-'use strict'
 import React from 'react'
 
 import ReactMarkdown from 'react-markdown'
@@ -13,7 +12,7 @@ import ReactMarkdown from 'react-markdown'
  * If it is then the proper component will be used to render it.
  * } 
  */
-export const Header = ({ className, header, content, inMd }) => (
+export default  ({ className, header, content, inMd }) => (
     <>
         <h4 className={className}>
             {header}
