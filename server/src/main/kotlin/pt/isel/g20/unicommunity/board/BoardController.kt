@@ -3,6 +3,7 @@ package pt.isel.g20.unicommunity.board
 import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
 import pt.isel.g20.unicommunity.board.model.BoardDto
@@ -14,6 +15,7 @@ import pt.isel.g20.unicommunity.hateoas.Uri.BOARDS_ROUTE
 import pt.isel.g20.unicommunity.hateoas.Uri.SINGLE_BOARD_ROUTE
 import java.util.concurrent.TimeUnit
 
+@PreAuthorize("hasAnyRole('TEACHER')")
 @RestController
 class BoardController(private val service: IBoardService) {
 
