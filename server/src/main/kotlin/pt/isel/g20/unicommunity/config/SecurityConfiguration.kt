@@ -31,7 +31,7 @@ class SecurityConfiguration(val userDetailsService: CustomUserDetailsService) : 
         http.csrf()?.disable()
         http
                 .authorizeRequests()
-                .antMatchers("**/boards/**")
+                .antMatchers("**/boards/**", "**/templates/**")
                 .authenticated()
                 .anyRequest()
                 .permitAll()

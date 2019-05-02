@@ -15,7 +15,6 @@ import pt.isel.g20.unicommunity.hateoas.Uri.BOARDS_ROUTE
 import pt.isel.g20.unicommunity.hateoas.Uri.SINGLE_BOARD_ROUTE
 import java.util.concurrent.TimeUnit
 
-@PreAuthorize("hasAnyRole('TEACHER')")
 @RestController
 class BoardController(private val service: IBoardService) {
 
@@ -45,6 +44,7 @@ class BoardController(private val service: IBoardService) {
                         .body(SingleBoardResponse(it))
             }
 
+    @PreAuthorize("hasAnyRole('TEACHER')")
     @PostMapping(path = [BOARDS_ROUTE], produces = ["application/hal+json"])
     @ResponseStatus(HttpStatus.CREATED)
     fun createBoard(@RequestBody boardDto: BoardDto) =
@@ -64,6 +64,7 @@ class BoardController(private val service: IBoardService) {
                         .body(SingleBoardResponse(it))
             }
 
+    @PreAuthorize("hasAnyRole('TEACHER')")
     @PutMapping(path = [SINGLE_BOARD_ROUTE])
     fun editBoard(@PathVariable boardId: Long, @RequestBody boardDto: BoardDto) =
             service.editBoard(boardId, boardDto.name, boardDto.description).let {
@@ -77,7 +78,7 @@ class BoardController(private val service: IBoardService) {
                         .body(SingleBoardResponse(it))
             }
 
-
+    @PreAuthorize("hasAnyRole('TEACHER')")
     @DeleteMapping(path = [SINGLE_BOARD_ROUTE])
     fun deleteBoard(@PathVariable boardId: Long) =
             service.deleteBoard(boardId).let {

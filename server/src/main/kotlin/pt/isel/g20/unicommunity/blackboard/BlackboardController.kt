@@ -3,6 +3,7 @@ package pt.isel.g20.unicommunity.blackboard
 import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import pt.isel.g20.unicommunity.blackboard.model.MultipleBlackboardsResponse
 import pt.isel.g20.unicommunity.blackboard.model.SingleBlackboardResponse
@@ -44,6 +45,7 @@ class BlackboardController(private val service: IBlackboardService) {
                         .body(SingleBlackboardResponse(it))
             }
 
+    @PreAuthorize("hasAnyRole('TEACHER')")
     @PostMapping(path = [BLACKBOARDS_ROUTE], produces = ["application/hal+json"])
     @ResponseStatus(HttpStatus.CREATED)
     fun createBlackboard(@PathVariable boardId: Long, @RequestBody blackboardDto: BlackboardDto) =
@@ -58,6 +60,7 @@ class BlackboardController(private val service: IBlackboardService) {
                         .body(SingleBlackboardResponse(it))
             }
 
+    @PreAuthorize("hasAnyRole('TEACHER')")
     @PutMapping(path = [SINGLE_BLACKBOARD_ROUTE])
     fun editBlackboard(@PathVariable boardId: Long, @PathVariable bbId: Long, @RequestBody blackboardDto: BlackboardDto) =
             service.editBlackboard(boardId, bbId, blackboardDto.name, blackboardDto.notificationLevel, blackboardDto.description).let {
@@ -71,7 +74,7 @@ class BlackboardController(private val service: IBlackboardService) {
                         .body(SingleBlackboardResponse(it))
             }
 
-
+    @PreAuthorize("hasAnyRole('TEACHER')")
     @DeleteMapping(path = [SINGLE_BLACKBOARD_ROUTE])
     fun deleteBlackboard(@PathVariable boardId: Long, @PathVariable bbId: Long) =
             service.deleteBlackboard(boardId, bbId).let {
