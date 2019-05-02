@@ -114,6 +114,7 @@ export default class App extends Component {
           <Route exact path='/' render={props => 
             <Home {...props} api={this.props.api} />} 
           />
+           <Route exact path='*' component={() => '404 NOT FOUND. Please visit the Home page at: /'} />
           
           {
           <Footer />

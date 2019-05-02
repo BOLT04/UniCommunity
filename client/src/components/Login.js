@@ -4,6 +4,8 @@ import { Link } from "react-router-dom"
 import { Input, Form, TextArea, Button } from 'semantic-ui-react'
 import './css/Login.css'
 
+import auth from 'auth'
+
 export default class Login extends Component {
   
   constructor() {
@@ -11,10 +13,19 @@ export default class Login extends Component {
     this.passVal = ''
     this.onUsernameChange = this.onChangeInput.bind(this, 'usernameVal')
     this.onPasswordChange = this.onChangeInput.bind(this, 'passVal')
+
+    this.state = {}
   }
 
   onChangeInput(propName, e) {
     this[propName] = e.target.value
+  }
+
+  submitLoginHandler = e => {
+    if (auth.login())
+      this.props.location.push('/') // Redirect to home page
+    else
+      this.setState({})// todo: finish
   }
 
   render() {
@@ -65,13 +76,17 @@ export default class Login extends Component {
                   <input type="password" name="password" placeholder="Password" />
                 </div>
               </div>
-              <div className="ui fluid large teal submit button">Login</div>
+              <div className="ui fluid large teal submit button" onClick={this.submitLoginHandler}>
+              Login
+              </div>
             </div>
           </form>
+        </div>
 
-          <div className="ui message">
-            New to us?
-            <Link to="/signup" className="item"> Sign up</Link>
+        <div class="ui negative message">
+          <i class="close icon"></i>
+          <div class="header">
+            Your credentials are wrong
           </div>
         </div>
       </div>
