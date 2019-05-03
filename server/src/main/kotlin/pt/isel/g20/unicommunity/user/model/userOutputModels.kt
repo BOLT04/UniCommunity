@@ -15,6 +15,7 @@ class SingleUserResponse(user: User)
 ){
     val name : String = user.name
     val email : String = user.email
+    val role : String = user.role
     val githubId : String? = user.githubId
 }
 

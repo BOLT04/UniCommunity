@@ -3,6 +3,7 @@ package pt.isel.g20.unicommunity.template
 import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import pt.isel.g20.unicommunity.hateoas.Uri
 import pt.isel.g20.unicommunity.hateoas.Uri.SINGLE_TEMPLATE_ROUTE
@@ -19,6 +20,7 @@ import java.util.concurrent.TimeUnit
 @RequestMapping(produces = ["application/hal+json", "application/json", "application/vnd.collection+json"])
 class TemplateController(private val service: ITemplateService) {
 
+    @PreAuthorize("hasAnyRole('TEACHER')")
     @GetMapping(path = [TEMPLATES_ROUTE], produces = ["application/json"])
     fun getAllTemplates() =
             service.getAllTemplates().let {
@@ -33,7 +35,8 @@ class TemplateController(private val service: ITemplateService) {
                         .body(templates)
             }
 
-    @GetMapping(path = [SINGLE_TEMPLATE_ROUTE], produces = ["application/json"])
+    @PreAuthorize("hasAnyRole('TEACHER')")
+    @GetMapping(path = [SINGLE_TEMPLATE_ROUTE])
     fun getTemplateById(@PathVariable templateId: Long) =
             service.getTemplateById(templateId).let {
                 val singleTemplateResponse = SingleTemplateResponse(it)
@@ -48,7 +51,8 @@ class TemplateController(private val service: ITemplateService) {
                         .body(singleTemplateResponse)
             }
 
-    @PostMapping(path = [TEMPLATES_ROUTE], produces = ["application/json"])
+    @PreAuthorize("hasAnyRole('TEACHER')")
+    @PostMapping(path = [TEMPLATES_ROUTE], produces = ["application/hal+json"])
     @ResponseStatus(HttpStatus.CREATED)
     fun createTemplate(@RequestBody templateDto: TemplateDto) =
             service.createTemplate(templateDto.name, templateDto.hasForum, templateDto.blackboardNames).let {
@@ -64,7 +68,8 @@ class TemplateController(private val service: ITemplateService) {
                         .body(singleTemplateResponse)
             }
 
-    @PutMapping(path = [SINGLE_TEMPLATE_ROUTE], produces = ["application/json"])
+    @PreAuthorize("hasAnyRole('TEACHER')")
+    @PutMapping(path = [SINGLE_TEMPLATE_ROUTE])
     fun editTemplate(@PathVariable templateId: Long, @RequestBody templateDto: TemplateDto) =
             service.editTemplate(templateId, templateDto.hasForum, templateDto.blackboardNames).let {
                 val singleTemplateResponse = SingleTemplateResponse(it)
@@ -79,8 +84,8 @@ class TemplateController(private val service: ITemplateService) {
                         .body(singleTemplateResponse)
             }
 
-
-    @DeleteMapping(path = [SINGLE_TEMPLATE_ROUTE], produces = ["application/json"])
+    @PreAuthorize("hasAnyRole('TEACHER')")
+    @DeleteMapping(path = [SINGLE_TEMPLATE_ROUTE])
     fun deleteTemplate(@PathVariable templateId: Long) =
             service.deleteTemplate(templateId).let {
                 val singleTemplateResponse = SingleTemplateResponse(it)

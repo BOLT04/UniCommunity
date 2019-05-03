@@ -7,4 +7,6 @@ import javax.transaction.Transactional
 
 @Repository
 @Transactional
-interface UserRepository : CrudRepository<User, Long>
+interface UserRepository : CrudRepository<User, Long> {
+    fun findByName(username: String?): User?
+}

@@ -3,6 +3,7 @@ package pt.isel.g20.unicommunity.blackboardItem
 import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import pt.isel.g20.unicommunity.blackboard.exception.NotFoundBlackboardException
 import pt.isel.g20.unicommunity.blackboardItem.exception.NotFoundBlackboardItemException
@@ -50,6 +51,7 @@ class BlackboardItemController(private val service: IBlackboardItemService) {
                         .body(SingleBlackboardItemResponse(it))
             }
 
+    @PreAuthorize("hasAnyRole('TEACHER')")
     @PostMapping(path = [BLACKBOARDITEMS_ROUTE], produces = ["application/hal+json"])
     @ResponseStatus(HttpStatus.CREATED)
     fun createBlackboardItem(
@@ -68,6 +70,7 @@ class BlackboardItemController(private val service: IBlackboardItemService) {
                         .body(SingleBlackboardItemResponse(it))
             }
 
+    @PreAuthorize("hasAnyRole('TEACHER')")
     @PutMapping(path = [SINGLE_BLACKBOARDITEM_ROUTE], produces = ["application/hal+json"])
     fun editBlackboardItem(
             @PathVariable boardId: Long,
@@ -75,24 +78,20 @@ class BlackboardItemController(private val service: IBlackboardItemService) {
             @PathVariable itemId: Long,
             @RequestBody itemDto: BlackboardItemDto
     ) =
-            service.editBlackboardItem(boardId, bbId, itemId, itemDto.name, itemDto.content).let {
-                ResponseEntity
-                        .ok()
-                        .cacheControl(
-                                CacheControl
-                                        .maxAge(1, TimeUnit.HOURS)
-                                        .cachePrivate())
-                        .eTag(it.hashCode().toString())
-                        .body(SingleBlackboardItemResponse(it))
-            }
+        service.editBlackboardItem(boardId, bbId, itemId, itemDto.name, itemDto.content).let {
+            ResponseEntity
+                    .ok()
+                    .cacheControl(
+                            CacheControl
+                                    .maxAge(1, TimeUnit.HOURS)
+                                    .cachePrivate())
+                    .eTag(it.hashCode().toString())
+                    .body(SingleBlackboardItemResponse(it))
+        }
 
-
-    @DeleteMapping(path = [SINGLE_BLACKBOARDITEM_ROUTE], produces = ["application/hal+json"])
-    fun deleteBlackboardItem(
-            @PathVariable boardId: Long,
-            @PathVariable bbId: Long,
-            @PathVariable itemId: Long
-    ) =
+    @PreAuthorize("hasAnyRole('TEACHER')")
+    @DeleteMapping(path = [SINGLE_BLACKBOARDITEM_ROUTE])
+    fun deleteBlackboardItem(@PathVariable boardId: Long, @PathVariable bbId: Long, @PathVariable itemId: Long) =
             service.deleteBlackboardItem(boardId, bbId, itemId).let {
                 ResponseEntity
                         .ok()
@@ -103,7 +102,6 @@ class BlackboardItemController(private val service: IBlackboardItemService) {
                         .eTag(it.hashCode().toString())
                         .body(SingleBlackboardItemResponse(it))
             }
-
 
     @ExceptionHandler
     fun handleNotFoundBlackboardItemException(e: NotFoundBlackboardItemException) =

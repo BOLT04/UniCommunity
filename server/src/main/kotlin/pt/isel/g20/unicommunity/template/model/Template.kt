@@ -2,7 +2,7 @@ package pt.isel.g20.unicommunity.template.model
 
 import javax.persistence.*
 
-@Entity
+@Entity(name = "templates")
 class Template(
         @Column(nullable = false) var name: String,
         @Column var hasForum: Boolean,

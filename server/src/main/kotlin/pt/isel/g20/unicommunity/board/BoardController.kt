@@ -3,6 +3,7 @@ package pt.isel.g20.unicommunity.board
 import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
 import pt.isel.g20.unicommunity.board.model.BoardDto
@@ -45,6 +46,7 @@ class BoardController(private val service: IBoardService) {
                         .body(SingleBoardResponse(it))
             }
 
+    @PreAuthorize("hasAnyRole('TEACHER')")
     @PostMapping(path = [BOARDS_ROUTE], produces = ["application/hal+json"])
     @ResponseStatus(HttpStatus.CREATED)
     fun createBoard(@RequestBody boardDto: BoardDto) =
@@ -64,7 +66,8 @@ class BoardController(private val service: IBoardService) {
                         .body(SingleBoardResponse(it))
             }
 
-    @PutMapping(path = [SINGLE_BOARD_ROUTE], produces = ["application/hal+json"])
+    @PreAuthorize("hasAnyRole('TEACHER')")
+    @PutMapping(path = [SINGLE_BOARD_ROUTE])
     fun editBoard(@PathVariable boardId: Long, @RequestBody boardDto: BoardDto) =
             service.editBoard(boardId, boardDto.name, boardDto.description).let {
                 ResponseEntity
@@ -77,8 +80,8 @@ class BoardController(private val service: IBoardService) {
                         .body(SingleBoardResponse(it))
             }
 
-
-    @DeleteMapping(path = [SINGLE_BOARD_ROUTE], produces = ["application/hal+json"])
+    @PreAuthorize("hasAnyRole('TEACHER')")
+    @DeleteMapping(path = [SINGLE_BOARD_ROUTE])
     fun deleteBoard(@PathVariable boardId: Long) =
             service.deleteBoard(boardId).let {
                 ResponseEntity
