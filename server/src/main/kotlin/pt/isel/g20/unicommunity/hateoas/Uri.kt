@@ -109,6 +109,23 @@ object Uri {
     fun forSingleForumItem(boardId: Long, forumItemId: Long) =
             singleForumItemTemplate.expand(boardId, forumItemId)
 
+// COMMENTS
+
+    //Paths
+    const val COMMENTS_ROUTE = "$SINGLE_FORUMITEM_ROUTE/comments"
+    const val SINGLE_COMMENT_ROUTE = "$COMMENTS_ROUTE/{commentId}"
+
+    //Templates
+    private val singleCommentTemplate = UriTemplate(SINGLE_COMMENT_ROUTE)
+    private val multipleCommentsTemplate = UriTemplate(COMMENTS_ROUTE)
+
+    //Getters
+    fun forAllComments(boardId: Long, forumItemId: Long) =
+            multipleCommentsTemplate.expand(boardId, forumItemId)
+
+    fun forSingleComment(boardId: Long, forumItemId: Long, commentId: Long) =
+            singleCommentTemplate.expand(boardId, forumItemId, commentId)
+
 
 //TEMPLATES
 

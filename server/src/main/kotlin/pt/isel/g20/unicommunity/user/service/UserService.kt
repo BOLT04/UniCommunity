@@ -20,9 +20,9 @@ class UserService(val usersRepo: UserRepository) : IUserService {
 
         val user =
                 if(githubId != null)
-                    User(name, email, password, githubId)
+                    User(name, email, password, "TEACHER", githubId)
                 else
-                    User(name, email, password)
+                    User(name, email, "TEACHER", password)
 
         return usersRepo.save(user)
     }
@@ -44,7 +44,7 @@ class UserService(val usersRepo: UserRepository) : IUserService {
             user.name = name
 
         if(password != null)
-            user.password = password
+            user.pw = password
 
         if(githubId != null)
             user.githubId = password

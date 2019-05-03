@@ -28,6 +28,12 @@ object Rels {
     const val EDIT_FORUMITEM = "$RELS_PREFIX/editForumItem"
     const val DELETE_FORUMITEM = "$RELS_PREFIX/deleteForumItem"
 
+    const val CREATE_COMMENT = "$RELS_PREFIX/createComment"
+    const val GET_SINGLE_COMMENT = "$RELS_PREFIX/getComment"
+    const val GET_MULTIPLE_COMMENTS = "$RELS_PREFIX/getComments"
+    const val EDIT_COMMENT = "$RELS_PREFIX/editComment"
+    const val DELETE_COMMENT = "$RELS_PREFIX/deleteComment"
+
     const val CREATE_BLACKBOARD = "$RELS_PREFIX/createBlackboard"
     const val GET_SINGLE_BLACKBOARD = "$RELS_PREFIX/getBlackboard"
     const val GET_MULTIPLE_BLACKBOARDS = "$RELS_PREFIX/getBlackboards"
