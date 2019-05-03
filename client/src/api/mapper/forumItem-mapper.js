@@ -13,44 +13,72 @@ import ForumItem from '../../components/post/model/ForumItem'
  * @param {object} rsp    - Represents the response of the API that comes in HAL+JSON format.
  */
 export default async function rspToForumItemAsync(rsp) {
+    // TODO: also validate status code and other headers and info about the response!
     const contentType = rsp.headers.get('Content-Type')
     
     if (contentType.includes(APPLICATION_HAL_JSON)) {
         // Sanity check. In the HTTP request we sent the header Accept, so we check if the server does support it.
         const { name, content, author, createdAt, ...body } = await rsp.json()
-
+//TODO: validate if the response indeed comes with all the intended data, or else throw an exception ResponseBodyException!
         let forumItemArgs = []
         forumItemArgs.push(name)
         forumItemArgs.push(content)
         forumItemArgs.push(author)
         forumItemArgs.push(createdAt)
-
-        let boardLink
-        //let createCommentLink
-        //let getAllCommentLink
       
+        let links
         if (body._links) {//TODO: i dont know what to do here...
-            /*
-            Object.keys(body._links)
-                .forEach(prop => {
+            // Filter by the links know by the client (present in registery)
+            // then map all to an object will the properties defined in the registry object
+            // plus the URL included in the link of the body
+            links = Object
+                .keys(body._links)
+                .filter(prop => relsRegistery[prop]) 
+                .map(prop => {
                     const relObj = relsRegistery[prop]
-                    if (relObj)
-                        relObj.serverHref = body._links[prop].href
+                    return {
+                        ...relObj,
+                        serverHref: body._links[prop].href
+                    }
                 })
-            board.forumLinks = relsRegistery['/rels/forum']
-            */
-           const boardRel = '/rels/getBoard'
-           if (body._links[boardRel] && relsRegistery[boardRel])
-            boardLink = body._links[boardRel].href
         }
 
-        //TODO: impl. this when the server supports embedded
+        let comments
         // Check if the comments rel is present
         if (body._embedded) {
-             
+            const commentsArr = _embedded['/rels/getComments']
+            if (commentsArr)
+                comments = await Promise.all(
+                    blackboardsArr.map(async i => 
+                        await halItemToBlackboardItemAsync(i)  
+                    )
+                )
         }
 
-        return new ForumItem(...forumItemArgs)
+        //TODO: could this creation of forumItem with ifs be cleaner?
+        /*
+        above we say (line 24)
+        const forumItemAux= { }
+
+        then line 34 = forumItemAux.links=....
+        then line 51 = forumItemAux.comments=....
+
+        now 
+        return {
+            ...new ForumItem(...forumItemargs)
+            ...forumItemAux
+        }
+        The problem might be that this object is not constructed with ForumItem so instanceOf is false.... :(
+        */
+        const forumItem = new ForumItem(...forumItemArgs)
+        //TODO:forumItem = {...forumItem, ...forumItemAux} maybe this????
+        if (links)
+            forumItem.links = links
+
+        if (comments)
+            forumItem.comments = comments 
+        
+        return forumItem
     }
 
     throw new MappingError()

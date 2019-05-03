@@ -1,19 +1,26 @@
 import React, { Component } from 'react'
 
-import { Button, Form, Header } from 'semantic-ui-react'
+import { Header } from 'semantic-ui-react'
 
 import { Comment } from './Comment'
-import auth from '../auth'
 
 import asyncCollectionRspToList from '../../api/mapper/collectionJson-mapper'
 import { asyncFetch } from '../../api/ForumApiImpl'
 
 export default class Comments extends Component {
 
-    state = { }
+    constructor(props) {
+        super(props)
+
+        this.state = { }
+        if (props.comments) // In case the parent component already has fetched the comments.
+            this.state.comments = props.comments
+    }
 
     async componentDidMount() {
-        const rsp = await asyncFetch(this.props.location.state.getPostCommentsUrl)
+        if (this.props.comments) return
+
+        const rsp = await asyncFetch(this.props.serverUrl)
         const comments = await asyncCollectionRspToList(rsp)
         console.log(comments)
 

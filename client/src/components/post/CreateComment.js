@@ -26,7 +26,7 @@ export default class CreateComment extends Component {
     
         // TODO: is there a way to easily document that this component receives this.props.location.state.serverHref
         //todo: from the Link component used in NavBar.js available in React router?
-        const rsp = await this.props.api.createCommentAsync(this.props.location.state.serverHref, this.commentText)
+        const rsp = await this.props.api.createCommentAsync(this.props.serverUrl, this.commentText)
         console.log(rsp)
         const comment = await rspToCommentAsync(rsp)
     

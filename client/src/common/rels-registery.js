@@ -16,6 +16,10 @@ const relsRegistery = {
     'http://localhost:8080/rels/createForumItem': {
         clientHref: '/posts/new'
     },
+    '/rels/createComment': {
+    },
+    '/rels/getComments': {
+    },
     'http://localhost:8080/rels/getBoards': {//TODO: take out prefix localhost....
         clientHref: '/boards',
         name: 'All Boards'

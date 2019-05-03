@@ -36,6 +36,8 @@ export default class PostDetails extends Component {
     }
 
     render() {
+        const { post, loading } = this.state
+
         //TODO: if this gets too big consider making a functional component for it, receiving 'post obj' as a prop
         const renderPost = () => (
             <Segment>
@@ -48,7 +50,7 @@ export default class PostDetails extends Component {
                 />
 
                 <br />
-                <CreateComment />
+                <CreateComment serverUrl={post.links.createComment}/>
 
                 <Divider horizontal>
                     <SemanticHeader as='h4'>
@@ -56,11 +58,13 @@ export default class PostDetails extends Component {
                         Comments
                     </SemanticHeader>
                 </Divider>
-                <Comments />
+                <Comments 
+                    comments={post.comments}
+                    serverUrl={post.links.getForumPostComments}
+                />
             </Segment>
         )
 
-        const { post, loading } = this.state
         console.log(this.props)
         console.log(post)
         return (

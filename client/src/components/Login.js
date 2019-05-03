@@ -22,7 +22,7 @@ export default class Login extends Component {
   }
 
   submitLoginHandler = e => {
-    if (auth.login())
+    if (auth.login(this.props.location.state.serverHref, this.usernameVal, this.passVal))
       this.props.location.push('/') // Redirect to home page
     else
       this.setState({})// todo: finish
