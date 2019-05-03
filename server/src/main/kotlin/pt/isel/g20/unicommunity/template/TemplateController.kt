@@ -17,10 +17,11 @@ import pt.isel.g20.unicommunity.template.service.ITemplateService
 import java.util.concurrent.TimeUnit
 
 @RestController
+@RequestMapping(produces = ["application/hal+json", "application/json", "application/vnd.collection+json"])
 class TemplateController(private val service: ITemplateService) {
 
     @PreAuthorize("hasAnyRole('TEACHER')")
-    @GetMapping(path = [TEMPLATES_ROUTE])
+    @GetMapping(path = [TEMPLATES_ROUTE], produces = ["application/json"])
     fun getAllTemplates() =
             service.getAllTemplates().let {
                 val templates = it.map { SingleTemplateResponse(it) }
@@ -82,7 +83,6 @@ class TemplateController(private val service: ITemplateService) {
                         .eTag(singleTemplateResponse.hashCode().toString())
                         .body(singleTemplateResponse)
             }
-
 
     @PreAuthorize("hasAnyRole('TEACHER')")
     @DeleteMapping(path = [SINGLE_TEMPLATE_ROUTE])

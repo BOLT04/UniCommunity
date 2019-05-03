@@ -84,8 +84,15 @@ data class CollectionLink @JsonCreator constructor(
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Item(
         val href: String,
-        //TODO:val data: Array
+        val data: List<Data>? = null,
         val links: List<CollectionLink>? = null
+)
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+data class Data(
+    val name: String,
+    val value: String? = null,// TODO: change the type from string to Value. According to the specification it can be string or number or boolean: A VALUE data type MUST be a NUMBER, STRING, or one of the following literal names: false, null, or true.
+    val prompt: String? = null
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)

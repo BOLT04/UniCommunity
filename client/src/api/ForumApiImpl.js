@@ -1,3 +1,6 @@
+'use strict'
+import { buildUri } from '../common/common'
+
 /**
  * Returns an array of Small Forum Posts response object. Format:
  * {
@@ -21,7 +24,7 @@ export async function createForumPostsAsync(url, title, content) {
         content
     }
 
-    return await fetch(url, {
+    return fetch(url, {
         method: 'post',
         headers: {
             "Content-Type": "application/json"
@@ -29,3 +32,5 @@ export async function createForumPostsAsync(url, title, content) {
         body: JSON.stringify(body)
     })
 }
+
+export const asyncFetch = async relativeUrl => fetch(buildUri(relativeUrl))

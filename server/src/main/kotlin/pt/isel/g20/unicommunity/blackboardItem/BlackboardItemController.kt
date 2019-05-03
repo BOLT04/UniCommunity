@@ -18,9 +18,10 @@ import pt.isel.g20.unicommunity.hateoas.Uri.SINGLE_BLACKBOARDITEM_ROUTE
 import java.util.concurrent.TimeUnit
 
 @RestController
+@RequestMapping(produces = ["application/hal+json", "application/json", "application/vnd.collection+json"])
 class BlackboardItemController(private val service: IBlackboardItemService) {
 
-    @GetMapping(path = [BLACKBOARDITEMS_ROUTE])
+    @GetMapping(path = [BLACKBOARDITEMS_ROUTE], produces = ["application/vnd.collection+json"])
     fun getAllBlackboardItems(@PathVariable boardId: Long, @PathVariable bbId: Long) =
             service.getAllBlackboardItems(boardId, bbId).let {
                 ResponseEntity
@@ -33,8 +34,12 @@ class BlackboardItemController(private val service: IBlackboardItemService) {
                         .body(MultipleBlackboardItemsResponse(boardId, bbId, it))
             }
 
-    @GetMapping(path = [SINGLE_BLACKBOARDITEM_ROUTE])
-    fun getBlackboardItemById(@PathVariable boardId: Long, @PathVariable bbId: Long, @PathVariable itemId: Long) =
+    @GetMapping(path = [SINGLE_BLACKBOARDITEM_ROUTE], produces = ["application/hal+json"])
+    fun getBlackboardItemById(
+            @PathVariable boardId: Long,
+            @PathVariable bbId: Long,
+            @PathVariable itemId: Long
+    ) =
             service.getBlackboardItemById(boardId, bbId, itemId).let {
                 ResponseEntity
                         .ok()
@@ -49,7 +54,11 @@ class BlackboardItemController(private val service: IBlackboardItemService) {
     @PreAuthorize("hasAnyRole('TEACHER')")
     @PostMapping(path = [BLACKBOARDITEMS_ROUTE], produces = ["application/hal+json"])
     @ResponseStatus(HttpStatus.CREATED)
-    fun createBlackboardItem(@PathVariable boardId: Long, @PathVariable bbId: Long, @RequestBody itemDto: BlackboardItemDto) =
+    fun createBlackboardItem(
+            @PathVariable boardId: Long,
+            @PathVariable bbId: Long,
+            @RequestBody itemDto: BlackboardItemDto
+    ) =
             service.createBlackboardItem(boardId, bbId, itemDto.name, itemDto.content).let {
                 ResponseEntity
                         .created(Uri.forSingleBlackboardItem(it.blackboard!!.board!!.id, it.blackboard!!.id, it.id))
@@ -62,19 +71,23 @@ class BlackboardItemController(private val service: IBlackboardItemService) {
             }
 
     @PreAuthorize("hasAnyRole('TEACHER')")
-    @PutMapping(path = [SINGLE_BLACKBOARDITEM_ROUTE])
-    fun editBlackboardItem(@PathVariable boardId: Long, @PathVariable bbId: Long, @PathVariable itemId: Long, @RequestBody itemDto: BlackboardItemDto) =
-            service.editBlackboardItem(boardId, bbId, itemId, itemDto.name, itemDto.content).let {
-                ResponseEntity
-                        .ok()
-                        .cacheControl(
-                                CacheControl
-                                        .maxAge(1, TimeUnit.HOURS)
-                                        .cachePrivate())
-                        .eTag(it.hashCode().toString())
-                        .body(SingleBlackboardItemResponse(it))
-            }
-
+    @PutMapping(path = [SINGLE_BLACKBOARDITEM_ROUTE], produces = ["application/hal+json"])
+    fun editBlackboardItem(
+            @PathVariable boardId: Long,
+            @PathVariable bbId: Long,
+            @PathVariable itemId: Long,
+            @RequestBody itemDto: BlackboardItemDto
+    ) =
+        service.editBlackboardItem(boardId, bbId, itemId, itemDto.name, itemDto.content).let {
+            ResponseEntity
+                    .ok()
+                    .cacheControl(
+                            CacheControl
+                                    .maxAge(1, TimeUnit.HOURS)
+                                    .cachePrivate())
+                    .eTag(it.hashCode().toString())
+                    .body(SingleBlackboardItemResponse(it))
+        }
 
     @PreAuthorize("hasAnyRole('TEACHER')")
     @DeleteMapping(path = [SINGLE_BLACKBOARDITEM_ROUTE])
@@ -89,7 +102,6 @@ class BlackboardItemController(private val service: IBlackboardItemService) {
                         .eTag(it.hashCode().toString())
                         .body(SingleBlackboardItemResponse(it))
             }
-
 
     @ExceptionHandler
     fun handleNotFoundBlackboardItemException(e: NotFoundBlackboardItemException) =

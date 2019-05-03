@@ -6,7 +6,11 @@ class SingleUserResponse(user: User)
     : HalObject(
         mutableMapOf(
                 "self" to Link(Uri.forSingleUser(user.id).toString()),
-                Rels.GET_MULTIPLE_USERS to Link(Uri.forAllUsers().toString())
+                Rels.NAVIGATION to Link(Uri.NAVIGATION_ROUTE),
+                Rels.CREATE_USER to Link(Uri.forAllUsers().toString()),
+                Rels.GET_MULTIPLE_USERS to Link(Uri.forAllUsers().toString()),
+                Rels.EDIT_USER to Link(Uri.forSingleUser(user.id).toString()),
+                Rels.DELETE_USER to Link(Uri.forSingleUser(user.id).toString())
         )
 ){
     val name : String = user.name

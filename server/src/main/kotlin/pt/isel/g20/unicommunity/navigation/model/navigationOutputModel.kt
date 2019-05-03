@@ -5,7 +5,7 @@ import pt.isel.g20.unicommunity.hateoas.Link
 import pt.isel.g20.unicommunity.hateoas.Rels
 import pt.isel.g20.unicommunity.hateoas.Uri
 
-class NavigationResponse()
+class NavigationResponse
     : HalObject(
         mutableMapOf(
                 "self" to Link("/"),
@@ -13,14 +13,17 @@ class NavigationResponse()
                 Rels.LOGOUT to Link("/logout"),
                 Rels.USER_PROFILE to Link("/profile"),
                 Rels.MY_BOARDS to Link("/myBoards"),
-                Rels.GET_MULTIPLE_BOARDS to Link(Uri.forAllBoards().toString())
+                Rels.GET_MULTIPLE_BOARDS to Link(Uri.forAllBoards().toString()),
+                Rels.CREATE_BOARD to Link(Uri.forAllBoards().toString())
         )
 )
 
-class HomeResponse()
+class HomeResponse
     : HalObject(
         mutableMapOf(
                 "self" to Link("/home"),
-                Rels.GET_MULTIPLE_BOARDS to Link("/boards")
+                Rels.GET_SINGLE_BOARD to Link("/boards"),
+                Rels.GET_MULTIPLE_BOARDS to Link("/boards/{boardId}"),
+                Rels.NAVIGATION to Link(Uri.NAVIGATION_ROUTE)
         )
 )

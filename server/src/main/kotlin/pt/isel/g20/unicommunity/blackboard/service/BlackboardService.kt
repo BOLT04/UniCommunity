@@ -14,7 +14,8 @@ class BlackboardService(
         val blackboardsRepo: BlackboardRepository,
         val boardsRepo: BoardRepository
 ) : IBlackboardService {
-    override fun getAllBlackboards(boardId: Long): Iterable<Blackboard> = blackboardsRepo.findAll()
+    override fun getAllBlackboards(boardId: Long): Iterable<Blackboard> =
+            boardsRepo.findByIdOrNull(boardId)?.blackBoards ?: throw NotFoundBoardException()
 
     override fun getBlackboardById(boardId: Long, bbId: Long) =
             blackboardsRepo.findByIdOrNull(bbId) ?: throw NotFoundBlackboardException()
