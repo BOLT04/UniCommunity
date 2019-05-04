@@ -1,5 +1,6 @@
 package pt.isel.g20.unicommunity.user.service
 
+import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
 import pt.isel.g20.unicommunity.user.exception.InvalidUserEmailException
 import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
 import pt.isel.g20.unicommunity.user.model.User

@@ -31,6 +31,7 @@ object Uri {
     //Paths
     const val BOARDS_ROUTE = "/boards"
     const val SINGLE_BOARD_ROUTE = "$BOARDS_ROUTE/{boardId}"
+    const val BOARD_MEMBERS = "$SINGLE_BOARD_ROUTE/members"
 
     //Templates
     private val singleBoardTemplate = UriTemplate(SINGLE_BOARD_ROUTE)

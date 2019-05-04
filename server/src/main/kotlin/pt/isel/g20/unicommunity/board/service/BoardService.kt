@@ -9,8 +9,10 @@ import pt.isel.g20.unicommunity.board.model.Board
 import pt.isel.g20.unicommunity.forum.service.IForumService
 import pt.isel.g20.unicommunity.repository.BoardRepository
 import pt.isel.g20.unicommunity.repository.TemplateRepository
+import pt.isel.g20.unicommunity.repository.UserRepository
 import pt.isel.g20.unicommunity.template.exception.NotFoundTemplateException
 import pt.isel.g20.unicommunity.template.service.TemplateService
+import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
 
 @Service
 class BoardService(
@@ -18,7 +20,8 @@ class BoardService(
         val templatesRepo: TemplateRepository,
         val forumService: IForumService,
         val blackboardService: IBlackboardService,
-        val templateService: TemplateService
+        val templateService: TemplateService,
+        val usersRepo: UserRepository
 ) : IBoardService {
 
     override fun getAllBoards(): Iterable<Board> = boardsRepo.findAll()
@@ -98,4 +101,29 @@ class BoardService(
         return newBoard
     }
 
+    override fun addUserToBoard(boardId: Long, userId: Long):Board {
+        val board = getBoardById(boardId)
+        val user = usersRepo.findByIdOrNull(userId) ?: throw NotFoundUserException()
+
+        board.members.add(user)
+        user.boards.add(board)
+
+        val newBoard = boardsRepo.save(board)
+        usersRepo.save(user)
+
+        return newBoard
+    }
+
+    override fun removeUserFromBoard(boardId: Long, userId: Long):Board {
+        val board = getBoardById(boardId)
+        val user = usersRepo.findByIdOrNull(userId) ?: throw NotFoundUserException()
+
+        board.members.remove(user)
+        user.boards.remove(board)
+
+        val newBoard = boardsRepo.save(board)
+        usersRepo.save(user)
+
+        return newBoard
+    }
 }

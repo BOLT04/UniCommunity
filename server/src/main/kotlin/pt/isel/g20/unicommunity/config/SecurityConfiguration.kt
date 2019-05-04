@@ -7,6 +7,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.crypto.password.PasswordEncoder
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 import pt.isel.g20.unicommunity.userDetails.service.CustomUserDetailsService
 import java.lang.RuntimeException
 
@@ -37,6 +38,6 @@ class SecurityConfiguration(val userDetailsService: CustomUserDetailsService) : 
                 .and()
                 .formLogin().permitAll()
                 .and()
-                .logout().permitAll()
+                .logout().logoutRequestMatcher(AntPathRequestMatcher("/logout")).logoutSuccessUrl("/")
     }
 }

@@ -3,6 +3,7 @@ package pt.isel.g20.unicommunity.board.service
 import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
 import pt.isel.g20.unicommunity.board.model.Board
 import pt.isel.g20.unicommunity.template.exception.NotFoundTemplateException
+import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
 
 interface IBoardService {
     fun getAllBoards() : Iterable<Board>
@@ -23,4 +24,10 @@ interface IBoardService {
 
     @Throws(NotFoundBoardException::class)
     fun deleteBoard(boardId: Long):Board
+
+    @Throws(NotFoundBoardException::class, NotFoundUserException::class)
+    fun addUserToBoard(boardId: Long, userId: Long): Board
+
+    @Throws(NotFoundBoardException::class, NotFoundUserException::class)
+    fun removeUserFromBoard(boardId: Long, userId: Long): Board
 }

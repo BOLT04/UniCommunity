@@ -2,6 +2,8 @@ package pt.isel.g20.unicommunity.board.model
 
 import pt.isel.g20.unicommunity.blackboard.model.PartialBlackboardObject
 import pt.isel.g20.unicommunity.hateoas.*
+import pt.isel.g20.unicommunity.user.model.PartialUserObject
+import pt.isel.g20.unicommunity.user.model.User
 
 class SingleBoardResponse(board: Board)
     : HalObject(mutableMapOf(), mutableMapOf()) {
@@ -25,14 +27,25 @@ class SingleBoardResponse(board: Board)
             ))
         }
 
-        super._embedded?.putAll(sequenceOf(
-                Rels.GET_MULTIPLE_BLACKBOARDS to board.blackBoards.map {
-                    PartialBlackboardObject(it.name,
-                            mapOf(
-                                "self" to Link(Uri.forSingleBlackboard(board.id, it.id).toString())
-                            ))
-                }
-        ))
+        if(board.blackBoards.size != 0)
+            super._embedded?.putAll(sequenceOf(
+                    Rels.GET_MULTIPLE_BLACKBOARDS to board.blackBoards.map {
+                        PartialBlackboardObject(it.name,
+                                mapOf(
+                                        "self" to Link(Uri.forSingleBlackboard(board.id, it.id).toString())
+                                ))
+                    })
+            )
+
+        if(board.members.size !=0)
+            super._embedded?.putAll(sequenceOf(
+                    Rels.GET_MULTIPLE_USERS to board.members.map {
+                        PartialUserObject(it.name,
+                                mapOf(
+                                        "self" to Link(Uri.forSingleUser(it.id).toString())
+                                ))
+                    })
+            )
     }
 }
 
@@ -48,3 +61,8 @@ class MultipleBoardsResponse(
         ),
         items = boards.map { Item( Uri.forSingleBoard(it.id).toString()) }//TODO: add more info about the board, like its name and description
 )
+
+class PartialBoardObject(
+        val name: String,
+        val _links: Map<String, Link>
+) : HalResourceObject()

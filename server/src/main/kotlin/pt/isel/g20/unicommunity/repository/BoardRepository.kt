@@ -7,4 +7,6 @@ import javax.transaction.Transactional
 
 @Repository
 @Transactional
-interface BoardRepository : CrudRepository<Board, Long>
+interface BoardRepository : CrudRepository<Board, Long>{
+    fun findByName(name: String): Board?
+}

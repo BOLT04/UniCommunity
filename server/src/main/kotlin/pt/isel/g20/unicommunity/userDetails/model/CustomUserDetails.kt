@@ -30,6 +30,8 @@ class CustomUserDetails(): User(), UserDetails{
 
     override fun getUsername() = super.name
 
+    fun getIdentifier() = super.id
+
     override fun isCredentialsNonExpired() = true
 
     override fun getPassword() = super.pw

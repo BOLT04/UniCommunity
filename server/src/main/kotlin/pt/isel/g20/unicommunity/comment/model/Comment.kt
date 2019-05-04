@@ -3,6 +3,7 @@ package pt.isel.g20.unicommunity.comment.model
 import com.fasterxml.jackson.annotation.JsonFormat
 import org.hibernate.annotations.CreationTimestamp
 import pt.isel.g20.unicommunity.forumItem.model.ForumItem
+import pt.isel.g20.unicommunity.user.model.User
 import java.util.*
 import javax.persistence.*
 
@@ -20,6 +21,9 @@ class Comment(
     @Column
     @CreationTimestamp
     var createdAt: Date? = null
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    var author: User? = null
 
     constructor() :this(null,"")
 }

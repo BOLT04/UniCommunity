@@ -17,7 +17,7 @@ class SingleForumItemResponse(forumItem: ForumItem)
 ){
     val name : String = forumItem.name
     val content : String = forumItem.content
-    val author : String = forumItem.author
+    val author : String = forumItem.author!!.name
     val createdAt : String = forumItem.createdAt.toString()
 }
 
@@ -40,7 +40,7 @@ class MultipleForumItemsResponse(
                     Data(name= "title", value= it.name),
                     Data(name= "id", value= it.id.toString()),
                     Data(name= "smallDesc", value= it.content),
-                    Data(name= "author", value= it.author),
+                    Data(name= "author", value= it.author!!.name),
                     Data(name= "createdAt", value= it.createdAt.toString())
                 ),
                 links = listOf(//TODO: clean up this code. The links should be the same as the ones from a single forum item response

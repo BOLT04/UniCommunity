@@ -2,13 +2,16 @@ package pt.isel.g20.unicommunity.user.service
 
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
+import pt.isel.g20.unicommunity.repository.BoardRepository
 import pt.isel.g20.unicommunity.repository.UserRepository
 import pt.isel.g20.unicommunity.user.exception.InvalidUserEmailException
 import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
 import pt.isel.g20.unicommunity.user.model.User
 
 @Service
-class UserService(val usersRepo: UserRepository) : IUserService {
+class UserService(val usersRepo: UserRepository, val boardsRepo: BoardRepository) : IUserService {
+
     override fun getAllUsers(): Iterable<User> = usersRepo.findAll()
 
     override fun getUserById(userId: Long) = usersRepo.findByIdOrNull(userId) ?: throw NotFoundUserException()
@@ -57,5 +60,4 @@ class UserService(val usersRepo: UserRepository) : IUserService {
         usersRepo.delete(user)
         return user
     }
-
 }
