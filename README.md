@@ -1,5 +1,10 @@
 # UniCommunity
-A project idea for our Final Year Project (Projeto e Seminário) 
+A project idea for our Final Year Project (Projeto e Seminário) at ISEL (Instituto Superior de Engenharia de Lisboa).
+
+## Introduction
+This project aims to offer an application to support both the students and teachers, in their academic journey. By supplying features that eases communication and the exchange of ideas (through a forum) or resources, in a academic community. The project also aims to facilitate the access to relevant information to the student, like replies to a question of his interest or teacher announcements.
+
+An identified need in the student community is the ability to ask a question without any repercussions, for example being ashamed to ask a particular question, because people might think that they are not up to date with the class topics. For this particular issue, the application allows an anonymous mode when creating a post on a forum or any other place that they are allowed to. With this feature people can ask questions or even answer questions of other members of the community, removing the fear factor that might exist.
 
 ## Commit message standards
 
