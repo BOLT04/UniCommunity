@@ -31,14 +31,14 @@ class BlackboardItemService(
             content: String
     ): BlackboardItem {
         boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
-
         val blackboard = blackboardsRepo.findByIdOrNull(bbId) ?: throw NotFoundBlackboardException()
 
-        val blackboardItem = BlackboardItem(name, content, "David")
+        val blackboardItem = BlackboardItem(name, content, "David", blackboard)
 
-        blackboardItem.blackboard = blackboard
         blackboard.items.add(blackboardItem)
+
         val newBlackboardItem =  blackboardItemsRepo.save(blackboardItem)
+
         blackboardsRepo.save(blackboard)
 
         return newBlackboardItem

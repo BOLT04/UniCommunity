@@ -8,23 +8,20 @@ import javax.persistence.*
 class Blackboard(
         @Column(nullable = false) var name: String,
         @Column var notificationLevel: String,
-        @Column var description: String? = null
+        @Column var description: String? = null,
+        @ManyToOne(fetch = FetchType.LAZY) var board: Board? = null
 ) {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    var board: Board? = null
-
-
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn
     var items: MutableList<BlackboardItem> = mutableListOf()
 
-    constructor() : this("", "", null)
+    constructor() : this("", "", null, null)
 
-    constructor(name: String,  notificationLevel: String)
-        : this(name, notificationLevel, null)
+    constructor(name: String,  notificationLevel: String, board: Board)
+        : this(name, notificationLevel, null, board)
 }

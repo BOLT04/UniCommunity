@@ -11,12 +11,9 @@ import javax.persistence.*
 class BlackboardItem(
         @Column var name: String,
         @Column var content: String,
-        @Column(nullable = false) var author: String
+        @Column(nullable = false) var author: String,
+        @JsonIgnore @ManyToOne var blackboard: Blackboard? = null
 ) {
-
-    @JsonIgnore
-    @ManyToOne
-    var blackboard: Blackboard? = null
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,10 +25,10 @@ class BlackboardItem(
     @CreationTimestamp
     var createdAt: Date? = null
 
-    constructor() : this( "", "", "Luis Vaz")
+    constructor() : this( "", "", "Luis Vaz", null)
 
-    constructor(id: Long, name: String, content: String, author: String)
-            : this(name, content, author) {
+    constructor(id: Long, name: String, content: String, author: String, blackboard: Blackboard?)
+            : this(name, content, author, blackboard) {
         this.id = id
     }
 

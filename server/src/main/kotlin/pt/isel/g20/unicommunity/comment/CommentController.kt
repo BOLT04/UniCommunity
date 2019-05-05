@@ -3,6 +3,7 @@ package pt.isel.g20.unicommunity.comment
 import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
 import pt.isel.g20.unicommunity.comment.exception.NotFoundCommentException
@@ -16,6 +17,7 @@ import pt.isel.g20.unicommunity.hateoas.CollectionObject
 import pt.isel.g20.unicommunity.hateoas.Uri
 import pt.isel.g20.unicommunity.hateoas.Uri.COMMENTS_ROUTE
 import pt.isel.g20.unicommunity.hateoas.Uri.SINGLE_COMMENT_ROUTE
+import pt.isel.g20.unicommunity.user.model.User
 import java.util.concurrent.TimeUnit
 
 @RestController
@@ -63,8 +65,10 @@ class CommentController(private val service: ICommentService) {
             @PathVariable boardId: Long,
             @PathVariable forumItemId: Long,
             @RequestBody commentDto: CommentDto
-    ) =
-            service.createComment(boardId, forumItemId, commentDto.content).let {
+    ):ResponseEntity<SingleCommentResponse>{
+        val authentication = SecurityContextHolder.getContext().authentication
+        val user = authentication.principal as User
+            return service.createComment(boardId, forumItemId, user.id, commentDto.content, commentDto.anonymous).let {
                 ResponseEntity
                         .created(Uri.forSingleComment(it.forumItem!!.forum!!.board!!.id, it.forumItem!!.id, it.id))
                         .cacheControl(
@@ -74,6 +78,7 @@ class CommentController(private val service: ICommentService) {
                         .eTag(it.hashCode().toString())
                         .body(SingleCommentResponse(it))
             }
+    }
 
     @PutMapping(path = [SINGLE_COMMENT_ROUTE], produces = ["application/hal+json"])
     fun editComment(

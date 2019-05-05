@@ -3,6 +3,7 @@ package pt.isel.g20.unicommunity.forumItem
 import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
 import pt.isel.g20.unicommunity.forumItem.exception.NotFoundForumItemException
@@ -14,6 +15,7 @@ import pt.isel.g20.unicommunity.hateoas.CollectionObject
 import pt.isel.g20.unicommunity.hateoas.Uri
 import pt.isel.g20.unicommunity.hateoas.Uri.FORUMITEMS_ROUTE
 import pt.isel.g20.unicommunity.hateoas.Uri.SINGLE_FORUMITEM_ROUTE
+import pt.isel.g20.unicommunity.user.model.User
 import java.util.concurrent.TimeUnit
 
 @RestController
@@ -50,8 +52,13 @@ class ForumItemController(private val service: IForumItemService) {
 
     @PostMapping(path = [FORUMITEMS_ROUTE], produces = ["application/hal+json"])
     @ResponseStatus(HttpStatus.CREATED)
-    fun createForumItem(@PathVariable boardId: Long, @RequestBody ForumItemDto: ForumItemDto) =
-            service.createForumItem(boardId, ForumItemDto.name, ForumItemDto.content).let {
+    fun createForumItem(
+            @PathVariable boardId: Long,
+            @RequestBody forumItemDto: ForumItemDto
+    ): ResponseEntity<SingleForumItemResponse>{
+        val authentication = SecurityContextHolder.getContext().authentication
+        val user = authentication.principal as User
+            return service.createForumItem(boardId, user.id, forumItemDto.name, forumItemDto.content, forumItemDto.anonymousPost).let {
                 ResponseEntity
                         .created(Uri.forSingleForumItem(it.forum!!.board!!.id, it.id))
                         .cacheControl(
@@ -61,14 +68,15 @@ class ForumItemController(private val service: IForumItemService) {
                         .eTag(it.hashCode().toString())
                         .body(SingleForumItemResponse(it))
             }
+    }
 
     @PutMapping(path = [SINGLE_FORUMITEM_ROUTE], produces = ["application/hal+json"])
     fun editForumItem(
             @PathVariable boardId: Long,
             @PathVariable forumItemId: Long,
-            @RequestBody ForumItemDto: ForumItemDto
+            @RequestBody forumItemDto: ForumItemDto
     ) =
-            service.editForumItem(boardId, forumItemId, ForumItemDto.name, ForumItemDto.content).let {
+            service.editForumItem(boardId, forumItemId, forumItemDto.name, forumItemDto.content).let {
                 ResponseEntity
                         .ok()
                         .cacheControl(

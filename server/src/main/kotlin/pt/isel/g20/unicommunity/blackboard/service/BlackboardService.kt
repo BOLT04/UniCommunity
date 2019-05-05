@@ -30,13 +30,17 @@ class BlackboardService(
 
         val blackboard =
                 if(description != null)
-                    Blackboard(name, notificationLevel, description)
+                    Blackboard(name, notificationLevel, description, board)
                 else
-                    Blackboard(name, notificationLevel)
+                    Blackboard(name, notificationLevel, board)
 
-        blackboard.board = board
+        board.blackBoards.add(blackboard)
 
-        return blackboardsRepo.save(blackboard)
+        val newBlackboard = blackboardsRepo.save(blackboard)
+
+        boardsRepo.save(board)
+
+        return newBlackboard
     }
 
     override fun editBlackboard(

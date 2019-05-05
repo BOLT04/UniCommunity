@@ -1,5 +1,6 @@
 package pt.isel.g20.unicommunity.comment.service
 
+import org.springframework.security.core.userdetails.User
 import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
 import pt.isel.g20.unicommunity.comment.exception.NotFoundCommentException
 import pt.isel.g20.unicommunity.comment.model.Comment
@@ -28,7 +29,7 @@ interface ICommentService {
             NotFoundForumItemException::class,
             NotFoundForumException::class
     )
-    fun createComment(boardId: Long, forumItemId: Long, content: String): Comment
+    fun createComment(boardId: Long, forumItemId: Long, authorId: Long, content: String, anonymous: Boolean): Comment
 
     @Throws(
             NotFoundCommentException::class,

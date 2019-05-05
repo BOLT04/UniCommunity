@@ -9,12 +9,15 @@ import pt.isel.g20.unicommunity.forumItem.model.ForumItem
 import pt.isel.g20.unicommunity.repository.ForumItemRepository
 import pt.isel.g20.unicommunity.repository.BoardRepository
 import pt.isel.g20.unicommunity.repository.ForumRepository
+import pt.isel.g20.unicommunity.repository.UserRepository
+import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
 
 @Service
 class ForumItemService(
         val forumItemsRepo: ForumItemRepository,
         val forumsRepo: ForumRepository,
-        val boardsRepo: BoardRepository
+        val boardsRepo: BoardRepository,
+        val usersRepo: UserRepository
 ) : IForumItemService {
     override fun getAllForumItems(boardId: Long): Iterable<ForumItem> =
             forumsRepo.findByIdOrNull(boardId)?.items ?: throw NotFoundForumException()
@@ -24,18 +27,24 @@ class ForumItemService(
 
     override fun createForumItem(
             boardId: Long,
+            authorId: Long,
             name: String,
-            content: String
+            content: String,
+            anonymousPost: Boolean
     ): ForumItem {
         boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
         val forum = forumsRepo.findByIdOrNull(boardId) ?: throw NotFoundForumException()
+        val user = usersRepo.findByIdOrNull(authorId) ?: throw NotFoundUserException()
 
-        val forumItem = ForumItem(name, content)
+        val forumItem = ForumItem(forum, user, name, content, anonymousPost)
 
-        forumItem.forum = forum
         forum.items.add(forumItem)
+        user.forumItems.add(forumItem)
+
         val newForumItem = forumItemsRepo.save(forumItem)
+
         forumsRepo.save(forum)
+        usersRepo.save(user)
 
         return newForumItem
     }

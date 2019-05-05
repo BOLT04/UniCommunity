@@ -4,5 +4,6 @@ import com.fasterxml.jackson.annotation.JsonCreator
 
 data class ForumItemDto @JsonCreator constructor(
         val name: String,
-        val content: String
+        val content: String,
+        val anonymousPost: Boolean
 )

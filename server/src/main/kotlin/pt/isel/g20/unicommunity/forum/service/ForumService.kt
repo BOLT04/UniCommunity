@@ -24,13 +24,17 @@ class ForumService(
 
         val forum =
                 if(allowImagePosts != null)
-                    Forum(boardId, allowImagePosts)
+                    Forum(boardId, board, allowImagePosts)
                 else
-                    Forum(boardId)
+                    Forum(boardId, board)
 
-        forum.board = board
 
-        return forumsRepo.save(forum)
+
+        val newForum = forumsRepo.save(forum)
+        board.forum = newForum
+        boardsRepo.save(board)
+
+        return newForum
     }
 
     override fun editForum(boardId: Long, allowImagePosts: Boolean?): Forum {

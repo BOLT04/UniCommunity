@@ -1,5 +1,6 @@
 package pt.isel.g20.unicommunity.template.model
 
+import pt.isel.g20.unicommunity.board.model.Board
 import javax.persistence.*
 
 @Entity(name = "templates")
@@ -13,5 +14,8 @@ class Template(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0
 
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn
+    var boards: MutableList<Board> = mutableListOf()
     constructor() : this("", false, "")
 }

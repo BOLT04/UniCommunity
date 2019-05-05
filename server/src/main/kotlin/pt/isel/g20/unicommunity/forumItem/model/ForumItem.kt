@@ -10,30 +10,26 @@ import javax.persistence.*
 
 @Entity
 class ForumItem(
-    @Column(nullable = false) var name: String,
-    @Column(nullable = false) var content: String
+        @ManyToOne var forum: Forum? = null,
+        @ManyToOne @JoinColumn var author: User? = null,
+        @Column(nullable = false) var name: String,
+        @Column(nullable = false) var content: String,
+        @Column(nullable = false) var anonymousPost: Boolean
 ) {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0
 
-    @ManyToOne
-    var forum: Forum? = null
-
     @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn
     var comments: MutableList<Comment> = mutableListOf()
-
-    @ManyToOne
-    var author: User? = null
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm:ss.SSSZ", locale = "en_GB")
     @Column
     @CreationTimestamp
     var createdAt: Date? = null
 
-    constructor() :this("", "")
+    constructor() :this(null, null,"", "", false)
 
 }
 

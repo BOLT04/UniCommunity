@@ -34,12 +34,10 @@ open class User(
     @ManyToMany(mappedBy = "members")
     val boards : MutableList<Board> = mutableListOf()
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
     val comments: MutableList<Comment> = mutableListOf()
 
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
     val forumItems: MutableList<ForumItem> = mutableListOf()
 
     constructor() : this("", "", "", "", null)

@@ -84,21 +84,23 @@ class BoardService(
         val template = templatesRepo.findByIdOrNull(templateId) ?: throw NotFoundTemplateException()
         blackboards.addAll(template.blackboardNames.split(","))
 
-        val board = Board(name, templateId, description)
+        val board = Board(name, template, description)
+        template.boards.add(board)
 
-        val newBoard = boardsRepo.save(board)
-        // Create all board modules
+        var newBoard = boardsRepo.save(board)
+        templatesRepo.save(template)
+
         if (template.hasForum) {
-            val forum = forumService.createForum(newBoard.id, true)
-            newBoard.forum = forum
+            forumService.createForum(newBoard.id, true)
+            newBoard = boardsRepo.save(board)
         }
 
-        newBoard.blackBoards.addAll(
-                blackboards.map {
-                    blackboardService.createBlackboard(newBoard.id, it, "TODO", "TODO")
-                })
 
-        return newBoard
+        blackboards.map {
+            blackboardService.createBlackboard(newBoard.id, it, "TODO", "TODO")
+        }
+
+        return boardsRepo.save(newBoard)
     }
 
     override fun addUserToBoard(boardId: Long, userId: Long):Board {
