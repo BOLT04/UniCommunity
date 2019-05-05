@@ -37,12 +37,10 @@ class ForumItemService(
         val user = usersRepo.findByIdOrNull(authorId) ?: throw NotFoundUserException()
 
         val forumItem = ForumItem(forum, user, name, content, anonymousPost)
-
-        forum.items.add(forumItem)
-        user.forumItems.add(forumItem)
-
         val newForumItem = forumItemsRepo.save(forumItem)
 
+        forum.items.add(newForumItem)
+        user.forumItems.add(newForumItem)
         forumsRepo.save(forum)
         usersRepo.save(user)
 

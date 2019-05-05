@@ -9,6 +9,8 @@ class SingleBoardResponse(board: Board)
     : HalObject(mutableMapOf(), mutableMapOf()) {
     val name : String = board.name
     val description : String? = board.description
+    val templateName: String = board.template!!.name
+    val hasForum: Boolean = board.template!!.hasForum
 
     init {
         super._links?.putAll(sequenceOf(

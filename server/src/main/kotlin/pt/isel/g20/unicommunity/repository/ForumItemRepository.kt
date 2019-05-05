@@ -7,4 +7,7 @@ import javax.transaction.Transactional
 
 @Repository
 @Transactional
-interface ForumItemRepository : CrudRepository<ForumItem, Long>
+interface ForumItemRepository : CrudRepository<ForumItem, Long>{
+    fun findByAndAnonymousPostTrue(): List<ForumItem>?
+    fun findByAnonymousPostFalse(): List<ForumItem>?
+}

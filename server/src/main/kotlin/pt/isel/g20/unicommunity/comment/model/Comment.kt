@@ -12,7 +12,7 @@ class Comment(
         @ManyToOne @JoinColumn var forumItem: ForumItem? = null,
         @ManyToOne(fetch = FetchType.LAZY) @JoinColumn var author: User? = null,
         @Column(nullable = false) var content: String,
-        @Column(nullable = false) var annonymousComment: Boolean
+        @Column(nullable = false) var anonymousComment: Boolean
 
 ) {
 

@@ -6,7 +6,7 @@ class SingleForumItemResponse(forumItem: ForumItem)
     : HalObject(
         mutableMapOf(
                 "self" to Link(Uri.forSingleForumItem(forumItem.forum!!.board!!.id, forumItem.id).toString()),
-                Rels.GET_MULTIPLE_FORUMITEMS to Link(Uri.forAllForumItems(forumItem.forum!!.board!!.id).toString()),
+                Rels.NAVIGATION to Link("/navigation"),
                 Rels.GET_SINGLE_BOARD to Link(Uri.forSingleBoard(forumItem.forum!!.board!!.id).toString()),
                 Rels.GET_SINGLE_FORUM to Link(Uri.forSingleForum(forumItem.forum!!.board!!.id).toString()),
                 Rels.CREATE_FORUMITEM to Link(Uri.forAllForumItems(forumItem.forum!!.board!!.id).toString()),
@@ -15,10 +15,11 @@ class SingleForumItemResponse(forumItem: ForumItem)
                 Rels.DELETE_FORUMITEM to Link(Uri.forSingleForumItem(forumItem.forum!!.board!!.id, forumItem.id).toString())
         )
 ){
+    val boardName: String = forumItem.forum!!.board!!.name
     val name : String = forumItem.name
     val content : String = forumItem.content
-    val author : String = forumItem.author!!.name
-    val createdAt : String = forumItem.createdAt.toString()
+    val authorName : String = forumItem.author!!.name
+    val createdAt : String = forumItem.createdAt!!.toString()
 }
 
 

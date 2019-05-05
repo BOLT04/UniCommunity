@@ -66,7 +66,7 @@ class TemplateController(private val service: ITemplateService) {
 
     @PutMapping(path = [SINGLE_TEMPLATE_ROUTE], produces = ["application/json"])
     fun editTemplate(@PathVariable templateId: Long, @RequestBody templateDto: TemplateDto) =
-            service.editTemplate(templateId, templateDto.hasForum, templateDto.blackboardNames).let {
+            service.editTemplate(templateId, templateDto.name, templateDto.hasForum, templateDto.blackboardNames).let {
                 val singleTemplateResponse = SingleTemplateResponse(it)
 
                 ResponseEntity

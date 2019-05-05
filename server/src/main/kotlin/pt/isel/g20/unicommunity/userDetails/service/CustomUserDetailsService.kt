@@ -11,7 +11,7 @@ import pt.isel.g20.unicommunity.userDetails.model.CustomUserDetails
 class CustomUserDetailsService(private val usersRepo: UserRepository) : UserDetailsService{
 
     override fun loadUserByUsername(username: String?): UserDetails {
-        val user = usersRepo.findByName(username) ?: throw UsernameNotFoundException("Username not found!")
+        val user = usersRepo.findByEmail(username) ?: throw UsernameNotFoundException("Username not found!")
 
         return CustomUserDetails(user)
     }

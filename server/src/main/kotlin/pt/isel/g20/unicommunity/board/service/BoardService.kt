@@ -85,16 +85,15 @@ class BoardService(
         blackboards.addAll(template.blackboardNames.split(","))
 
         val board = Board(name, template, description)
-        template.boards.add(board)
-
         var newBoard = boardsRepo.save(board)
+
+        template.boards.add(newBoard)
         templatesRepo.save(template)
 
         if (template.hasForum) {
             forumService.createForum(newBoard.id, true)
             newBoard = boardsRepo.save(board)
         }
-
 
         blackboards.map {
             blackboardService.createBlackboard(newBoard.id, it, "TODO", "TODO")

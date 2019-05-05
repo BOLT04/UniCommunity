@@ -1,5 +1,6 @@
 package pt.isel.g20.unicommunity.template.service
 
+import pt.isel.g20.unicommunity.template.exception.CannotModifyTemplatesBeingUsedException
 import pt.isel.g20.unicommunity.template.exception.NotFoundTemplateException
 import pt.isel.g20.unicommunity.template.model.Template
 
@@ -11,9 +12,9 @@ interface ITemplateService {
 
     fun createTemplate(name: String, hasForum: Boolean, blackboardNames: String): Template
 
-    @Throws(NotFoundTemplateException::class)
-    fun editTemplate(templateId: Long, hasForum: Boolean?, blackboardNames: String?): Template
+    @Throws(NotFoundTemplateException::class, CannotModifyTemplatesBeingUsedException::class)
+    fun editTemplate(templateId: Long, name: String, hasForum: Boolean?, blackboardNames: String?): Template
 
-    @Throws(NotFoundTemplateException::class)
+    @Throws(NotFoundTemplateException::class, CannotModifyTemplatesBeingUsedException::class)
     fun deleteTemplate(templateId: Long):Template
 }

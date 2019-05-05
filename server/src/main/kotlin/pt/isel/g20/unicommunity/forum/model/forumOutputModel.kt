@@ -12,5 +12,7 @@ class SingleForumResponse(forum: Forum)
                 Rels.CREATE_FORUMITEM to Link(Uri.forSingleForum(forum.board!!.id).toString())
         )
 ){
+    val boardName: String = forum.board!!.name
     val allowImagePosts : Boolean = forum.isAllowImagePosts
+    val numberOfPosts: Int = forum.items.size
 }

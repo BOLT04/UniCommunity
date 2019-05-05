@@ -3,4 +3,4 @@ insert into templates values
 (-2, 'Basic Board Without Forum', 0, 'Anuncios,Sumarios'),
 (-1, 'Advanced Board', 1, 'Anuncios,Sumarios,Bibliografia');
 
-insert into users values (-1, 'admin@gmail.com', 'gitAdmin', 'admin', 'admin', 'teacher')
+insert into users(id, name, email, pw, role, github_id) values (-1, 'admin', 'admin@gmail.com', 'admin', 'teacher', 'gitAdmin')

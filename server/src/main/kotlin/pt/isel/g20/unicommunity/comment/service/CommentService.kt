@@ -39,8 +39,8 @@ class CommentService(
         val user =usersRepo.findByIdOrNull(authorId) ?: throw NotFoundUserException()
 
         val comment = Comment(forumItem, user, content, anonymous)
-
         val newComment = commentsRepo.save(comment)
+
         forumItem.comments.add(newComment)
         forumItemsRepo.save(forumItem)
         user.comments.add(newComment)

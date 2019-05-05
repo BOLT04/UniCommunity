@@ -9,12 +9,15 @@ import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
 import pt.isel.g20.unicommunity.repository.BlackboardItemRepository
 import pt.isel.g20.unicommunity.repository.BlackboardRepository
 import pt.isel.g20.unicommunity.repository.BoardRepository
+import pt.isel.g20.unicommunity.repository.UserRepository
+import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
 
 @Service
 class BlackboardItemService(
         val boardsRepo: BoardRepository,
         val blackboardsRepo: BlackboardRepository,
-        val blackboardItemsRepo: BlackboardItemRepository
+        val blackboardItemsRepo: BlackboardItemRepository,
+        val usersRepo: UserRepository
 ) : IBlackboardItemService {
     override fun getAllBlackboardItems(boardId: Long, bbId: Long): Iterable<BlackboardItem> {
             boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
@@ -27,18 +30,20 @@ class BlackboardItemService(
     override fun createBlackboardItem(
             boardId: Long,
             bbId: Long,
+            userId: Long,
             name: String,
             content: String
     ): BlackboardItem {
         boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
         val blackboard = blackboardsRepo.findByIdOrNull(bbId) ?: throw NotFoundBlackboardException()
+        val user = usersRepo.findByIdOrNull(userId) ?: throw NotFoundUserException()
 
-        val blackboardItem = BlackboardItem(name, content, "David", blackboard)
-
-        blackboard.items.add(blackboardItem)
-
+        val blackboardItem = BlackboardItem(name, content, user, blackboard)
         val newBlackboardItem =  blackboardItemsRepo.save(blackboardItem)
 
+        user.bbItems.add(newBlackboardItem)
+        usersRepo.save(user)
+        blackboard.items.add(newBlackboardItem)
         blackboardsRepo.save(blackboard)
 
         return newBlackboardItem

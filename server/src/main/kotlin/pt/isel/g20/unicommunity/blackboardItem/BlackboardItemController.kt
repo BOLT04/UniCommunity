@@ -3,6 +3,7 @@ package pt.isel.g20.unicommunity.blackboardItem
 import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
+import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 import pt.isel.g20.unicommunity.blackboard.exception.NotFoundBlackboardException
 import pt.isel.g20.unicommunity.blackboardItem.exception.NotFoundBlackboardItemException
@@ -14,6 +15,8 @@ import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
 import pt.isel.g20.unicommunity.hateoas.Uri
 import pt.isel.g20.unicommunity.hateoas.Uri.BLACKBOARDITEMS_ROUTE
 import pt.isel.g20.unicommunity.hateoas.Uri.SINGLE_BLACKBOARDITEM_ROUTE
+import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
+import pt.isel.g20.unicommunity.user.model.User
 import java.util.concurrent.TimeUnit
 
 @RestController
@@ -56,8 +59,10 @@ class BlackboardItemController(private val service: IBlackboardItemService) {
             @PathVariable boardId: Long,
             @PathVariable bbId: Long,
             @RequestBody itemDto: BlackboardItemDto
-    ) =
-            service.createBlackboardItem(boardId, bbId, itemDto.name, itemDto.content).let {
+    ): ResponseEntity<SingleBlackboardItemResponse>{
+        val authentication = SecurityContextHolder.getContext().authentication
+        val user = authentication.principal as User
+            return service.createBlackboardItem(boardId, bbId, user.id, itemDto.name, itemDto.content).let {
                 ResponseEntity
                         .created(Uri.forSingleBlackboardItem(it.blackboard!!.board!!.id, it.blackboard!!.id, it.id))
                         .cacheControl(
@@ -67,6 +72,7 @@ class BlackboardItemController(private val service: IBlackboardItemService) {
                         .eTag(it.hashCode().toString())
                         .body(SingleBlackboardItemResponse(it))
             }
+    }
 
     @PutMapping(path = [SINGLE_BLACKBOARDITEM_ROUTE], produces = ["application/hal+json"])
     fun editBlackboardItem(
@@ -119,6 +125,12 @@ class BlackboardItemController(private val service: IBlackboardItemService) {
 
     @ExceptionHandler
     fun handleNotFoundBoardException(e: NotFoundBoardException) =
+            ResponseEntity
+                    .notFound()
+                    .build<String>()
+
+    @ExceptionHandler
+    fun handleNotFoundUserException(e: NotFoundUserException) =
             ResponseEntity
                     .notFound()
                     .build<String>()

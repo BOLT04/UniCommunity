@@ -1,6 +1,7 @@
 package pt.isel.g20.unicommunity.comment.model
 
 import pt.isel.g20.unicommunity.hateoas.*
+import java.util.*
 
 class SingleCommentResponse(comment: Comment)
     : HalObject(
@@ -10,16 +11,39 @@ class SingleCommentResponse(comment: Comment)
                         comment.forumItem!!.id,
                         comment.id
                 ).toString()),
-                Rels.GET_MULTIPLE_COMMENTS to Link(Uri.forAllComments(
+                Rels.NAVIGATION to Link("/navigation"),
+                Rels.GET_SINGLE_BOARD to Link(Uri.forSingleBoard(comment.forumItem!!.forum!!.board!!.id).toString()),
+                Rels.GET_SINGLE_FORUM to Link(Uri.forSingleForum(comment.forumItem!!.forum!!.board!!.id).toString()),
+                Rels.GET_SINGLE_FORUMITEM to Link(Uri.forSingleForumItem(
                         comment.forumItem!!.forum!!.board!!.id,
                         comment.forumItem!!.id
                 ).toString()),
-                Rels.GET_SINGLE_BOARD to Link(Uri.forSingleBoard(comment.forumItem!!.forum!!.board!!.id).toString())
+                Rels.CREATE_COMMENT to Link(Uri.forAllComments(
+                        comment.forumItem!!.forum!!.board!!.id,
+                        comment.forumItem!!.id
+                ).toString()),
+                Rels.GET_MULTIPLE_COMMENTS to Link(Uri.forSingleComment(
+                        comment.forumItem!!.forum!!.board!!.id,
+                        comment.forumItem!!.id,
+                        comment.id
+                ).toString()),
+                Rels.EDIT_COMMENT to Link(Uri.forSingleComment(
+                        comment.forumItem!!.forum!!.board!!.id,
+                        comment.forumItem!!.id,
+                        comment.id
+                ).toString()),
+                Rels.DELETE_COMMENT to Link(Uri.forSingleComment(
+                        comment.forumItem!!.forum!!.board!!.id,
+                        comment.forumItem!!.id,
+                        comment.id
+                ).toString())
         )
 ){
+    val boardName: String = comment.forumItem!!.forum!!.board!!.name
     val forumItemName: String = comment.forumItem!!.name
+    val authorName: String = comment.author!!.name
     val content : String = comment.content
-    val createdAt: String = comment.createdAt.toString()
+    val createdAt: String = comment.createdAt!!.toString()
 }
 
 

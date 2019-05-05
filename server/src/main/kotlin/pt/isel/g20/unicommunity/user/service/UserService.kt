@@ -21,11 +21,7 @@ class UserService(val usersRepo: UserRepository, val boardsRepo: BoardRepository
             throw InvalidUserEmailException()
         }
 
-        val user =
-                if(githubId != null)
-                    User(name, email, password, "TEACHER", githubId)
-                else
-                    User(name, email, "TEACHER", password)
+        val user = User(name, email, password, "TEACHER", githubId)
 
         return usersRepo.save(user)
     }

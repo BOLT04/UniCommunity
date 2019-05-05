@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonIgnore
 import org.hibernate.annotations.CreationTimestamp
 import pt.isel.g20.unicommunity.blackboard.model.Blackboard
+import pt.isel.g20.unicommunity.user.model.User
 import java.util.*
 import javax.persistence.*
 
@@ -11,7 +12,7 @@ import javax.persistence.*
 class BlackboardItem(
         @Column var name: String,
         @Column var content: String,
-        @Column(nullable = false) var author: String,
+        @ManyToOne @JoinColumn var author: User? = null,
         @JsonIgnore @ManyToOne var blackboard: Blackboard? = null
 ) {
 
@@ -25,9 +26,9 @@ class BlackboardItem(
     @CreationTimestamp
     var createdAt: Date? = null
 
-    constructor() : this( "", "", "Luis Vaz", null)
+    constructor() : this( "", "", null, null)
 
-    constructor(id: Long, name: String, content: String, author: String, blackboard: Blackboard?)
+    constructor(id: Long, name: String, content: String, author: User?, blackboard: Blackboard?)
             : this(name, content, author, blackboard) {
         this.id = id
     }

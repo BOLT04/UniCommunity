@@ -14,9 +14,11 @@ class SingleBlackboardResponse(blackboard: Blackboard)
                 Rels.DELETE_BLACKBOARD to Link(Uri.forSingleBoard(blackboard.board!!.id).toString())
         )
 ){
+    val boardName: String = blackboard.board!!.name
     val name : String = blackboard.name
     val description : String? = blackboard.description
     val notificationLevel: String = blackboard.notificationLevel
+    val numberOfItems: Int = blackboard.items.size
     val items = blackboard.items
 }
 

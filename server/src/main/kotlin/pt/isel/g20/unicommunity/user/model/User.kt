@@ -1,5 +1,6 @@
 package pt.isel.g20.unicommunity.user.model
 
+import pt.isel.g20.unicommunity.blackboardItem.model.BlackboardItem
 import pt.isel.g20.unicommunity.board.model.Board
 import pt.isel.g20.unicommunity.comment.model.Comment
 import pt.isel.g20.unicommunity.forumItem.model.ForumItem
@@ -39,6 +40,9 @@ open class User(
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
     val forumItems: MutableList<ForumItem> = mutableListOf()
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
+    val bbItems: MutableList<BlackboardItem> = mutableListOf()
 
     constructor() : this("", "", "", "", null)
     constructor(

@@ -22,15 +22,9 @@ class ForumService(
     ): Forum {
         val board = boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
 
-        val forum =
-                if(allowImagePosts != null)
-                    Forum(boardId, board, allowImagePosts)
-                else
-                    Forum(boardId, board)
-
-
-
+        val forum = Forum(boardId, board)
         val newForum = forumsRepo.save(forum)
+
         board.forum = newForum
         boardsRepo.save(board)
 

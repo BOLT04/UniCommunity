@@ -7,4 +7,7 @@ import javax.transaction.Transactional
 
 @Repository
 @Transactional
-interface CommentRepository : CrudRepository<Comment, Long>
+interface CommentRepository : CrudRepository<Comment, Long>{
+    fun findByAndAnonymousCommentTrue(): List<Comment>?
+    fun findByAnonymousCommentFalse(): List<Comment>?
+}

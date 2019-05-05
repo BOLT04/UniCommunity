@@ -6,6 +6,7 @@ class SingleBlackboardItemResponse(bbItem: BlackboardItem)
     : HalObject(
         mutableMapOf(
                 "self" to Link(Uri.forSingleBlackboardItem(bbItem.blackboard!!.board!!.id, bbItem.blackboard!!.id, bbItem.id ).toString()),
+                Rels.NAVIGATION to Link("/navigation"),
                 Rels.GET_SINGLE_BLACKBOARD to Link(Uri.forSingleBlackboard(bbItem.blackboard!!.board!!.id, bbItem.blackboard!!.id).toString()),
                 Rels.GET_SINGLE_BOARD to Link(Uri.forSingleBoard(bbItem.blackboard!!.board!!.id).toString()),
                 Rels.CREATE_BLACKBOARDITEM to Link(Uri.forAllBlackboardItems(bbItem.blackboard!!.board!!.id, bbItem.blackboard!!.id).toString()),
@@ -14,10 +15,12 @@ class SingleBlackboardItemResponse(bbItem: BlackboardItem)
                 Rels.DELETE_BLACKBOARDITEM to Link(Uri.forSingleBlackboardItem(bbItem.blackboard!!.board!!.id, bbItem.blackboard!!.id, bbItem.id).toString())
         )
 ){
+    val boardName: String = bbItem.blackboard!!.board!!.name
+    val blackboardName: String = bbItem.blackboard!!.name
     val name : String = bbItem.name
     val content : String = bbItem.content
-    val author: String = bbItem.author
-    val createdAt: String = bbItem.createdAt.toString()
+    val authorName: String = bbItem.author!!.name
+    val createdAt: String = bbItem.createdAt!!.toString()
 }
 
 
