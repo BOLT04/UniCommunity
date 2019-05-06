@@ -1,5 +1,6 @@
 package isel.pt.unicommunity.kotlinx
 
+import android.app.Application
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel

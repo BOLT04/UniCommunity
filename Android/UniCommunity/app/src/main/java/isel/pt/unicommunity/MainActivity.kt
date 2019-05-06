@@ -9,15 +9,15 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import isel.pt.unicommunity.fragments.*
+import isel.pt.unicommunity.presentation.fragment.*
 import isel.pt.unicommunity.kotlinx.getViewModel
-import isel.pt.unicommunity.viewmodel.AllBoardsViewModel
-import isel.pt.unicommunity.viewmodel.MainViewModel
+import isel.pt.unicommunity.presentation.fragment.board.AllBoardsFragment
+import isel.pt.unicommunity.presentation.fragment.board.MyBoardsFragment
+import isel.pt.unicommunity.presentation.viewmodel.BackStackManagingViewModel
+import isel.pt.unicommunity.testing.fragmentTesting.fragment.HomeFragment
 import kotlinx.android.synthetic.main.activity_main.*
-import java.lang.RuntimeException
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, BackStackManagingActivity {
 
     lateinit var omeFragment : Fragment
     lateinit var allBoardsFragment: Fragment
@@ -25,7 +25,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     lateinit var profile: Fragment
 
 
-    lateinit var viewModel : MainViewModel
+    lateinit var viewModel : BackStackManagingViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }*/
 
          viewModel = getViewModel("MainActivity"){
-            MainViewModel(/*id!!*/)//TODO double bangs onde e que ha mesmo a verificaçao
+            BackStackManagingViewModel(/*id!!*/)//TODO double bangs onde e que ha mesmo a verificaçao
         }
 
 
@@ -55,10 +55,24 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         myBoardsFragment= MyBoardsFragment()
         profile = ProfileFragment()
 
-
-
+        initialNavigation(savedInstanceState)
 
         nav_view.setNavigationItemSelectedListener(this)
+    }
+
+    private fun initialNavigation(savedInstanceState: Bundle?) {
+        if (savedInstanceState != null) {
+            val starter = savedInstanceState.getString("starter")
+            if (starter != null) {
+                val frag = viewModel.getStarter(starter)
+                if (frag != null)
+                    navigateTo(frag)
+            }
+        } else {
+            val frag = viewModel.getStarter("Home")
+            if (frag != null) // should always be true
+                navigateTo(frag)
+        }
     }
 
     override fun onBackPressed() {
@@ -149,11 +163,17 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         return true
     }
 
-    fun navigateTo(fragment: Fragment, reseting : Boolean =false){
-        viewModel.navigateTo(fragment, supportFragmentManager)
+    override fun navigateTo(fragment: Fragment, inBackStack: Boolean, reseting : Boolean){
+        viewModel.navigateTo(fragment, supportFragmentManager, inBackStack, reseting)
     }
 
 
+
+}
+
+interface BackStackManagingActivity {
+
+    fun navigateTo(fragment: Fragment, inBackStack : Boolean = true, reseting : Boolean =false)
 
 }
 
