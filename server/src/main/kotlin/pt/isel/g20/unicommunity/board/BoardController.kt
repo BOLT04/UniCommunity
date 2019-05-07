@@ -19,7 +19,6 @@ import org.springframework.security.core.context.SecurityContextHolder
 import pt.isel.g20.unicommunity.hateoas.Uri.BOARD_MEMBERS
 import pt.isel.g20.unicommunity.user.model.User
 
-@CrossOrigin
 @PreAuthorize("hasRole('TEACHER')")
 @RestController
 @RequestMapping(produces = ["application/hal+json", "application/json", "application/vnd.collection+json"])
