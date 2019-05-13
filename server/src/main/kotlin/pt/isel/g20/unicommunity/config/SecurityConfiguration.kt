@@ -34,10 +34,6 @@ class SecurityConfiguration(val userDetailsService: CustomUserDetailsService) : 
                 .authorizeRequests()
                 .antMatchers("**/templates**").hasRole("TEACHER")
                 .antMatchers("**/boards**").authenticated()
-                .anyRequest().permitAll()
-                .and()
-                .formLogin().permitAll()
-                .and()
-                .logout().logoutRequestMatcher(AntPathRequestMatcher("/logout")).logoutSuccessUrl("/")
+                .anyRequest().permitAll().and().formLogin().permitAll().and().logout().permitAll()
     }
 }

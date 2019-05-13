@@ -8,15 +8,10 @@ import javax.persistence.*
 class Forum(
         @Id
         var id: Long,
-        @OneToOne var board: Board? = null,
-        var isAllowImagePosts: Boolean
+        @OneToOne var board: Board,
+        var isAllowImagePosts: Boolean = false
 ) {
-
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn
     var items: MutableList<ForumItem> = mutableListOf()
-
-    constructor() : this (0, null,false)
-
-    constructor(id: Long, board: Board?): this(id, board, false)
 }

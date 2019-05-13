@@ -60,7 +60,7 @@ class ForumItemController(private val service: IForumItemService) {
         val user = authentication.principal as User
             return service.createForumItem(boardId, user.id, forumItemDto.name, forumItemDto.content, forumItemDto.anonymousPost).let {
                 ResponseEntity
-                        .created(Uri.forSingleForumItem(it.forum!!.board!!.id, it.id))
+                        .created(Uri.forSingleForumItem(it.forum.board.id, it.id))
                         .cacheControl(
                                 CacheControl
                                         .maxAge(1, TimeUnit.HOURS)

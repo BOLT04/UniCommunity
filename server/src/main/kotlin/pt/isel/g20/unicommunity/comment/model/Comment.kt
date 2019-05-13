@@ -9,8 +9,8 @@ import javax.persistence.*
 
 @Entity
 class Comment(
-        @ManyToOne @JoinColumn var forumItem: ForumItem? = null,
-        @ManyToOne(fetch = FetchType.LAZY) @JoinColumn var author: User? = null,
+        @ManyToOne @JoinColumn var forumItem: ForumItem,
+        @ManyToOne(fetch = FetchType.LAZY) @JoinColumn var author: User,
         @Column(nullable = false) var content: String,
         @Column(nullable = false) var anonymousComment: Boolean
 
@@ -24,6 +24,4 @@ class Comment(
     @Column
     @CreationTimestamp
     var createdAt: Date? = null
-
-    constructor() :this(null,null, "", false)
 }

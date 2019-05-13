@@ -10,8 +10,8 @@ import javax.persistence.*
 
 @Entity
 class ForumItem(
-        @ManyToOne var forum: Forum? = null,
-        @ManyToOne @JoinColumn var author: User? = null,
+        @ManyToOne var forum: Forum,
+        @ManyToOne @JoinColumn var author: User,
         @Column(nullable = false) var name: String,
         @Column(nullable = false) var content: String,
         @Column(nullable = false) var anonymousPost: Boolean
@@ -28,8 +28,5 @@ class ForumItem(
     @Column
     @CreationTimestamp
     var createdAt: Date? = null
-
-    constructor() :this(null, null,"", "", false)
-
 }
 

@@ -35,7 +35,7 @@ class ForumController(private val service: IForumService) {
     fun createForum(@PathVariable boardId: Long, @RequestBody forumDto: ForumDto) =
             service.createForum(boardId, forumDto.allowImagePosts).let {
                 ResponseEntity
-                        .created(Uri.forSingleForum(it.board!!.id))
+                        .created(Uri.forSingleForum(it.board.id))
                         .cacheControl(
                                 CacheControl
                                         .maxAge(1, TimeUnit.HOURS)

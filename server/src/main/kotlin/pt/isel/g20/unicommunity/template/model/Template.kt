@@ -17,5 +17,4 @@ class Template(
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn
     var boards: MutableList<Board> = mutableListOf()
-    constructor() : this("", false, "")
 }

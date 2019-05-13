@@ -64,7 +64,7 @@ class BlackboardItemController(private val service: IBlackboardItemService) {
         val user = authentication.principal as User
             return service.createBlackboardItem(boardId, bbId, user.id, itemDto.name, itemDto.content).let {
                 ResponseEntity
-                        .created(Uri.forSingleBlackboardItem(it.blackboard!!.board!!.id, it.blackboard!!.id, it.id))
+                        .created(Uri.forSingleBlackboardItem(it.blackboard.board.id, it.blackboard.id, it.id))
                         .cacheControl(
                                 CacheControl
                                         .maxAge(1, TimeUnit.HOURS)

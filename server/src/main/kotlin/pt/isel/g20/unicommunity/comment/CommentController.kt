@@ -70,7 +70,7 @@ class CommentController(private val service: ICommentService) {
         val user = authentication.principal as User
             return service.createComment(boardId, forumItemId, user.id, commentDto.content, commentDto.anonymous).let {
                 ResponseEntity
-                        .created(Uri.forSingleComment(it.forumItem!!.forum!!.board!!.id, it.forumItem!!.id, it.id))
+                        .created(Uri.forSingleComment(it.forumItem.forum.board.id, it.forumItem.id, it.id))
                         .cacheControl(
                                 CacheControl
                                         .maxAge(1, TimeUnit.HOURS)

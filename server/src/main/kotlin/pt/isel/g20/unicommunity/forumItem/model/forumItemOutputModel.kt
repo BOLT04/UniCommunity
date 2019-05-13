@@ -5,20 +5,20 @@ import pt.isel.g20.unicommunity.hateoas.*
 class SingleForumItemResponse(forumItem: ForumItem)
     : HalObject(
         mutableMapOf(
-                "self" to Link(Uri.forSingleForumItem(forumItem.forum!!.board!!.id, forumItem.id).toString()),
+                "self" to Link(Uri.forSingleForumItem(forumItem.forum.board.id, forumItem.id).toString()),
                 Rels.NAVIGATION to Link("/navigation"),
-                Rels.GET_SINGLE_BOARD to Link(Uri.forSingleBoard(forumItem.forum!!.board!!.id).toString()),
-                Rels.GET_SINGLE_FORUM to Link(Uri.forSingleForum(forumItem.forum!!.board!!.id).toString()),
-                Rels.CREATE_FORUMITEM to Link(Uri.forAllForumItems(forumItem.forum!!.board!!.id).toString()),
-                Rels.GET_MULTIPLE_FORUMITEMS to Link(Uri.forAllForumItems(forumItem.forum!!.board!!.id).toString()),
-                Rels.EDIT_FORUMITEM to Link(Uri.forSingleForumItem(forumItem.forum!!.board!!.id, forumItem.id).toString()),
-                Rels.DELETE_FORUMITEM to Link(Uri.forSingleForumItem(forumItem.forum!!.board!!.id, forumItem.id).toString())
+                Rels.GET_SINGLE_BOARD to Link(Uri.forSingleBoard(forumItem.forum.board.id).toString()),
+                Rels.GET_SINGLE_FORUM to Link(Uri.forSingleForum(forumItem.forum.board.id).toString()),
+                Rels.CREATE_FORUMITEM to Link(Uri.forAllForumItems(forumItem.forum.board.id).toString()),
+                Rels.GET_MULTIPLE_FORUMITEMS to Link(Uri.forAllForumItems(forumItem.forum.board.id).toString()),
+                Rels.EDIT_FORUMITEM to Link(Uri.forSingleForumItem(forumItem.forum.board.id, forumItem.id).toString()),
+                Rels.DELETE_FORUMITEM to Link(Uri.forSingleForumItem(forumItem.forum.board.id, forumItem.id).toString())
         )
 ){
-    val boardName: String = forumItem.forum!!.board!!.name
+    val boardName: String = forumItem.forum.board.name
     val name : String = forumItem.name
     val content : String = forumItem.content
-    val authorName : String = forumItem.author!!.name
+    val authorName : String = forumItem.author.name
     val createdAt : String = forumItem.createdAt!!.toString()
 }
 
@@ -36,13 +36,13 @@ class MultipleForumItemsResponse(
         ),
         items = forumItems.map {
             Item(
-                href = Uri.forSingleForumItem(it.forum!!.board!!.id, it.id).toString(),
+                href = Uri.forSingleForumItem(it.forum.board.id, it.id).toString(),
                 data = listOf(
                     Data(name= "title", value= it.name),
                     Data(name= "id", value= it.id.toString()),
                     Data(name= "smallDesc", value= it.content),
-                    Data(name= "author", value= it.author!!.name),
-                    Data(name= "createdAt", value= it.createdAt.toString())
+                    Data(name= "author", value= it.author.name),
+                    Data(name= "createdAt", value= it.createdAt!!.toString())
                 ),
                 links = listOf(//TODO: clean up this code. The links should be the same as the ones from a single forum item response
                     CollectionLink(

@@ -9,7 +9,7 @@ class Blackboard(
         @Column(nullable = false) var name: String,
         @Column var notificationLevel: String,
         @Column var description: String? = null,
-        @ManyToOne(fetch = FetchType.LAZY) var board: Board? = null
+        @ManyToOne(fetch = FetchType.LAZY) var board: Board
 ) {
 
     @Id
@@ -19,9 +19,4 @@ class Blackboard(
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn
     var items: MutableList<BlackboardItem> = mutableListOf()
-
-    constructor() : this("", "", null, null)
-
-    constructor(name: String,  notificationLevel: String, board: Board)
-        : this(name, notificationLevel, null, board)
 }

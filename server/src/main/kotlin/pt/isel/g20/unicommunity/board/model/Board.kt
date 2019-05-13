@@ -15,9 +15,7 @@ import javax.persistence.JoinTable
 @Entity
 class Board(
         @Column(nullable = false) var name: String,
-
-        @ManyToOne var template: Template? = null,
-
+        @ManyToOne var template: Template,
         @Column var description: String? = null
 ) {
 
@@ -40,7 +38,4 @@ class Board(
             inverseJoinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")]
     )
     var members: MutableList<User> = mutableListOf()
-
-    constructor() : this("", null, null)
-    constructor(name: String, template: Template) : this(name, template, null)
 }
