@@ -5,13 +5,13 @@ import pt.isel.g20.unicommunity.hateoas.*
 class SingleBlackboardResponse(blackboard: Blackboard)
     : HalObject(
         mutableMapOf(
-                "self" to Link(Uri.forSingleBlackboard(blackboard.board.id, blackboard.id).toString()),
+                "self" to Link(Uri.forSingleBlackboardText(blackboard.board.id, blackboard.id)),
                 Rels.NAVIGATION to Link("/navigation"),
-                Rels.GET_SINGLE_BOARD to Link(Uri.forSingleBoard(blackboard.board.id).toString()),
-                Rels.CREATE_BLACKBOARDITEM to Link(Uri.forAllBlackboards(blackboard.board.id).toString()),
-                Rels.GET_MULTIPLE_BLACKBOARDS to Link(Uri.forAllBlackboards(blackboard.board.id).toString()),
-                Rels.EDIT_BLACKBOARD to Link(Uri.forSingleBoard(blackboard.board.id).toString()),
-                Rels.DELETE_BLACKBOARD to Link(Uri.forSingleBoard(blackboard.board.id).toString())
+                Rels.GET_SINGLE_BOARD to Link(Uri.forSingleBoardText(blackboard.board.id)),
+                Rels.CREATE_BLACKBOARDITEM to Link(Uri.forAllBlackboards(blackboard.board.id)),
+                Rels.GET_MULTIPLE_BLACKBOARDS to Link(Uri.forAllBlackboards(blackboard.board.id)),
+                Rels.EDIT_BLACKBOARD to Link(Uri.forSingleBoardText(blackboard.board.id)),
+                Rels.DELETE_BLACKBOARD to Link(Uri.forSingleBoardText(blackboard.board.id))
         )
 ){
     val boardName: String = blackboard.board.name
@@ -25,15 +25,15 @@ class SingleBlackboardResponse(blackboard: Blackboard)
 
 class MultipleBlackboardsResponse(
         boardId: Long,
-        blackboards : Iterable<Blackboard>
+        blackboards : List<Item>
 ): JsonCollection(
         version = "1.0",
-        href = Uri.forAllBlackboards(boardId).toString(),
+        href = Uri.forAllBlackboards(boardId),
         links = listOf(
-                CollectionLink("self","/http://localhost:3000/boards/$boardId/blackboards"),
-                CollectionLink(Rels.NAVIGATION, "/http://localhost:3000/navigation")
+                CollectionLink("self",Uri.forAllBlackboards(boardId)),
+                CollectionLink(Rels.NAVIGATION, Uri.NAVIGATION_ROUTE)
         ),
-        items = blackboards.map { Item( Uri.forSingleBlackboard(it.board.id, it.id).toString()) }
+        items = blackboards
 )
 
 class PartialBlackboardObject(

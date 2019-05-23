@@ -20,10 +20,13 @@ object Uri {
 
     //Getters
     fun forAllUsers() =
-            URI(USERS_ROUTE)
+            URI(USERS_ROUTE).toString()
 
-    fun forSingleUser(userId: Long) =
+    fun forSingleUserUri(userId: Long) =
             singleUserTemplate.expand(userId)
+
+    fun forSingleUserText(userId: Long) =
+            forSingleUserUri(userId).toString()
 
 
 //BOARDS
@@ -38,10 +41,13 @@ object Uri {
 
     //Getters
     fun forAllBoards() =
-            URI(BOARDS_ROUTE)
+            URI(BOARDS_ROUTE).toString()
 
-    fun forSingleBoard(boardId: Long) =
+    fun forSingleBoardUri(boardId: Long) =
             singleBoardTemplate.expand(boardId)
+
+    fun forSingleBoardText(boardId: Long) =
+            forSingleBoardUri(boardId).toString()
 
 
 //BLACKBOARDS
@@ -56,10 +62,13 @@ object Uri {
 
     //Getters
     fun forAllBlackboards(boardId: Long) =
-            multipleBlackboardTemplate.expand(boardId)
+            multipleBlackboardTemplate.expand(boardId).toString()
 
-    fun forSingleBlackboard(boardId: Long, bbId: Long) =
+    fun forSingleBlackboardUri(boardId: Long, bbId: Long) =
             singleBlackboardTemplate.expand(boardId, bbId)
+
+    fun forSingleBlackboardText(boardId: Long, bbId: Long) =
+            forSingleBlackboardUri(boardId, bbId).toString()
 
 
 //BLACKBOARDITEMS
@@ -74,10 +83,13 @@ object Uri {
 
     //Getters
     fun forAllBlackboardItems(boardId: Long, bbId: Long) =
-            multipleBlackboardItemTemplate.expand(boardId, bbId)
+            multipleBlackboardItemTemplate.expand(boardId, bbId).toString()
 
-    fun forSingleBlackboardItem(boardId: Long, bbId: Long, itemId: Long) =
+    fun forSingleBlackboardItemUri(boardId: Long, bbId: Long, itemId: Long) =
             singleBlackboardItemTemplate.expand(boardId, bbId, itemId)
+
+    fun forSingleBlackboardItemText(boardId: Long, bbId: Long, itemId: Long) =
+            forSingleBlackboardItemUri(boardId, bbId, itemId).toString()
 
 
 //FORUM
@@ -89,8 +101,11 @@ object Uri {
     private val singleForumTemplate = UriTemplate(FORUM_ROUTE)
 
     //Getters
-    fun forSingleForum(boardId: Long) =
+    fun forSingleForumUri(boardId: Long) =
             singleForumTemplate.expand(boardId)
+
+    fun forSingleForumText(boardId: Long) =
+            forSingleForumUri(boardId).toString()
 
 
 //FORUMITEMS
@@ -105,10 +120,13 @@ object Uri {
 
     //Getters
     fun forAllForumItems(boardId: Long) =
-            multipleForumItemsTemplate.expand(boardId)
+            multipleForumItemsTemplate.expand(boardId).toString()
 
-    fun forSingleForumItem(boardId: Long, forumItemId: Long) =
+    fun forSingleForumItemUri(boardId: Long, forumItemId: Long) =
             singleForumItemTemplate.expand(boardId, forumItemId)
+
+    fun forSingleForumItemText(boardId: Long, forumItemId: Long) =
+            forSingleForumItemUri(boardId, forumItemId).toString()
 
 // COMMENTS
 
@@ -122,10 +140,13 @@ object Uri {
 
     //Getters
     fun forAllComments(boardId: Long, forumItemId: Long) =
-            multipleCommentsTemplate.expand(boardId, forumItemId)
+            multipleCommentsTemplate.expand(boardId, forumItemId).toString()
 
-    fun forSingleComment(boardId: Long, forumItemId: Long, commentId: Long) =
+    fun forSingleCommentUri(boardId: Long, forumItemId: Long, commentId: Long) =
             singleCommentTemplate.expand(boardId, forumItemId, commentId)
+
+    fun forSingleCommentText(boardId: Long, forumItemId: Long, commentId: Long) =
+            forSingleCommentUri(boardId, forumItemId, commentId).toString()
 
 
 //TEMPLATES
@@ -139,8 +160,11 @@ object Uri {
 
     //Getters
     fun forAllTemplates() =
-            URI(TEMPLATES_ROUTE)
+            URI(TEMPLATES_ROUTE).toString()
 
-    fun forSingleTemplate(templateId: Long) =
+    fun forSingleTemplateUri(templateId: Long) =
             singleTemplateTemplate.expand(templateId)
+
+    fun forSingleTemplateText(templateId: Long) =
+            forSingleTemplateUri(templateId).toString()
 }
