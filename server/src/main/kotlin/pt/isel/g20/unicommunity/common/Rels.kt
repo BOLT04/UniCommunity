@@ -1,4 +1,4 @@
-package pt.isel.g20.unicommunity.hateoas
+package pt.isel.g20.unicommunity.common
 
 object Rels {
     //TODO: temporary prefix
@@ -20,7 +20,7 @@ object Rels {
     const val CREATE_FORUM = "$RELS_PREFIX/createForum"
     const val GET_SINGLE_FORUM = "$RELS_PREFIX/getForum"
     const val EDIT_FORUM = "$RELS_PREFIX/editForum"
-    const val DELETE_FORUM = "$RELS_PREFIX/deleteForum"    
+    const val DELETE_FORUM = "$RELS_PREFIX/deleteForum"
     
     const val CREATE_FORUMITEM = "$RELS_PREFIX/createForumItem"
     const val GET_SINGLE_FORUMITEM = "$RELS_PREFIX/getForumItem"
@@ -51,4 +51,10 @@ object Rels {
     const val GET_MULTIPLE_USERS = "$RELS_PREFIX/getUsers"
     const val EDIT_USER = "$RELS_PREFIX/editUser"
     const val DELETE_USER = "$RELS_PREFIX/deleteUser"
+
+    const val CREATE_TEMPLATE = "$RELS_PREFIX/createTemplate"
+    const val GET_SINGLE_TEMPLATE = "$RELS_PREFIX/getTemplate"
+    const val GET_MULTIPLE_TEMPLATES = "$RELS_PREFIX/getTemplates"
+    const val EDIT_TEMPLATE = "$RELS_PREFIX/editTemplate"
+    const val DELETE_TEMPLATE = "$RELS_PREFIX/deleteTemplate"
 }

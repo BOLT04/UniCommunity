@@ -1,4 +1,4 @@
-package pt.isel.g20.unicommunity.hateoas
+package pt.isel.g20.unicommunity.common
 
 import org.springframework.web.util.UriTemplate
 import java.net.URI
@@ -8,6 +8,9 @@ object Uri {
 
 // Navigation
     const val NAVIGATION_ROUTE = "/"
+
+// Auth
+    const val LOGIN_ROUTE = "/login"
 
 //USERS
 
