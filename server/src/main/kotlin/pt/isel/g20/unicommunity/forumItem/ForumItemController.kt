@@ -7,9 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
 import pt.isel.g20.unicommunity.forumItem.exception.NotFoundForumItemException
-import pt.isel.g20.unicommunity.forumItem.model.ForumItemDto
-import pt.isel.g20.unicommunity.forumItem.model.MultipleForumItemsResponse
-import pt.isel.g20.unicommunity.forumItem.model.SingleForumItemResponse
+import pt.isel.g20.unicommunity.forumItem.model.*
 import pt.isel.g20.unicommunity.forumItem.service.IForumItemService
 import pt.isel.g20.unicommunity.hateoas.CollectionObject
 import pt.isel.g20.unicommunity.hateoas.Uri
@@ -24,8 +22,8 @@ class ForumItemController(private val service: IForumItemService) {
 
     @GetMapping(path = [FORUMITEMS_ROUTE], produces = ["application/vnd.collection+json"])
     fun getAllForumItems(@PathVariable boardId: Long) : ResponseEntity<CollectionObject> =
-            service.getAllForumItems(boardId).let {
-                val rsp = CollectionObject(MultipleForumItemsResponse(boardId, it))
+            service.getAllForumItems(boardId).map(ForumItem::toItemRepr).let {
+                val response = CollectionObject(MultipleForumItemsResponse(boardId, it))
 
                 ResponseEntity
                         .ok()
@@ -33,21 +31,23 @@ class ForumItemController(private val service: IForumItemService) {
                                 CacheControl
                                         .maxAge(1, TimeUnit.HOURS)
                                         .cachePrivate())
-                        .eTag(rsp.hashCode().toString())
-                        .body(rsp)
+                        .eTag(response.hashCode().toString())
+                        .body(response)
             }
 
     @GetMapping(path = [SINGLE_FORUMITEM_ROUTE], produces = ["application/hal+json"])
     fun getForumItemById(@PathVariable boardId: Long, @PathVariable forumItemId: Long) =
             service.getForumItemById(boardId, forumItemId).let {
+                val response = SingleForumItemResponse(it)
+
                 ResponseEntity
                         .ok()
                         .cacheControl(
                                 CacheControl
                                         .maxAge(1, TimeUnit.HOURS)
                                         .cachePrivate())
-                        .eTag(it.hashCode().toString())
-                        .body(SingleForumItemResponse(it))
+                        .eTag(response.hashCode().toString())
+                        .body(response)
             }
 
     @PostMapping(path = [FORUMITEMS_ROUTE], produces = ["application/hal+json"])
@@ -59,14 +59,16 @@ class ForumItemController(private val service: IForumItemService) {
         val authentication = SecurityContextHolder.getContext().authentication
         val user = authentication.principal as User
             return service.createForumItem(boardId, user.id, forumItemDto.name, forumItemDto.content, forumItemDto.anonymousPost).let {
+                val response = SingleForumItemResponse(it)
+
                 ResponseEntity
-                        .created(Uri.forSingleForumItem(it.forum.board.id, it.id))
+                        .created(Uri.forSingleForumItemUri(it.forum.board.id, it.id))
                         .cacheControl(
                                 CacheControl
                                         .maxAge(1, TimeUnit.HOURS)
                                         .cachePrivate())
-                        .eTag(it.hashCode().toString())
-                        .body(SingleForumItemResponse(it))
+                        .eTag(response.hashCode().toString())
+                        .body(response)
             }
     }
 
@@ -77,28 +79,32 @@ class ForumItemController(private val service: IForumItemService) {
             @RequestBody forumItemDto: ForumItemDto
     ) =
             service.editForumItem(boardId, forumItemId, forumItemDto.name, forumItemDto.content).let {
+                val response = SingleForumItemResponse(it)
+
                 ResponseEntity
                         .ok()
                         .cacheControl(
                                 CacheControl
                                         .maxAge(1, TimeUnit.HOURS)
                                         .cachePrivate())
-                        .eTag(it.hashCode().toString())
-                        .body(SingleForumItemResponse(it))
+                        .eTag(response.hashCode().toString())
+                        .body(response)
             }
 
 
     @DeleteMapping(path = [SINGLE_FORUMITEM_ROUTE], produces = ["application/hal+json"])
     fun deleteForumItem(@PathVariable boardId: Long, @PathVariable forumItemId: Long) =
             service.deleteForumItem(boardId, forumItemId).let {
+                val response = SingleForumItemResponse(it)
+
                 ResponseEntity
                         .ok()
                         .cacheControl(
                                 CacheControl
                                         .maxAge(1, TimeUnit.HOURS)
                                         .cachePrivate())
-                        .eTag(it.hashCode().toString())
-                        .body(SingleForumItemResponse(it))
+                        .eTag(response.hashCode().toString())
+                        .body(response)
             }
 
 
