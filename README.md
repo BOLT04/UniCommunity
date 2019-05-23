@@ -21,3 +21,6 @@ We are trying to use the [Angular standards](https://github.com/angular/angular/
 | scope | client | Regarding the Web client module |
 | scope | android | Regarding the Android client module |
 | scope | server | Regarding the Server/API module |
+
+## Further information and documentation
+If you are interested in learning more about this project, check our [Wiki](https://github.com/BOLT04/UniCommunity/wiki) page: 
