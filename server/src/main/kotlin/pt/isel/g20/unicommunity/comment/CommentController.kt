@@ -14,9 +14,10 @@ import pt.isel.g20.unicommunity.comment.service.ICommentService
 import pt.isel.g20.unicommunity.forum.exception.NotFoundForumException
 import pt.isel.g20.unicommunity.forumItem.exception.NotFoundForumItemException
 import pt.isel.g20.unicommunity.hateoas.CollectionObject
-import pt.isel.g20.unicommunity.hateoas.Uri
-import pt.isel.g20.unicommunity.hateoas.Uri.COMMENTS_ROUTE
-import pt.isel.g20.unicommunity.hateoas.Uri.SINGLE_COMMENT_ROUTE
+import pt.isel.g20.unicommunity.common.Uri
+import pt.isel.g20.unicommunity.common.Uri.COMMENTS_ROUTE
+import pt.isel.g20.unicommunity.common.Uri.SINGLE_COMMENT_ROUTE
+import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
 import pt.isel.g20.unicommunity.user.model.User
 import java.util.concurrent.TimeUnit
 
@@ -24,6 +25,7 @@ import java.util.concurrent.TimeUnit
 @RequestMapping(produces = ["application/hal+json", "application/json", "application/vnd.collection+json"])
 class CommentController(private val service: ICommentService) {
 
+    @AuthorizationRequired
     @GetMapping(path = [COMMENTS_ROUTE], produces = ["application/vnd.collection+json"])
     fun getAllComments(
             @PathVariable boardId: Long,
@@ -42,6 +44,7 @@ class CommentController(private val service: ICommentService) {
                         .body(rsp)
             }
 
+    @AuthorizationRequired
     @GetMapping(path = [SINGLE_COMMENT_ROUTE], produces = ["application/hal+json"])
     fun getCommentById(
             @PathVariable boardId: Long,
@@ -59,18 +62,18 @@ class CommentController(private val service: ICommentService) {
                         .body(SingleCommentResponse(it))
             }
 
+    @AuthorizationRequired
     @PostMapping(path = [COMMENTS_ROUTE], produces = ["application/hal+json"])
     @ResponseStatus(HttpStatus.CREATED)
     fun createComment(
             @PathVariable boardId: Long,
             @PathVariable forumItemId: Long,
-            @RequestBody commentDto: CommentDto
+            @RequestBody commentDto: CommentDto,
+            @SessionAttribute("user")user: User
     ):ResponseEntity<SingleCommentResponse>{
-        val authentication = SecurityContextHolder.getContext().authentication
-        val user = authentication.principal as User
             return service.createComment(boardId, forumItemId, user.id, commentDto.content, commentDto.anonymous).let {
                 ResponseEntity
-                        .created(Uri.forSingleComment(it.forumItem.forum.board.id, it.forumItem.id, it.id))
+                        .created(Uri.forSingleCommentUri(it.forumItem.forum.board.id, it.forumItem.id, it.id))
                         .cacheControl(
                                 CacheControl
                                         .maxAge(1, TimeUnit.HOURS)
@@ -80,6 +83,7 @@ class CommentController(private val service: ICommentService) {
             }
     }
 
+    @AuthorizationRequired
     @PutMapping(path = [SINGLE_COMMENT_ROUTE], produces = ["application/hal+json"])
     fun editComment(
             @PathVariable boardId: Long,
@@ -98,7 +102,7 @@ class CommentController(private val service: ICommentService) {
                         .body(SingleCommentResponse(it))
             }
 
-
+    @AuthorizationRequired
     @DeleteMapping(path = [SINGLE_COMMENT_ROUTE], produces = ["application/hal+json"])
     fun deleteComment(
             @PathVariable boardId: Long,

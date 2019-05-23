@@ -11,9 +11,10 @@ import pt.isel.g20.unicommunity.blackboardItem.model.*
 import pt.isel.g20.unicommunity.blackboardItem.service.IBlackboardItemService
 import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
 import pt.isel.g20.unicommunity.hateoas.CollectionObject
-import pt.isel.g20.unicommunity.hateoas.Uri
-import pt.isel.g20.unicommunity.hateoas.Uri.BLACKBOARDITEMS_ROUTE
-import pt.isel.g20.unicommunity.hateoas.Uri.SINGLE_BLACKBOARDITEM_ROUTE
+import pt.isel.g20.unicommunity.common.Uri
+import pt.isel.g20.unicommunity.common.Uri.BLACKBOARDITEMS_ROUTE
+import pt.isel.g20.unicommunity.common.Uri.SINGLE_BLACKBOARDITEM_ROUTE
+import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
 import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
 import pt.isel.g20.unicommunity.user.model.User
 import java.util.concurrent.TimeUnit
@@ -22,6 +23,7 @@ import java.util.concurrent.TimeUnit
 @RequestMapping(produces = ["application/hal+json", "application/json", "application/vnd.collection+json"])
 class BlackboardItemController(private val service: IBlackboardItemService) {
 
+    @AuthorizationRequired
     @GetMapping(path = [BLACKBOARDITEMS_ROUTE], produces = ["application/vnd.collection+json"])
     fun getAllBlackboardItems(@PathVariable boardId: Long, @PathVariable bbId: Long) =
             service.getAllBlackboardItems(boardId, bbId).map(BlackboardItem::toItemRepr).let {
@@ -37,6 +39,7 @@ class BlackboardItemController(private val service: IBlackboardItemService) {
                         .body(response)
             }
 
+    @AuthorizationRequired
     @GetMapping(path = [SINGLE_BLACKBOARDITEM_ROUTE], produces = ["application/hal+json"])
     fun getBlackboardItemById(
             @PathVariable boardId: Long,
@@ -56,15 +59,15 @@ class BlackboardItemController(private val service: IBlackboardItemService) {
                         .body(response)
             }
 
+    @AuthorizationRequired
     @PostMapping(path = [BLACKBOARDITEMS_ROUTE], produces = ["application/hal+json"])
     @ResponseStatus(HttpStatus.CREATED)
     fun createBlackboardItem(
             @PathVariable boardId: Long,
             @PathVariable bbId: Long,
-            @RequestBody itemDto: BlackboardItemDto
+            @RequestBody itemDto: BlackboardItemDto,
+            @SessionAttribute("user")user: User
     ): ResponseEntity<SingleBlackboardItemResponse>{
-        val authentication = SecurityContextHolder.getContext().authentication
-        val user = authentication.principal as User
             return service.createBlackboardItem(boardId, bbId, user.id, itemDto.name, itemDto.content).let {
                 val response = SingleBlackboardItemResponse(it)
 
@@ -79,6 +82,7 @@ class BlackboardItemController(private val service: IBlackboardItemService) {
             }
     }
 
+    @AuthorizationRequired
     @PutMapping(path = [SINGLE_BLACKBOARDITEM_ROUTE], produces = ["application/hal+json"])
     fun editBlackboardItem(
             @PathVariable boardId: Long,
@@ -99,7 +103,7 @@ class BlackboardItemController(private val service: IBlackboardItemService) {
                         .body(response)
             }
 
-
+    @AuthorizationRequired
     @DeleteMapping(path = [SINGLE_BLACKBOARDITEM_ROUTE], produces = ["application/hal+json"])
     fun deleteBlackboardItem(
             @PathVariable boardId: Long,

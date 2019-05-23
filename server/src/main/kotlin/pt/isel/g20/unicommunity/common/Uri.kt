@@ -7,7 +7,7 @@ object Uri {
     const val LINK_RELATIONS_ROUTE = "/rels"
 
 // Navigation
-    const val NAVIGATION_ROUTE = "/"
+    const val NAVIGATION_ROUTE = "/navigation"
 
 // Auth
     const val LOGIN_ROUTE = "/login"
@@ -51,6 +51,11 @@ object Uri {
 
     fun forSingleBoardText(boardId: Long) =
             forSingleBoardUri(boardId).toString()
+
+    fun forSingleBoardTemplated(): String{
+        val boardPrefix = forAllBoards()
+        return "$boardPrefix/{boardId}"
+    }
 
 
 //BLACKBOARDS

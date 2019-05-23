@@ -1,5 +1,6 @@
 package pt.isel.g20.unicommunity.template.model
 
+import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.hateoas.*
 
 class SingleTemplateResponse(template: Template) {
@@ -10,6 +11,8 @@ class SingleTemplateResponse(template: Template) {
 }
 
 
-class MultipleTemplatesResponse(templates : Iterable<Template>){
-    val items = templates.map { Item( Uri.forSingleBoard(it.id).toString()) }
+class MultipleTemplatesResponse(
+        templates : Iterable<Template>
+){
+    val items = templates.map { Item( Uri.forSingleTemplateText(it.id)) } // TODO: mapping has to go outside
 }

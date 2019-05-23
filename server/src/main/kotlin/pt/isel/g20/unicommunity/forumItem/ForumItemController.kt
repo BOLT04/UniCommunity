@@ -10,9 +10,10 @@ import pt.isel.g20.unicommunity.forumItem.exception.NotFoundForumItemException
 import pt.isel.g20.unicommunity.forumItem.model.*
 import pt.isel.g20.unicommunity.forumItem.service.IForumItemService
 import pt.isel.g20.unicommunity.hateoas.CollectionObject
-import pt.isel.g20.unicommunity.hateoas.Uri
-import pt.isel.g20.unicommunity.hateoas.Uri.FORUMITEMS_ROUTE
-import pt.isel.g20.unicommunity.hateoas.Uri.SINGLE_FORUMITEM_ROUTE
+import pt.isel.g20.unicommunity.common.Uri
+import pt.isel.g20.unicommunity.common.Uri.FORUMITEMS_ROUTE
+import pt.isel.g20.unicommunity.common.Uri.SINGLE_FORUMITEM_ROUTE
+import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
 import pt.isel.g20.unicommunity.user.model.User
 import java.util.concurrent.TimeUnit
 
@@ -20,6 +21,7 @@ import java.util.concurrent.TimeUnit
 @RequestMapping(produces = ["application/hal+json", "application/json", "application/vnd.collection+json"])
 class ForumItemController(private val service: IForumItemService) {
 
+    @AuthorizationRequired
     @GetMapping(path = [FORUMITEMS_ROUTE], produces = ["application/vnd.collection+json"])
     fun getAllForumItems(@PathVariable boardId: Long) : ResponseEntity<CollectionObject> =
             service.getAllForumItems(boardId).map(ForumItem::toItemRepr).let {
@@ -35,6 +37,7 @@ class ForumItemController(private val service: IForumItemService) {
                         .body(response)
             }
 
+    @AuthorizationRequired
     @GetMapping(path = [SINGLE_FORUMITEM_ROUTE], produces = ["application/hal+json"])
     fun getForumItemById(@PathVariable boardId: Long, @PathVariable forumItemId: Long) =
             service.getForumItemById(boardId, forumItemId).let {
@@ -50,14 +53,14 @@ class ForumItemController(private val service: IForumItemService) {
                         .body(response)
             }
 
+    @AuthorizationRequired
     @PostMapping(path = [FORUMITEMS_ROUTE], produces = ["application/hal+json"])
     @ResponseStatus(HttpStatus.CREATED)
     fun createForumItem(
             @PathVariable boardId: Long,
-            @RequestBody forumItemDto: ForumItemDto
+            @RequestBody forumItemDto: ForumItemDto,
+            @SessionAttribute("user")user: User
     ): ResponseEntity<SingleForumItemResponse>{
-        val authentication = SecurityContextHolder.getContext().authentication
-        val user = authentication.principal as User
             return service.createForumItem(boardId, user.id, forumItemDto.name, forumItemDto.content, forumItemDto.anonymousPost).let {
                 val response = SingleForumItemResponse(it)
 
@@ -72,6 +75,7 @@ class ForumItemController(private val service: IForumItemService) {
             }
     }
 
+    @AuthorizationRequired
     @PutMapping(path = [SINGLE_FORUMITEM_ROUTE], produces = ["application/hal+json"])
     fun editForumItem(
             @PathVariable boardId: Long,
@@ -91,7 +95,7 @@ class ForumItemController(private val service: IForumItemService) {
                         .body(response)
             }
 
-
+    @AuthorizationRequired
     @DeleteMapping(path = [SINGLE_FORUMITEM_ROUTE], produces = ["application/hal+json"])
     fun deleteForumItem(@PathVariable boardId: Long, @PathVariable forumItemId: Long) =
             service.deleteForumItem(boardId, forumItemId).let {

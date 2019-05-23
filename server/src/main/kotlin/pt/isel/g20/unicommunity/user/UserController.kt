@@ -4,9 +4,9 @@ import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import pt.isel.g20.unicommunity.hateoas.Uri
-import pt.isel.g20.unicommunity.hateoas.Uri.SINGLE_USER_ROUTE
-import pt.isel.g20.unicommunity.hateoas.Uri.USERS_ROUTE
+import pt.isel.g20.unicommunity.common.Uri
+import pt.isel.g20.unicommunity.common.Uri.SINGLE_USER_ROUTE
+import pt.isel.g20.unicommunity.common.Uri.USERS_ROUTE
 import pt.isel.g20.unicommunity.user.exception.InvalidUserEmailException
 import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
 import pt.isel.g20.unicommunity.user.model.*
@@ -48,7 +48,7 @@ class UserController(private val service: IUserService) {
     fun createUser(@RequestBody userDto: UserDto) =
             service.createUser(userDto.name, userDto.email, userDto.password, userDto.githubId).let {
                 ResponseEntity
-                        .created(Uri.forSingleUser(it.id))
+                        .created(Uri.forSingleUserUri(it.id))
                         .cacheControl(
                                 CacheControl
                                         .maxAge(1, TimeUnit.HOURS)

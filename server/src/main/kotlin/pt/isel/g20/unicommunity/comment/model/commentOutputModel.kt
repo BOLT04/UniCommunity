@@ -1,49 +1,50 @@
 package pt.isel.g20.unicommunity.comment.model
 
+import pt.isel.g20.unicommunity.common.Rels
+import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.hateoas.*
-import java.util.*
 
 class SingleCommentResponse(comment: Comment)
     : HalObject(
         mutableMapOf(
-                "self" to Link(Uri.forSingleComment(
+                "self" to Link(Uri.forSingleCommentText(
                         comment.forumItem.forum.board.id,
                         comment.forumItem.id,
                         comment.id
-                ).toString()),
-                Rels.NAVIGATION to Link("/navigation"),
-                Rels.GET_SINGLE_BOARD to Link(Uri.forSingleBoard(comment.forumItem.forum.board.id).toString()),
-                Rels.GET_SINGLE_FORUM to Link(Uri.forSingleForum(comment.forumItem.forum.board.id).toString()),
-                Rels.GET_SINGLE_FORUMITEM to Link(Uri.forSingleForumItem(
+                )),
+                Rels.NAVIGATION to Link(Uri.NAVIGATION_ROUTE),
+                Rels.GET_SINGLE_BOARD to Link(Uri.forSingleBoardText(comment.forumItem.forum.board.id)),
+                Rels.GET_SINGLE_FORUM to Link(Uri.forSingleForumText(comment.forumItem.forum.board.id)),
+                Rels.GET_SINGLE_FORUMITEM to Link(Uri.forSingleForumItemText(
                         comment.forumItem.forum.board.id,
                         comment.forumItem.id
-                ).toString()),
+                )),
                 Rels.CREATE_COMMENT to Link(Uri.forAllComments(
                         comment.forumItem.forum.board.id,
                         comment.forumItem.id
-                ).toString()),
-                Rels.GET_MULTIPLE_COMMENTS to Link(Uri.forSingleComment(
+                )),
+                Rels.GET_MULTIPLE_COMMENTS to Link(Uri.forSingleCommentText(
                         comment.forumItem.forum.board.id,
                         comment.forumItem.id,
                         comment.id
-                ).toString()),
-                Rels.EDIT_COMMENT to Link(Uri.forSingleComment(
+                )),
+                Rels.EDIT_COMMENT to Link(Uri.forSingleCommentText(
                         comment.forumItem.forum.board.id,
                         comment.forumItem.id,
                         comment.id
-                ).toString()),
-                Rels.DELETE_COMMENT to Link(Uri.forSingleComment(
+                )),
+                Rels.DELETE_COMMENT to Link(Uri.forSingleCommentText(
                         comment.forumItem.forum.board.id,
                         comment.forumItem.id,
                         comment.id
-                ).toString())
+                ))
         )
 ){
     val boardName: String = comment.forumItem.forum.board.name
     val forumItemName: String = comment.forumItem.name
     val authorName: String = comment.author.name
     val content : String = comment.content
-    val createdAt: String = comment.createdAt!!.toString()
+    val createdAt: String = comment.createdAt.toString()
 }
 
 
@@ -53,15 +54,15 @@ class MultipleCommentsResponse(
         comments : Iterable<Comment>
 ): JsonCollection(
         version = "1.0",
-        href = Uri.forAllComments(boardId,forumItemId).toString(),
+        href = Uri.forAllComments(boardId,forumItemId),
         links = listOf(
-                CollectionLink("self","http://localhost:8080/boards/$boardId/forum/posts/$forumItemId/comments"),
-                CollectionLink(Rels.NAVIGATION, "http://localhost:8080/navigation"),
-                CollectionLink(Rels.CREATE_COMMENT, "http://localhost:8080"+Uri.forAllComments(boardId, forumItemId).toString())
+                CollectionLink("self",Uri.forAllComments(boardId, forumItemId)),
+                CollectionLink(Rels.NAVIGATION, Uri.NAVIGATION_ROUTE),
+                CollectionLink(Rels.CREATE_COMMENT, Uri.forAllComments(boardId, forumItemId))
         ),
-        items = comments.map { Item( Uri.forSingleComment(
+        items = comments.map { Item( Uri.forSingleCommentText(
                 it.forumItem.forum.board.id,
                 it.forumItem.id,
                 it.id
-        ).toString()) }
+        )) }
 )

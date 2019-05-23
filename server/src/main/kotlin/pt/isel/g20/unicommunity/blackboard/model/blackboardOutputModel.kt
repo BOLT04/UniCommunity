@@ -1,5 +1,7 @@
 package pt.isel.g20.unicommunity.blackboard.model
 
+import pt.isel.g20.unicommunity.common.Rels
+import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.hateoas.*
 
 class SingleBlackboardResponse(blackboard: Blackboard)
@@ -30,7 +32,7 @@ class MultipleBlackboardsResponse(
         version = "1.0",
         href = Uri.forAllBlackboards(boardId),
         links = listOf(
-                CollectionLink("self",Uri.forAllBlackboards(boardId)),
+                CollectionLink("self", Uri.forAllBlackboards(boardId)),
                 CollectionLink(Rels.NAVIGATION, Uri.NAVIGATION_ROUTE)
         ),
         items = blackboards

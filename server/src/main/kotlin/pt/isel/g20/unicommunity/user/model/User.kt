@@ -5,8 +5,6 @@ import pt.isel.g20.unicommunity.board.model.Board
 import pt.isel.g20.unicommunity.comment.model.Comment
 import pt.isel.g20.unicommunity.forumItem.model.ForumItem
 import javax.persistence.*
-import java.util.HashSet
-import java.awt.print.Book
 import javax.persistence.ManyToMany
 
 

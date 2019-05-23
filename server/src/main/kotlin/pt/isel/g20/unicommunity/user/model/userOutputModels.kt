@@ -1,17 +1,19 @@
 package pt.isel.g20.unicommunity.user.model
 
 import pt.isel.g20.unicommunity.board.model.PartialBoardObject
+import pt.isel.g20.unicommunity.common.Rels
+import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.hateoas.*
 
 class SingleUserResponse(user: User)
     : HalObject(
         mutableMapOf(
-                "self" to Link(Uri.forSingleUser(user.id).toString()),
+                "self" to Link(Uri.forSingleUserText(user.id)),
                 Rels.NAVIGATION to Link(Uri.NAVIGATION_ROUTE),
-                Rels.CREATE_USER to Link(Uri.forAllUsers().toString()),
-                Rels.GET_MULTIPLE_USERS to Link(Uri.forAllUsers().toString()),
-                Rels.EDIT_USER to Link(Uri.forSingleUser(user.id).toString()),
-                Rels.DELETE_USER to Link(Uri.forSingleUser(user.id).toString())
+                Rels.CREATE_USER to Link(Uri.forAllUsers()),
+                Rels.GET_MULTIPLE_USERS to Link(Uri.forAllUsers()),
+                Rels.EDIT_USER to Link(Uri.forSingleUserText(user.id)),
+                Rels.DELETE_USER to Link(Uri.forSingleUserText(user.id))
         ),
         mutableMapOf()
 ){
@@ -25,7 +27,7 @@ class SingleUserResponse(user: User)
                 Rels.GET_MULTIPLE_BOARDS to user.boards.map {
                     PartialBoardObject(it.name,
                             mapOf(
-                                    "self" to Link(Uri.forSingleBoard(it.id).toString())
+                                    "self" to Link(Uri.forSingleBoardText(it.id))
                             ))
                 }
         ))
@@ -37,12 +39,12 @@ class MultipleUsersResponse(
         users : Iterable<User>
 ): JsonCollection(
         version = "1.0",
-        href = Uri.forAllUsers().toString(),
+        href = Uri.forAllUsers(),
         links = listOf(
-                CollectionLink("self","/http://localhost:3000/users"),
-                CollectionLink(Rels.NAVIGATION, "/http://localhost:3000/navigation")
+                CollectionLink("self",Uri.forAllUsers()),
+                CollectionLink(Rels.NAVIGATION, Uri.NAVIGATION_ROUTE)
         ),
-        items = users.map { Item( Uri.forSingleUser(it.id).toString()) }
+        items = users.map { Item( Uri.forSingleUserText(it.id)) }
 )
 
 class PartialUserObject(

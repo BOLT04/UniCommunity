@@ -1,6 +1,8 @@
 package pt.isel.g20.unicommunity.board.model
 
 import pt.isel.g20.unicommunity.blackboard.model.PartialBlackboardObject
+import pt.isel.g20.unicommunity.common.Rels
+import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.hateoas.*
 import pt.isel.g20.unicommunity.user.model.PartialUserObject
 

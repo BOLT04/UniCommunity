@@ -1,5 +1,7 @@
 package pt.isel.g20.unicommunity.forumItem.model
 
+import pt.isel.g20.unicommunity.common.Rels
+import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.hateoas.*
 
 class SingleForumItemResponse(forumItem: ForumItem)
