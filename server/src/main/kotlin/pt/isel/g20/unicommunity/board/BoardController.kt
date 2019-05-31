@@ -3,7 +3,6 @@ package pt.isel.g20.unicommunity.board
 import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.web.bind.annotation.*
 import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
 import pt.isel.g20.unicommunity.board.service.IBoardService
@@ -12,20 +11,18 @@ import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.common.Uri.BOARDS_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_BOARD_ROUTE
 import java.util.concurrent.TimeUnit
-import org.springframework.security.core.context.SecurityContextHolder
 import pt.isel.g20.unicommunity.board.model.*
 import pt.isel.g20.unicommunity.common.Uri.BOARD_MEMBERS
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
 import pt.isel.g20.unicommunity.user.model.User
 
-@PreAuthorize("hasRole('TEACHER')")
 @RestController
 @RequestMapping(produces = ["application/hal+json", "application/json", "application/vnd.collection+json"])
 class BoardController(private val service: IBoardService) {
 
     @AuthorizationRequired
     @GetMapping(path = [BOARDS_ROUTE], produces = ["application/vnd.collection+json"])
-    fun getAllBoards() =
+    fun getAllBoards(@SessionAttribute("user") user: User) =
             service.getAllBoards().map(Board::toItemRepr).let {
                 val response = CollectionObject(MultipleBoardsResponse(it))
 
@@ -112,9 +109,9 @@ class BoardController(private val service: IBoardService) {
 
     @AuthorizationRequired
     @PostMapping(path = [BOARD_MEMBERS], produces = ["application/hal+json"])
-    fun addUserToBoard(@PathVariable boardId: Long): ResponseEntity<SingleBoardResponse>{
-        val authentication = SecurityContextHolder.getContext().authentication
-        val user = authentication.principal as User
+    fun addUserToBoard(
+            @PathVariable boardId: Long,
+            @SessionAttribute("user") user: User): ResponseEntity<SingleBoardResponse>{
         return service.addUserToBoard(boardId, user.id).let {
             val response = SingleBoardResponse(it)
 
@@ -131,9 +128,9 @@ class BoardController(private val service: IBoardService) {
 
     @AuthorizationRequired
     @PostMapping(path = [SINGLE_BOARD_ROUTE], produces = ["application/hal+json"])
-    fun removeUserFromBoard(@PathVariable boardId: Long): ResponseEntity<SingleBoardResponse>{
-        val authentication = SecurityContextHolder.getContext().authentication
-        val user = authentication.principal as User
+    fun removeUserFromBoard(
+            @PathVariable boardId: Long,
+            @SessionAttribute("user") user: User): ResponseEntity<SingleBoardResponse>{
         return service.removeUserFromBoard(boardId, user.id).let {
             val response = SingleBoardResponse(it)
 

@@ -112,10 +112,20 @@ data class Template(
  * Class used for error models, based on the <a href="https://tools.ietf.org/html/rfc7807">Problem Json spec</a>
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-data class ProblemJson(
+open class ProblemJson(
         val type: String? = null,
         val title: String? = null,
         val detail: String? = null,
         val status: Int? = null,
         val instance: String? = null
 )
+
+@JsonInclude(JsonInclude.Include.NON_NULL)
+class ExtendedProblemJson(
+        type: String? = null,
+        title: String? = null,
+        detail: String? = null,
+        status: Int? = null,
+        instance: String? = null,
+        val links: MutableMap<String, Link>?
+) : ProblemJson(type, title, detail, status, instance)

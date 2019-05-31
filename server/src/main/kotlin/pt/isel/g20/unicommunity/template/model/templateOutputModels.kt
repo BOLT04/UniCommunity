@@ -1,5 +1,6 @@
 package pt.isel.g20.unicommunity.template.model
 
+import pt.isel.g20.unicommunity.common.Rels
 import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.hateoas.*
 
@@ -10,9 +11,14 @@ class SingleTemplateResponse(template: Template) {
     val blackboardNames : List<String> = template.blackboardNames.split(",")
 }
 
-
 class MultipleTemplatesResponse(
-        templates : Iterable<Template>
-){
-    val items = templates.map { Item( Uri.forSingleTemplateText(it.id)) } // TODO: mapping has to go outside
-}
+        templates : List<Item>
+): JsonCollection(
+        version = "1.0",
+        href = Uri.forAllTemplates(),
+        links = listOf(
+                CollectionLink("self",Uri.forAllTemplates()),
+                CollectionLink(Rels.NAVIGATION, Uri.NAVIGATION_ROUTE)
+        ),
+        items = templates
+)

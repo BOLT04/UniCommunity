@@ -1,11 +1,7 @@
 package pt.isel.g20.unicommunity.userDetails.model
 
-import org.springframework.security.core.GrantedAuthority
-import org.springframework.security.core.authority.SimpleGrantedAuthority
-import org.springframework.security.core.userdetails.UserDetails
 import pt.isel.g20.unicommunity.user.model.User
-
-class CustomUserDetails(): User(), UserDetails{
+/*class CustomUserDetails(): User(), UserDetails {
 
     constructor(user: User) : this() {
         super.id = user.id
@@ -40,4 +36,4 @@ class CustomUserDetails(): User(), UserDetails{
 
     override fun isAccountNonLocked() = true
 
-}
+}*/

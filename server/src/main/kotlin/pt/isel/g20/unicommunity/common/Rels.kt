@@ -1,8 +1,7 @@
 package pt.isel.g20.unicommunity.common
 
 object Rels {
-    //TODO: temporary prefix
-    const val RELS_PREFIX = "http://localhost:8080/rels"
+    const val RELS_PREFIX = "/rels"
 
     const val NAVIGATION = "$RELS_PREFIX/nav"
     const val HOME = "$RELS_PREFIX/home"

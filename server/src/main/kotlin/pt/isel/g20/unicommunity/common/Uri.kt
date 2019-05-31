@@ -8,6 +8,7 @@ object Uri {
 
 // Navigation
     const val NAVIGATION_ROUTE = "/navigation"
+    const val HOME_ROUTE = "/home"
 
 // Auth
     const val LOGIN_ROUTE = "/login"
