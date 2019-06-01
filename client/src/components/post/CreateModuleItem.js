@@ -24,7 +24,7 @@ export default class CreateModuleItem extends Component {
   mdEditor = null
 
   handleEditorChange({ html, text }) {    
-    console.log('handleEditorChange', html, text)
+    //console.log('handleEditorChange', html, text)
   }
 
   onTitleChange = e => {

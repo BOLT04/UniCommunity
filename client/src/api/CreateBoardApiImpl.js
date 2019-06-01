@@ -24,8 +24,8 @@ export default class CreateBoardApiImpl extends CreateBoardApi {
       body.blackboardNames = blackboardNames
       body.hasForum = hasForum
     }
-debugger
-    return await asyncPostRequest(url, body)
+
+    return await asyncPostRequest(url, body)//TODO: this await should be outside, when someone calls this fn
   }
 
   getBoardAsync = async (url) => {

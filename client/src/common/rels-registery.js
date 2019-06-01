@@ -10,6 +10,7 @@ export const rels = {
     createComment: '/rels/createComment',
     getComments: '/rels/getComments',
     getBoards: '/rels/getBoards',
+    getBoard: '/rels/getBoard',
     createBoard: '/rels/createBoard',
     login: '/rels/login',
     getBlackboards: '/rels/getBlackboards',

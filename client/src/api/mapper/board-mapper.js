@@ -1,4 +1,3 @@
-'use strict'
 // Maps a response of the endpoint 'Create a Board' to the model representation of a Board in the UI.
 
 //todo: REMOVE MOCKS
@@ -74,7 +73,7 @@ debugger
 
 async function halItemToBlackboardItemAsync({ name, _links }) {
     //TODO: what if the self link isnt there... we need to be prepared for that and put content = [] maybe
-    const rsp =  await asyncRelativeFetch(_links.self.href, APPLICATION_HAL_JSON)
+    const rsp = await asyncRelativeFetch(_links.self.href, APPLICATION_HAL_JSON)
     const { items, _links: blackboardLinks } = await rsp.json()
 
     const blackboardItem = { name, items }

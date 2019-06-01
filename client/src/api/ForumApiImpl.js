@@ -1,5 +1,4 @@
-'use strict'
-import { buildUri } from '../common/common'
+import { buildUri, asyncPostRequest } from '../common/common'
 
 /**
  * Returns an array of Small Forum Posts response object. Format:
@@ -12,7 +11,7 @@ import { buildUri } from '../common/common'
  * 
  * @param {string} url Represents the URL of the HTTP request to be made
  */
-export default async function fetchForumPostsAsync(url) {
+export default async function fetchForumPostsAsync(url) {//TODO: this goes bye-bye when its no longer used
     return fetch('http://localhost:8080'+url)
 }
 
@@ -32,13 +31,7 @@ export async function createForumPostsAsync(url, title, content, anonymousPost) 
         anonymousPost
     }
 
-    return fetch(url, {
-        method: 'post',
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(body)
-    })
+    return await asyncPostRequest(url, body)
 }
 
 export const asyncFetch = async relativeUrl => fetch(buildUri(relativeUrl))
