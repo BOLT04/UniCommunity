@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import { Input, Form, Checkbox, Button } from 'semantic-ui-react'
+
+import MdEditor from 'react-markdown-editor-lite'
  
 import { createForumPostsAsync } from '../../api/ForumApiImpl'
 import rspToBoardAsync from '../../api/mapper/board-mapper'
@@ -12,14 +14,7 @@ import CreateModuleItem from './CreateModuleItem';
 
 export default class CreatePost extends Component {
   static propTypes = {
-    api: PropTypes.instanceOf(CreateBoardApi),
-  }
-
-  isAnonymous = false// TODO: use this on the response
-
-  onChangeCheckBox = (e, { checked }) => {
-    e.preventDefault()
-    this.isAnonymous = checked
+    api: PropTypes.instanceOf(CreateBoardApi).isRequired,
   }
 
   // An arrow function is used because this function is used in an onClick prop, meaning there 
@@ -62,10 +57,8 @@ export default class CreatePost extends Component {
       <CreateModuleItem 
         header='Create a Post'
         submitOnClick={this.submitCreatePostHandler}>
-        
-        <Form.Field>
-          <Checkbox label='Send Anonimously' onChange={this.onChangeCheckBox} />
-        </Form.Field>
+
+        {/*<FileUpload />*/}
       </CreateModuleItem>
     )
   }

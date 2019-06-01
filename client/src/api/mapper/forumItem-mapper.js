@@ -46,13 +46,14 @@ export default async function rspToForumItemAsync(rsp) {
         let comments
         // Check if the comments rel is present
         if (body._embedded) {
-            const commentsArr = _embedded['/rels/getComments']
-            if (commentsArr)
-                comments = await Promise.all(
-                    blackboardsArr.map(async i => 
+            const commentsArr = body._embedded['/rels/getComments']
+            if (commentsArr) {}
+                /*TODOcomments = await Promise.all(
+                    commentsArr.map(async i => 
                         await halItemToBlackboardItemAsync(i)  
                     )
                 )
+                */
         }
 
         //TODO: could this creation of forumItem with ifs be cleaner?

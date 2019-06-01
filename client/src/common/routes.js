@@ -1,5 +1,5 @@
-'use strict'
 const routes = {
+    home: '/',
     boards: '/boards',
     getBoardUri(id) { 
         return `${this.boards}/${id}`

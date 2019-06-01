@@ -4,6 +4,9 @@ import { Grid, Checkbox } from 'semantic-ui-react'
 
 import './css/BoardTemplate.css'
 
+import asyncCollectionRspToList from '../api/mapper/collectionJson-mapper'
+import { COLLECTION_JSON } from '../common/constants'
+
 import rspToTemplatesAsync from '../api/mapper/template-mapper'
 
 export default class BoardTemplate extends Component {
@@ -31,21 +34,24 @@ export default class BoardTemplate extends Component {
   }
 
   async componentDidMount() {
-    const rsp = await this.props.api.getTemplatesAsync('http://localhost:8080/templates') //TODO: remove hardcoded url
+    const rsp = await this.props.asyncRelativeFetch('/templates', COLLECTION_JSON)
+ //TODO: remove hardcoded url
     //TODO: catch error in case the promise is rejected
-    const templates = await rsp.json()
+    const templates = await asyncCollectionRspToList(rsp)
     console.log(templates)
     
     this.setState({ templates })
   }
 
   onChangeCheckBox = e => {
+    e.preventDefault()
     console.log(e.target.innerHTML) // TODO: is there a better way of doing this?
     this.props.addToModules(e.target.innerHTML)
     //this.props.templates.push()
   }
 
   onForumChangeCheckBox = (e, { checked }) => {
+    e.preventDefault()
     this.props.updateHasForum(checked)
   }
 

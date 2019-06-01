@@ -2,14 +2,20 @@
 // It tracks the login status, so if the user is authenticated or not for example.
 
 import { buildUri } from '../common/common'
+import { LogoutError } from '../common/errors'
 
 function Auth() {
     let authenticated = false
 
-    this.login = async (relativeUrl, username, password) => {
+    //TODO: use hal+forms!
+    /**
+     * This function returns an object with links that represent where the client can navigate after a
+     * successful authentication. If null is returned than it means an error occured.
+     */
+    this.asyncLogin = async (relativeUrl, email, password) => {
         // Construct request body
         const body = {
-            username,
+            email,
             password
         }
 
@@ -20,22 +26,24 @@ function Auth() {
             },
             body: JSON.stringify(body)
         })
-        const bodh = await rsp.json()
-        console.log({rsp, bodh})
-        //todo: what is in the rsp from the API. It should be info about the user
-        const user = {
-            username: 'Dabe'
+        const json = await rsp.json()
+
+        this.user = {
+            email: email,
+            name: json.name
         }
-        this.user = user
 
-        const success = true //todo: change this later
+        this.token = new Buffer(email +':'+ password).toString('base64')
+        localStorage.setItem('authToken', this.token)
+
         authenticated = true
-
-        return success
+        return json._links
     }
 
-    this.logout = async relativeUrl => {
-        const rsp = await fetch(buildUri(relativeUrl))
+    this.asyncLogout = async relativeUrl => {
+        if (!authenticated)
+            throw new LogoutError('Error: Attempted to logout without being authenticated first')
+        //const rsp = await fetch(buildUri(relativeUrl))
         //todo: what is in the rsp from the API
 
         authenticated = false

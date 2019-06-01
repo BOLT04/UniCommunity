@@ -1,6 +1,7 @@
-'use strict'
 import CreateBoardApi from './CreateBoardApi'
 import { buildUri } from '../common/common'
+
+import { asyncPostRequest } from '../common/common'
 
 import config from '../unicommunity-config.json'
 const baseUri = `http://${config.serverHost}:${config.serverPort}` //TODO: this is repeated in many places. Find a way to clean it.
@@ -16,20 +17,15 @@ export default class CreateBoardApiImpl extends CreateBoardApi {
       name,
       description
     }
+
     if (templateId != undefined)
       body.templateId = templateId
     else {// TODO: is there a way to do this cleaner in es6?
       body.blackboardNames = blackboardNames
       body.hasForum = hasForum
     }
-
-    return await fetch(`${baseUri}${url}`, {
-      method: 'post',
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(body)
-    })
+debugger
+    return await asyncPostRequest(url, body)
   }
 
   getBoardAsync = async (url) => {

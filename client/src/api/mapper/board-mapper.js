@@ -7,10 +7,10 @@
 import fetchForumPostsAsync from '../ForumApiImpl'
 import fetchBlackboardAsync from '../BlackBoardApiImpl'
 
-import { itemsToModelRepr } from '../../common/common'
-import { APPLICATION_HAL_JSON } from '../../common/constants'
+import { itemsToModelRepr, asyncRelativeFetch } from '../../common/common'
+import { APPLICATION_HAL_JSON, COLLECTION_JSON } from '../../common/constants'
 
-import relsRegistery from '../../common/rels-registery'
+import relsRegistery, { rels } from '../../common/rels-registery'
 
 import Board from '../../components/board_details/model/Board'
 
@@ -46,14 +46,14 @@ export default async function rspToBoardAsync(rsp) {//TODO: maybe move these con
                 })
             board.forumLinks = relsRegistery['/rels/forum']
             */
-           const forumRel = 'http://localhost:8080/rels/getForumItems'// TODO: can this be hardcoded here?
-           if (_links[forumRel] && relsRegistery['/rels/getForumItems']) //TODO: fix hardcoded relsRegistery[forumRel]
+           const forumRel = rels.getForumItems// TODO: can this be hardcoded here?
+           if (_links[forumRel] && relsRegistery[rels.getForumItems]) //TODO: fix hardcoded relsRegistery[forumRel]
                forumLink = _links[forumRel].href
         }
 
         // Check if the blackboards rel is present
         if (_embedded) {
-            const blackboardsArr = _embedded['http://localhost:8080/rels/getBlackboards']
+            const blackboardsArr = _embedded[rels.getBlackboards]
             if (blackboardsArr)
                 board.modules.blackboards = await Promise.all(
                     blackboardsArr.map(async i => 
@@ -61,25 +61,26 @@ export default async function rspToBoardAsync(rsp) {//TODO: maybe move these con
                     )
                 )   
         }
-
+debugger
         // Make a request to get the forum and add it to the modules array
         board.modules.forum = await fetchForumAsync(forumLink)
 
         return board
     }
 
+	//TODO: add check of Problem+json! and throw an error perhaps
     throw new MappingError()
 }
 
 async function halItemToBlackboardItemAsync({ name, _links }) {
     //TODO: what if the self link isnt there... we need to be prepared for that and put content = [] maybe
-    const rsp =  await fetchBlackboardAsync(_links.self.href)
+    const rsp =  await asyncRelativeFetch(_links.self.href, APPLICATION_HAL_JSON)
     const { items, _links: blackboardLinks } = await rsp.json()
 
     const blackboardItem = { name, items }
-
-    const serverHref = blackboardLinks['http://localhost:8080/rels/createBlackboardItem']
-    const registery = relsRegistery['/rels/createBlackboardItem']// todo: http://localhost:8080
+debugger
+    const serverHref = blackboardLinks[rels.createBlackboardItem]
+    const registery = relsRegistery[rels.createBlackboardItem]
     // If the response includes a link to create an item and its registered, add it to the object to return
     if (serverHref && registery) 
         blackboardItem.createLink = {
@@ -104,16 +105,18 @@ async function halItemToBlackboardItemAsync({ name, _links }) {
  */
 async function fetchForumAsync(forumLink) {
     //TODO: what if the self link isnt there... we need to be prepared for that and put content = [] maybe
-    const rsp =  await fetchForumPostsAsync(forumLink)
+    const rsp =  await asyncRelativeFetch(forumLink, COLLECTION_JSON)
+
     const { collection: { links, items } } = await rsp.json()
 
     debugger
+    //TODO: use asyncCollectionRspToList in collectionJson mapper since its the same code
     const posts = items.length == 0 ? [] : itemsToModelRepr(items)
     debugger
     let createPostHrefObj
     // Check if the link to create a post exists
     links.forEach(l => {
-        const rel = 'http://localhost:8080/rels/createForumItem'
+        const rel = rels.createForumItem
         const registery = relsRegistery[rel]
         if (l.rel === rel && registery)
             createPostHrefObj = {

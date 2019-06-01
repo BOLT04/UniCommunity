@@ -23,7 +23,7 @@ class HomeResponse
         mutableMapOf(
                 "self" to Link("/home"),
                 Rels.GET_SINGLE_BOARD to Link("/boards"),
-                Rels.GET_MULTIPLE_BOARDS to Link("/boards/{boardId}"),
+                Rels.GET_MULTIPLE_BOARDS to Link("/boards/{boardId}"),//TODO: estes rels estão trocados. O de cima é que é GET_MULTIPLE_BOARDS
                 Rels.NAVIGATION to Link(Uri.NAVIGATION_ROUTE)
         )
 )

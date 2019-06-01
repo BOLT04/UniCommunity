@@ -1,12 +1,10 @@
-'use strict'
 import React, { Component } from 'react'
-import { Input, Form, TextArea, Button } from 'semantic-ui-react'
-
-import BoardTemplate from './BoardTemplate'
 
 import rspToBoardAsync from '../api/mapper/board-mapper'
 
 import routes from '../common/routes'
+
+import CreateBoardPresenter from './CreateBoardPresenter'
 
 export default class CreateBoard extends Component {
   titleVal = ""
@@ -16,10 +14,12 @@ export default class CreateBoard extends Component {
   templateId = null
 
   onTitleChange = e => {
+    e.preventDefault()
     this.titleVal = e.target.value
   }
 
   onDescriptionChange = e => {
+    e.preventDefault()
     this.descVal = e.target.value
   }
 
@@ -32,7 +32,8 @@ export default class CreateBoard extends Component {
   /**
    * Makes a request to the API using the object received on props called api, to create a board.
    */
-  submitCreateBoardReq = async () => {
+  submitCreateBoardReq = async e => {
+    e.preventDefault()
     console.log(this.descVal)
     console.log(this.titleVal)
 
@@ -61,9 +62,15 @@ export default class CreateBoard extends Component {
 
     // TODO: is there a way to easily document that this component receives this.props.location.state.serverHref
     //todo: from the Link component used in NavBar.js available in React router?
-    const rsp = await this.props.api.createBoardAsync(this.props.location.state.serverHref, this.titleVal, this.descVal, modulesObj)
+    const rsp = await this.props.api.createBoardAsync(
+      this.props.location.state.serverHref,
+      this.titleVal,
+      this.descVal,
+      modulesObj
+    )
     console.log(rsp)
     const board = await rspToBoardAsync(rsp)
+    debugger
     console.log(board)
     
     
@@ -78,37 +85,17 @@ export default class CreateBoard extends Component {
 
   render() {
     return (
-      <>
-        <h1 className="ui header">Create a board</h1>
-        <Form>
-          <Form.Field>
-            <label>Title</label>
-            <Input 
-              name="title"
-              onChange={this.onTitleChange}
-            />   
-          </Form.Field>
-          <Form.Field>
-            <label>Description</label>
-            <TextArea onChange={this.onDescriptionChange} placeholder='Give more details about this board (optional)' />
-          </Form.Field>
-        </Form>
-        
-        <BoardTemplate 
-          ref={boardTemplate => this.boardTemplate = boardTemplate}
-          api={this.props.api}
-          addToModules={moduleName => this.blackboardNames.push(moduleName)}
-          updateHasForum={hasForum => this.hasForum = hasForum}
-          activateTemplate= {templateId => this.templateId = templateId}
-        />
-
-        <Button
-          content='Create' 
-          primary 
-          style={{marginTop: 10}} 
-          onClick={this.submitCreateBoardReq}
-        />
-      </>
+      <CreateBoardPresenter
+        asyncRelativeFetch={this.props.asyncRelativeFetch}
+        onTitleChange={this.onTitleChange}
+        onDescriptionChange={this.onDescriptionChange}
+        getBoardTemplateRef={boardTemplate => this.boardTemplate = boardTemplate}
+        boardTemplateApi={this.props.api}
+        addToModules={moduleName => this.blackboardNames.push(moduleName)}
+        updateHasForum={hasForum => this.hasForum = hasForum}
+        activateTemplate={templateId => this.templateId = templateId}
+        createSubmitBtnOnClick={this.submitCreateBoardReq}
+      />
     )
   }
 }

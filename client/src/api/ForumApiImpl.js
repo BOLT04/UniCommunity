@@ -16,12 +16,20 @@ export default async function fetchForumPostsAsync(url) {
     return fetch('http://localhost:8080'+url)
 }
 
-export async function createForumPostsAsync(url, title, content) {
+/**
+ * 
+ * @param {*} url 
+ * @param {*} title 
+ * @param {*} content
+ * @param {boolean} anonymousPost - Specifies whether or not this post is to be created anonymously.
+ */
+export async function createForumPostsAsync(url, title, content, anonymousPost) {
     console.log(`Making a request to ${url} to create a forum post`)
     // Construct request body
     const body = {
         name: title,
-        content
+        content,
+        anonymousPost
     }
 
     return fetch(url, {

@@ -1,5 +1,5 @@
-'use strict'
 // This module contains functions that are used by multiple modules.
+import auth from '../components/auth'
 
 /**
  * This function is used by the mapper functions - transforms a API response to a model object,
@@ -10,14 +10,15 @@
  */
 export function itemsToModelRepr(items) {
     return items.map(({ href, data, links }) => {
-        const obj = { href }
+        const obj = { href, links }
 
         if (data)
             data.forEach(dataObj => {
                 obj[dataObj.name] = dataObj.value
             })
         
-        //TODO: use links
+        obj.getHrefOfRel = rel => 
+            links.find(link => link.rel === rel).href
 
         return obj
     })
@@ -31,3 +32,70 @@ const baseUri = `http://${config.serverHost}:${config.serverPort}`
  * @param {string} relativeUrl - The relative url to be prefixed by the base uri.
  */
 export const buildUri = relativeUrl => `${baseUri}${relativeUrl}`
+
+/**
+ * Makes a GET HTTP request to the base URI configured in the project, appended with
+ * the relative URL.
+ * @param {string} relativeUrl - The relative url to be prefixed by the base uri.
+ * @param {string} contentType - (optional) The content type value of the Accept header.
+ */
+export const asyncRelativeFetch = (relativeUrl, contentType) => {
+    debugger
+    console.log({auth})
+    const options = fillAuthHeaderIfAuthenticated()
+    debugger
+    if (contentType) {
+        if (!options.headers) options.headers = {}
+
+        options.headers['Accept'] = contentType
+    }
+    return fetch(buildUri(relativeUrl), options)
+}
+
+//TODO: these two function below will disappear after we use HAL+forms to specify how actions are made!
+/**
+ * Makes a Post HTTP request with the given body.
+ * @param {string} relativeUrl - The relative url to be prefixed by the base uri.
+ * @param {object} body - the Request body object
+ */
+export const asyncPostRequest = (relativeUrl, body) =>
+    asyncRelativeHttpRequest(relativeUrl, 'post', 'application/json', body)
+
+export const asyncPutRequest = (relativeUrl, body) =>
+    asyncRelativeHttpRequest(relativeUrl, 'put', 'application/json', body)
+/**
+ * Makes a Post HTTP request with the given body.
+ * @param {string} relativeUrl - The relative url to be prefixed by the base uri.
+ * @param {string} method - The HTTP request method.
+ * @param {string} contentType - (optional) The content type value of the Content-Type header.
+ * @param {object} body - (optional) the Request body object.
+ */
+export function asyncRelativeHttpRequest(relativeUrl, method, contentType, body) {
+    let options = fillAuthHeaderIfAuthenticated()
+    
+    if (body && contentType) {
+        // Fill headers
+        if (!options.headers) options.headers = {}
+        options.headers['Content-Type'] = contentType
+
+        options.body = JSON.stringify(body)
+    }
+    options.method = method        
+
+    return fetch(buildUri(relativeUrl), options)
+}
+
+// Auxiliary function
+function fillAuthHeaderIfAuthenticated() {
+    console.log({auth})
+    
+    let options = {}
+    const token = localStorage.getItem('authToken')
+    if (token)
+    //if (auth.token)
+        options.headers = {
+            'Authorization': `Basic ${token}`
+        }
+        
+    return options
+}

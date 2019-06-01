@@ -1,13 +1,16 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { List, Loader } from 'semantic-ui-react'
+import { List } from 'semantic-ui-react'
 
 import asyncCollectionRspToList from '../api/mapper/collectionJson-mapper'
 import CreateBoardApi from '../api/CreateBoardApi'
 import { BoardListItem } from './BoardListItem'
+import ListLoader from './ListLoader'
 
-export default class CreateBoard extends Component {
+import { COLLECTION_JSON } from '../common/constants'
+
+export default class AllBoards extends Component {
   static propTypes = {
     api: PropTypes.instanceOf(CreateBoardApi)
   }
@@ -17,29 +20,26 @@ export default class CreateBoard extends Component {
   }
 
   async componentDidMount() {
-    const rsp = await this.props.api.getAllBoardsAsync(this.props.location.state.serverHref)
+    const rsp = await this.props.asyncRelativeFetch(this.props.location.state.serverHref, COLLECTION_JSON)
     const boards = await asyncCollectionRspToList(rsp)
+    debugger
     console.log(boards)
 
     this.setState({ boards })
   }
 
-  render() {
-    const { boards } = this.state
+  renderBoards = () => (
+    <List animated>
+      { this.state.boards.map(b => <BoardListItem board={b} />)}
+    </List>
+  )
 
-    const renderBoards = () => (
-      <List animated>
-        { boards.map(b => <BoardListItem board={b} />)}
-      </List>
-    )
-
-    return (
-      <>
-        { boards.length == 0 
-          ? <Loader active inline />
-          : renderBoards()              
-        }
-      </>
-    )
-  }
+  render = () => (
+      <ListLoader
+        list={this.state.boards}
+        emptyListHeaderMsg='No Boards available'
+        emptyListMsg='Consider creating a board first.'
+        render={this.renderBoards}
+      />
+  )
 }

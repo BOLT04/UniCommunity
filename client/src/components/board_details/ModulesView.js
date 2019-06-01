@@ -57,7 +57,7 @@ export default class ModulesView extends Component {
                 ))
                 : <Forum />
         }
-        // to="/post"
+
         return (
             <div key={index}>
                 <Accordion.Title active={isActive} index={index} onClick={this.handleClick}>

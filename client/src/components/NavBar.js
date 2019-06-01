@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 
 import NavBarApi from '../api/NavBarApi'
 
+import { APPLICATION_HAL_JSON } from '../common/constants'
 import relsRegistery from '../common/rels-registery'
 
 export default class NavBar extends Component {
@@ -26,7 +27,19 @@ export default class NavBar extends Component {
   }
 */
   async componentDidMount() {
-    const rsp = await this.props.api.fetchNavigationMenuAsync(this.props.navMenuUrl)
+    //const rsp = await this.props.api.fetchNavigationMenuAsync(this.props.navMenuUrl)
+    await this.fetchData()
+  }
+
+  async componentDidUpdate(prevProps) {
+    debugger
+    if (this.props.reRender !== prevProps.reRender)
+      await this.fetchData()
+  }
+
+  async fetchData() {
+    debugger
+    const rsp = await this.props.asyncRelativeFetch(this.props.navMenuUrl, APPLICATION_HAL_JSON)
     const rspObj = await rsp.json()
     const navMenu = rspObj._links
 

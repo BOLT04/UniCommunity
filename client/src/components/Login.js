@@ -1,17 +1,22 @@
 import React, { Component } from 'react'
-import { Link } from "react-router-dom"
 
 import { Input, Form, TextArea, Button } from 'semantic-ui-react'
+
+import ErrorMessage from './ErrorMessage'
+
 import './css/Login.css'
 
 import auth from './auth'
+import routes from '../common/routes'
 
 export default class Login extends Component {
   
-  constructor() {
-    this.usernameVal = ''
+  constructor(props) {
+    super(props)
+
+    this.emailVal = ''
     this.passVal = ''
-    this.onUsernameChange = this.onChangeInput.bind(this, 'usernameVal')
+    this.onEmailChange = this.onChangeInput.bind(this, 'emailVal')
     this.onPasswordChange = this.onChangeInput.bind(this, 'passVal')
 
     this.state = {}
@@ -21,14 +26,20 @@ export default class Login extends Component {
     this[propName] = e.target.value
   }
 
-  submitLoginHandler = e => {
-    if (auth.login(this.props.location.state.serverHref, this.usernameVal, this.passVal))
-      this.props.location.push('/') // Redirect to home page
-    else
-      this.setState({})// todo: finish
+  submitLoginHandler = async e => {
+    const links = await auth.asyncLogin(this.props.location.state.serverHref, this.emailVal, this.passVal)
+
+    if (links) {
+      this.props.reRender()
+      this.props.history.push(routes.home) // Redirect to home page
+      //this.props.history.push('/', {serverHref: links['/rels/getProjects'].href})
+    } else
+      this.setState({ error: new Error('Authentication with given credentials failed!')})
   }
 
   render() {
+    const { error } = this.state
+
     return (
       <div className="ui middle aligned center aligned grid">
         <div className="column">
@@ -65,30 +76,37 @@ export default class Login extends Component {
             </Form.Field>
           </Form>
           */}
-          <form className="ui large form">
-            <div className="ui stacked segment">
-              <div className="field">
-                
-              </div>
-              <div className="field">
-                <div className="ui left icon input">
-                  <i className="lock icon"></i>
-                  <input type="password" name="password" placeholder="Password" />
+         
+          <form className='ui large form'>
+            <div className='ui stacked segment'>
+              <div className='field'>
+                <div className='ui left icon input'>
+                  <i className='user icon' />
+                  <input 
+                    type='text'
+                    name='email'
+                    placeholder='Email'
+                    onChange={this.onEmailChange} />
                 </div>
               </div>
-              <div className="ui fluid large teal submit button" onClick={this.submitLoginHandler}>
-              Login
+              <div className='field'>
+                <div className='ui left icon input'>
+                  <i className='lock icon' />
+                  <input 
+                    type='password'
+                    name='password'
+                    placeholder='Password'
+                    onChange={this.onPasswordChange} />
+                </div>
+              </div>
+              <div className='ui fluid large teal submit button' onClick={this.submitLoginHandler}>
+                Login
               </div>
             </div>
           </form>
         </div>
 
-        <div class="ui negative message">
-          <i class="close icon"></i>
-          <div class="header">
-            Your credentials are wrong
-          </div>
-        </div>
+        { error && <ErrorMessage error={error} /> }
       </div>
     )
   }

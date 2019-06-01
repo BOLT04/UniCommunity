@@ -13,6 +13,5 @@ class InterceptorConfig : WebMvcConfigurer {
 
     override fun addCorsMappings(registry: CorsRegistry) {
         registry.addMapping("/**")
-        //registry.addMapping("/greeting-javaconfig").allowedOrigins("http://localhost:*")
     }
 }

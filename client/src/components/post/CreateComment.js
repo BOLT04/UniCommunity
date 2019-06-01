@@ -28,7 +28,7 @@ export default class CreateComment extends Component {
         //todo: from the Link component used in NavBar.js available in React router?
         const rsp = await this.props.api.createCommentAsync(this.props.serverUrl, this.commentText)
         console.log(rsp)
-        const comment = await rspToCommentAsync(rsp)
+        //TODO:const comment = await rspToCommentAsync(rsp)
     
         
         // Display the comment on the same view

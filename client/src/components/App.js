@@ -1,4 +1,3 @@
-'use strict'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
@@ -36,6 +35,7 @@ export default class App extends Component {
   }
 
   state = {
+    reRenderNavBar : false,
     home: {}
   }
 
@@ -45,6 +45,7 @@ export default class App extends Component {
       const rspObj = await rsp.json()
 
       const home = {}
+      debugger
       //TODO: move this to another place: This code is coupled to hal+json bc of the links 
       if (rspObj._links) {
         Object
@@ -67,8 +68,14 @@ export default class App extends Component {
     }
   }
 
+  reRenderNavBar = () => {
+    debugger
+    this.setState({ reRenderNavBar: true })
+  }
+
   render() {
     const createBoardApi = new CreateBoardApiImpl()
+    debugger
     const { home } = this.state
 
     //TODO: this component depends on the propnames defined in rels-registery because it knows navMenuUrl...
@@ -76,22 +83,34 @@ export default class App extends Component {
     return (
       <BrowserRouter>   
         <div className="App" style={{ display:"flex", minHeight:"100vh", flexDirection:"column" }}>
-          <div className="ui container" style={{ flex:1 }}>
+          <div className="ui container" style={{ flex: 1 }}>
             {home.navMenuUrl && 
               <NavBar
+                reRender= {this.state.reRenderNavBar}
                 navMenuUrl={home.navMenuUrl}
+                asyncRelativeFetch={this.props.asyncRelativeFetch}
                 api={new NavBarApiImpl()} /> 
             }
 
             <Switch>
-              <Route exact path='/login' component={Login} />
+              <Route exact path='/login' render={props =>
+                <Login
+                  {...props}
+                  reRender={this.reRenderNavBar} />
+              } />
               
               <Route exact path='/boards' render={props => 
-                <AllBoards {...props} api={createBoardApi} />} 
+                <AllBoards 
+                  {...props}
+                  api={createBoardApi}
+                  asyncRelativeFetch={this.props.asyncRelativeFetch} />} 
               />
 
               <Route exact path='/boards/new' render={props => 
-                <CreateBoard {...props} api={createBoardApi} />} 
+                <CreateBoard 
+                  {...props}
+                  api={createBoardApi}
+                  asyncRelativeFetch={this.props.asyncRelativeFetch} />} 
               />
 
               <Route exact path='/boards/:id' render={props => 
@@ -106,15 +125,19 @@ export default class App extends Component {
               <Route exact path='/boards/:boardId/posts/:postId' render={props => 
                 <PostDetails {...props} />} 
               />
+
             </Switch>
           </div>
 
 {/*//todo: Since App.js is getting too big, a Home component will be created to substitute some features of
 //todo: this App.js, and the component below will be called HomeContent, since it displays the content of the home page (img, etc) */}
-          <Route exact path='/' render={props => 
-            <Home {...props} api={this.props.api} />} 
-          />
-           <Route exact path='*' component={() => '404 NOT FOUND. Please visit the Home page at: /'} />
+          <Switch>
+            <Route exact path='/' render={props => 
+              <Home {...props} api={this.props.api} />} 
+            />
+
+{/*            <Route exact path='*' component={() => '404 NOT FOUND. Please visit the Home page at: /'} />*/}
+          </Switch>
           
           {
           <Footer />

@@ -1,48 +1,61 @@
-import config from '../unicommunity-config.json'
-// TODO: this code is repeated in index.js. Is this that big of a problem?
-const baseUri = `http://${config.serverHost}:${config.serverPort}`
+// This module contains an object (relsRegistery) that maps the known custom link relations to whatever
+// information is considered important for a given link relation (rel). 
+// It can be the corresponding client URL, strings containing the CSS classes to be used as props to
+// React elements or HTML elements, etc.
 
-//TODO: if this is how its done, meaning i only have representations for modules that I know, for example Forum,
-//todo: then i can only render those modules => i cant render user created modules!
+export const rels = {
+    getForumItems: '/rels/getForumItems',
+    createBlackboardItem: '/rels/createBlackboardItem',
+    createForumItem: '/rels/createForumItem',
+    createComment: '/rels/createComment',
+    getComments: '/rels/getComments',
+    getBoards: '/rels/getBoards',
+    createBoard: '/rels/createBoard',
+    login: '/rels/login',
+    getBlackboards: '/rels/getBlackboards',
+    nav: '/rels/nav',
+    feed: '/rels/feed'
+}
+
 const relsRegistery = {
-    '/rels/getForumItems': {
+    [rels.getForumItems]: {
         clientHref: '/forum',//TODO: is this being used?
         serverHref: null
     },
-    '/rels/createBlackboardItem': {
+    [rels.createBlackboardItem]: {
         clientHref: '/blackboardItem/new',
         serverHref: null
     },
-    'http://localhost:8080/rels/createForumItem': {
+    [rels.createForumItem]: {
         clientHref: '/posts/new'
     },
-    '/rels/createComment': {
+    [rels.createComment]: {
     },
-    '/rels/getComments': {
+    [rels.getComments]: {
     },
-    'http://localhost:8080/rels/getBoards': {//TODO: take out prefix localhost....
+    [rels.getBoards]: {//TODO: take out prefix localhost....
         clientHref: '/boards',
         name: 'All Boards'
     },
-    [`${baseUri}/rels/createBoard`]: {
+    [rels.createBoard]: {
         clientHref: '/boards/new',
         name: 'Create Board' // TODO: this property is unique to the rels belonging to navbar, so should they be separated in another object?
     },
-    '/rels/login': {
+    [rels.login]: {
         clientHref: '/login',
         name: 'Log in',
         class: 'ui primary basic button',
         toDisplayOnRight: true // TODO: this property is unique to the rels belonging to navbar, so should they be separated in another object?
     },
-    '/rels/getBlackboards': {
+    [rels.getBlackboards]: {
         //TODO:
     },
     // The property "propName" is used to specify the property's name of the object in each component's state
-    // For example in App.js it will define state.home.navUrl
-    [`${baseUri}/rels/nav`]: {
+    // For example in App.js it will define state.home.navMenuUrl
+    [rels.nav]: {
         propName: "navMenuUrl"
     },
-    [`${baseUri}/rels/feed`]: {
+    [rels.feed]: {
         propName: "feedUrl"
     }
 }
