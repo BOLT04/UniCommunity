@@ -7,7 +7,7 @@ import { createForumPostsAsync } from '../../api/ForumApiImpl'
 import rspToBoardAsync from '../../api/mapper/board-mapper'
 
 import { APPLICATION_HAL_JSON } from '../../common/constants'
-import { asyncRelativeFetch } from '../../common/common'
+import { asyncRelativeFetch, removeFunctionsFrom } from '../../common/common'
 import routes from '../../common/routes'
 import { rels } from '../../common/rels-registery'
 
@@ -59,8 +59,7 @@ debugger
     
         debugger
         // We need to remove any functions because history.push doesn't support that state has functions
-        board = JSON.parse(JSON.stringify(board))
-        debugger
+        board = removeFunctionsFrom(board)
         this.props.history.push(routes.getBoardUri(board.id), {board})
       }
     }

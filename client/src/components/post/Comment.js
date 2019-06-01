@@ -13,22 +13,21 @@ import ReactMarkdown from 'react-markdown'
  *     author: string     -> This is the author's name.
  *     createdAt: string  -> This is the text that represents the date when the comment was created.
  * It must be already formatted, for example: Today at 5:42PM, or dd--MM-YYYY (02-10-2019).
- *     text: string       -> This represents whether or not the content is in markdown or not.
- * If it is then the proper component will be used to render it.
+ *     content: string    -> This represents the text content of the comment.
  *     replies: string[] -> An array containing the reply comments to this particular comment. 
  * It can be undefined (optional)
  * } 
  */
-export const Comment = ({ comment: { avatarSrc, author, createdAt, text, replies }}) => (
+export const Comment = ({ comment: { avatarSrc, author, createdAt, content, replies }}) => (
     <>
         <SUIComment>
             <SUIComment.Avatar 
-                src={avatarSrc ? avatarSrc : '/public/img/default-profile.png'} />
+                src={avatarSrc ? avatarSrc : '/img/default-profile.png'} />
             <SUIComment.Content>
                 <SUIComment.Author as='a'>{author}</SUIComment.Author>
                 <SUIComment.Metadata>{createdAt}</SUIComment.Metadata>
                 <SUIComment.Text>
-                    <ReactMarkdown source={text} />
+                    <ReactMarkdown source={content} />
                 </SUIComment.Text>
                 <SUIComment.Actions>
                     <SUIComment.Action>Reply</SUIComment.Action>

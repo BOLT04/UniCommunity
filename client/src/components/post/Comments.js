@@ -1,42 +1,52 @@
 import React, { Component } from 'react'
 
-import { Header } from 'semantic-ui-react'
+import { Header, Comment as CommentSUI } from 'semantic-ui-react'
 
 import { Comment } from './Comment'
+import ListLoader from '../ListLoader'
 
 import asyncCollectionRspToList from '../../api/mapper/collectionJson-mapper'
-import { asyncFetch } from '../../api/ForumApiImpl'
+
+import { COLLECTION_JSON } from '../../common/constants'
 
 export default class Comments extends Component {
 
     constructor(props) {
         super(props)
 
-        this.state = { }
-        if (props.comments) // In case the parent component already has fetched the comments.
-            this.state.comments = props.comments
+        this.state = { 
+            commenst: props.comments || [] // In case the parent component already has fetched the comments.
+        }
     }
 
     async componentDidMount() {
-        if (this.props.comments) return
+        //if (this.props.comments) return
 
-        const rsp = await asyncFetch(this.props.serverUrl)
+        const rsp = await this.props.asyncRelativeFetch(this.props.serverUrl, COLLECTION_JSON)
         const comments = await asyncCollectionRspToList(rsp)
-        console.log(comments)
 
         this.setState({ comments })
     }
 
+    renderComments = () =>
+        this.state.comments.map(c => <Comment comment={c} />)
+
     render() {
+        debugger
         return (
             <>
-                <Comment.Group>
+                <CommentSUI.Group>
                     <Header as='h3' dividing>
-                        Comments option2
+                        Comments
                     </Header>
                     
-                    {this.state.comments.map(c => <Comment comment={c} />)}
-                </Comment.Group>
+                    <ListLoader
+                        list={this.state.comments}
+                        emptyListHeaderMsg='No Coments available'
+                        emptyListMsg='Be the first to comment this post.'
+                        render={this.renderComments}
+                    />                 
+                </CommentSUI.Group>
             </>
         )
     }

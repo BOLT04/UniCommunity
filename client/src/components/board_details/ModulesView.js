@@ -113,17 +113,16 @@ export default class ModulesView extends Component {
         const { board } = this.props
         console.log(board)
         
-        return (
-            <>
-                <Accordion fluid styled exclusive={false}>
-                    {board.modules.blackboards != undefined &&
-                        board.modules.blackboards.map(this.blackboardToAccordion)}
+        return board.modules 
+                    ? 
+                        <Accordion fluid styled exclusive={false}>
+                            {board.modules.blackboards &&
+                                board.modules.blackboards.map(this.blackboardToAccordion)}
 
-                    {board.modules.forum != undefined &&
-                        this.renderForum(board)
-                    }
-                </Accordion>
-            </>
-        )
+                            {board.modules.forum &&
+                                this.renderForum(board)
+                            }
+                        </Accordion>
+                    : null
     }
 }

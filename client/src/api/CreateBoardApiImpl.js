@@ -28,6 +28,12 @@ export default class CreateBoardApiImpl extends CreateBoardApi {
     return await asyncPostRequest(url, body)//TODO: this await should be outside, when someone calls this fn
   }
 
+  createCommentAsync = (url, content, isAnonymous) => {
+    const body = { content, anonymous: isAnonymous }
+
+    return asyncPostRequest(url, body)
+  }
+
   getBoardAsync = async (url) => {
     return fetch('http://localhost:8080' + url)//todo: REMOVE prefix
   }

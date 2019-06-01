@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { Button, Form } from 'semantic-ui-react'
+import { Button, Form, Checkbox } from 'semantic-ui-react'
 
 import auth from '../auth'
 
@@ -9,16 +9,10 @@ import { asyncFetch } from '../../api/ForumApiImpl'
 
 export default class CreateComment extends Component {
     commentText = ''
+    isAnonymous = false// TODO: use this on the response
+
     state = {
         hasText: false
-    }
-
-    async componentDidMount() {
-        const rsp = await asyncFetch(this.props.location.state.getPostUrl)
-        const post = await rspToForumItemAsync(rsp)
-        console.log(post)
-        
-        this.setState({ post, loading: false })
     }
 
     submitCreateCommentReq = async () => {
@@ -26,7 +20,11 @@ export default class CreateComment extends Component {
     
         // TODO: is there a way to easily document that this component receives this.props.location.state.serverHref
         //todo: from the Link component used in NavBar.js available in React router?
-        const rsp = await this.props.api.createCommentAsync(this.props.serverUrl, this.commentText)
+        const rsp = await this.props.api.createCommentAsync(
+            this.props.serverUrl,
+            this.commentText,
+            this.isAnonymous
+        )
         console.log(rsp)
         //TODO:const comment = await rspToCommentAsync(rsp)
     
@@ -44,18 +42,29 @@ export default class CreateComment extends Component {
         this.commentText = e.target.value
     }
 
+    onChangeCheckBox = (e, { checked }) => {
+        e.preventDefault()
+        this.isAnonymous = checked
+    }
+
     render() {
-        const disabled = this.state.hasText
+        const disabled = !this.state.hasText
         const style = disabled ? {cursor: 'not-allowed'} : {}
-        
+        console.log('oi ' + auth.isAuthenticated())
+        const user = localStorage.getItem('user')
+
         return (
             <>
                 {auth.isAuthenticated() &&
                     <>
-                        <p>Comment as {auth.user.username}</p>
+                        <p>Comment as {user.name}</p>
                         <Form reply>
                             <Form.TextArea onChange={this.commentTxtAreaHandler}/>
                             
+                            <Form.Field>
+                                <Checkbox label='Send Anonimously' onChange={this.onChangeCheckBox} />
+                            </Form.Field>
+
                             <Button 
                                 content='Comment' 
                                 labelPosition='left' 

@@ -35,6 +35,7 @@ function Auth() {
 
         this.token = new Buffer(email +':'+ password).toString('base64')
         localStorage.setItem('authToken', this.token)
+        localStorage.setItem('user', this.user)
 
         authenticated = true
         return json._links
@@ -51,7 +52,7 @@ function Auth() {
 
         return true
     }
-    this.isAuthenticated = () => authenticated
+    this.isAuthenticated = () => authenticated || localStorage.getItem('authToken')
 }
 
 export default new Auth()

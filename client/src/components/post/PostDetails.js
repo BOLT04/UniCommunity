@@ -19,7 +19,9 @@ import CreateComment from './CreateComment'
 
 // api imports
 import rspToForumItemAsync from '../../api/mapper/forumItem-mapper'
-import { asyncFetch } from '../../api/ForumApiImpl'
+
+import { asyncRelativeFetch } from '../../common/common'
+import { APPLICATION_HAL_JSON } from '../../common/constants'
 
 export default class PostDetails extends Component {
 
@@ -28,10 +30,10 @@ export default class PostDetails extends Component {
     }
 
     async componentDidMount() {
-        const rsp = await asyncFetch(this.props.location.state.getPostUrl)
+        const rsp = await this.props.asyncRelativeFetch(this.props.location.state.getPostUrl, APPLICATION_HAL_JSON)
         const post = await rspToForumItemAsync(rsp)
         console.log(post)
-
+debugger
         this.setState({ post, loading: false })
     }
 
@@ -50,7 +52,10 @@ export default class PostDetails extends Component {
                 />
 
                 <br />
-                <CreateComment serverUrl={post.links.createComment}/>
+                <CreateComment 
+                    serverUrl={post.links.createComment}
+                    api={this.props.api}
+                />
 
                 <Divider horizontal>
                     <SemanticHeader as='h4'>
@@ -60,7 +65,8 @@ export default class PostDetails extends Component {
                 </Divider>
                 <Comments 
                     comments={post.comments}
-                    serverUrl={post.links.getForumPostComments}
+                    serverUrl={post.links.getComments}
+                    asyncRelativeFetch={this.props.asyncRelativeFetch}
                 />
             </Segment>
         )

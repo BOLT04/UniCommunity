@@ -30,9 +30,12 @@ const relsRegistery = {
     [rels.createForumItem]: {
         clientHref: '/posts/new'
     },
+    // This empty object is just to signal the mapper functions that the client app knows these link relations.
     [rels.createComment]: {
+        propName: 'createComment'
     },
     [rels.getComments]: {
+        propName: 'getComments'
     },
     [rels.getBoards]: {//TODO: take out prefix localhost....
         clientHref: '/boards',

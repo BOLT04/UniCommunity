@@ -114,7 +114,7 @@ export default class App extends Component {
               />
 
               <Route exact path='/boards/:id' render={props => 
-                <BoardView {...props} />} 
+                <BoardView {...props} asyncRelativeFetch={this.props.asyncRelativeFetch} />} 
               />
 
 {/*//TODO: The URL for CreatePost should be /boards/:id/posts/new, since its an new post in the context of a board*/}
@@ -123,7 +123,10 @@ export default class App extends Component {
               />
 
               <Route exact path='/boards/:boardId/posts/:postId' render={props => 
-                <PostDetails {...props} />} 
+                <PostDetails
+                  {...props}
+                  api={createBoardApi}
+                  asyncRelativeFetch={this.props.asyncRelativeFetch} />} 
               />
 
             </Switch>

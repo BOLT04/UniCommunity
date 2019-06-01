@@ -1,8 +1,7 @@
-'use strict'
 import { itemsToModelRepr } from '../../common/common'
 import { APPLICATION_HAL_JSON } from '../../common/constants'
 
-import relsRegistery from '../../common/rels-registery'
+import relsRegistery, { rels } from '../../common/rels-registery'
 import { MappingError } from '../../common/errors'
 
 import ForumItem from '../../components/post/model/ForumItem'
@@ -26,21 +25,27 @@ export default async function rspToForumItemAsync(rsp) {
         forumItemArgs.push(author)
         forumItemArgs.push(createdAt)
       
-        let links
+        const links = {}
         if (body._links) {//TODO: i dont know what to do here...
             // Filter by the links know by the client (present in registery)
             // then map all to an object will the properties defined in the registry object
             // plus the URL included in the link of the body
+            for (let prop in body._links)
+                if (prop in relsRegistery)
+                    links[relsRegistery[prop].propName] = body._links[prop].href
+            
+            /*
             links = Object
                 .keys(body._links)
-                .filter(prop => relsRegistery[prop]) 
+                .filter(prop => prop in relsRegistery) 
                 .map(prop => {
                     const relObj = relsRegistery[prop]
                     return {
                         ...relObj,
                         serverHref: body._links[prop].href
                     }
-                })
+                })*/
+               
         }
 
         let comments

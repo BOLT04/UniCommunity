@@ -99,3 +99,11 @@ function fillAuthHeaderIfAuthenticated() {
         
     return options
 }
+
+/**
+ * This function removes any functions on an object.
+ * We need this because history.push from the library React-Router doesn't support for the object
+ * state to have functions.
+ */
+export const removeFunctionsFrom = obj =>
+    JSON.parse(JSON.stringify(obj))

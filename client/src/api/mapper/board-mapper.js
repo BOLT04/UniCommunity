@@ -36,6 +36,8 @@ export default async function rspToBoardAsync(rsp) {//TODO: maybe move these con
         let forumLink
       
         if (_links) {//TODO: i dont know what to do here...
+            if ('self' in _links)
+                board.href = _links['self'].href
             /*
             Object.keys(body._links)
                 .forEach(prop => {
