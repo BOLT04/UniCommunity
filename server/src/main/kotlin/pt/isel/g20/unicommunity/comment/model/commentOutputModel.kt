@@ -51,7 +51,7 @@ class SingleCommentResponse(comment: Comment)
 class MultipleCommentsResponse(
         boardId: Long,
         forumItemId: Long,
-        comments : Iterable<Comment>
+        comments : List<Item>
 ): JsonCollection(
         version = "1.0",
         href = Uri.forAllComments(boardId,forumItemId),
@@ -60,9 +60,5 @@ class MultipleCommentsResponse(
                 CollectionLink(Rels.NAVIGATION, Uri.NAVIGATION_ROUTE),
                 CollectionLink(Rels.CREATE_COMMENT, Uri.forAllComments(boardId, forumItemId))
         ),
-        items = comments.map { Item( Uri.forSingleCommentText(
-                it.forumItem.forum.board.id,
-                it.forumItem.id,
-                it.id
-        )) }
+        items = comments
 )

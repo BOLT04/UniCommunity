@@ -7,9 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.bind.annotation.*
 import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
 import pt.isel.g20.unicommunity.comment.exception.NotFoundCommentException
-import pt.isel.g20.unicommunity.comment.model.CommentDto
-import pt.isel.g20.unicommunity.comment.model.MultipleCommentsResponse
-import pt.isel.g20.unicommunity.comment.model.SingleCommentResponse
+import pt.isel.g20.unicommunity.comment.model.*
 import pt.isel.g20.unicommunity.comment.service.ICommentService
 import pt.isel.g20.unicommunity.forum.exception.NotFoundForumException
 import pt.isel.g20.unicommunity.forumItem.exception.NotFoundForumItemException
@@ -31,7 +29,7 @@ class CommentController(private val service: ICommentService) {
             @PathVariable boardId: Long,
             @PathVariable forumItemId: Long
     ) : ResponseEntity<CollectionObject> =
-            service.getAllComments(boardId, forumItemId).let {
+            service.getAllComments(boardId, forumItemId).map(Comment::toItemRepr).let {
                 val rsp = CollectionObject(MultipleCommentsResponse(boardId, forumItemId, it))
 
                 ResponseEntity
