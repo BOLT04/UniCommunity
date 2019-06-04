@@ -1,12 +1,8 @@
 package pt.isel.g20.unicommunity.userDetails.service
 
-import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.security.core.userdetails.UserDetailsService
-import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 import pt.isel.g20.unicommunity.repository.UserRepository
-import pt.isel.g20.unicommunity.userDetails.model.CustomUserDetails
-
+/*
 @Service
 class CustomUserDetailsService(private val usersRepo: UserRepository) : UserDetailsService{
 
@@ -17,3 +13,4 @@ class CustomUserDetailsService(private val usersRepo: UserRepository) : UserDeta
     }
 
 }
+*/

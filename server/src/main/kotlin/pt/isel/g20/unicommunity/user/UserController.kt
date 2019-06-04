@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*
 import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_USER_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.USERS_ROUTE
+import pt.isel.g20.unicommunity.hateoas.CollectionObject
 import pt.isel.g20.unicommunity.user.exception.InvalidUserEmailException
 import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
 import pt.isel.g20.unicommunity.user.model.*
@@ -20,14 +21,16 @@ class UserController(private val service: IUserService) {
     @GetMapping(path = [USERS_ROUTE], produces = ["application/vnd.collection+json"])
     fun getAllUsers() =
             service.getAllUsers().let {
+                val rsp = CollectionObject(MultipleUsersResponse(it))
+
                 ResponseEntity
                         .ok()
                         .cacheControl(
                                 CacheControl
                                         .maxAge(1, TimeUnit.HOURS)
                                         .cachePrivate())
-                        .eTag(it.hashCode().toString())
-                        .body(MultipleUsersResponse(it))
+                        .eTag(rsp.hashCode().toString())
+                        .body(rsp)
             }
 
     @GetMapping(path = [SINGLE_USER_ROUTE], produces = ["application/hal+json"])

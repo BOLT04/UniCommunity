@@ -1,16 +1,7 @@
 package pt.isel.g20.unicommunity.config
 
-import org.springframework.context.annotation.Configuration
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
-import org.springframework.security.config.annotation.web.builders.HttpSecurity
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
-import org.springframework.security.crypto.password.PasswordEncoder
-import org.springframework.security.web.util.matcher.AntPathRequestMatcher
-import pt.isel.g20.unicommunity.userDetails.service.CustomUserDetailsService
 import java.lang.RuntimeException
-
+/*
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableWebSecurity
 @Configuration
@@ -26,14 +17,15 @@ class SecurityConfiguration(val userDetailsService: CustomUserDetailsService) : 
         if(auth == null) throw RuntimeException("Wow AUTH security error")
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder)
     }
-
-    override fun configure(http: HttpSecurity?) {
-        if(http == null) throw RuntimeException("Wow HTTP security error")
-        http.csrf().disable()
-        http
-                .authorizeRequests()
-                .antMatchers("**/templates**").hasRole("TEACHER")
-                .antMatchers("**/boards**").authenticated()
-                .anyRequest().permitAll().and().formLogin().permitAll().and().logout().permitAll()
-    }
-}
+*/
+    //override fun configure(http: HttpSecurity?) {
+      //  http?.cors()
+    //    if(http == null) throw RuntimeException("Wow HTTP security error")
+      //  http.csrf().disable()
+        //http
+          //      .authorizeRequests()
+            //    .antMatchers("**/templates**").hasRole("TEACHER")
+              //  .antMatchers("**/boards**").authenticated()
+                //.anyRequest().permitAll().and().formLogin().permitAll().and().logout().permitAll()
+    //}
+//}

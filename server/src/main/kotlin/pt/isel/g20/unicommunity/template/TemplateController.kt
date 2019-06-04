@@ -7,19 +7,23 @@ import org.springframework.web.bind.annotation.*
 import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_TEMPLATE_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.TEMPLATES_ROUTE
+import pt.isel.g20.unicommunity.hateoas.CollectionObject
 import pt.isel.g20.unicommunity.template.exception.NotFoundTemplateException
 import pt.isel.g20.unicommunity.template.model.*
 import pt.isel.g20.unicommunity.template.service.ITemplateService
 import java.util.concurrent.TimeUnit
 
 @RestController
-@RequestMapping(produces = ["application/hal+json", "application/json", "application/vnd.collection+json"])
+@RequestMapping(produces = ["application/json", "application/hal+json", "application/vnd.collection+json"])
 class TemplateController(private val service: ITemplateService) {
 
-    @GetMapping(path = [TEMPLATES_ROUTE], produces = ["application/json"])
+    @GetMapping(path = [TEMPLATES_ROUTE])
     fun getAllTemplates() =
-            service.getAllTemplates().let {
-                val response = MultipleTemplatesResponse(it)
+            service
+                    .getAllTemplates()
+                    .map(Template::toItemRepr)
+                    .let {
+                val response = CollectionObject(MultipleTemplatesResponse(it))
                 ResponseEntity
                         .ok()
                         .cacheControl(

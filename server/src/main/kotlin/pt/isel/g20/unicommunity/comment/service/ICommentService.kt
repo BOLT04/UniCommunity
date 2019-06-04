@@ -1,6 +1,5 @@
 package pt.isel.g20.unicommunity.comment.service
 
-import org.springframework.security.core.userdetails.User
 import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
 import pt.isel.g20.unicommunity.comment.exception.NotFoundCommentException
 import pt.isel.g20.unicommunity.comment.model.Comment
