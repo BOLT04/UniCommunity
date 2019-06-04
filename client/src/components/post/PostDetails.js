@@ -3,8 +3,7 @@ import { Link } from 'react-router-dom'
 
 // Semantic UI imports
 import { 
-    Icon, 
-    Button, 
+    Icon,
     Loader, 
     Segment, 
     Divider, 
@@ -20,7 +19,6 @@ import CreateComment from './CreateComment'
 // api imports
 import rspToForumItemAsync from '../../api/mapper/forumItem-mapper'
 
-import { asyncRelativeFetch } from '../../common/common'
 import { APPLICATION_HAL_JSON } from '../../common/constants'
 
 export default class PostDetails extends Component {
@@ -37,9 +35,20 @@ debugger
         this.setState({ post, loading: false })
     }
 
+    onCreateCommentHandler = (e, comment) => {
+        this.setState(state => {
+          state.post.comments.push(comment)
+     debugger
+          return {
+            error: undefined,// TODO: god damn it...we should probably handle errors later...if creating comment fails, for example 500 bc the server went down cause it couldnt handle a lot of boys commenting at the same time...concurrency boy!! its life
+            post: state.post
+          }
+        })
+    }
+
     render() {
         const { post, loading } = this.state
-
+debugger
         //TODO: if this gets too big consider making a functional component for it, receiving 'post obj' as a prop
         const renderPost = () => (
             <Segment>
@@ -55,6 +64,7 @@ debugger
                 <CreateComment 
                     serverUrl={post.links.createComment}
                     api={this.props.api}
+                    onCreateCommentHandler={this.onCreateCommentHandler}
                 />
 
                 <Divider horizontal>
@@ -73,13 +83,8 @@ debugger
 
         console.log(this.props)
         console.log(post)
-        return (
-            <>
-                {post === undefined
+        return !post
                     ? <Loader active={loading} inline />
                     : renderPost()
-                }
-            </>
-        )
     }
 } 

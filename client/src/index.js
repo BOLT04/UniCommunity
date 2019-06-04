@@ -8,6 +8,9 @@ import HomeApiImpl from './api/HomeApiImpl'
 import { asyncRelativeFetch } from './common/common'
 import config from './unicommunity-config.json'
 
+require('./common/storage-extensions')()
+
+
 const baseUri = `http://${config.serverHost}:${config.serverPort}`
 
 ReactDOM.render(

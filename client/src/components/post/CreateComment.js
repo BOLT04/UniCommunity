@@ -4,6 +4,7 @@ import { Button, Form, Checkbox } from 'semantic-ui-react'
 
 import auth from '../auth'
 
+import asyncRspToComment from '../../api/mapper/comment-mapper'
 import rspToForumItemAsync from '../../api/mapper/forumItem-mapper'
 import { asyncFetch } from '../../api/ForumApiImpl'
 
@@ -15,22 +16,15 @@ export default class CreateComment extends Component {
         hasText: false
     }
 
-    submitCreateCommentReq = async () => {
-        console.log(this.commentText)
-    
-        // TODO: is there a way to easily document that this component receives this.props.location.state.serverHref
-        //todo: from the Link component used in NavBar.js available in React router?
+    submitCreateCommentReq = async (e) => {
         const rsp = await this.props.api.createCommentAsync(
             this.props.serverUrl,
             this.commentText,
             this.isAnonymous
         )
-        console.log(rsp)
-        //TODO:const comment = await rspToCommentAsync(rsp)
+        const comment = await asyncRspToComment(rsp)
     
-        
-        // Display the comment on the same view
-        //TODO: this
+        this.props.onCreateCommentHandler(e, comment)
     }
 
     //TODO: test this setState behaviour
@@ -51,7 +45,7 @@ export default class CreateComment extends Component {
         const disabled = !this.state.hasText
         const style = disabled ? {cursor: 'not-allowed'} : {}
         console.log('oi ' + auth.isAuthenticated())
-        const user = localStorage.getItem('user')
+        const user = localStorage.getObject('user')
 
         return (
             <>

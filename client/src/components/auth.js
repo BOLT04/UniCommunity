@@ -29,14 +29,14 @@ function Auth() {
         const json = await rsp.json()
 
         this.user = {
-            email: email,
+            email,
             name: json.name
         }
 
         this.token = new Buffer(email +':'+ password).toString('base64')
         localStorage.setItem('authToken', this.token)
-        localStorage.setItem('user', this.user)
-
+        localStorage.setObject('user', this.user)
+debugger
         authenticated = true
         return json._links
     }
@@ -52,7 +52,7 @@ function Auth() {
 
         return true
     }
-    this.isAuthenticated = () => authenticated || localStorage.getItem('authToken')
+    this.isAuthenticated = () => authenticated || localStorage.getItem('authToken') !== null
 }
 
 export default new Auth()

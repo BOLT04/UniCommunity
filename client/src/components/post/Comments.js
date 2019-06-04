@@ -15,7 +15,7 @@ export default class Comments extends Component {
         super(props)
 
         this.state = { 
-            commenst: props.comments || [] // In case the parent component already has fetched the comments.
+            comments: props.comments || [] // In case the parent component already has fetched the comments.
         }
     }
 
@@ -24,9 +24,33 @@ export default class Comments extends Component {
 
         const rsp = await this.props.asyncRelativeFetch(this.props.serverUrl, COLLECTION_JSON)
         const comments = await asyncCollectionRspToList(rsp)
-
+debugger
         this.setState({ comments })
     }
+
+    static getDerivedStateFromProps(nextProps, prevState){
+        const {comments}= nextProps
+        if ((comments !== prevState.comments) && (comments.length >= 1)) {
+            prevState.comments.push(comments[comments.length -1])
+            return { comments: prevState.comments}
+        }
+        else return null
+    }
+/*
+    componentDidUpdate(prevProps) {
+        const { comments } = this.props
+        if (comments !== prevProps.comments) {
+            // Then a new comment was created so re-render the new list
+            this.setState(state => {
+                state.comments.push(comments[comments.length -1])
+
+                return {
+                  error: undefined,// TODO: god damn it...we should probably handle errors later...if creating comment fails, for example 500 bc the server went down cause it couldnt handle a lot of boys commenting at the same time...concurrency boy!! its life
+                  post: state.comments
+                }
+            })
+        }
+    }*/
 
     renderComments = () =>
         this.state.comments.map(c => <Comment comment={c} />)

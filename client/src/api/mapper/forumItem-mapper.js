@@ -17,12 +17,12 @@ export default async function rspToForumItemAsync(rsp) {
     
     if (contentType.includes(APPLICATION_HAL_JSON)) {
         // Sanity check. In the HTTP request we sent the header Accept, so we check if the server does support it.
-        const { name, content, author, createdAt, ...body } = await rsp.json()
+        const { name, content, authorName, createdAt, ...body } = await rsp.json()
 //TODO: validate if the response indeed comes with all the intended data, or else throw an exception ResponseBodyException!
         let forumItemArgs = []
         forumItemArgs.push(name)
         forumItemArgs.push(content)
-        forumItemArgs.push(author)
+        forumItemArgs.push(authorName)
         forumItemArgs.push(createdAt)
       
         const links = {}
@@ -81,8 +81,7 @@ export default async function rspToForumItemAsync(rsp) {
         if (links)
             forumItem.links = links
 
-        if (comments)
-            forumItem.comments = comments 
+        forumItem.comments = comments || []
         
         return forumItem
     }

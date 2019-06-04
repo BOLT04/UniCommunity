@@ -1,4 +1,3 @@
-'use strict'
 import React from 'react'
 
 /**
@@ -8,10 +7,10 @@ import React from 'react'
  *     post: object -> This is the model object that represents a Post.
  * } 
  */
-export default function ForumPostHeader({ post: {author, createdAt} }) {
+export default function ForumPostHeader({ post: {authorName, createdAt} }) {
     return (
         <span style={{fontSize: 10, color: 'gray'}}>
-            Published by <strong>{author}</strong> at {createdAt.toLocaleString()}  
+            Published by <strong>{authorName}</strong> at {createdAt.toLocaleString()}  
         </span>
     )
 }
