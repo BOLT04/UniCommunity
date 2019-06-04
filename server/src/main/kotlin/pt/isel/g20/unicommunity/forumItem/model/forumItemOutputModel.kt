@@ -14,7 +14,10 @@ class SingleForumItemResponse(forumItem: ForumItem)
                 Rels.CREATE_FORUMITEM to Link(Uri.forAllForumItems(forumItem.forum.board.id)),
                 Rels.GET_MULTIPLE_FORUMITEMS to Link(Uri.forAllForumItems(forumItem.forum.board.id)),
                 Rels.EDIT_FORUMITEM to Link(Uri.forSingleForumItemText(forumItem.forum.board.id, forumItem.id)),
-                Rels.DELETE_FORUMITEM to Link(Uri.forSingleForumItemText(forumItem.forum.board.id, forumItem.id))
+                Rels.DELETE_FORUMITEM to Link(Uri.forSingleForumItemText(forumItem.forum.board.id, forumItem.id)),
+
+                Rels.GET_MULTIPLE_COMMENTS to Link(Uri.forAllComments(forumItem.forum.board.id, forumItem.id)),
+                Rels.CREATE_COMMENT to Link(Uri.forAllComments(forumItem.forum.board.id, forumItem.id))
         )
 ){
     val boardName: String = forumItem.forum.board.name
