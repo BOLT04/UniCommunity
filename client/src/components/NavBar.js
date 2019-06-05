@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
+import { Input, Menu, Segment } from 'semantic-ui-react'
+
 import NavBarApi from '../api/NavBarApi'
 
 import { APPLICATION_HAL_JSON } from '../common/constants'
@@ -17,9 +19,12 @@ export default class NavBar extends Component {
     super(props)
 
     this.state = {
-      navMenu: {}
+      navMenu: {},
+      activeItem: 'home'
     }
   }
+
+  handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
   //TODO:if the state is initialized here, then componentWillMount() wont be called...but why tho???
   /*state = {
@@ -47,13 +52,19 @@ export default class NavBar extends Component {
   }
 
   buildLinks() {
-    const { navMenu } = this.state
+    const { navMenu, activeItem } = this.state
 
     //TODO: right now this only supports one link with the property: "toDisplayOnRight", since it would create another div on the next link with the same prop.
     //TODO: later this probably receives an array of registeries to include multiple links on the right menu like: Search bar, Logout, Login, user profile, etc
     function buildRightMenu(reg, serverHref) {
       return (
-        <div className="right menu" key={reg.name}>
+        <Menu.Item
+          className='right'
+          key={reg.name}
+          name={reg.name}
+          active={activeItem === reg.name}
+          onClick={this.handleItemClick}
+        >
           {/*
           <div className="item">
             <div className="ui icon input">
@@ -75,7 +86,7 @@ export default class NavBar extends Component {
 {/*
           <button className="ui red basic button">Logout</button>
 */  }
-        </div>
+        </Menu.Item>
       )
     }
     
@@ -87,24 +98,31 @@ export default class NavBar extends Component {
             return buildRightMenu(reg, navMenu[prop].href)
           else
             return (
-              <Link 
-                key={reg.name} 
-                to={{
-                  pathname: reg.clientHref,
-                  state: { serverHref: navMenu[prop].href }
-                }}
-                className={`${index == 0 ? 'active' : ''} item`}
+              <Menu.Item
+                key={reg.name}
+                name={reg.name}
+                active={activeItem === reg.name}
+                onClick={this.handleItemClick}
               >
-                {reg.name}
-              </Link>
+                <Link
+                  as='div'
+                  to={{
+                    pathname: reg.clientHref,
+                    state: { serverHref: navMenu[prop].href }
+                  }}
+                >
+                  {reg.name}
+                </Link>
+              </Menu.Item>
             )
       })
   }
 
   render() {
     console.log(`render: state: ${this.state}`)
+
     return (
-      <div className="ui secondary stackable menu">
+      <Menu pointing secondary stackable>
         {this.buildLinks()}
         {/*
         <Link to="/" className="active item">
@@ -132,7 +150,7 @@ export default class NavBar extends Component {
         
         </div>
         */}
-      </div>
+      </Menu>
     )
   }
 }

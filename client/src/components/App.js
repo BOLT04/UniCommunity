@@ -6,6 +6,7 @@ import NavBar from './NavBar'
 import Footer from './Footer'
 import Login from './Login'
 
+import UserProfile from './UserProfile'
 import CreateBoard from './CreateBoard'
 import AllBoards from './AllBoards'
 import BoardView from './board_details/BoardView'
@@ -126,6 +127,12 @@ export default class App extends Component {
                 <PostDetails
                   {...props}
                   api={createBoardApi}
+                  asyncRelativeFetch={this.props.asyncRelativeFetch} />} 
+              />
+              
+              <Route exact path='/user/:id' render={props => 
+                <UserProfile
+                  {...props}
                   asyncRelativeFetch={this.props.asyncRelativeFetch} />} 
               />
 
