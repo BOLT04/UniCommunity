@@ -13,7 +13,7 @@ export default class ErrorMessage extends Component {
         ? <ErrorMessagePresenter 
             error={this.props.error}
             closeOnClickHandler={this.closeOnClickHandler} />
-        : <></>
+        : null
 }
 
 

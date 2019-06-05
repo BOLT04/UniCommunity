@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
-import { Input, Menu, Segment } from 'semantic-ui-react'
+import { Menu } from 'semantic-ui-react'
 
 import NavBarApi from '../api/NavBarApi'
 
@@ -26,24 +26,16 @@ export default class NavBar extends Component {
 
   handleItemClick = (e, { name }) => this.setState({ activeItem: name })
 
-  //TODO:if the state is initialized here, then componentWillMount() wont be called...but why tho???
-  /*state = {
-    navMenu: {}
-  }
-*/
   async componentDidMount() {
-    //const rsp = await this.props.api.fetchNavigationMenuAsync(this.props.navMenuUrl)
     await this.fetchData()
   }
 
   async componentDidUpdate(prevProps) {
-    debugger
     if (this.props.reRender !== prevProps.reRender)
       await this.fetchData()
   }
 
   async fetchData() {
-    debugger
     const rsp = await this.props.asyncRelativeFetch(this.props.navMenuUrl, APPLICATION_HAL_JSON)
     const rspObj = await rsp.json()
     const navMenu = rspObj._links
@@ -65,15 +57,6 @@ export default class NavBar extends Component {
           active={activeItem === reg.name}
           onClick={this.handleItemClick}
         >
-          {/*
-          <div className="item">
-            <div className="ui icon input">
-              <input type="text" placeholder="Search..." />
-              <i className="search link icon"></i>
-            </div>
-          </div>
-          */}
-
           <Link 
             to={{
               pathname: reg.clientHref,
@@ -83,15 +66,12 @@ export default class NavBar extends Component {
           >
             {reg.name}
           </Link>
-{/*
-          <button className="ui red basic button">Logout</button>
-*/  }
         </Menu.Item>
       )
     }
     
     return Object.keys(navMenu)
-      .map((prop, index) => {// TODO: for now, the active item starts by being the first prop...this is assuming /home is the first prop
+      .map(prop => {
         const reg = relsRegistery[prop]
         if (reg)
           if (reg.toDisplayOnRight)
@@ -119,37 +99,9 @@ export default class NavBar extends Component {
   }
 
   render() {
-    console.log(`render: state: ${this.state}`)
-
     return (
       <Menu pointing secondary stackable>
         {this.buildLinks()}
-        {/*
-        <Link to="/" className="active item">
-          Home
-        </Link>
-        <Link to="/board/create" className="item">
-          Create Board
-        </Link>
-        <div className="right menu">
-          <div className="item">
-            <div className="ui icon input">
-              <input type="text" placeholder="Search..." />
-              <i className="search link icon"></i>
-            </div>
-          </div>
-
-          {
-            this.state.navMenu.login &&
-              <Link to= {this.state.navMenu.login}>
-                <button className="ui primary basic button">Log in</button>
-              </Link>
-          }
-
-          <button className="ui red basic button">Logout</button>
-        
-        </div>
-        */}
       </Menu>
     )
   }

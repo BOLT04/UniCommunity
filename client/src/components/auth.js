@@ -13,11 +13,7 @@ function Auth() {
      * successful authentication. If null is returned than it means an error occured.
      */
     this.asyncLogin = async (relativeUrl, email, password) => {
-        // Construct request body
-        const body = {
-            email,
-            password
-        }
+        const body = { email, password }
 
         const rsp = await fetch(buildUri(relativeUrl), {
             method: 'post',
@@ -36,8 +32,8 @@ function Auth() {
         this.token = new Buffer(email +':'+ password).toString('base64')
         localStorage.setItem('authToken', this.token)
         localStorage.setObject('user', this.user)
-debugger
         authenticated = true
+
         return json._links
     }
 
@@ -52,6 +48,7 @@ debugger
 
         return true
     }
+    
     this.isAuthenticated = () => authenticated || localStorage.getItem('authToken') !== null
 }
 

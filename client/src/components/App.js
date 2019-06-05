@@ -46,7 +46,6 @@ export default class App extends Component {
       const rspObj = await rsp.json()
 
       const home = {}
-      debugger
       //TODO: move this to another place: This code is coupled to hal+json bc of the links 
       if (rspObj._links) {
         Object
@@ -70,13 +69,11 @@ export default class App extends Component {
   }
 
   reRenderNavBar = () => {
-    debugger
     this.setState({ reRenderNavBar: true })
   }
 
   render() {
     const createBoardApi = new CreateBoardApiImpl()
-    debugger
     const { home } = this.state
 
     //TODO: this component depends on the propnames defined in rels-registery because it knows navMenuUrl...

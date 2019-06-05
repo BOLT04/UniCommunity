@@ -4,12 +4,6 @@ import PropTypes from 'prop-types'
 import { Input, Form, Button } from 'semantic-ui-react'
 
 import MdEditor from 'react-markdown-editor-lite'
- 
-import { createForumPostsAsync } from '../../api/ForumApiImpl'
-import rspToBoardAsync from '../../api/mapper/board-mapper'
-
-import routes from '../../common/routes'
-import CreateBoardApi from '../../api/CreateBoardApi';
 
 /**
  * This component contains a Form UI with all the common fields of any Module Item (Blackboard 

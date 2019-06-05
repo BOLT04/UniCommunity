@@ -19,7 +19,7 @@ export default class CreatePost extends Component {
     api: PropTypes.instanceOf(CreateBoardApi),
   }
 
-  isAnonymous = false// TODO: use this on the response
+  isAnonymous = false
 
   onChangeCheckBox = (e, { checked }) => {
     e.preventDefault()
@@ -35,9 +35,8 @@ export default class CreatePost extends Component {
     const url = this.props.location.state.createPostUrl
 
     const rsp = await createForumPostsAsync(url, title, content, this.isAnonymous)
-    debugger
     const rspObj = await rsp.json()
-debugger
+
     //TODO: move this code that handles hal+json and responses from the API to another place,
     //todo: in this class its only logic related to this component
     
@@ -45,9 +44,7 @@ debugger
     //todo: if the server says we can't (doesnt include the link on the response) then we cant.
     // Check if we can redirect to the Board page.
     if (rspObj._links) {
-      debugger
       const boardUrl = rspObj._links[rels.getBoard]
-      debugger
       if (boardUrl) {
         // TODO: I think this should be refactored and moved to BoardView. So that this component isn't responsible
         //for making requests to a board
@@ -56,11 +53,10 @@ debugger
         let board = await rspToBoardAsync(boardRsp)
     
         board.id = 1 // TODO: remove when this is in server impl.
-    
-        debugger
+        
         // We need to remove any functions because history.push doesn't support that state has functions
         board = removeFunctionsFrom(board)
-        this.props.history.push(routes.getBoardUri(board.id), {board})
+        this.props.history.push(routes.getBoardUri(board.id), { board })
       }
     }
   }

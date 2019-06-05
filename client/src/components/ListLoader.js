@@ -1,27 +1,25 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-import { Loader } from 'semantic-ui-react'
+import { Loader, Message } from 'semantic-ui-react'
 
 /**
  * Renders a List of project items.
  * This component receives a render prop that specifies the element tree to render.
- * 
  */
-export default class ListLoader extends Component {
+export default ( { list, emptyListHeaderMsg, emptyListMsg, render }) =>
+  !list
+    ? <Loader />
+    : list.length == 0
+      ? renderMessage(emptyListHeaderMsg, emptyListMsg)
+      : render()
 
-  render() {
-    const { list, emptyListHeaderMsg, emptyListMsg, render } = this.props
-
-    return !list
-              ? <Loader />
-              : list.length == 0
-                ?
-                  <div className='ui message'>
-                    <div className='header'>
-                        { emptyListHeaderMsg || 'No items available' }
-                    </div>
-                    <p>{ emptyListMsg  || 'Consider creating items first.' }</p>
-                  </div>
-                : render()
-  }
-}
+const renderMessage = (emptyListHeaderMsg, emptyListMsg) => (
+  <Message>
+    <Message.Header>
+      { emptyListHeaderMsg || 'No items available' }
+    </Message.Header>
+    <p>
+      { emptyListMsg  || 'Consider creating items first.' }
+    </p>
+  </Message>
+)

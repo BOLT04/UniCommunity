@@ -33,7 +33,7 @@ export default class BoardView extends Component {
   render() {
     console.log(this.props.match)
     const { board } = this.state
-debugger
+
     return (
       <>
         <Header 

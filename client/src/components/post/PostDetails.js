@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
 
 // Semantic UI imports
 import { 
@@ -30,17 +29,16 @@ export default class PostDetails extends Component {
     async componentDidMount() {
         const rsp = await this.props.asyncRelativeFetch(this.props.location.state.getPostUrl, APPLICATION_HAL_JSON)
         const post = await rspToForumItemAsync(rsp)
-        console.log(post)
-debugger
+        
         this.setState({ post, loading: false })
     }
 
     onCreateCommentHandler = (e, comment) => {
         this.setState(state => {
           state.post.comments.push(comment)
-     debugger
+
           return {
-            error: undefined,// TODO: god damn it...we should probably handle errors later...if creating comment fails, for example 500 bc the server went down cause it couldnt handle a lot of boys commenting at the same time...concurrency boy!! its life
+            error: undefined,
             post: state.post
           }
         })
@@ -81,8 +79,6 @@ debugger
             </Segment>
         )
 
-        console.log(this.props)
-        console.log(post)
         return !post
                     ? <Loader active={loading} inline />
                     : renderPost()

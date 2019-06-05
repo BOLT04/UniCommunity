@@ -1,5 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
+
 import './index.css'
 import 'semantic-ui-css/semantic.min.css'
 
@@ -10,12 +11,11 @@ import config from './unicommunity-config.json'
 
 require('./common/storage-extensions')()
 
-
 const baseUri = `http://${config.serverHost}:${config.serverPort}`
 
 ReactDOM.render(
     <App
         baseUri={baseUri}
         asyncRelativeFetch={asyncRelativeFetch}
-        api={new HomeApiImpl(baseUri, config.serverEntryPoint)}/>, 
+        api={new HomeApiImpl(baseUri, config.serverEntryPoint)} />, 
     document.getElementById('root'))

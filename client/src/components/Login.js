@@ -30,9 +30,8 @@ export default class Login extends Component {
     const links = await auth.asyncLogin(this.props.location.state.serverHref, this.emailVal, this.passVal)
 
     if (links) {
-      this.props.reRender()
+      this.props.reRender() // Update Navbar
       this.props.history.push(routes.home) // Redirect to home page
-      //this.props.history.push('/', {serverHref: links['/rels/getProjects'].href})
     } else
       this.setState({ error: new Error('Authentication with given credentials failed!')})
   }

@@ -22,8 +22,6 @@ export default class AllBoards extends Component {
   async componentDidMount() {
     const rsp = await this.props.asyncRelativeFetch(this.props.location.state.serverHref, COLLECTION_JSON)
     const boards = await asyncCollectionRspToList(rsp)
-    debugger
-    console.log(boards)
 
     this.setState({ boards })
   }

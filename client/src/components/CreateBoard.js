@@ -43,7 +43,6 @@ export default class CreateBoard extends Component {
 
     // Validate user input
     // In case the user chooses neither options
-    debugger
     if (this.templateId == null && (this.blackboardNames.length == 0 && !this.hasForum))
       throw Error('please specify the modules manually or choose a template')
     
@@ -51,37 +50,29 @@ export default class CreateBoard extends Component {
     if (this.templateId != null && (this.blackboardNames.length > 0 || this.hasForum)) 
       throw Error('please choose only one option: choose modules manually or choose a template')
 
-    const modulesObj = {}// TODO: find a better name. This object contains the optional params that go to the request body: templateId or an array of module names (string)
+    const optionalParams = {}
 
     if (this.templateId != null)
-      modulesObj.templateId = this.templateId
+      optionalParams.templateId = this.templateId
     else if (this.blackboardNames.length > 0) {
-      modulesObj.blackboardNames = this.blackboardNames
-      modulesObj.hasForum = this.hasForum
+      optionalParams.blackboardNames = this.blackboardNames
+      optionalParams.hasForum = this.hasForum
     }
 
-    // TODO: is there a way to easily document that this component receives this.props.location.state.serverHref
-    //todo: from the Link component used in NavBar.js available in React router?
     const rsp = await this.props.api.createBoardAsync(
       this.props.location.state.serverHref,
       this.titleVal,
       this.descVal,
-      modulesObj
+      optionalParams
     )
-    console.log(rsp)
     const board = await rspToBoardAsync(rsp)
-    debugger
-    console.log(board)
-    
     
     board.id = 1 // TODO: remove when this is in server impl.
     
-    
-    debugger
-    this.props.history.push(routes.getBoardUri(board.id), {board})
+    this.props.history.push(routes.getBoardUri(board.id), { board })
   }
 
-//TODO: is getting the ref of BoardTemplate and do: this.boardTemplate.updateTemplates() the best solution??
+  //TODO: is getting the ref of BoardTemplate and do: this.boardTemplate.updateTemplates() the best solution??
 
   render() {
     return (
