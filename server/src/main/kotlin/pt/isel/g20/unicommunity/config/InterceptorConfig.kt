@@ -16,6 +16,7 @@ import pt.isel.g20.unicommunity.common.presentation.AuthorizationException
 import pt.isel.g20.unicommunity.hateoas.ExtendedProblemJson
 import pt.isel.g20.unicommunity.hateoas.Link
 import pt.isel.g20.unicommunity.hateoas.ProblemJson
+import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
 
 @Configuration
 @ControllerAdvice
@@ -30,8 +31,8 @@ class InterceptorConfig(val authService: AuthService) : WebMvcConfigurer {
      * Globally applicable exception handler
      */
     @ExceptionHandler
-    fun handleInvalidAuthorization(e: AuthorizationException): ResponseEntity<ProblemJson> {
-        return ResponseEntity
+    fun handleInvalidAuthorization(e: AuthorizationException): ResponseEntity<ProblemJson> =
+        ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(ExtendedProblemJson(
                         title = "Authorization required",
@@ -41,5 +42,11 @@ class InterceptorConfig(val authService: AuthService) : WebMvcConfigurer {
                                 Rels.LOGIN to Link(Uri.LOGIN_ROUTE)
                         )
                 ))
-    }
+
+    // Used in UserController and AuthenticationController
+    @ExceptionHandler
+    fun handleNotFoundUserException(e: NotFoundUserException) =
+            ResponseEntity
+                    .notFound()
+                    .build<String>()
 }
