@@ -42,9 +42,14 @@ class SingleCommentResponse(comment: Comment)
 ){
     val boardName: String = comment.forumItem.forum.board.name
     val forumItemName: String = comment.forumItem.name
-    val authorName: String = comment.author.name
+    var authorName: String? = comment.author.name
     val content : String = comment.content
     val createdAt: String = comment.createdAt.toString()
+
+    init {
+        if(comment.anonymousComment)
+            authorName = null
+    }
 }
 
 

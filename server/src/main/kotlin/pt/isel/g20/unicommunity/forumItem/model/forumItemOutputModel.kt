@@ -23,8 +23,13 @@ class SingleForumItemResponse(forumItem: ForumItem)
     val boardName: String = forumItem.forum.board.name
     val name : String = forumItem.name
     val content : String = forumItem.content
-    val authorName : String = forumItem.author.name
+    var authorName : String? = forumItem.author.name
     val createdAt : String = forumItem.createdAt.toString()
+
+    init {
+        if(forumItem.anonymousPost)
+            authorName = null
+    }
 }
 
 
