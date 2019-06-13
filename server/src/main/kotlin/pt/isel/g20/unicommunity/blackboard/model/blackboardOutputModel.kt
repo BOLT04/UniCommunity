@@ -10,7 +10,7 @@ class SingleBlackboardResponse(blackboard: Blackboard)
                 "self" to Link(Uri.forSingleBlackboardText(blackboard.board.id, blackboard.id)),
                 Rels.NAVIGATION to Link("/navigation"),
                 Rels.GET_SINGLE_BOARD to Link(Uri.forSingleBoardText(blackboard.board.id)),
-                Rels.CREATE_BLACKBOARDITEM to Link(Uri.forAllBlackboards(blackboard.board.id)),
+                Rels.CREATE_BLACKBOARDITEM to Link(Uri.forAllBlackboardItems(blackboard.board.id, blackboard.id)),
                 Rels.GET_MULTIPLE_BLACKBOARDS to Link(Uri.forAllBlackboards(blackboard.board.id)),
                 Rels.EDIT_BLACKBOARD to Link(Uri.forSingleBoardText(blackboard.board.id)),
                 Rels.DELETE_BLACKBOARD to Link(Uri.forSingleBoardText(blackboard.board.id))
