@@ -10,7 +10,7 @@ fun ForumItem.toItemRepr() = Item(
                 Data(name = "name", value = this.name),
                 Data(name = "id", value = this.id.toString()),
                 Data(name = "content", value = this.content),
-                Data(name = "authorName", value = this.author.name),
+                Data(name = "authorName", value = if(this.anonymousPost) null else this.author.name),
                 Data(name = "createdAt", value = this.createdAt.toString())
         ),
         links = listOf(
