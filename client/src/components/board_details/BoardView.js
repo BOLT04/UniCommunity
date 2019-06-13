@@ -1,9 +1,11 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
+import { Route } from 'react-router-dom'
 
 import rspToBoardAsync from '../../api/mapper/board-mapper'
 import { APPLICATION_HAL_JSON } from '../../common/constants'
 
+import CreateBlackboardItem from '../post/CreateBlackboardItem'
 import ModulesView from './ModulesView'
 import Header from '../Header'
 
@@ -41,9 +43,16 @@ export default class BoardView extends Component {
           header={board.name}
           content={board.description}
         />
-        <div className="ui divider"></div>
+        <div className='ui divider' />
 
         <ModulesView board={board} />
+{/*//TODO: how to put nested routes? and what is the point bc /:bbName/blackboardItem/new doesnt work
+        <Route path='/boards/:boardId/:bbName/blackboardItem/new' render={props => 
+                <h1>bahhh</h1> } 
+              />
+        */ }
+
+        
       </>
     )
   }

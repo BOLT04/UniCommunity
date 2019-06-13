@@ -48,7 +48,7 @@ export default class ModulesView extends Component {
         const isActive = activeIndex === index
 
         function decideContent() {
-            return blackboard.name !== 'Forum'
+            return blackboard.name !== 'Forum'// TODO: remove the ternary since its always blackboards
                 ? blackboard.items.map(item => (
                     <>
                         <h4>{item.name}</h4>
@@ -56,6 +56,10 @@ export default class ModulesView extends Component {
                     </>
                 ))
                 : <Forum />
+        }
+        const linkToObj = {
+            pathname: blackboard.createLink.clientHref,
+            state: { createBlackboardItemUrl: blackboard.createLink.serverHref }
         }
 
         return (
@@ -65,7 +69,7 @@ export default class ModulesView extends Component {
                     {blackboard.name}
                 </Accordion.Title>
 
-                <CreateModuleButton linkToObj={blackboard.createLink.clientHref} />
+                <CreateModuleButton linkToObj={linkToObj} />
 
                 <Transition visible={isActive} animation='slide down' duration={500}>
                     <Accordion.Content active={isActive}>
@@ -89,7 +93,6 @@ export default class ModulesView extends Component {
             pathname: createPostHrefObj.clientHref,
             state: { createPostUrl: createPostHrefObj.serverHref }
         }
-        console.log(linkToObj.pathname)
 
         return (
             <div key={index}>
@@ -119,9 +122,7 @@ export default class ModulesView extends Component {
                             {board.modules.blackboards &&
                                 board.modules.blackboards.map(this.blackboardToAccordion)}
 
-                            {board.modules.forum &&
-                                this.renderForum(board)
-                            }
+                            {board.modules.forum && this.renderForum(board) }
                         </Accordion>
                     : null
     }

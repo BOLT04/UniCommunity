@@ -15,6 +15,7 @@ import Home from './home_page/Home'
 
 import CreatePost from './post/CreatePost'
 import PostDetails from './post/PostDetails'
+import CreateBlackboardItem from './post/CreateBlackboardItem'
 
 import HomeApi from '../api/HomeApi'
 
@@ -22,7 +23,7 @@ import NavBarApiImpl from '../api/NavBarApiImpl'
 import CreateBoardApiImpl from '../api/CreateBoardApiImpl'
 
 import relsRegistery from '../common/rels-registery'
-
+import { asyncRelativeHttpRequest } from '../common/common'
 //TODO: The App component might have too many responsabilities, because it has the one commented below
 //TODO: plus it serves as the Service Locator, the one responsible to give all components their dependencies,
 // and we are currently instantiating the API mocks in here...
@@ -110,9 +111,18 @@ export default class App extends Component {
                   api={createBoardApi}
                   asyncRelativeFetch={this.props.asyncRelativeFetch} />} 
               />
+              
+              <Route path='/boards/:boardId/:bbName/blackboardItem/new' render={props => 
+                <CreateBlackboardItem 
+                  {...props}
+                  asyncRelativeFetch={this.props.asyncRelativeFetch}
+                  asyncRelativeHttpRequest={asyncRelativeHttpRequest} />
+              }/>
 
               <Route exact path='/boards/:id' render={props => 
-                <BoardView {...props} asyncRelativeFetch={this.props.asyncRelativeFetch} />} 
+                <BoardView {...props} 
+                  asyncRelativeFetch={this.props.asyncRelativeFetch}
+                  asyncRelativeHttpRequest={asyncRelativeHttpRequest} />} 
               />
 
 {/*//TODO: The URL for CreatePost should be /boards/:id/posts/new, since its an new post in the context of a board*/}

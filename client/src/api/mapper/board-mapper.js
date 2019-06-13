@@ -52,17 +52,20 @@ export default async function rspToBoardAsync(rsp) {//TODO: maybe move these con
                forumLink = _links[forumRel].href
         }
 
+        //TODO: REMOVE WHEN SERVER ADDS ID TO OUTPUT MODEL
+        board.id = 10
+
         // Check if the blackboards rel is present
         if (_embedded) {
             const blackboardsArr = _embedded[rels.getBlackboards]
             if (blackboardsArr)
                 board.modules.blackboards = await Promise.all(
-                    blackboardsArr.map(async i => 
-                        await halItemToBlackboardItemAsync(i)  
+                    blackboardsArr.map(async blackboard => 
+                        await halItemToBlackboardAsync(board, blackboard)  
                     )
                 )   
         }
-debugger
+
         // Make a request to get the forum and add it to the modules array
         board.modules.forum = await fetchForumAsync(forumLink)
 
@@ -73,23 +76,23 @@ debugger
     throw new MappingError()
 }
 
-async function halItemToBlackboardItemAsync({ name, _links }) {
+async function halItemToBlackboardAsync(board, { name, _links }) {
     //TODO: what if the self link isnt there... we need to be prepared for that and put content = [] maybe
     const rsp = await asyncRelativeFetch(_links.self.href, APPLICATION_HAL_JSON)
     const { items, _links: blackboardLinks } = await rsp.json()
 
-    const blackboardItem = { name, items }
+    const blackboard = { name, items }
 debugger
-    const serverHref = blackboardLinks[rels.createBlackboardItem]
+    const serverHref = blackboardLinks[rels.createBlackboardItem].href
     const registery = relsRegistery[rels.createBlackboardItem]
     // If the response includes a link to create an item and its registered, add it to the object to return
     if (serverHref && registery) 
-        blackboardItem.createLink = {
-            clientHref: registery.clientHref,
+        blackboard.createLink = {
+            clientHref: registery.clientHref(board, blackboard),
             serverHref
         }
 
-    return blackboardItem
+    return blackboard
 }
 
 /**
@@ -110,10 +113,8 @@ async function fetchForumAsync(forumLink) {
 
     const { collection: { links, items } } = await rsp.json()
 
-    debugger
     //TODO: use asyncCollectionRspToList in collectionJson mapper since its the same code
     const posts = items.length == 0 ? [] : itemsToModelRepr(items)
-    debugger
     let createPostHrefObj
     // Check if the link to create a post exists
     links.forEach(l => {

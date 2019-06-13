@@ -5,6 +5,8 @@
 import React from 'react'
 import UserProfileNavItem from '../components/UserProfileNavItem'
 
+import routes from './routes'
+
 export const rels = {
     getForumItems: '/rels/getForumItems',
     createBlackboardItem: '/rels/createBlackboardItem',
@@ -27,7 +29,9 @@ const relsRegistery = {
         serverHref: null
     },
     [rels.createBlackboardItem]: {
-        clientHref: '/blackboardItem/new',
+        clientHref(board, blackboard) {
+            return routes.getNewBlackboardItemUri(board, blackboard)
+        },
         serverHref: null
     },
     [rels.createForumItem]: {

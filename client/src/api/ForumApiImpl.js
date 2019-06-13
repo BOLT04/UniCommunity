@@ -18,15 +18,15 @@ export default async function fetchForumPostsAsync(url) {//TODO: this goes bye-b
 /**
  * 
  * @param {*} url 
- * @param {*} title 
+ * @param {*} name 
  * @param {*} content
  * @param {boolean} anonymousPost - Specifies whether or not this post is to be created anonymously.
  */
-export async function createForumPostsAsync(url, title, content, anonymousPost) {
+export async function createForumPostsAsync(url, name, content, anonymousPost) {
     console.log(`Making a request to ${url} to create a forum post`)
     // Construct request body
     const body = {
-        name: title,
+        name,
         content,
         anonymousPost
     }

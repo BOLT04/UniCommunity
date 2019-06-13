@@ -23,15 +23,19 @@ function Auth() {
             body: JSON.stringify(body)
         })
         const json = await rsp.json()
-        this.user = {
+        const user = {
             email,
             name: json.name
         }
-        console.log(this.user)
+        // Add a getter to user, so that it fetches the object from local storage when not available already.
+        if (!this.user)
+            Object.defineProperty(this, 'user', {
+                get: () => localStorage.getObject('user')
+            })
 
         this.token = new Buffer(email +':'+ password).toString('base64')
         localStorage.setItem('authToken', this.token)
-        localStorage.setObject('user', this.user)
+        localStorage.setObject('user', user)
         authenticated = true
 
         return json._links
