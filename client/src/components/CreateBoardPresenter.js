@@ -34,8 +34,7 @@ export default function(props) {
         </Form.Field>
       </Form>
       
-      <BoardTemplate 
-        ref={boardTemplate => getBoardTemplateRef(boardTemplate)}
+      <BoardTemplate
         api={boardTemplateApi}
         asyncRelativeFetch={asyncRelativeFetch}
         addToModules={addToModules}

@@ -69,8 +69,8 @@ function ForumItem({ post, board }) {
     function decideContent() {
         return (
             <List.Content style={{marginTop: 10}}>
-                {post.smallDesc !== undefined
-                    ? buildWithoutDesc() 
+                {post.content
+                    ? buildWithDesc() 
                     : 
                         <Link to={{
                             pathname: routes.getPostDetailsUri(boardId, post.id),
@@ -83,23 +83,22 @@ function ForumItem({ post, board }) {
         )
     }
 
-    function buildWithoutDesc() {
+    function buildWithDesc() {
         return ( 
             <Link to={{
                 pathname: routes.getPostDetailsUri(boardId, post.id),
                 state: {getPostUrl: post.href}
             }}>
                 <List.Header as='a'>
-                    {post.author !== undefined &&
+                    {post.authorName &&
                         <div>
-                            Published by <strong>{post.author}</strong> at {post.createdAt.toLocaleString()}
+                            Published by <strong>{post.authorName}</strong> at {post.createdAt.toLocaleString()}
                         </div>
                     } 
-                    {' '}
-                    {post.title}
+                    {' '+ post.name}
                 </List.Header>
                 <List.Description>
-                    <ReactMarkdown source={post.smallDesc} />
+                    <ReactMarkdown source={post.content} />
                 </List.Description>
             </Link>
         )

@@ -2,6 +2,8 @@
 // information is considered important for a given link relation (rel). 
 // It can be the corresponding client URL, strings containing the CSS classes to be used as props to
 // React elements or HTML elements, etc.
+import React from 'react'
+import UserProfileNavItem from '../components/UserProfileNavItem'
 
 export const rels = {
     getForumItems: '/rels/getForumItems',
@@ -15,7 +17,8 @@ export const rels = {
     login: '/rels/login',
     getBlackboards: '/rels/getBlackboards',
     nav: '/rels/nav',
-    feed: '/rels/feed'
+    feed: '/rels/feed',
+    userProfile: '/rels/userProfile'
 }
 
 const relsRegistery = {
@@ -61,6 +64,14 @@ const relsRegistery = {
     },
     [rels.feed]: {
         propName: "feedUrl"
+    },
+    [rels.userProfile]: {
+        clientHref: '/profile',
+        name: 'User Profile',
+        toDisplayOnRight: true,
+        render(props) {
+            return <UserProfileNavItem {...props} />
+        }
     }
 }
 

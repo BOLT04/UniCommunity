@@ -37,7 +37,6 @@ export default class CreateBoard extends Component {
     console.log(this.descVal)
     console.log(this.titleVal)
 
-    this.boardTemplate.updatePropsTemplates()
     console.log(this.blackboardNames)
     console.log(this.templateId)
 
@@ -80,7 +79,6 @@ export default class CreateBoard extends Component {
         asyncRelativeFetch={this.props.asyncRelativeFetch}
         onTitleChange={this.onTitleChange}
         onDescriptionChange={this.onDescriptionChange}
-        getBoardTemplateRef={boardTemplate => this.boardTemplate = boardTemplate}
         boardTemplateApi={this.props.api}
         addToModules={moduleName => this.blackboardNames.push(moduleName)}
         updateHasForum={hasForum => this.hasForum = hasForum}

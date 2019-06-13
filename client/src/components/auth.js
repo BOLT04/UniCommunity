@@ -23,11 +23,11 @@ function Auth() {
             body: JSON.stringify(body)
         })
         const json = await rsp.json()
-
         this.user = {
             email,
             name: json.name
         }
+        console.log(this.user)
 
         this.token = new Buffer(email +':'+ password).toString('base64')
         localStorage.setItem('authToken', this.token)

@@ -1,5 +1,4 @@
 // This module contains functions that are used by multiple modules.
-import auth from '../components/auth'
 
 /**
  * This function is used by the mapper functions - transforms a API response to a model object,
@@ -40,10 +39,7 @@ export const buildUri = relativeUrl => `${baseUri}${relativeUrl}`
  * @param {string} contentType - (optional) The content type value of the Accept header.
  */
 export const asyncRelativeFetch = (relativeUrl, contentType) => {
-    debugger
-    console.log({auth})
     const options = fillAuthHeaderIfAuthenticated()
-    debugger
     if (contentType) {
         if (!options.headers) options.headers = {}
 
@@ -87,8 +83,6 @@ export function asyncRelativeHttpRequest(relativeUrl, method, contentType, body)
 
 // Auxiliary function
 function fillAuthHeaderIfAuthenticated() {
-    console.log({auth})
-    
     let options = {}
     const token = localStorage.getItem('authToken')
     if (token)
@@ -105,5 +99,4 @@ function fillAuthHeaderIfAuthenticated() {
  * We need this because history.push from the library React-Router doesn't support for the object
  * state to have functions.
  */
-export const removeFunctionsFrom = obj =>
-    JSON.parse(JSON.stringify(obj))
+export const removeFunctionsFrom = obj => JSON.parse(JSON.stringify(obj))

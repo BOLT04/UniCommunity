@@ -48,7 +48,7 @@ export default class NavBar extends Component {
 
     //TODO: right now this only supports one link with the property: "toDisplayOnRight", since it would create another div on the next link with the same prop.
     //TODO: later this probably receives an array of registeries to include multiple links on the right menu like: Search bar, Logout, Login, user profile, etc
-    function buildRightMenu(reg, serverHref) {
+    const buildRightMenu = (reg, serverHref) => {
       return (
         <Menu.Item
           className='right'
@@ -57,25 +57,32 @@ export default class NavBar extends Component {
           active={activeItem === reg.name}
           onClick={this.handleItemClick}
         >
-          <Link 
+          <Link
             to={{
               pathname: reg.clientHref,
               state: { serverHref }
             }}
             className='item'
           >
-            {reg.name}
+            {reg.render
+              ? reg.render()
+              : reg.name
+            }
           </Link>
         </Menu.Item>
       )
     }
     
+    const leftMenuItems  = []
+    const rightMenuItems = []
+/*
     return Object.keys(navMenu)
       .map(prop => {
         const reg = relsRegistery[prop]
         if (reg)
           if (reg.toDisplayOnRight)
-            return buildRightMenu(reg, navMenu[prop].href)
+            rightMenuItems.push({ reg, href: navMenu[prop].href })
+            return //buildRightMenu(reg, navMenu[prop].href)
           else
             return (
               <Menu.Item
@@ -96,6 +103,46 @@ export default class NavBar extends Component {
               </Menu.Item>
             )
       })
+      */
+     Object.keys(navMenu)
+      .forEach(prop => {
+        const reg = relsRegistery[prop]
+        if (reg) {
+          if (reg.toDisplayOnRight)
+            rightMenuItems.push({ reg, prop })
+          else
+            leftMenuItems.push({ reg, prop })
+        }
+      })
+
+      return (
+        <>
+          { leftMenuItems.map(({ reg, prop }) => (
+              <Menu.Item
+                key={reg.name}
+                name={reg.name}
+                active={activeItem === reg.name}
+                onClick={this.handleItemClick}
+              >
+                <Link
+                  as='div'
+                  to={{
+                    pathname: reg.clientHref,
+                    state: { serverHref: navMenu[prop].href }
+                  }}
+                >
+                  {reg.name}
+                </Link>
+              </Menu.Item>
+            ))
+          }
+
+          { rightMenuItems.map(({ reg, prop }) => 
+              buildRightMenu(reg, navMenu[prop].href)
+            )
+          }
+        </>
+      )
   }
 
   render() {
