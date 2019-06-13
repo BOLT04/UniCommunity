@@ -11,7 +11,7 @@ object Uri {
     const val HOME_ROUTE = "/home"
 
 // Auth
-    const val LOGIN_ROUTE = "/login"
+    const val LOGIN_ROUTE = "/signin"
 
 //USERS
 
