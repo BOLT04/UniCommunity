@@ -87,13 +87,6 @@ class UserController(private val service: IUserService) {
                         .body(SingleUserResponse(it))
             }
 
-
-    @ExceptionHandler
-    fun handleNotFoundUserException(e: NotFoundUserException) =
-            ResponseEntity
-                    .notFound()
-                    .build<String>()
-
     @ExceptionHandler
     fun handleInvalidUserEmailException(e: InvalidUserEmailException) =
             ResponseEntity
