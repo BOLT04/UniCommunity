@@ -1,5 +1,6 @@
 package pt.isel.g20.unicommunity.blackboard.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import pt.isel.g20.unicommunity.blackboardItem.model.BlackboardItem
 import pt.isel.g20.unicommunity.board.model.Board
 import javax.persistence.*
@@ -9,7 +10,7 @@ class Blackboard(
         @Column(nullable = false) var name: String,
         @Column var notificationLevel: String,
         @Column var description: String? = null,
-        @ManyToOne(fetch = FetchType.LAZY) var board: Board
+        @JsonIgnore @ManyToOne(fetch = FetchType.LAZY) var board: Board
 ) {
 
     @Id

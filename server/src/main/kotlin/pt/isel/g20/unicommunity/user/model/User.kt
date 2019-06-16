@@ -1,5 +1,6 @@
 package pt.isel.g20.unicommunity.user.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import pt.isel.g20.unicommunity.blackboardItem.model.BlackboardItem
 import pt.isel.g20.unicommunity.board.model.Board
 import pt.isel.g20.unicommunity.comment.model.Comment
@@ -10,7 +11,7 @@ import javax.persistence.ManyToMany
 
 
 @Entity(name = "users")
-open class User(
+class User(
         @Column(nullable = false)
         var name: String,
 
@@ -30,15 +31,19 @@ open class User(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "members")
     val boards : MutableList<Board> = mutableListOf()
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
     val comments: MutableList<Comment> = mutableListOf()
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
     val forumItems: MutableList<ForumItem> = mutableListOf()
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
     val bbItems: MutableList<BlackboardItem> = mutableListOf()
 
