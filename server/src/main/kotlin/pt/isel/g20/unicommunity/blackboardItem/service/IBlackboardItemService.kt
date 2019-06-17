@@ -5,6 +5,7 @@ import pt.isel.g20.unicommunity.blackboardItem.exception.NotFoundBlackboardItemE
 import pt.isel.g20.unicommunity.blackboardItem.model.BlackboardItem
 import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
 import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
+import pt.isel.g20.unicommunity.user.model.User
 
 interface IBlackboardItemService {
     @Throws(NotFoundBoardException::class, NotFoundBlackboardException::class)
@@ -14,7 +15,7 @@ interface IBlackboardItemService {
     fun getBlackboardItemById(boardId: Long, bbId: Long, itemId: Long): BlackboardItem
 
     @Throws(NotFoundBoardException::class, NotFoundBlackboardException::class, NotFoundUserException::class)
-    fun createBlackboardItem(boardId: Long, bbId: Long, userId: Long, name: String, content: String): BlackboardItem
+    fun createBlackboardItem(boardId: Long, bbId: Long, user: User, name: String, content: String): BlackboardItem
 
     @Throws(NotFoundBlackboardException::class, NotFoundBoardException::class, NotFoundBlackboardItemException::class)
     fun editBlackboardItem(boardId: Long, bbId: Long, itemId: Long, name: String?, content: String?): BlackboardItem

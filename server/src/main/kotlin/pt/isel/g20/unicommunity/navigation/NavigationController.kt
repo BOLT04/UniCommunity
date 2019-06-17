@@ -19,7 +19,6 @@ import pt.isel.g20.unicommunity.user.model.User
 @RequestMapping(produces = [APPLICATION_HAL_JSON, APPLICATION_JSON, APPLICATION_COLLECTION_JSON])
 class NavigationController {
 
-
     @GetMapping(path = [Uri.NAVIGATION_ROUTE], produces = [APPLICATION_HAL_JSON])
     @AuthorizationOptional
     fun getNavigation(@SessionAttribute("user") user: User?) =

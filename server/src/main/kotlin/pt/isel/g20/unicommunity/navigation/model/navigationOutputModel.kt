@@ -18,22 +18,27 @@ class NavigationResponse(userId: Long)
         )
 )
 
-class HomeResponse
-    : HalObject(
-        mutableMapOf(
-                "self" to Link(Uri.HOME_ROUTE),
-                Rels.GET_MULTIPLE_BOARDS to Link(Uri.forAllBoards()),
-                Rels.GET_SINGLE_BOARD to Link(Uri.forSingleBoardTemplated()),
-                Rels.NAVIGATION to Link(Uri.NAVIGATION_ROUTE)
-        )
+class HomeResponse : HalObject(
+    _links=  mutableMapOf(
+        "self" to Link(Uri.HOME_ROUTE),
+        Rels.NAVIGATION to Link(Uri.NAVIGATION_ROUTE)
+    ),
+    _embedded = mutableMapOf(
+        Rels.LOGIN to listOf(
+            HalObject(_links= mutableMapOf("self" to Link(Uri.LOGIN_ROUTE)))),
+        Rels.GET_MULTIPLE_BOARDS to listOf(
+            HalObject(_links= mutableMapOf("self" to Link(Uri.BOARDS_ROUTE)))),
+        Rels.GET_SINGLE_BOARD to listOf(
+            HalObject(_links= mutableMapOf("self" to Link(Uri.SINGLE_BOARD_ROUTE))))
+    )
 )
 
-class UnauthorizedNavigationResponse()
+class UnauthorizedNavigationResponse
     : HalObject(
         mutableMapOf(
                 "self" to Link(Uri.NAVIGATION_ROUTE),
                 //Rels.HOME to Link(Uri.HOME_ROUTE),
-                Rels.LOGIN to Link(Uri.LOGIN_ROUTE+"a")
+                Rels.LOGIN to Link(Uri.LOGIN_ROUTE)
                 //Rels.LOGOUT to Link("/logout"), //TODO: for now since we don't have cookie auth, we don't need logout
         )
 )
