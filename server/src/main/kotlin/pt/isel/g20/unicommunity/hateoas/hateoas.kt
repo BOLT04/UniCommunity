@@ -25,9 +25,9 @@ open class HalResourceObject
  * sometimes need to make validations to the model object before creating a link.
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-abstract class HalObject(
+open class HalObject(
     var _links: MutableMap<String, Link>? = null,
-    var _embedded: MutableMap<String, List<HalResourceObject>>? = null)// TODO: how to make embedded an array OR object
+    var _embedded: MutableMap<String, List<HalResourceObject>>? = null) : HalResourceObject()// TODO: how to make embedded an array OR object
 {
     constructor() : this(null, null)
 }

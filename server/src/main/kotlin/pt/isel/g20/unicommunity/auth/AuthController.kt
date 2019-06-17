@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit
 @RequestMapping(
         produces = [APPLICATION_HAL_JSON, APPLICATION_JSON])
 class AuthenticationController(private val service: IAuthService) {
-    @PostMapping(Uri.LOGIN_ROUTE)//TODO: find a way to remove /login of spring security to allow our /login instead of /logina
+    @PostMapping(Uri.LOGIN_ROUTE)
     fun login(@RequestBody loginDto: LoginDto): ResponseEntity<LoginResponse> =
             service.authenticate(loginDto.email, loginDto.password).let {
                 val response = LoginResponse(it)

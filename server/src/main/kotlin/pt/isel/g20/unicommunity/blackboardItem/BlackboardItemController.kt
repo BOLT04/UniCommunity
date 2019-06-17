@@ -67,7 +67,7 @@ class BlackboardItemController(private val service: IBlackboardItemService) {
             @RequestBody itemDto: BlackboardItemDto,
             @SessionAttribute("user")user: User
     ): ResponseEntity<SingleBlackboardItemResponse>{
-            return service.createBlackboardItem(boardId, bbId, user.id, itemDto.name, itemDto.content).let {
+            return service.createBlackboardItem(boardId, bbId, user, itemDto.name, itemDto.content).let {
                 val response = SingleBlackboardItemResponse(it)
 
                 ResponseEntity
