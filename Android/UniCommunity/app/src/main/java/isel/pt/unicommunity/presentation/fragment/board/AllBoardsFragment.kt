@@ -15,7 +15,7 @@ import isel.pt.unicommunity.R
 import isel.pt.unicommunity.presentation.adapter.AllBoardsAdapter
 import isel.pt.unicommunity.presentation.adapter.BoardClickListener
 import isel.pt.unicommunity.kotlinx.getViewModel
-import isel.pt.unicommunity.model.refactor_me_dad.small.SmallBoardItem
+import isel.pt.unicommunity.model.to_refactor.small.SmallBoardItem
 import isel.pt.unicommunity.presentation.viewmodel.AllBoardsViewModel
 import kotlinx.android.synthetic.main.fragment_all_boards.*
 

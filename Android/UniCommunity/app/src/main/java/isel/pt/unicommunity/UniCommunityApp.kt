@@ -6,7 +6,7 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.BasicNetwork
 import com.android.volley.toolbox.DiskBasedCache
 import com.android.volley.toolbox.HurlStack
-import isel.pt.unicommunity.model.refactor_me_dad.linker.NavSupplier
+import isel.pt.unicommunity.model.to_refactor.linker.NavSupplier
 
 
 class UniCommunityApp : Application(){

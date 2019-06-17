@@ -2,7 +2,7 @@ package isel.pt.unicommunity.presentation.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import isel.pt.unicommunity.model.refactor_me_dad.built.Forum
+import isel.pt.unicommunity.model.to_refactor.built.Forum
 
 class ForumViewModel : ViewModel(){
 

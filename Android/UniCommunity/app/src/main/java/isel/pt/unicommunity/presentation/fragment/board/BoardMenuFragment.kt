@@ -8,14 +8,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import isel.pt.unicommunity.BackStackManagingActivity
 import isel.pt.unicommunity.R
 import isel.pt.unicommunity.kotlinx.getUniCommunityApp
 import isel.pt.unicommunity.presentation.adapter.BoardMenuAdapter
 import isel.pt.unicommunity.presentation.adapter.SmallModuleClickListener
 import isel.pt.unicommunity.kotlinx.getViewModel
-import isel.pt.unicommunity.model.refactor_me_dad.small.SmallModule
+import isel.pt.unicommunity.model.to_refactor.small.SmallModule
+import isel.pt.unicommunity.presentation.fragment.modules.BlackBoardFragment
+import isel.pt.unicommunity.presentation.fragment.modules.ForumFragment
 import isel.pt.unicommunity.presentation.viewmodel.BoardViewModel
-import isel.pt.unicommunity.presentation.viewmodel.ForumViewModel
 import kotlinx.android.synthetic.main.fragment_all_boards.*
 
 class BoardMenuFragment : Fragment() {
@@ -47,25 +49,15 @@ class BoardMenuFragment : Fragment() {
 
                 if(smallModule!=null)
                     if(smallModule.type == "forum"){
-
-                        val forumVm = activity.getViewModel("forum") {
-                            ForumViewModel()
-                        }
-
-                        if (forumVm.forumLd.value?.nav == null) {
-
-                            app.commonVm["forum"] = forumVm
-
-                        }
-
-
+                        (activity as BackStackManagingActivity).navigateTo(ForumFragment())
                     }
                     else{
-
+                        (activity as BackStackManagingActivity).navigateTo(BlackBoardFragment())
                     }
 
             }
         }
+
         recyclerView.adapter = BoardMenuAdapter(viewModel, onBoardClickListener)
 
         viewModel.liveData.observe(

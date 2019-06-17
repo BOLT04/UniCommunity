@@ -9,7 +9,7 @@ import isel.pt.unicommunity.MainActivity
 import isel.pt.unicommunity.R
 import isel.pt.unicommunity.kotlinx.getUniCommunityApp
 import isel.pt.unicommunity.kotlinx.getViewModel
-import kotlinx.android.synthetic.main.volleytesting.*
+import kotlinx.android.synthetic.main.__testing__volleytesting.*
 
 
 class VolleyActivity : AppCompatActivity() {
@@ -17,14 +17,16 @@ class VolleyActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.volleytesting)
+        setContentView(R.layout.__testing__volleytesting)
 
         val queue = getUniCommunityApp().queue
         val vm = getViewModel("a"){
             VolleyVM(queue)
         }
 
-        vm.value.observe(this, Observer { textView2.text = it.name })
+        vm.value.observe(this, Observer {
+            textView2.text = it.name
+        })
 
         button2.setOnClickListener {
             val value = vm.value.value

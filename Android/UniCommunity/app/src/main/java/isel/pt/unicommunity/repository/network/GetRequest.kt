@@ -16,7 +16,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 class GetRequest<T>(private val type : Class<T>, url: String, success: Response.Listener<T>, error: Response.ErrorListener,
                     private val headers: MutableMap<String, String>?,
                     private val logger: (() -> Unit)? = null)
-    : JsonRequest<T>(Request.Method.GET, url, "", success, error) {
+    : JsonRequest<T>(Method.GET, url, "", success, error) {
 
     val TAG = "GetRequest"
 

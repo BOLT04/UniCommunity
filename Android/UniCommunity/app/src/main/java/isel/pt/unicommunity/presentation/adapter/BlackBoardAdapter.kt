@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import isel.pt.unicommunity.R
-import isel.pt.unicommunity.model.refactor_me_dad.small.SmallBlackBoardItem
+import isel.pt.unicommunity.model.to_refactor.small.SmallBlackBoardItem
 import isel.pt.unicommunity.presentation.viewmodel.BlackBoardViewModel
 
 
@@ -18,7 +18,7 @@ class BlackBoardAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SmallBlackBoardItemViewHolder {
         val view = LayoutInflater
             .from(parent.context)
-            .inflate(R.layout.blackboard_item_layout, parent, false) as ViewGroup
+            .inflate(R.layout.item_blackboard, parent, false) as ViewGroup
 
         return SmallBlackBoardItemViewHolder(view)
     }

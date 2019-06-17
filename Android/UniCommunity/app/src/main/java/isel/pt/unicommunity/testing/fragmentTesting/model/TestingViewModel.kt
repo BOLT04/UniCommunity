@@ -30,10 +30,10 @@ class TestingViewModel : ViewModel(){
         supportFragmentManager: FragmentManager,
         fragment: Fragment
     ) {
-        supportFragmentManager.beginTransaction().replace(
+        /*supportFragmentManager.beginTransaction().replace(
             R.id.fragment_container,
             fragment
-        ).commit()
+        ).commit()*/
     }
 
     fun navigateBack(fragmentManager : FragmentManager) : Boolean{

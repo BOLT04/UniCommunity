@@ -14,7 +14,7 @@ class SpinnerFragment : Fragment(){
     val TAG = "TESTING"
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.spinner_fragment, container, false)
+        return inflater.inflate(R.layout.__testing__spinner_fragment, container, false)
     }
 
     override fun onStart() {

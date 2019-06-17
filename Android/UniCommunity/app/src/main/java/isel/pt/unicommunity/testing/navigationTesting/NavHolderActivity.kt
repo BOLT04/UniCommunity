@@ -1,19 +1,16 @@
 package isel.pt.unicommunity.testing.navigationTesting
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import isel.pt.unicommunity.R
-import kotlinx.android.synthetic.main.testing_navigation.*
+import kotlinx.android.synthetic.main.__testing__navigation.*
 
 class NavHolderActivity : AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.testing_navigation)
+        setContentView(R.layout.__testing__navigation)
 
         val host: NavHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host) as NavHostFragment? ?: return

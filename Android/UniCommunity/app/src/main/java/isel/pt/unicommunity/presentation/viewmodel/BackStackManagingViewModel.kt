@@ -7,7 +7,7 @@ import isel.pt.unicommunity.R
 import isel.pt.unicommunity.presentation.fragment.modules.ForumFragment
 import isel.pt.unicommunity.testing.fragmentTesting.fragment.HomeFragment
 
-class BackStackManagingViewModel : ViewModel(){
+class BackStackManagingViewModel(private val containerId: Int) : ViewModel(){
 
     private var fragmentBackStack : MutableList<Fragment> = mutableListOf()
 
@@ -29,7 +29,7 @@ class BackStackManagingViewModel : ViewModel(){
         fragment: Fragment
     ) {
         supportFragmentManager.beginTransaction().replace(
-            R.id.fragment_container,
+            containerId,
             fragment
         ).commit()
     }

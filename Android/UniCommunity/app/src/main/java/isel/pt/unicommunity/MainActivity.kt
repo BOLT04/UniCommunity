@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         }*/
 
          viewModel = getViewModel("MainActivity"){
-            BackStackManagingViewModel(/*id!!*/)//TODO double bangs onde e que ha mesmo a verificaçao
+            BackStackManagingViewModel(R.id.container)//TODO double bangs onde e que ha mesmo a verificaçao
         }
 
 
@@ -107,7 +107,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_home -> {
                 Log.v("testing", "camera")
 
-                navigateTo(omeFragment)
+                navigateTo(omeFragment,reseting = true)
 /*
 
                 supportFragmentManager.beginTransaction().replace(
@@ -118,12 +118,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 /*
 
                 Toast.makeText(this,"camera", Toast.LENGTH_LONG).show()
-                Navigation.createNavigateOnClickListener(R.id.a_fragment)*/
+                Navigation.createNavigateOnClickListener(R.id.__testing__a_fragment)*/
 
             }
             R.id.nav_my_boards -> {
                 Log.v("testing", "camera")
-                navigateTo(allBoardsFragment)
+                navigateTo(allBoardsFragment, reseting = true)
 /*
                 supportFragmentManager.beginTransaction().replace(
                     R.id.fragment_container,
@@ -133,7 +133,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_all_boards -> {
                 Log.v("testing", "camera")
-                navigateTo(myBoardsFragment)
+                navigateTo(myBoardsFragment, reseting = true)
 
 /*
                 supportFragmentManager.beginTransaction().replace(
@@ -143,7 +143,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 */
             }
             R.id.nav_profile -> {
-                navigateTo(profile)
+                navigateTo(profile, reseting = true)
 /*
                 supportFragmentManager.beginTransaction().replace(
                     R.id.fragment_container,
@@ -194,7 +194,6 @@ private class FragmentMapper(val app: AppCompatActivity, val containerId: Int) {
 
         return when(link){
             "/rels/home" -> SideNavItem("Home", switchBuilder(HomeFragment()))
-            "/rels/logout" -> SideNavItem("Logout", switchBuilder(LogoutFragment()))
             "/rels/userProfile" -> SideNavItem("Profile", switchBuilder(ProfileFragment()))
             "/rels/allBoards" -> SideNavItem("All Boards", switchBuilder(AllBoardsFragment()))
             "/rels/myBoards" -> SideNavItem("My Boards", switchBuilder(MyBoardsFragment()))

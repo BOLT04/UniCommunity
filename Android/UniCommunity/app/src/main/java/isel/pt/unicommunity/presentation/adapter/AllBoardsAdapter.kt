@@ -6,7 +6,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import isel.pt.unicommunity.R
-import isel.pt.unicommunity.model.refactor_me_dad.small.SmallBoardItem
+import isel.pt.unicommunity.model.to_refactor.small.SmallBoardItem
 import isel.pt.unicommunity.presentation.viewmodel.AllBoardsViewModel
 
 

@@ -6,7 +6,7 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import isel.pt.unicommunity.R
-import isel.pt.unicommunity.model.refactor_me_dad.small.SmallModule
+import isel.pt.unicommunity.model.to_refactor.small.SmallModule
 import isel.pt.unicommunity.presentation.viewmodel.BoardViewModel
 
 
@@ -18,7 +18,7 @@ class BoardMenuAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ModuleViewHolder {
         val view = LayoutInflater
             .from(parent.context)
-            .inflate(R.layout.board_menu_layout, parent, false) as ViewGroup
+            .inflate(R.layout.item_board_menu, parent, false) as ViewGroup
 
         return ModuleViewHolder(view, smallModuleClickListener)
     }

@@ -10,16 +10,16 @@ import androidx.lifecycle.Observer
 import isel.pt.unicommunity.R
 import isel.pt.unicommunity.kotlinx.getUniCommunityApp
 import isel.pt.unicommunity.kotlinx.getViewModel
-import isel.pt.unicommunity.model.refactor_me_dad.built.User
+import isel.pt.unicommunity.model.to_refactor.built.User
 import isel.pt.unicommunity.testing.fragmentTesting.model.TestingModel
-import kotlinx.android.synthetic.main.a_fragment.*
+import kotlinx.android.synthetic.main.__testing__a_fragment.*
 
 class FragmentA : Fragment() {
 
     val TAG = "TESTING"
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.a_fragment, container, false)
+        return inflater.inflate(R.layout.__testing__a_fragment, container, false)
     }
 
 

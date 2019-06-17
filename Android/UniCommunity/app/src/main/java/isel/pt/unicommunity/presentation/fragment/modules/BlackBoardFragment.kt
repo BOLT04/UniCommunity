@@ -19,7 +19,7 @@ class BlackBoardFragment : Fragment(){
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
-        inflater.inflate(R.layout.fragment_all_boards, container, false)
+        inflater.inflate(R.layout.fragment_blackboard, container, false)
 
 
 
@@ -27,10 +27,11 @@ class BlackBoardFragment : Fragment(){
         super.onStart()
 
         val viewModel = (activity as AppCompatActivity).getViewModel("blackBoard"){
-            BlackBoardViewModel(/*id!!*/)//TODO double bangs onde e que ha mesmo a verificaçao
+            BlackBoardViewModel()
         }
 
         recyclerView.layoutManager = LinearLayoutManager(activity)
+
         /*val onBoardClickListener = object : BoardClickListener {
             override fun onClickListener(smallBoardItem: SmallBoardItem?) {
 
@@ -39,6 +40,7 @@ class BlackBoardFragment : Fragment(){
                 Toast.makeText(activity, smallBoardItem?.name ?: "nullsmall board item", Toast.LENGTH_LONG).show()
             }
         }*/
+
         recyclerView.adapter = BlackBoardAdapter(viewModel)
 
         viewModel.liveData.observe(

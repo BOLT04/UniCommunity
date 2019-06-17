@@ -6,14 +6,14 @@ import androidx.appcompat.app.AppCompatActivity
 import isel.pt.unicommunity.R
 import isel.pt.unicommunity.kotlinx.getUniCommunityApp
 import isel.pt.unicommunity.kotlinx.getViewModel
-import kotlinx.android.synthetic.main.viewmodeltesting.*
+import kotlinx.android.synthetic.main.__testing__viewmodel.*
 
 class ZActivity1 : AppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.viewmodeltesting)
+        setContentView(R.layout.__testing__viewmodel)
     }
 
     override fun onStart() {

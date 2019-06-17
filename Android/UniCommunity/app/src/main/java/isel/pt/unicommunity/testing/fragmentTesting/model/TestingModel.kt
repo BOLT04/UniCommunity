@@ -2,8 +2,8 @@ package isel.pt.unicommunity.testing.fragmentTesting.model
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import isel.pt.unicommunity.model.refactor_me_dad.built.User
-import isel.pt.unicommunity.model.refactor_me_dad.linker.NavSupplier
+import isel.pt.unicommunity.model.to_refactor.built.User
+import isel.pt.unicommunity.model.to_refactor.linker.NavSupplier
 
 /*public class TestingModel(val id : Int = 0,
                           val name : String = "",

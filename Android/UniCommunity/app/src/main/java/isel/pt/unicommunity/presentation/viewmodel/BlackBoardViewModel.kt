@@ -3,7 +3,7 @@ package isel.pt.unicommunity.presentation.viewmodel
 import android.os.Handler
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import isel.pt.unicommunity.model.refactor_me_dad.small.SmallBlackBoardItem
+import isel.pt.unicommunity.model.to_refactor.small.SmallBlackBoardItem
 
 class BlackBoardViewModel : ViewModel(){
 

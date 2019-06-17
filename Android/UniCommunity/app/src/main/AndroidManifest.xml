@@ -12,26 +12,37 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/AppTheme">
-
-        <activity android:name=".EmptyAFActivity"/>
         <activity
-                android:name=".MainActivity"
-                android:label="@string/app_name"
+                android:name=".testing.DemoActivity"
                 android:theme="@style/AppTheme.NoActionBar">
-
-        </activity>
-        <activity  android:name=".testing.navigationTesting.NavHolderActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name="isel.pt.unicommunity.testing.viewmodeltesting.ZActivity2"/>
-        <activity android:name="isel.pt.unicommunity.testing.viewmodeltesting.ZActivity1"/>
-        <activity android:name=".testing.fragmentTesting.TestingActivity"/>
-
+        <activity
+                android:name=".testing.markdowntesting.MarkdownActivity"
+                android:label="@string/title_activity_markdown"
+                android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity android:name=".testing.EmptyAFActivity"/>
+        <activity
+                android:name=".MainActivity"
+                android:label="@string/app_name"
+                android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+        <activity
+                android:name=".testing.navigationTesting.RoidedMainActivity"
+                android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name=".testing.viewmodeltesting.ZActivity2"/>
+        <activity android:name=".testing.viewmodeltesting.ZActivity1"/>
+        <activity android:name=".testing.fragmentTesting.TestingActivity"
+                  android:theme="@style/AppTheme.NoActionBar"
+        > </activity>
         <activity android:name=".testing.volleytesting.activity.VolleyActivity"/>
+        <activity android:name=".testing.navigationTesting.NavHolderActivity"/>
+        <activity android:name=".testing.markdowntesting.ExternalLibActivity"/>
     </application>
 
 </manifest>
