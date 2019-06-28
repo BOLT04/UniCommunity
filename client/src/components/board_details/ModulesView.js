@@ -2,7 +2,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { Accordion, Icon, Transition } from 'semantic-ui-react'
+import { Accordion, Icon, Transition, Header } from 'semantic-ui-react'
 
 import ReactMarkdown from 'react-markdown'
 
@@ -41,8 +41,6 @@ export default class ModulesView extends Component {
      * @param {Function} contentSupp??? - A funtion that returns the tree of React elements to be children of
      * Accordion.Content, given a.
      */
-
-
     blackboardToAccordion = (blackboard, index) => {
         const { activeIndex, visible } = this.state
         const isActive = activeIndex === index
@@ -51,7 +49,8 @@ export default class ModulesView extends Component {
             return blackboard.name !== 'Forum'// TODO: remove the ternary since its always blackboards
                 ? blackboard.items.map(item => (
                     <>
-                        <h4>{item.name}</h4>
+                        <Header as='h4' color='orange'>{item.name}</Header>
+                        <hr />
                         <ReactMarkdown source={item.content} />
                     </>
                 ))

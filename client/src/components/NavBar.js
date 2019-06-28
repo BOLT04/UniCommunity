@@ -104,17 +104,18 @@ export default class NavBar extends Component {
             )
       })
       */
-     Object.keys(navMenu)
-      .forEach(prop => {
-        const reg = relsRegistery[prop]
-        if (reg) {
-          if (reg.toDisplayOnRight)
-            rightMenuItems.push({ reg, prop })
-          else
-            leftMenuItems.push({ reg, prop })
-        }
-      })
-
+     if (navMenu)
+      Object.keys(navMenu)
+        .forEach(prop => {
+          const reg = relsRegistery[prop]
+          if (reg) {
+            if (reg.toDisplayOnRight)
+              rightMenuItems.push({ reg, prop })
+            else
+              leftMenuItems.push({ reg, prop })
+          }
+        })
+debugger
       return (
         <>
           { leftMenuItems.map(({ reg, prop }) => (

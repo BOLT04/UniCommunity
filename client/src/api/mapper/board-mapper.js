@@ -37,7 +37,7 @@ export default async function rspToBoardAsync(rsp) {//TODO: maybe move these con
       
         if (_links) {//TODO: i dont know what to do here...
             if ('self' in _links)
-                board.href = _links['self'].href
+                board.serverHref = _links['self'].href
             /*
             Object.keys(body._links)
                 .forEach(prop => {
@@ -79,7 +79,8 @@ export default async function rspToBoardAsync(rsp) {//TODO: maybe move these con
 async function halItemToBlackboardAsync(board, { name, _links }) {
     //TODO: what if the self link isnt there... we need to be prepared for that and put content = [] maybe
     const rsp = await asyncRelativeFetch(_links.self.href, APPLICATION_HAL_JSON)
-    const { items, _links: blackboardLinks } = await rsp.json()
+    const a = await rsp.json()
+    const { items, _links: blackboardLinks } = a
 
     const blackboard = { name, items }
 debugger

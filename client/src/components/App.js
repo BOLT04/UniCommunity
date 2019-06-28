@@ -18,6 +18,7 @@ import PostDetails from './post/PostDetails'
 import CreateBlackboardItem from './post/CreateBlackboardItem'
 
 import HomeApi from '../api/HomeApi'
+import asyncRspToHome from '../api/mapper/home-mapper'
 
 import NavBarApiImpl from '../api/NavBarApiImpl'
 import CreateBoardApiImpl from '../api/CreateBoardApiImpl'
@@ -44,24 +45,10 @@ export default class App extends Component {
   async componentDidMount() {
     try {
       const rsp = await this.props.api.fetchHomeAsync()
-      const rspObj = await rsp.json()
+      const home = await asyncRspToHome(rsp)
 
-      const home = {}
-      //TODO: move this to another place: This code is coupled to hal+json bc of the links 
-      if (rspObj._links) {
-        Object
-          .keys(rspObj._links)
-          .forEach(prop => {
-            const reg = relsRegistery[prop]
-
-            if (reg) 
-              home[reg.propName] = rspObj._links[prop].href     
-          })
-      }
-
-      if (rspObj._embedded) {
-        //todo: use this for feed
-      }
+      const homeString = JSON.stringify(home)
+      sessionStorage.setItem('home', homeString)
 
       this.setState({ home })
     } catch(e) {

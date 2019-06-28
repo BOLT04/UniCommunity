@@ -27,13 +27,26 @@ export default class Login extends Component {
   }
 
   submitLoginHandler = async e => {
-    const links = await auth.asyncLogin(this.props.location.state.serverHref, this.emailVal, this.passVal)
+    try {
+      const links = await auth.asyncLogin(this.props.location.state.serverHref, this.emailVal, this.passVal)
 
-    if (links) {
-      this.props.reRender() // Update Navbar
-      this.props.history.push(routes.home) // Redirect to home page
-    } else
-      this.setState({ error: new Error('Authentication with given credentials failed!')})
+      if (links) {
+        this.props.reRender() // Update Navbar
+        
+        const redirectPath = this.props.location.state.redirectTo || routes.home
+        this.props.history.push(redirectPath)
+      }
+    } catch (error) {
+      if (error.json) {
+        const errorBody = await error.json()
+        let newError = new Error('Authentication with given credentials failed!')
+        if (errorBody.title)
+          newError = new Error(errorBody.title)
+        
+        this.setState({ error: newError })
+      } else
+        this.setState({ error })
+    }
   }
 
   render() {

@@ -1,5 +1,6 @@
 const routes = {
     home: '/',
+    login: '/login',
     boards: '/boards',
     getBoardUri(id) { 
         return `${this.boards}/${id}`

@@ -15,30 +15,38 @@ function Auth() {
     this.asyncLogin = async (relativeUrl, email, password) => {
         const body = { email, password }
 
-        const rsp = await fetch(buildUri(relativeUrl), {
-            method: 'post',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(body)
-        })
-        const json = await rsp.json()
-        const user = {
-            email,
-            name: json.name
-        }
-        // Add a getter to user, so that it fetches the object from local storage when not available already.
-        if (!this.user)
-            Object.defineProperty(this, 'user', {
-                get: () => localStorage.getObject('user')
+        try {
+            const rsp = await fetch(buildUri(relativeUrl), {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
             })
 
-        this.token = new Buffer(email +':'+ password).toString('base64')
-        localStorage.setItem('authToken', this.token)
-        localStorage.setObject('user', user)
-        authenticated = true
+            if (!rsp.ok) throw rsp
 
-        return json._links
+            const json = await rsp.json()
+            const user = {
+                email,
+                name: json.name
+            }
+            // Add a getter to user, so that it fetches the object from local storage when not available already.
+            if (!this.user)
+                Object.defineProperty(this, 'user', {
+                    get: () => localStorage.getObject('user')
+                })
+
+            this.token = new Buffer(email +':'+ password).toString('base64')
+            localStorage.setItem('authToken', this.token)
+            localStorage.setObject('user', user)
+            authenticated = true
+
+            return json._links
+        } catch (e) {
+            authenticated = false
+            throw e
+        }
     }
 
     this.asyncLogout = async relativeUrl => {
