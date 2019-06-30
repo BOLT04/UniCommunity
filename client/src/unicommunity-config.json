@@ -3,5 +3,14 @@
     "serverHost": "localhost",
     "clientPort": 3000,
     "serverPort": 8080,
-    "serverEntryPoint": "/home"
+    "serverEntryPoint": "/home",
+    "firebase": {
+        "apiKey": "AIzaSyDUKMc1kpuv192IesEX12OPZS2XFT9N3-8",
+        "authDomain": "unicommunity-f7bc8.firebaseapp.com",
+        "databaseURL": "https://unicommunity-f7bc8.firebaseio.com",
+        "projectId": "unicommunity-f7bc8",
+        "storageBucket": "unicommunity-f7bc8.appspot.com",
+        "messagingSenderId": "256988232026",
+        "appId": "1:256988232026:web:1b5543475b3d874c"
+    }
 }
