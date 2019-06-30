@@ -2,6 +2,9 @@ package pt.isel.g20.unicommunity.hateoas
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
+import org.springframework.http.HttpStatus
+import pt.isel.g20.unicommunity.common.Rels
+import pt.isel.g20.unicommunity.common.Uri
 
 /**
  * Class whose instances represent links, as described in <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08">
@@ -129,3 +132,13 @@ class ExtendedProblemJson(
         instance: String? = null,
         val links: MutableMap<String, Link>?
 ) : ProblemJson(type, title, detail, status, instance)
+
+private fun authorizationProblemJson(): ExtendedProblemJson =
+        ExtendedProblemJson(
+                title = "Authorization required",
+                detail = "Access was denied because the required authorization was not granted",
+                status = HttpStatus.UNAUTHORIZED.value(),
+                links = mutableMapOf(
+                        Rels.LOGIN to Link(Uri.LOGIN_ROUTE)
+                )
+        )

@@ -13,6 +13,7 @@ import pt.isel.g20.unicommunity.auth.service.AuthService
 import pt.isel.g20.unicommunity.common.Rels
 import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationException
+import pt.isel.g20.unicommunity.common.presentation.authorizationProblemJson
 import pt.isel.g20.unicommunity.hateoas.ExtendedProblemJson
 import pt.isel.g20.unicommunity.hateoas.Link
 import pt.isel.g20.unicommunity.hateoas.ProblemJson
@@ -34,19 +35,5 @@ class InterceptorConfig(val authService: AuthService) : WebMvcConfigurer {
     fun handleInvalidAuthorization(e: AuthorizationException): ResponseEntity<ProblemJson> =
         ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
-                .body(ExtendedProblemJson(
-                        title = "Authorization required",
-                        detail = "Access was denied because the required authorization was not granted",
-                        status = HttpStatus.UNAUTHORIZED.value(),
-                        links = mutableMapOf(
-                                Rels.LOGIN to Link(Uri.LOGIN_ROUTE)
-                        )
-                ))
-
-    // Used in UserController and AuthenticationController
-    @ExceptionHandler
-    fun handleNotFoundUserException(e: NotFoundUserException) =
-            ResponseEntity
-                    .notFound()
-                    .build<String>()
+                .body(authorizationProblemJson())
 }
