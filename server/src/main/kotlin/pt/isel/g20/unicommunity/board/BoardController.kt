@@ -22,19 +22,22 @@ class BoardController(private val service: IBoardService) {
 
     @AuthorizationRequired
     @GetMapping(path = [BOARDS_ROUTE], produces = ["application/vnd.collection+json"])
-    fun getAllBoards(@SessionAttribute("user") user: User) =
-            service.getAllBoards().map(Board::toItemRepr).let {
-                val response = CollectionObject(MultipleBoardsResponse(it))
+    fun getAllBoards(
+            @SessionAttribute("user") user: User,
+            @RequestParam(value = "page", required = false, defaultValue = "0") page: Int
+    ) =
+        service.getAllBoards(page).map(Board::toItemRepr).let {
+            val response = CollectionObject(MultipleBoardsResponse(it))
 
-                ResponseEntity
-                        .ok()
-                        .cacheControl(
-                                CacheControl
-                                        .maxAge(1, TimeUnit.HOURS)
-                                        .cachePrivate())
-                        .eTag(response.hashCode().toString())
-                        .body(response)
-            }
+            ResponseEntity
+                    .ok()
+                    .cacheControl(
+                            CacheControl
+                                    .maxAge(1, TimeUnit.HOURS)
+                                    .cachePrivate())
+                    .eTag(response.hashCode().toString())
+                    .body(response)
+        }
 
     @AuthorizationRequired
     @GetMapping(path = [SINGLE_BOARD_ROUTE], produces = ["application/hal+json"])
