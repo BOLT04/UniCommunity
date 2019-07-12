@@ -8,6 +8,7 @@ import CreateBoardApi from '../api/CreateBoardApi'
 
 import { BoardListItem } from './BoardListItem'
 import ListLoader from './ListLoader'
+import Paginator from './Paginator'
 import BookmarkableComponent from './BookmarkableComponent'
 
 import { COLLECTION_JSON, httpStatus } from '../common/constants'
@@ -19,33 +20,29 @@ export default class AllBoards extends BookmarkableComponent {
     api: PropTypes.instanceOf(CreateBoardApi)
   }
 
-  state = {
-    boards: []
-  }
-
   constructor(props) {
     super(props)
 
+    this.state = {}
     this.addServerHrefOf(rels.getBoards, { checkState: true })
   }
 
   async componentDidMount() {
     const a = this.addServerHrefOf(rels.getBoards)
-    debugger
+
     if (a) {
-      debugger
-      await this.fetchData()
+      await this.fetchData(this.serverHref)
     }
   }
 
   async componentDidUpdate(prevProps) {
     if (this.props.home !== prevProps.home && this.addServerHrefOf(rels.getBoards))
-        await this.fetchData()
+        await this.fetchData(this.serverHref)
   }
 
-  async fetchData() {
+  async fetchData(url) {
     debugger
-    const rsp = await this.props.asyncRelativeFetch(this.serverHref, COLLECTION_JSON)
+    const rsp = await this.props.asyncRelativeFetch(url, COLLECTION_JSON)
     if (rsp.status == httpStatus.UNAUTHORIZED) {
       this.props.history.push(routes.login, { redirectTo: this.props.location.pathname })
       return
@@ -57,16 +54,29 @@ export default class AllBoards extends BookmarkableComponent {
 
   renderBoards = () => (
     <List animated>
-      { this.state.boards.map(b => <BoardListItem board={b} />)}
+      { this.state.boards.items.map(b => <BoardListItem board={b} />)}
     </List>
   )
 
-  render = () => (
-      <ListLoader
-        list={this.state.boards}
-        emptyListHeaderMsg='No Boards available'
-        emptyListMsg='Consider creating a board first.'
-        render={this.renderBoards}
-      />
-  )
+  handlePagination = url => this.fetchData(url)
+
+  render() {
+    const { boards } = this.state || {}
+    const list = boards && boards.items || null
+    debugger
+    return (
+      <>
+        <ListLoader
+          list={list}
+          emptyListHeaderMsg='No Boards available'
+          emptyListMsg='Consider creating a board first.'
+          render={this.renderBoards}
+        />
+
+        { boards &&
+          <Paginator body={boards} onClick={this.handlePagination} />
+        }
+      </>
+    )
+  }
 }
