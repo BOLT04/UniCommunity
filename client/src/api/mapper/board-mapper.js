@@ -14,6 +14,7 @@ import relsRegistery, { rels } from '../../common/rels-registery'
 import Board from '../../components/board_details/model/Board'
 import Blackboard from '../../components/board_details/model/Blackboard'
 
+import HypermediaObject from './HypermediaObject'
 import { MappingError } from '../../common/errors'
 
 /**
@@ -37,6 +38,10 @@ export default async function rspToBoardAsync(rsp) {//TODO: maybe move these con
         let forumLink
       
         if (_links) {//TODO: i dont know what to do here...
+            // Add methods to board object to simplify operations on the links array.
+            const hypermediaObj = new HypermediaObject(_links)
+            Object.setPrototypeOf(board, hypermediaObj)
+
             if ('self' in _links)
                 board.serverHref = _links['self'].href
             /*
@@ -48,6 +53,9 @@ export default async function rspToBoardAsync(rsp) {//TODO: maybe move these con
                 })
             board.forumLinks = relsRegistery['/rels/forum']
             */
+           const editBoardHref = board.getHrefOfRelHal(rels.editBoard)
+           if (editBoardHref)
+                board.editBoardHref = editBoardHref
            const forumRel = rels.getForumItems// TODO: can this be hardcoded here?
            if (_links[forumRel] && relsRegistery[rels.getForumItems]) //TODO: fix hardcoded relsRegistery[forumRel]
                forumLink = _links[forumRel].href

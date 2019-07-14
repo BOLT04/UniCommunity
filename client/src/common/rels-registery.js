@@ -14,8 +14,11 @@ export const rels = {
     createForumItem: '/rels/createForumItem',
     createComment: '/rels/createComment',
     getComments: '/rels/getComments',
+
     getBoards: '/rels/getBoards',
     getBoard: '/rels/getBoard',
+    editBoard: '/rels/editBoard',
+
     createBoard: '/rels/createBoard',
     login: '/rels/login',
     getBlackboards: '/rels/getBlackboards',

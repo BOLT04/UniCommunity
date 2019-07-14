@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Route } from 'react-router-dom'
 
 // Semantic UI imports
-import { Loader } from 'semantic-ui-react'
+import { Loader, Button } from 'semantic-ui-react'
 
 import rspToBoardAsync from '../../api/mapper/board-mapper'
 import { APPLICATION_HAL_JSON, httpStatus } from '../../common/constants'
@@ -13,6 +13,7 @@ import routes from '../../common/routes'
 import BookmarkableComponent from '../../components/BookmarkableComponent'
 import CreateBlackboardItem from '../post/CreateBlackboardItem'
 import ModulesView from './ModulesView'
+import EditBoardButton from './EditBoardButton'
 import Header from '../Header'
 
 export default class BoardView extends BookmarkableComponent {
@@ -69,9 +70,11 @@ export default class BoardView extends BookmarkableComponent {
     this.setState({ board, loading: false })
   }
 
+  updateBoard = newBoard => this.setState({ board: newBoard })
+
   renderBoard() {
     const { board } = this.state
-
+debugger
     return (
       <>
         <Header 
@@ -79,6 +82,13 @@ export default class BoardView extends BookmarkableComponent {
           header={board.name}
           content={board.description}
         />
+        { board.editBoardHref &&
+            <EditBoardButton
+              asyncRelativeFetch={this.props.asyncRelativeFetch}
+              board={this.state.board}
+              updateBoard={this.updateBoard} />
+        }
+     
         <div className='ui divider' />
 
         { board.modules && 
