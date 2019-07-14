@@ -25,9 +25,11 @@ class BoardController(private val service: IBoardService) {
     fun getAllBoards(
             @SessionAttribute("user") user: User,
             @RequestParam(value = "page", required = false, defaultValue = "0") page: Int
-    ) =
-        service.getAllBoards(page).map(Board::toItemRepr).let {
-            val response = CollectionObject(MultipleBoardsResponse(it))
+    ) : ResponseEntity<CollectionObject> =
+        service
+                .getAllBoards(page)
+                .map(Board::toItemRepr).let {
+            val response = CollectionObject(MultipleBoardsResponse(it, page))
 
             ResponseEntity
                     .ok()

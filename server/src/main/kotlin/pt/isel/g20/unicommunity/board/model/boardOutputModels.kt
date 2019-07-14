@@ -1,14 +1,18 @@
 package pt.isel.g20.unicommunity.board.model
 
+import org.springframework.data.domain.Page
 import pt.isel.g20.unicommunity.blackboard.model.PartialBlackboardObject
 import pt.isel.g20.unicommunity.common.Rels
 import pt.isel.g20.unicommunity.common.Uri
+import pt.isel.g20.unicommunity.common.getFirstPageable
+import pt.isel.g20.unicommunity.common.getLastPage
 import pt.isel.g20.unicommunity.hateoas.*
 import pt.isel.g20.unicommunity.user.model.PartialUserObject
 
 class SingleBoardResponse(board: Board)
     : HalObject(mutableMapOf(), mutableMapOf()) {
     val name : String = board.name
+    val id : Long = board.id
     val description : String? = board.description
     val templateName: String = board.template.name
     val hasForum: Boolean = board.template.hasForum
@@ -54,16 +58,41 @@ class SingleBoardResponse(board: Board)
 
 
 class MultipleBoardsResponse(
-        boards : List<Item>
-): JsonCollection(
+        boardsPage : Page<Item>,
+        page: Int
+): ExtendedJsonCollection(
+        totalPages = boardsPage.totalPages,
         version = "1.0",
         href = Uri.forAllBoards(),
-        links = listOf(
-                CollectionLink("self","/http://localhost:8080/boards"),
-                CollectionLink(Rels.NAVIGATION, "/http://localhost:8080/navigation")
+        links = mutableListOf(
+                CollectionLink("self", Uri.forAllBoards()),
+                CollectionLink(Rels.NAVIGATION, Uri.NAVIGATION_ROUTE)
         ),
-        items = boards
-)
+        items = boardsPage.content,
+        queries = listOf(
+                Query(
+                    href= Uri.forAllBoards(),
+                    rel= "self" /*TODO: what rel should we use here?*/,
+                    data= listOf(
+                            Data(name= "page", value="")
+                    )
+                )
+        )
+) {
+    init {
+        if (page < boardsPage.totalPages && boardsPage.nextPageable().isPaged)
+            links?.add(CollectionLink("next", Uri.forAllBoards(page +1)))
+        if (!boardsPage.isFirst) {
+            links?.add(CollectionLink("prev", Uri.forAllBoards(page - 1)))
+            val firstPageable = boardsPage.getFirstPageable()
+            links?.add(CollectionLink("first", Uri.forAllBoards(firstPageable.pageNumber)))
+        }
+        if (!boardsPage.isLast) {
+            val lastPage = boardsPage.totalPages -1
+            links?.add(CollectionLink("last", Uri.forAllBoards(lastPage)))
+        }
+    }
+}
 
 class PartialBoardObject(
         val name: String,

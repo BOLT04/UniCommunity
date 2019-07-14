@@ -8,14 +8,15 @@ class SingleBlackboardResponse(blackboard: Blackboard)
     : HalObject(
         mutableMapOf(
                 "self" to Link(Uri.forSingleBlackboardText(blackboard.board.id, blackboard.id)),
-                Rels.NAVIGATION to Link("/navigation"),
+                Rels.NAVIGATION to Link(Uri.NAVIGATION_ROUTE),
                 Rels.GET_SINGLE_BOARD to Link(Uri.forSingleBoardText(blackboard.board.id)),
                 Rels.CREATE_BLACKBOARDITEM to Link(Uri.forAllBlackboardItems(blackboard.board.id, blackboard.id)),
                 Rels.GET_MULTIPLE_BLACKBOARDS to Link(Uri.forAllBlackboards(blackboard.board.id)),
-                Rels.EDIT_BLACKBOARD to Link(Uri.forSingleBoardText(blackboard.board.id)),
-                Rels.DELETE_BLACKBOARD to Link(Uri.forSingleBoardText(blackboard.board.id))
+                Rels.EDIT_BLACKBOARD to Link(Uri.forSingleBlackboardText(blackboard.board.id, blackboard.board.id)),
+                Rels.DELETE_BLACKBOARD to Link(Uri.forSingleBlackboardText(blackboard.board.id, blackboard.board.id))
         )
 ){
+    val id = blackboard.id
     val boardName: String = blackboard.board.name
     val name : String = blackboard.name
     val description : String? = blackboard.description
@@ -31,7 +32,7 @@ class MultipleBlackboardsResponse(
 ): JsonCollection(
         version = "1.0",
         href = Uri.forAllBlackboards(boardId),
-        links = listOf(
+        links = mutableListOf(
                 CollectionLink("self", Uri.forAllBlackboards(boardId)),
                 CollectionLink(Rels.NAVIGATION, Uri.NAVIGATION_ROUTE)
         ),

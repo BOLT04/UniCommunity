@@ -47,6 +47,9 @@ object Uri {
     fun forAllBoards() =
             URI(BOARDS_ROUTE).toString()
 
+    fun forAllBoards(page: Int) =
+            "$BOARDS_ROUTE?page=$page"
+
     fun forSingleBoardUri(boardId: Long) =
             singleBoardTemplate.expand(boardId)
 

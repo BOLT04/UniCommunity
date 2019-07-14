@@ -1,5 +1,6 @@
 package pt.isel.g20.unicommunity.board.service
 
+import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
@@ -27,8 +28,8 @@ class BoardService(
 
     override fun getAllBoards(): Iterable<Board> = boardsRepo.findAll()
 
-    override fun getAllBoards(page: Int, pageSize: Int): Iterable<Board> =
-            boardsRepo.findAll(PageRequest.of(page, pageSize))
+    override fun getAllBoards(page: Int, pageSize: Int): Page<Board> =
+        boardsRepo.findAll(PageRequest.of(page, pageSize))
 
     override fun getBoardById(boardId: Long) = boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
     

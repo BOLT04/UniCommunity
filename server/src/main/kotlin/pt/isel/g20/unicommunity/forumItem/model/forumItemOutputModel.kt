@@ -34,7 +34,7 @@ class MultipleForumItemsResponse(
 ): JsonCollection(
         version = "1.0",
         href = Uri.forAllForumItems(boardId),
-        links = listOf(
+        links = mutableListOf(
                 CollectionLink("self", Uri.forAllForumItems(boardId)),
                 CollectionLink(Rels.NAVIGATION, Uri.NAVIGATION_ROUTE),
                 CollectionLink(Rels.CREATE_FORUMITEM, Uri.forAllForumItems(boardId))
