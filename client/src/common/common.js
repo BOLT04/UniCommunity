@@ -59,6 +59,17 @@ export const asyncPostRequest = (relativeUrl, body) =>
 
 export const asyncPutRequest = (relativeUrl, body) =>
     asyncRelativeHttpRequest(relativeUrl, 'put', 'application/json', body)
+
+export const asyncHalFormsRequest = (reqInfo, relativeUrl) => {
+    const body = {}
+    // Construct request body
+    reqInfo.properties.forEach(p =>
+        body[p.name] = p.value
+    )
+
+    return asyncRelativeHttpRequest(relativeUrl, reqInfo.method, reqInfo.contentType, body)
+}
+
 /**
  * Makes a Post HTTP request with the given body.
  * @param {string} relativeUrl - The relative url to be prefixed by the base uri.

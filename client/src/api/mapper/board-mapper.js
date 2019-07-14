@@ -12,6 +12,7 @@ import { APPLICATION_HAL_JSON, COLLECTION_JSON } from '../../common/constants'
 import relsRegistery, { rels } from '../../common/rels-registery'
 
 import Board from '../../components/board_details/model/Board'
+import Blackboard from '../../components/board_details/model/Blackboard'
 
 import { MappingError } from '../../common/errors'
 
@@ -76,22 +77,38 @@ export default async function rspToBoardAsync(rsp) {//TODO: maybe move these con
     throw new MappingError()
 }
 
-async function halItemToBlackboardAsync(board, { name, _links }) {
+async function halItemToBlackboardAsync(board, { _links }) {
     //TODO: what if the self link isnt there... we need to be prepared for that and put content = [] maybe
     const rsp = await asyncRelativeFetch(_links.self.href, APPLICATION_HAL_JSON)
-    const a = await rsp.json()
-    const { items, _links: blackboardLinks } = a
+    const body = await rsp.json()
+    return parseOutputModelToBlackboard(board, body)
+}
 
-    const blackboard = { name, items }
-debugger
-    const serverHref = blackboardLinks[rels.createBlackboardItem].href
+export function parseOutputModelToBlackboard(board, body) {
+    const { 
+        id,
+        name,
+        notificationLevel,
+        description,
+        items,
+        _links: blackboardLinks
+    } = body
+
+    const blackboard = new Blackboard(id, name, notificationLevel, description, items)
+    const createItemLink = blackboardLinks[rels.createBlackboardItem]
+    const createBlackboardItemHref = createItemLink && createItemLink.href
     const registery = relsRegistery[rels.createBlackboardItem]
     // If the response includes a link to create an item and its registered, add it to the object to return
-    if (serverHref && registery) 
+    if (createBlackboardItemHref && registery)
         blackboard.createLink = {
             clientHref: registery.clientHref(board, blackboard),
-            serverHref
+            serverHref: createBlackboardItemHref
         }
+
+    const editLink = blackboardLinks[rels.editBlackboard]
+    const editBlackboardHref = editLink && editLink.href
+    if (editBlackboardHref)
+        blackboard.editLinkHref = editBlackboardHref
 
     return blackboard
 }

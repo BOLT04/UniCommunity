@@ -47,22 +47,22 @@ export default class AllBoards extends BookmarkableComponent {
       this.props.history.push(routes.login, { redirectTo: this.props.location.pathname })
       return
     }
-    const boards = await asyncCollectionRspToList(rsp)
-
-    this.setState({ boards })
+    const body = await asyncCollectionRspToList(rsp)
+    
+    this.setState({ body })
   }
 
   renderBoards = () => (
     <List animated>
-      { this.state.boards.items.map(b => <BoardListItem board={b} />)}
+      { this.state.body.items.map(b => <BoardListItem board={b} />)}
     </List>
   )
 
   handlePagination = url => this.fetchData(url)
 
   render() {
-    const { boards } = this.state || {}
-    const list = boards && boards.items || null
+    const { body } = this.state || {}
+    const list = body && body.items || null
     debugger
     return (
       <>
@@ -73,8 +73,8 @@ export default class AllBoards extends BookmarkableComponent {
           render={this.renderBoards}
         />
 
-        { boards &&
-          <Paginator body={boards} onClick={this.handlePagination} />
+        { body &&
+          <Paginator body={body} onClick={this.handlePagination} />
         }
       </>
     )

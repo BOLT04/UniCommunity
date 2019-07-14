@@ -1,4 +1,3 @@
-'use strict'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
@@ -8,14 +7,22 @@ import ReactMarkdown from 'react-markdown'
 
 import Forum from './Forum'
 import { CreateModuleButton } from './CreateModuleButton'
+import EditModuleButton from './EditModuleButton'
 
 /**
  * This component is used to display the modules/blackboards of a Board, for example the Summary and
  * Announcements.
  */
 export default class ModulesView extends Component {
-    state = { activeIndex: 0, visible: true }
-
+    constructor(props) {
+        super(props)
+        debugger
+        this.state = {
+            activeIndex: 0,
+            visible: true,
+            board: props.board
+        }
+    }
     static propTypes = {
         board: PropTypes.object
     }
@@ -38,28 +45,18 @@ export default class ModulesView extends Component {
 //TODO: maybe the way to clean code is through a function contentSupp, since that is the main difference between
 //todo: blackboards and forum
     /**
-     * @param {Function} contentSupp??? - A funtion that returns the tree of React elements to be children of
+     * @param {Function} contentSupp??? - A function that returns the tree of React elements to be children of
      * Accordion.Content, given a.
      */
     blackboardToAccordion = (blackboard, index) => {
         const { activeIndex, visible } = this.state
         const isActive = activeIndex === index
 
-        function decideContent() {
-            return blackboard.name !== 'Forum'// TODO: remove the ternary since its always blackboards
-                ? blackboard.items.map(item => (
-                    <>
-                        <Header as='h4' color='orange'>{item.name}</Header>
-                        <hr />
-                        <ReactMarkdown source={item.content} />
-                    </>
-                ))
-                : <Forum />
-        }
-        const linkToObj = {
-            pathname: blackboard.createLink.clientHref,
-            state: { createBlackboardItemUrl: blackboard.createLink.serverHref }
-        }
+        const updateBlackboard = updatedBlackboard =>
+            this.setState(state => {
+                state.board.modules.blackboards[index] = updatedBlackboard
+                return state
+            })
 
         return (
             <div key={index}>
@@ -68,11 +65,29 @@ export default class ModulesView extends Component {
                     {blackboard.name}
                 </Accordion.Title>
 
-                <CreateModuleButton linkToObj={linkToObj} />
+                { blackboard.editLinkHref &&
+                    <EditModuleButton
+                        board={this.state.board}
+                        blackboard={blackboard}
+                        updateBlackboard={updateBlackboard} />
+                }
+
+                { /*blackboard.createLink &&
+                    <CreateModuleButton linkToObj={{
+                        pathname: blackboard.createLink.clientHref,
+                        state: { createBlackboardItemUrl: blackboard.createLink.serverHref }
+                    }} />*/
+                }
 
                 <Transition visible={isActive} animation='slide down' duration={500}>
                     <Accordion.Content active={isActive}>
-                        {decideContent()}
+                        { blackboard.items.map(item => (
+                            <>
+                                <Header as='h4' color='orange'>{item.name}</Header>
+                                <hr />
+                                <ReactMarkdown source={item.content} />
+                            </>
+                        ))}
 
                     </Accordion.Content>
                 </Transition>
@@ -112,8 +127,8 @@ export default class ModulesView extends Component {
     }
 
     render() {
-        const { board } = this.props
-        console.log(board)
+        const { board } = this.state
+        debugger
         
         return board.modules 
                     ? 

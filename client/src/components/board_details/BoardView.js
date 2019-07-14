@@ -69,6 +69,12 @@ export default class BoardView extends BookmarkableComponent {
     this.setState({ board, loading: false })
   }
 
+  /**
+   * The ModulesView component derives its state from props. So it receives a key prop in order to tell React to 
+   * create a new instance when the board object has been fetched. Meaning at first the key is undefined (since the 
+   * property modules is not defined), and after the HTTP response is parsed by the function: rspToBoardAsync, the 
+   * board object has modules defined.
+   */
   renderBoard() {
     const { board } = this.state
 
@@ -81,7 +87,8 @@ export default class BoardView extends BookmarkableComponent {
         />
         <div className='ui divider' />
 
-        <ModulesView board={board} />
+
+        <ModulesView key={board.modules} board={board} />
         {/*//TODO: how to put nested routes? and what is the point bc /:bbName/blackboardItem/new doesnt work
         <Route path='/boards/:boardId/:bbName/blackboardItem/new' render={props => 
                 <h1>bahhh</h1> } 
