@@ -16,7 +16,7 @@ import EditModuleButton from './EditModuleButton'
 export default class ModulesView extends Component {
     constructor(props) {
         super(props)
-        debugger
+
         this.state = {
             activeIndex: 0,
             visible: true,
@@ -72,11 +72,11 @@ export default class ModulesView extends Component {
                         updateBlackboard={updateBlackboard} />
                 }
 
-                { /*blackboard.createLink &&
+                { blackboard.createLink &&
                     <CreateModuleButton linkToObj={{
                         pathname: blackboard.createLink.clientHref,
                         state: { createBlackboardItemUrl: blackboard.createLink.serverHref }
-                    }} />*/
+                    }} />
                 }
 
                 <Transition visible={isActive} animation='slide down' duration={500}>

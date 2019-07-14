@@ -3,9 +3,6 @@ import { buildUri } from '../common/common'
 
 import { asyncPostRequest } from '../common/common'
 
-import config from '../unicommunity-config.json'
-const baseUri = `http://${config.serverHost}:${config.serverPort}` //TODO: this is repeated in many places. Find a way to clean it.
-
 export default class CreateBoardApiImpl extends CreateBoardApi {
 
   // TODO: implement using hal+forms
