@@ -16,7 +16,9 @@ import ModulesView from './ModulesView'
 import EditBoardButton from './EditBoardButton'
 import Header from '../Header'
 
-export default class BoardView extends BookmarkableComponent {
+import { withUtilsConsumer } from '../../components/withUtilsConsumer'
+
+class BoardView extends BookmarkableComponent {
   //TODO: how do I specify the entrance of the model (board) to this component? 
   //TODO: I dont want it to be in props.location.state.board because that is coupled to CreateBoard component!
   /*static propTypes = {
@@ -60,7 +62,7 @@ export default class BoardView extends BookmarkableComponent {
   }
 
   async fetchData() {
-    const rsp = await this.props.asyncRelativeFetch(this.serverHref, APPLICATION_HAL_JSON)
+    const rsp = await this.props.utilsObj.asyncRelativeFetch(this.serverHref, APPLICATION_HAL_JSON)
     if (rsp.status == httpStatus.UNAUTHORIZED) {
       this.props.history.push(routes.login, { redirectTo: this.props.location.pathname })
       return
@@ -113,3 +115,5 @@ debugger
             : this.renderBoard()
   }
 }
+
+export default withUtilsConsumer(BoardView)

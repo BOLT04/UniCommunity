@@ -15,7 +15,9 @@ import { COLLECTION_JSON, httpStatus } from '../common/constants'
 import routes from '../common/routes'
 import { rels } from '../common/rels-registery'
 
-export default class AllBoards extends BookmarkableComponent {
+import { withUtilsConsumer } from './withUtilsConsumer'
+
+class AllBoards extends BookmarkableComponent {
   static propTypes = {
     api: PropTypes.instanceOf(CreateBoardApi)
   }
@@ -41,8 +43,7 @@ export default class AllBoards extends BookmarkableComponent {
   }
 
   async fetchData(url) {
-    debugger
-    const rsp = await this.props.asyncRelativeFetch(url, COLLECTION_JSON)
+    const rsp = await this.props.utilsObj.asyncRelativeFetch(url, COLLECTION_JSON)
     if (rsp.status == httpStatus.UNAUTHORIZED) {
       this.props.history.push(routes.login, { redirectTo: this.props.location.pathname })
       return
@@ -63,7 +64,7 @@ export default class AllBoards extends BookmarkableComponent {
   render() {
     const { body } = this.state || {}
     const list = body && body.items || null
-    debugger
+
     return (
       <>
         <ListLoader
@@ -80,3 +81,5 @@ export default class AllBoards extends BookmarkableComponent {
     )
   }
 }
+
+export default withUtilsConsumer(AllBoards)

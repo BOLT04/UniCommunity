@@ -6,9 +6,16 @@ import 'semantic-ui-css/semantic.min.css'
 
 import App from './components/App'
 import HomeApiImpl from './api/HomeApiImpl'
-import { asyncRelativeFetch } from './common/common'
+import { 
+    asyncRelativeFetch,
+    asyncRelativeHttpRequest,
+    asyncHalFormsRequest,
+} from './common/common'
+import asyncParseHalFormRsp from './api/mapper/halForms-mapper'
+
 import config from './unicommunity-config.json'
 
+import UtilsContext, { withUtilsConsumer } from './components/withUtilsConsumer'
 
 // The core Firebase JS SDK is always required
 import * as firebase from 'firebase'
@@ -42,15 +49,22 @@ messaging.onMessage(payload => {
     console.log(1)
     console.log({payload})
 }, e => console.log({e}), c => console.log({c}))
-console.log(13)
 
 require('./common/storage-extensions')()
 
 const baseUri = `http://${config.serverHost}:${config.serverPort}`
 
+const AppWithUtils = withUtilsConsumer(App)
+const utilsObj = {
+    asyncRelativeFetch,
+    asyncRelativeHttpRequest,
+    asyncHalFormsRequest,
+    asyncParseHalFormRsp,
+}
 ReactDOM.render(
-    <App
-        baseUri={baseUri}
-        asyncRelativeFetch={asyncRelativeFetch}
-        api={new HomeApiImpl(baseUri, config.serverEntryPoint)} />, 
+    <UtilsContext.Provider value={utilsObj}>
+        <AppWithUtils
+            baseUri={baseUri}
+            api={new HomeApiImpl(baseUri, config.serverEntryPoint)} />
+    </UtilsContext.Provider>,
     document.getElementById('root'))

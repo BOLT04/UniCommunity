@@ -4,15 +4,14 @@ import PropTypes from 'prop-types'
 import { Button, Modal, Form, Icon, Header, Input, Message } from 'semantic-ui-react'
 
 import { rels } from '../../common/rels-registery'
-import asyncParseHalFormRsp from '../../api/mapper/halForms-mapper'
-import { asyncHalFormsRequest } from '../../common/common'
 
 import rspToBoardAsync from '../../api/mapper/board-mapper'
+import { withUtilsConsumer } from '../../components/withUtilsConsumer'
 
 /**
  * This component handles the state required to update/edit a board and the logic for making that HTTP request.
  */
-export default class EditBoardButton extends Component {
+class EditBoardButton extends Component {
     static propTypes = {
         board: PropTypes.object
     }
@@ -26,8 +25,9 @@ export default class EditBoardButton extends Component {
 
     async componentDidMount() {
         //TODO: use props and context API
-        const rsp = await this.props.asyncRelativeFetch(rels.editBoard)
-        const { _templates: { default: reqInfo } } = await asyncParseHalFormRsp(rsp)
+        const { utilsObj } = this.props
+        const rsp = await utilsObj.asyncRelativeFetch(rels.editBoard)
+        const { _templates: { default: reqInfo } } = await utilsObj.asyncParseHalFormRsp(rsp)
 
         this.setState({ reqInfo })
     }
@@ -37,14 +37,15 @@ export default class EditBoardButton extends Component {
         property.value = e.target.value
     }
 
-    onCloseModal = e => this.props.updateBoard(this.newBoard)
+    // The return value of this method is not used.
+    onCloseModal = e => this.newBoard ? this.props.updateBoard(this.newBoard) : null
 
     // An arrow function is used because this function is used in an onClick prop, meaning there 
     // is no need to use Function::bind() to capture "this".
     submitEditBlackboardHandler = async e => {
         const { reqInfo } = this.state
         try {
-            const rsp = await asyncHalFormsRequest(reqInfo, this.props.board.editLinkHref)
+            const rsp = await this.props.utilsObj.asyncHalFormsRequest(reqInfo, this.props.board.editLinkHref)
             if (!rsp.ok) throw rsp // The response may have error information (problem+json media type)
 
             this.newBoard = await rspToBoardAsync(rsp)
@@ -147,3 +148,5 @@ const buildTextField = (label, inputName, onChange) => (
         />  
     </>
 )
+
+export default withUtilsConsumer(EditBoardButton)

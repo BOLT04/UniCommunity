@@ -9,7 +9,9 @@ import NavBarApi from '../api/NavBarApi'
 import { APPLICATION_HAL_JSON } from '../common/constants'
 import relsRegistery from '../common/rels-registery'
 
-export default class NavBar extends Component {
+import { withUtilsConsumer } from './withUtilsConsumer'
+
+class NavBar extends Component {
   static propTypes = {
     api: PropTypes.instanceOf(NavBarApi),
     navMenuUrl: PropTypes.string
@@ -36,7 +38,7 @@ export default class NavBar extends Component {
   }
 
   async fetchData() {
-    const rsp = await this.props.asyncRelativeFetch(this.props.navMenuUrl, APPLICATION_HAL_JSON)
+    const rsp = await this.props.utilsObj.asyncRelativeFetch(this.props.navMenuUrl, APPLICATION_HAL_JSON)
     const rspObj = await rsp.json()
     const navMenu = rspObj._links
 
@@ -115,7 +117,7 @@ export default class NavBar extends Component {
               leftMenuItems.push({ reg, prop })
           }
         })
-debugger
+
       return (
         <>
           { leftMenuItems.map(({ reg, prop }) => (
@@ -154,3 +156,5 @@ debugger
     )
   }
 }
+
+export default withUtilsConsumer(NavBar)
