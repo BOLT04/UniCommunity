@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { Accordion, Icon, Transition, Header } from 'semantic-ui-react'
+import { Accordion, Icon, Transition, Header, Message } from 'semantic-ui-react'
 
 import ReactMarkdown from 'react-markdown'
 
@@ -20,6 +20,7 @@ export default class ModulesView extends Component {
         this.state = {
             activeIndex: 0,
             visible: true,
+            infoMsgVisible: true,
             board: props.board
         }
     }
@@ -99,8 +100,10 @@ export default class ModulesView extends Component {
     renderForum(board) {
         const { posts, createPostHrefObj } = board.modules.forum
         
+        // If the blackboards array is defined then the index of the Forum is the array length. If not its 0
+        const auxArr = board.modules.blackboards
+        const index = auxArr && auxArr.length || 0
         const { activeIndex } = this.state
-        const index = board.modules.blackboards.length
         const isActive = activeIndex === index
         
         const linkToObj = {
@@ -126,15 +129,24 @@ export default class ModulesView extends Component {
         )
     }
 
+    handleDismiss = () => {
+        this.setState({ infoMsgVisible: false })
+    }    
+
     render() {
-        const { board } = this.state
-        debugger
+        const { board, infoMsgVisible } = this.state
         
         return board.modules 
                     ? 
                         <Accordion fluid styled exclusive={false}>
-                            {board.modules.blackboards &&
-                                board.modules.blackboards.map(this.blackboardToAccordion)}
+                            { board.modules.blackboards
+                                ? board.modules.blackboards.map(this.blackboardToAccordion)
+                                : infoMsgVisible && 
+                                    <Message
+                                        info
+                                        onDismiss={this.handleDismiss}
+                                        header='Blackboards information not available' />
+                            }
 
                             {board.modules.forum && this.renderForum(board) }
                         </Accordion>

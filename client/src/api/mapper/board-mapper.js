@@ -6,8 +6,14 @@
 import fetchForumPostsAsync from '../ForumApiImpl'
 import fetchBlackboardAsync from '../BlackBoardApiImpl'
 
-import { itemsToModelRepr, asyncRelativeFetch } from '../../common/common'
+import { 
+    itemsToModelRepr,
+    asyncRelativeFetch,
+    asyncRelativeHttpRequest
+} from '../../common/common'
 import { APPLICATION_HAL_JSON, COLLECTION_JSON } from '../../common/constants'
+import asyncCollectionRspToList from './collectionJson-mapper'
+import asyncParseHalFormRsp from './halForms-mapper'
 
 import relsRegistery, { rels } from '../../common/rels-registery'
 
@@ -72,7 +78,26 @@ export default async function rspToBoardAsync(rsp) {//TODO: maybe move these con
                     blackboardsArr.map(async blackboard => 
                         await halItemToBlackboardAsync(board, blackboard)  
                     )
-                )   
+                )  
+            else {
+                const blackboardsHref = board.getHrefOfRelHal(rels.getBlackboards)
+                if (blackboardsHref) { 
+                    //TODO: maybe make a function that given a rel and href/relativeUrl, makes a halforms req to then use asyncRelativeHttpRequest
+                    // Then fetch and add the blackboards property to modules
+                    let rsp = await asyncRelativeFetch(rels.getBlackboards)
+                    const { _templates: { default: reqInfo } } = await asyncParseHalFormRsp(rsp)
+                    /*const { _templates: { default: reqInfo } } = await asyncRelativeFetch(rels.getBlackboards)
+                            .then(asyncParseHalFormRsp)*/
+
+                    rsp = await asyncRelativeHttpRequest(blackboardsHref, reqInfo.method)
+                    const blackboardsArr = (await asyncCollectionRspToList(rsp)).items
+                    board.modules.blackboards = await Promise.all(
+                        blackboardsArr.map(async blackboard => 
+                            await colItemToBlackboardAsync(board, blackboard)  
+                        )
+                    )  
+                }
+            }
         }
 
         // Make a request to get the forum and add it to the modules array
@@ -83,6 +108,17 @@ export default async function rspToBoardAsync(rsp) {//TODO: maybe move these con
 
 	//TODO: add check of Problem+json! and throw an error perhaps
     throw new MappingError()
+}
+
+/**
+ * 
+ * @param {object} board      - The board object
+ * @param {object} blackboard - The collection+json item object
+ */
+async function colItemToBlackboardAsync(board, { href }) {
+    const rsp = await asyncRelativeFetch(href, APPLICATION_HAL_JSON)
+    const body = await rsp.json()
+    return parseOutputModelToBlackboard(board, body)
 }
 
 async function halItemToBlackboardAsync(board, { _links }) {

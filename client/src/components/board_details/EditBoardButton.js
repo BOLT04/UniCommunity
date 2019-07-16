@@ -37,15 +37,22 @@ class EditBoardButton extends Component {
         property.value = e.target.value
     }
 
-    // The return value of this method is not used.
-    onCloseModal = e => this.newBoard ? this.props.updateBoard(this.newBoard) : null
+    onCloseModal = e => {
+        if (this.newBoard)
+            this.props.updateBoard(this.newBoard)
+
+        // The next time the modal opens, a previous success message doesn't appear
+        this.setState({ formSuccess: false })
+    }
 
     // An arrow function is used because this function is used in an onClick prop, meaning there 
     // is no need to use Function::bind() to capture "this".
     submitEditBlackboardHandler = async e => {
         const { reqInfo } = this.state
+        this.checkRequiredProperties(reqInfo)
+        
         try {
-            const rsp = await this.props.utilsObj.asyncHalFormsRequest(reqInfo, this.props.board.editLinkHref)
+            const rsp = await this.props.utilsObj.asyncHalFormsRequest(reqInfo, this.props.board.editBoardHref)
             if (!rsp.ok) throw rsp // The response may have error information (problem+json media type)
 
             this.newBoard = await rspToBoardAsync(rsp)
@@ -57,6 +64,20 @@ class EditBoardButton extends Component {
             } else
                 this.setState({ formError: new Error('An error occured') })
         }
+    }
+
+    /**
+     * If the user didn't provide a value for a required property, then fill 
+     * with previous value that is present on the board prop of this component.
+     * @param {object} reqInfo - information about the request to an endpoint of the Web API
+     */
+    checkRequiredProperties(reqInfo) {
+        const { board } = this.props
+        reqInfo.properties.map(property => {
+            if (property.required && (!property.value || property.value === ''))
+                property.value = board[property.name]
+            return property
+        })
     }
 
     render = () =>
@@ -78,7 +99,6 @@ function EditBoardButtonPresenter(props) {
     const {
         reqInfo,
         onChangeField,
-        onChangeCheckBox,
         submitOnClickReq,
         formSuccess,
         formError,
@@ -122,8 +142,8 @@ function EditBoardButtonPresenter(props) {
                         content='You can exit this modal now' />
                     <Message
                         error
-                        header={formError && formError.title || 'An error occured'}
-                        content={formError && formError.detail || ''}
+                        header={(formError && formError.title) || 'An error occured'}
+                        content={(formError && formError.detail) || ''}
                     />
                 </Form>
             </Modal.Content>
