@@ -45,7 +45,10 @@ class AbstractModal extends Component {
          *  - property names of this object are equal to the name property of a HLD;
          *  - property value is equal to an object that can specify the 'type', being a known HTML5 input type,
          * and it can specify a 'render' function, that gets passed the 'property' object (present in the HLD), and the
-         * 'onChange' function. This render function gives the outside component, control over the UI of a field.
+         * 'onChange' function.
+         * The onChange function has the descriptor: (SyntheticEvent, string) -> void. The first parameter being the event object,
+         * and the second being the propertyName. There must be a wrapper HTML element with a data-value attribute.
+         * This render function gives the outside component, control over the UI of a field.
          */
         propertiesConfig: PropTypes.object.isRequired,
         updateUi: PropTypes.func.isRequired,
@@ -86,6 +89,9 @@ class AbstractModal extends Component {
         </>
     )
 
+    /**
+     * This function requires that the current target (e.currentTarget) element to have the attribute data-value.
+     */
     onChangeCheckBox = (e, propertyName) => {
         e.preventDefault()
         const property = this.state.reqInfo.properties.find(p => p.name === propertyName)
