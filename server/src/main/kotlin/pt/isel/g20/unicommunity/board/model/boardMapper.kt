@@ -27,6 +27,14 @@ fun Board.toItemRepr() = Item(
                 CollectionLink(
                         rel= Rels.GET_MULTIPLE_BOARDS,
                         href= Uri.forAllBoards()
+                ),
+                CollectionLink(
+                        rel= Rels.ADD_MEMBER_TO_BOARD,
+                        href= Uri.forBoardMembers(id)
+                ),
+                CollectionLink(
+                        rel= Rels.REMOVE_MEMBER_TO_BOARD,
+                        href= Uri.forBoardMembers(id)
                 )
         )
 )

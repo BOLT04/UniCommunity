@@ -25,7 +25,9 @@ class SingleBoardResponse(board: Board)
                 Rels.CREATE_BOARD to Link(Uri.forAllBoards()),
                 Rels.GET_MULTIPLE_BOARDS to Link(Uri.forAllBoards()),
                 Rels.EDIT_BOARD to Link(Uri.forSingleBoardText(board.id)),
-                Rels.DELETE_BOARD to Link(Uri.forSingleBoardText(board.id))
+                Rels.DELETE_BOARD to Link(Uri.forSingleBoardText(board.id)),
+                Rels.ADD_MEMBER_TO_BOARD to Link(Uri.forBoardMembers(board.id)),
+                Rels.REMOVE_MEMBER_TO_BOARD to Link(Uri.forBoardMembers(board.id))
         ))
         if (board.forum != null) {
             super._links?.putAll(sequenceOf(

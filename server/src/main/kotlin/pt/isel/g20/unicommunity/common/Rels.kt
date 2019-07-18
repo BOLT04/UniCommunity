@@ -15,6 +15,8 @@ object Rels {
     const val GET_MULTIPLE_BOARDS = "$RELS_PREFIX/getBoards"
     const val EDIT_BOARD = "$RELS_PREFIX/editBoard"
     const val DELETE_BOARD = "$RELS_PREFIX/deleteBoard"
+    const val ADD_MEMBER_TO_BOARD = "$RELS_PREFIX/addMemberToBoard"
+    const val REMOVE_MEMBER_TO_BOARD = "$RELS_PREFIX/removeMemberToBoard"
 
     const val CREATE_FORUM = "$RELS_PREFIX/createForum"
     const val GET_SINGLE_FORUM = "$RELS_PREFIX/getForum"
