@@ -18,6 +18,7 @@ export const rels = {
     getBoards: '/rels/getBoards',
     getBoard: '/rels/getBoard',
     editBoard: '/rels/editBoard',
+    addMemberToBoard: '/rels/addMemberToBoard',
 
     createBoard: '/rels/createBoard',
     login: '/rels/login',

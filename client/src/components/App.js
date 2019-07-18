@@ -88,6 +88,7 @@ export default class App extends Component {
               <Route exact path='/boards' render={props => 
                 <AllBoards 
                   {...props}
+                  home={home}
                   api={createBoardApi}
                   asyncRelativeFetch={this.props.asyncRelativeFetch} />} 
               />

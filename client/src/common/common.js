@@ -16,8 +16,14 @@ export function itemsToModelRepr(items) {
                 obj[dataObj.name] = dataObj.value
             })
         
-        obj.getHrefOfRel = rel => 
-            links.find(link => link.rel === rel).href
+        obj.getHrefOfRel = rel => {
+            const link = links.find(link => link.rel === rel)
+            return link ? link.href : null
+        }
+        obj.hasLinkRel = rel => {
+            const link = links.find(link => link.rel === rel)
+            return link ? true : false
+        }
 
         return obj
     })
@@ -97,7 +103,6 @@ function fillAuthHeaderIfAuthenticated() {
     let options = {}
     const token = localStorage.getItem('authToken')
     if (token)
-    //if (auth.token)
         options.headers = {
             'Authorization': `Basic ${token}`
         }

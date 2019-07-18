@@ -6,7 +6,7 @@
 import fetchForumPostsAsync from '../ForumApiImpl'
 import fetchBlackboardAsync from '../BlackBoardApiImpl'
 
-import { 
+import {
     itemsToModelRepr,
     asyncRelativeFetch,
     asyncRelativeHttpRequest
@@ -30,7 +30,7 @@ import { MappingError } from '../../common/errors'
  */
 export default async function rspToBoardAsync(rsp) {//TODO: maybe move these constants strings to another file. Like how its done on the server
     const contentType = rsp.headers.get('Content-Type')
-    
+
     if (contentType.includes(APPLICATION_HAL_JSON)) {
         // Sanity check. In the HTTP request we sent the header Accept, so we check if the server does support it.
         const { name, description, _links, _embedded } = await rsp.json()
@@ -42,7 +42,7 @@ export default async function rspToBoardAsync(rsp) {//TODO: maybe move these con
         }
 
         let forumLink
-      
+
         if (_links) {//TODO: i dont know what to do here...
             // Add methods to board object to simplify operations on the links array.
             const hypermediaObj = new HypermediaObject(_links)
@@ -59,12 +59,18 @@ export default async function rspToBoardAsync(rsp) {//TODO: maybe move these con
                 })
             board.forumLinks = relsRegistery['/rels/forum']
             */
-           const editBoardHref = board.getHrefOfRelHal(rels.editBoard)
-           if (editBoardHref)
+            const editBoardHref = board.getHrefOfRelHal(rels.editBoard)
+            if (editBoardHref)
                 board.editBoardHref = editBoardHref
-           const forumRel = rels.getForumItems// TODO: can this be hardcoded here?
-           if (_links[forumRel] && relsRegistery[rels.getForumItems]) //TODO: fix hardcoded relsRegistery[forumRel]
-               forumLink = _links[forumRel].href
+
+            const addMemberToBoardHref = board.getHrefOfRelHal(rels.addMemberToBoard)
+            debugger
+            if (addMemberToBoardHref)
+                board.addMemberHref = addMemberToBoardHref
+            
+                const forumRel = rels.getForumItems// TODO: can this be hardcoded here?
+            if (_links[forumRel] && relsRegistery[rels.getForumItems]) //TODO: fix hardcoded relsRegistery[forumRel]
+                forumLink = _links[forumRel].href
         }
 
         //TODO: REMOVE WHEN SERVER ADDS ID TO OUTPUT MODEL
@@ -75,13 +81,13 @@ export default async function rspToBoardAsync(rsp) {//TODO: maybe move these con
             const blackboardsArr = _embedded[rels.getBlackboards]
             if (blackboardsArr)
                 board.modules.blackboards = await Promise.all(
-                    blackboardsArr.map(async blackboard => 
-                        await halItemToBlackboardAsync(board, blackboard)  
+                    blackboardsArr.map(async blackboard =>
+                        await halItemToBlackboardAsync(board, blackboard)
                     )
-                )  
+                )
             else {
                 const blackboardsHref = board.getHrefOfRelHal(rels.getBlackboards)
-                if (blackboardsHref) { 
+                if (blackboardsHref) {
                     //TODO: maybe make a function that given a rel and href/relativeUrl, makes a halforms req to then use asyncRelativeHttpRequest
                     // Then fetch and add the blackboards property to modules
                     let rsp = await asyncRelativeFetch(rels.getBlackboards)
@@ -92,10 +98,10 @@ export default async function rspToBoardAsync(rsp) {//TODO: maybe move these con
                     rsp = await asyncRelativeHttpRequest(blackboardsHref, reqInfo.method)
                     const blackboardsArr = (await asyncCollectionRspToList(rsp)).items
                     board.modules.blackboards = await Promise.all(
-                        blackboardsArr.map(async blackboard => 
-                            await colItemToBlackboardAsync(board, blackboard)  
+                        blackboardsArr.map(async blackboard =>
+                            await colItemToBlackboardAsync(board, blackboard)
                         )
-                    )  
+                    )
                 }
             }
         }
@@ -106,7 +112,7 @@ export default async function rspToBoardAsync(rsp) {//TODO: maybe move these con
         return board
     }
 
-	//TODO: add check of Problem+json! and throw an error perhaps
+    //TODO: add check of Problem+json! and throw an error perhaps
     throw new MappingError()
 }
 
@@ -129,7 +135,7 @@ async function halItemToBlackboardAsync(board, { _links }) {
 }
 
 export function parseOutputModelToBlackboard(board, body) {
-    const { 
+    const {
         id,
         name,
         notificationLevel,
@@ -171,7 +177,7 @@ export function parseOutputModelToBlackboard(board, body) {
  */
 async function fetchForumAsync(forumLink) {
     //TODO: what if the self link isnt there... we need to be prepared for that and put content = [] maybe
-    const rsp =  await asyncRelativeFetch(forumLink, COLLECTION_JSON)
+    const rsp = await asyncRelativeFetch(forumLink, COLLECTION_JSON)
 
     const { collection: { links, items } } = await rsp.json()
 
