@@ -1,5 +1,7 @@
 package isel.pt.unicommunity.model.webdto
 
+class CollectionJson(val collection: HalCollection)
+
 class HalCollection(
 
     val version : String,

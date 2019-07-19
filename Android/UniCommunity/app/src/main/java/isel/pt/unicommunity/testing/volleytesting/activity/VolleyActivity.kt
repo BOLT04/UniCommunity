@@ -2,14 +2,19 @@ package isel.pt.unicommunity.testing.volleytesting.activity
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.android.volley.Response
+import com.android.volley.toolbox.HttpHeaderParser
 import isel.pt.unicommunity.MainActivity
 import isel.pt.unicommunity.R
 import isel.pt.unicommunity.kotlinx.getUniCommunityApp
 import isel.pt.unicommunity.kotlinx.getViewModel
+import isel.pt.unicommunity.repository.network.ErrorResponse
 import kotlinx.android.synthetic.main.__testing__volleytesting.*
+import java.nio.charset.Charset
 
 
 class VolleyActivity : AppCompatActivity() {
@@ -24,14 +29,37 @@ class VolleyActivity : AppCompatActivity() {
             VolleyVM(queue)
         }
 
+
         vm.value.observe(this, Observer {
-            textView2.text = it.name
+            val a = it
         })
 
+
+
         button2.setOnClickListener {
-            val value = vm.value.value
+
+            //vm.startRequest(Response.Listener{Toast.makeText(this, "we gottem boys", Toast.LENGTH_SHORT).show()})
+            vm.altRequest(
+                Response.ErrorListener {
+
+
+
+
+                    Toast.makeText(this, ErrorResponse(it.networkResponse).getParsedError().detail, Toast.LENGTH_SHORT).show()
+
+                }
+            )
+
+/*
+            vm.loginRequest(
+                Response.Listener { val a= it },
+                Response.ErrorListener {Toast.makeText(this, ErrorResponse(it.networkResponse).getParsedError().detail, Toast.LENGTH_SHORT).show()}
+            )
+*/
+
+            /*val value = vm.value.value
             if(value ==null)
-                vm.startRequest()
+
             else {
 
                 if(value.navigator!=null) {
@@ -51,7 +79,7 @@ class VolleyActivity : AppCompatActivity() {
 
                     })
 
-                }
+                }*/
             }
 
         }
@@ -62,4 +90,3 @@ class VolleyActivity : AppCompatActivity() {
 
 
 
-}
