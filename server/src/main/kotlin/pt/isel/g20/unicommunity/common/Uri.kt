@@ -42,16 +42,23 @@ object Uri {
 
     //Templates
     private val singleBoardTemplate = UriTemplate(SINGLE_BOARD_ROUTE)
+    private val boardMembersTemplate = UriTemplate(BOARD_MEMBERS)
 
     //Getters
     fun forAllBoards() =
             URI(BOARDS_ROUTE).toString()
+
+    fun forAllBoards(page: Int) =
+            "$BOARDS_ROUTE?page=$page"
 
     fun forSingleBoardUri(boardId: Long) =
             singleBoardTemplate.expand(boardId)
 
     fun forSingleBoardText(boardId: Long) =
             forSingleBoardUri(boardId).toString()
+
+    fun forBoardMembers(boardId: Long) =
+            boardMembersTemplate.expand(boardId).toString()
 
     fun forSingleBoardTemplated(): String{
         val boardPrefix = forAllBoards()

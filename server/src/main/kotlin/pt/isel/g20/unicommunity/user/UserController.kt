@@ -92,4 +92,10 @@ class UserController(private val service: IUserService) {
             ResponseEntity
                     .notFound()
                     .build<String>()
+
+    @ExceptionHandler
+    fun handleNotFoundUserException(e: NotFoundUserException) =
+            ResponseEntity
+                    .notFound()
+                    .build<String>()
 }

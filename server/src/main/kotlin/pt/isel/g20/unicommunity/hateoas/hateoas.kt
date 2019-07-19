@@ -2,6 +2,9 @@ package pt.isel.g20.unicommunity.hateoas
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
+import org.springframework.http.HttpStatus
+import pt.isel.g20.unicommunity.common.Rels
+import pt.isel.g20.unicommunity.common.Uri
 
 /**
  * Class whose instances represent links, as described in <a href="https://tools.ietf.org/html/draft-kelly-json-hal-08">
@@ -68,11 +71,21 @@ class CollectionObject(val collection: JsonCollection)
 abstract class JsonCollection(
         val version: String,
         val href: String,
-        val links: List<CollectionLink>? = null,
+        val links: MutableList<CollectionLink>? = null,
         val items: List<Item>? = null,
         val queries: List<Query>? = null,
         val template: Template? = null
 )
+
+abstract class ExtendedJsonCollection(
+        val totalPages: Int,
+        version: String,
+        href: String,
+        links: MutableList<CollectionLink>? = null,
+        items: List<Item>? = null,
+        queries: List<Query>? = null,
+        template: Template? = null
+) : JsonCollection(version, href, links, items, queries, template)
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 //TODO: is @JsonCreator really needed???
@@ -99,8 +112,8 @@ data class Data(
 data class Query(
         val rel: String,
         val href: String,
-        val prompt: String? = null
-        //TODO:val data: Array
+        val prompt: String? = null,
+        val data: List<Data>
 )
 
 data class Template(
@@ -129,3 +142,13 @@ class ExtendedProblemJson(
         instance: String? = null,
         val links: MutableMap<String, Link>?
 ) : ProblemJson(type, title, detail, status, instance)
+
+private fun authorizationProblemJson(): ExtendedProblemJson =
+        ExtendedProblemJson(
+                title = "Authorization required",
+                detail = "Access was denied because the required authorization was not granted",
+                status = HttpStatus.UNAUTHORIZED.value(),
+                links = mutableMapOf(
+                        Rels.LOGIN to Link(Uri.LOGIN_ROUTE)
+                )
+        )

@@ -33,7 +33,7 @@ class MultipleBlackboardItemsResponse(
 ): JsonCollection(
         version = "1.0",
         href = Uri.forAllBlackboardItems(boardId, bbId),
-        links = listOf(
+        links = mutableListOf(
                 CollectionLink("self", Rels.GET_MULTIPLE_BLACKBOARDITEMS),
                 CollectionLink(Rels.NAVIGATION, Uri.NAVIGATION_ROUTE)
         ),

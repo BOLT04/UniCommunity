@@ -1,17 +1,17 @@
 package pt.isel.g20.unicommunity.auth
 
 import org.springframework.http.CacheControl
+import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import pt.isel.g20.unicommunity.auth.model.LoginDto
 import pt.isel.g20.unicommunity.auth.model.LoginResponse
 import pt.isel.g20.unicommunity.auth.service.IAuthService
 import pt.isel.g20.unicommunity.common.APPLICATION_HAL_JSON
 import pt.isel.g20.unicommunity.common.APPLICATION_JSON
 import pt.isel.g20.unicommunity.common.Uri
+import pt.isel.g20.unicommunity.common.presentation.authorizationProblemJson
+import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
 import java.util.concurrent.TimeUnit
 
 @RestController
@@ -32,4 +32,11 @@ class AuthenticationController(private val service: IAuthService) {
                         .eTag(response.hashCode().toString())
                         .body(response)
             }
+
+    // Used in AuthenticationController
+    @ExceptionHandler
+    fun handleNotFoundUserException(e: NotFoundUserException) =
+            ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(authorizationProblemJson())
 }

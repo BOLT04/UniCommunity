@@ -1,5 +1,6 @@
 package pt.isel.g20.unicommunity.board.service
 
+import org.springframework.data.domain.Page
 import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
 import pt.isel.g20.unicommunity.board.model.Board
 import pt.isel.g20.unicommunity.template.exception.NotFoundTemplateException
@@ -7,6 +8,7 @@ import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
 
 interface IBoardService {
     fun getAllBoards() : Iterable<Board>
+    fun getAllBoards(page: Int, pageSize: Int = 2) : Page<Board>
 
     @Throws(NotFoundBoardException::class)
     fun getBoardById(boardId: Long): Board

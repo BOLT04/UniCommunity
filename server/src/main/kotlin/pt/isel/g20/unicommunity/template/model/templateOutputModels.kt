@@ -16,7 +16,7 @@ class MultipleTemplatesResponse(
 ): JsonCollection(
         version = "1.0",
         href = Uri.forAllTemplates(),
-        links = listOf(
+        links = mutableListOf(
                 CollectionLink("self",Uri.forAllTemplates()),
                 CollectionLink(Rels.NAVIGATION, Uri.NAVIGATION_ROUTE)
         ),

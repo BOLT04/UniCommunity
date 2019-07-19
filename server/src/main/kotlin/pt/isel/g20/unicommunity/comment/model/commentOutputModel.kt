@@ -55,7 +55,7 @@ class MultipleCommentsResponse(
 ): JsonCollection(
         version = "1.0",
         href = Uri.forAllComments(boardId,forumItemId),
-        links = listOf(
+        links = mutableListOf(
                 CollectionLink("self",Uri.forAllComments(boardId, forumItemId)),
                 CollectionLink(Rels.NAVIGATION, Uri.NAVIGATION_ROUTE),
                 CollectionLink(Rels.CREATE_COMMENT, Uri.forAllComments(boardId, forumItemId))

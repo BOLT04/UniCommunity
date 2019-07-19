@@ -15,7 +15,7 @@ interface IBlackboardItemService {
     fun getBlackboardItemById(boardId: Long, bbId: Long, itemId: Long): BlackboardItem
 
     @Throws(NotFoundBoardException::class, NotFoundBlackboardException::class, NotFoundUserException::class)
-    fun createBlackboardItem(boardId: Long, bbId: Long, user: User, name: String, content: String): BlackboardItem
+    fun createBlackboardItem(boardId: Long, bbId: Long, userId: Long, name: String, content: String): BlackboardItem
 
     @Throws(NotFoundBlackboardException::class, NotFoundBoardException::class, NotFoundBlackboardItemException::class)
     fun editBlackboardItem(boardId: Long, bbId: Long, itemId: Long, name: String?, content: String?): BlackboardItem

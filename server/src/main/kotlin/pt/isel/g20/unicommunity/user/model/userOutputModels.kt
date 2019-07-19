@@ -40,7 +40,7 @@ class MultipleUsersResponse(
 ): JsonCollection(
         version = "1.0",
         href = Uri.forAllUsers(),
-        links = listOf(
+        links = mutableListOf(
                 CollectionLink("self",Uri.forAllUsers()),
                 CollectionLink(Rels.NAVIGATION, Uri.NAVIGATION_ROUTE)
         ),

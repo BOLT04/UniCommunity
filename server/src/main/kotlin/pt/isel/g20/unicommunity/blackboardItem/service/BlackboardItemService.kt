@@ -31,18 +31,19 @@ class BlackboardItemService(
     override fun createBlackboardItem(
             boardId: Long,
             bbId: Long,
-            user: User,
+            userId: Long,
             name: String,
             content: String
     ): BlackboardItem {
         boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
         val blackboard = blackboardsRepo.findByIdOrNull(bbId) ?: throw NotFoundBlackboardException()
+        val user = usersRepo.findByIdOrNull(userId) ?: throw NotFoundUserException()
 
         val blackboardItem = BlackboardItem(name, content, user, blackboard)
         val newBlackboardItem =  blackboardItemsRepo.save(blackboardItem)
 
         user.bbItems.add(newBlackboardItem)
-        usersRepo.save(user)// TODO: what does this do? Isn't the user already on the DB??
+        usersRepo.save(user)
         blackboard.items.add(newBlackboardItem)
         blackboardsRepo.save(blackboard)
 

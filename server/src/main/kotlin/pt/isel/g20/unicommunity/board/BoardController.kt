@@ -22,19 +22,24 @@ class BoardController(private val service: IBoardService) {
 
     @AuthorizationRequired
     @GetMapping(path = [BOARDS_ROUTE], produces = ["application/vnd.collection+json"])
-    fun getAllBoards(@SessionAttribute("user") user: User) =
-            service.getAllBoards().map(Board::toItemRepr).let {
-                val response = CollectionObject(MultipleBoardsResponse(it))
+    fun getAllBoards(
+            @SessionAttribute("user") user: User,
+            @RequestParam(value = "page", required = false, defaultValue = "0") page: Int
+    ) : ResponseEntity<CollectionObject> =
+        service
+                .getAllBoards(page)
+                .map(Board::toItemRepr).let {
+            val response = CollectionObject(MultipleBoardsResponse(it, page))
 
-                ResponseEntity
-                        .ok()
-                        .cacheControl(
-                                CacheControl
-                                        .maxAge(1, TimeUnit.HOURS)
-                                        .cachePrivate())
-                        .eTag(response.hashCode().toString())
-                        .body(response)
-            }
+            ResponseEntity
+                    .ok()
+                    .cacheControl(
+                            CacheControl
+                                    .maxAge(1, TimeUnit.HOURS)
+                                    .cachePrivate())
+                    .eTag(response.hashCode().toString())
+                    .body(response)
+        }
 
     @AuthorizationRequired
     @GetMapping(path = [SINGLE_BOARD_ROUTE], produces = ["application/hal+json"])
@@ -127,7 +132,7 @@ class BoardController(private val service: IBoardService) {
     }
 
     @AuthorizationRequired
-    @PostMapping(path = [SINGLE_BOARD_ROUTE], produces = ["application/hal+json"])
+    @PostMapping(path = [SINGLE_BOARD_ROUTE], produces = ["application/hal+json"])//TODO: should be a delete? Maybe not since no resource is created in addUserToBoard, the processing is add to a list and remove
     fun removeUserFromBoard(
             @PathVariable boardId: Long,
             @SessionAttribute("user") user: User): ResponseEntity<SingleBoardResponse>{
