@@ -10,9 +10,9 @@ class LoginResponse(user: User)
     : HalObject(
         mutableMapOf(
                 "self" to Link(Uri.LOGIN_ROUTE),
-                Rels.GET_MULTIPLE_BOARDS to Link(Uri.forAllBoards())
+                Rels.GET_MULTIPLE_BOARDS to Link(Uri.forAllBoards()),
+                Rels.NAVIGATION to Link(Uri.NAVIGATION_ROUTE)
                 //Rels.LOGOUT to Link("/logout"), //TODO: for now since we don't have cookie auth, we don't need logout
-
         )
 ){
     val email: String = user.email
