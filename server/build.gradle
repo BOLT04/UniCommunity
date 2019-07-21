@@ -1,37 +1,50 @@
-plugins {
-	id 'org.jetbrains.kotlin.plugin.jpa' version '1.3.21'
-	id 'org.springframework.boot' version '2.1.4.RELEASE'
-	id 'org.jetbrains.kotlin.jvm' version '1.3.21'
-	id 'org.jetbrains.kotlin.plugin.spring' version '1.3.21'
+buildscript {
+	ext {
+		kotlinVersion = '1.2.60'
+		springBootVersion = '2.0.0.M6'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath "org.jetbrains.kotlin:kotlin-noarg:$kotlinVersion"
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+		classpath("org.jetbrains.kotlin:kotlin-noarg:${kotlinVersion}")
+	}
 }
 
+plugins {
+	id 'org.springframework.boot' version '2.1.4.RELEASE'
+	id 'org.jetbrains.kotlin.jvm' version '1.3.41'
+	id 'org.jetbrains.kotlin.plugin.jpa' version '1.3.41'
+	id "org.jetbrains.kotlin.plugin.noarg" version "1.3.41"
+	id 'org.jetbrains.kotlin.plugin.spring' version '1.3.41'
+}
+
+apply plugin: 'kotlin'
+apply plugin: "kotlin-jpa"
+apply plugin: 'kotlin-spring'
+apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
+
+
 
 group = 'pt.isel.g20'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
-repositories {
-	mavenCentral()
-}
-
-dependencies {
-	//implementation "org.springframework.boot:spring-boot-starter-security"
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
-	implementation 'org.jetbrains.kotlin:kotlin-reflect'
-	implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
-	runtimeOnly 'com.h2database:h2'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+allOpen {
+	annotation("javax.persistence.Entity")
+	annotation("javax.persistence.MappedSuperclass")
+	annotation("javax.persistence.Embeddable")
 }
 
 compileKotlin {
 	kotlinOptions {
 		freeCompilerArgs = ['-Xjsr305=strict']
 		jvmTarget = '1.8'
-	}
-}
+	}}
 
 compileTestKotlin {
 	kotlinOptions {
@@ -39,3 +52,38 @@ compileTestKotlin {
 		jvmTarget = '1.8'
 	}
 }
+
+repositories {
+	mavenCentral()
+	maven { url "https://repo.spring.io/snapshot" }
+	maven { url "https://repo.spring.io/milestone" }
+	maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local/' }
+}
+
+
+noArg{
+	annotation("javax.persistence.Entity")
+	annotation "javax.persistence.Embeddable"
+}
+
+dependencies {
+	implementation 'org.jetbrains.kotlin:kotlin-reflect'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
+	implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+	runtimeOnly 'com.h2database:h2'
+
+	compile "io.springfox:springfox-swagger2:2.9.2-SNAPSHOT"
+	compile "io.springfox:springfox-swagger-ui:2.9.2-SNAPSHOT"
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.2'
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+
+	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
+	compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.9'
+}
+
+
+
