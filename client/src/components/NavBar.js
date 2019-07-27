@@ -148,13 +148,11 @@ class NavBar extends Component {
       )
   }
 
-  render() {
-    return (
-      <Menu pointing secondary stackable>
-        {this.buildLinks()}
-      </Menu>
-    )
-  }
+  render = () => (
+    <Menu pointing secondary stackable>
+      {this.buildLinks()}
+    </Menu>
+  )
 }
 
 export default withUtilsConsumer(NavBar)

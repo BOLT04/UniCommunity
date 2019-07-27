@@ -86,7 +86,6 @@ debugger
         />
         { board.editBoardHref &&
             <EditBoardButton
-              asyncRelativeFetch={this.props.asyncRelativeFetch}
               board={this.state.board}
               updateBoard={this.updateBoard} />
         }

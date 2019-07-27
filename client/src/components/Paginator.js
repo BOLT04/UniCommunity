@@ -2,10 +2,9 @@ import React from 'react'
 
 import { Pagination } from 'semantic-ui-react'
 
-//TODO: finish this! 1. Check the links prop that comes in the rsp from server. 2.adapt this code to that
 export default ({ body, onClick }) => {
     const { links } = body
-    debugger
+
     return (
         <div>
             <Pagination
@@ -46,13 +45,6 @@ export default ({ body, onClick }) => {
                 secondary
                 totalPages={body.totalPages}
             />
-            {/*
-        <button disabled={!parsed || !parsed.first}
-            onClick={() => onClick(parsed.first.url)} >first</button>
-        <button disabled={!parsed || !parsed.prev}
-            onClick={() => onClick(parsed.prev.url)} >previous</button>
-        <button disabled={!parsed || !parsed.next}
-            onClick={() => onClick(parsed.next.url)} >next</button>
-            */}</div>
+           </div>
     )
 }

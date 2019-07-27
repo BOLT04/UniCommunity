@@ -9,11 +9,13 @@ import Forum from './Forum'
 import { CreateModuleButton } from './CreateModuleButton'
 import EditModuleButton from './EditModuleButton'
 
+import { withUtilsConsumer } from '../withUtilsConsumer'
+
 /**
  * This component is used to display the modules/blackboards of a Board, for example the Summary and
  * Announcements.
  */
-export default class ModulesView extends Component {
+class ModulesView extends Component {
     constructor(props) {
         super(props)
 
@@ -58,7 +60,7 @@ export default class ModulesView extends Component {
                 state.board.modules.blackboards[index] = updatedBlackboard
                 return state
             })
-
+       
         return (
             <div key={index}>
                 <Accordion.Title active={isActive} index={index} onClick={this.handleClick}>
@@ -153,3 +155,5 @@ export default class ModulesView extends Component {
                     : null
     }
 }
+
+export default withUtilsConsumer(ModulesView)

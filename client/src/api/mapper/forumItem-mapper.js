@@ -48,7 +48,6 @@ export default async function rspToForumItemAsync(rsp) {
                
         }
 
-        let comments
         // Check if the comments rel is present
         if (body._embedded) {
             const commentsArr = body._embedded['/rels/getComments']
@@ -80,8 +79,6 @@ export default async function rspToForumItemAsync(rsp) {
         //TODO:forumItem = {...forumItem, ...forumItemAux} maybe this????
         if (links)
             forumItem.links = links
-
-        forumItem.comments = comments || []
         
         return forumItem
     }

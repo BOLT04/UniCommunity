@@ -7,6 +7,14 @@ import { LogoutError } from '../common/errors'
 function Auth() {
     let authenticated = false
 
+    // Add a getter to user, so that it fetches the object from local storage when not available already.
+    Object.defineProperty(this, 'user', {
+        get: () => {
+            debugger
+            return localStorage.getObject('user')
+        }
+    })
+
     //TODO: use hal+forms!
     /**
      * This function returns an object with links that represent where the client can navigate after a
@@ -31,12 +39,7 @@ function Auth() {
                 email,
                 name: json.name
             }
-            // Add a getter to user, so that it fetches the object from local storage when not available already.
-            if (!this.user)
-                Object.defineProperty(this, 'user', {
-                    get: () => localStorage.getObject('user')
-                })
-
+        
             this.token = new Buffer(email +':'+ password).toString('base64')
             localStorage.setItem('authToken', this.token)
             localStorage.setObject('user', user)

@@ -64,7 +64,7 @@ export default async function rspToBoardAsync(rsp) {//TODO: maybe move these con
                 board.editBoardHref = editBoardHref
 
             const addMemberToBoardHref = board.getHrefOfRelHal(rels.addMemberToBoard)
-            debugger
+
             if (addMemberToBoardHref)
                 board.addMemberHref = addMemberToBoardHref
             
@@ -72,9 +72,6 @@ export default async function rspToBoardAsync(rsp) {//TODO: maybe move these con
             if (_links[forumRel] && relsRegistery[rels.getForumItems]) //TODO: fix hardcoded relsRegistery[forumRel]
                 forumLink = _links[forumRel].href
         }
-
-        //TODO: REMOVE WHEN SERVER ADDS ID TO OUTPUT MODEL
-        board.id = 10
 
         // Check if the blackboards rel is present
         if (_embedded) {

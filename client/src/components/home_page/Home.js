@@ -63,7 +63,7 @@ export default class Home extends Component {
 
   // TODO: is the image responsive?
   render() {
-    console.log(this.state.feedItemList)
+
     return (
       <div className="home">
         <Image src={`${process.env.PUBLIC_URL}/img/background-study.jpg`} />

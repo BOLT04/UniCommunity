@@ -75,13 +75,28 @@ export const asyncHalFormsRequest = (reqInfo, relativeUrl) => {
 
     return asyncRelativeHttpRequest(relativeUrl, reqInfo.method, reqInfo.contentType, body)
 }
+/*
+export const asyncHalFormsWithoutBodyRequest = async (rel, relativeUrl) => {
 
+     //TODO: maybe make a function that given a rel and href/relativeUrl, makes a halforms req to then use asyncRelativeHttpRequest
+                    let rsp = await asyncRelativeFetch(rel)
+                    //const { _templates: { default: reqInfo } } = await asyncParseHalFormRsp(rsp)
+                    const { _templates: { default: reqInfo } } = await asyncRelativeFetch(rels.getBlackboards)
+                            .then(asyncParseHalFormRsp)
+
+                    return asyncRelativeHttpRequest(relativeUrl, reqInfo.method)
+}*/
+//TODO: tou a fazer o unsub button e a dar fix no subscribe. Como é igua ao pedido que se faz no board-mapper pa ter o blackboards (fazer pedido ao halforms e dps com essa info fazer o pedido http)
+//TODO: mas tipo se vier properties eu n os uso...ou seja há um CONTRATO! eu sei que o "add member" e "remove member" são post e n recebe nada no body...ta no contrato da api
+// por isso ha uma expectativa que isso n esteja no hal forms, pk se estiver (caso a api "evolua") o cliente quebra...mas isto n pode ser o que se fala na evoluçao da api
+//pk é uma breaking change mudar o metodo que é usado no pedido http, ou mudar para "agora recebe info no body" ou precisa de certos headers.
+//essas mudanças na api trazem mudanças no cliente...tem de ser. N da para fazer algo generico, ou se der o custo é mt elevado e traz bastante complexidade à soluçao e ao codigo....
 /**
  * Makes a Post HTTP request with the given body.
  * @param {string} relativeUrl - The relative url to be prefixed by the base uri.
- * @param {string} method - The HTTP request method.
+ * @param {string} method      - The HTTP request method.
  * @param {string} contentType - (optional) The content type value of the Content-Type header.
- * @param {object} body - (optional) the Request body object.
+ * @param {object} body        - (optional) the Request body object.
  */
 export function asyncRelativeHttpRequest(relativeUrl, method, contentType, body) {
     let options = fillAuthHeaderIfAuthenticated()

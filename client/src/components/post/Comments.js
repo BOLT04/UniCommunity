@@ -8,8 +8,9 @@ import ListLoader from '../ListLoader'
 import asyncCollectionRspToList from '../../api/mapper/collectionJson-mapper'
 
 import { COLLECTION_JSON } from '../../common/constants'
+import { withUtilsConsumer } from '../withUtilsConsumer'
 
-export default class Comments extends Component {
+class Comments extends Component {
 
     constructor(props) {
         super(props)
@@ -20,17 +21,18 @@ export default class Comments extends Component {
     }
 
     async componentDidMount() {
-        //if (this.props.comments) return
+        if (this.props.comments) return
 
-        const rsp = await this.props.asyncRelativeFetch(this.props.serverUrl, COLLECTION_JSON)
-        const comments = await asyncCollectionRspToList(rsp)
+        const rsp = await this.props.utilsObj.asyncRelativeFetch(this.props.serverUrl, COLLECTION_JSON)
+        const comments = (await asyncCollectionRspToList(rsp)).items
 debugger
         this.setState({ comments })
     }
 
     static getDerivedStateFromProps(nextProps, prevState){
-        const {comments}= nextProps
-        if ((comments !== prevState.comments) && (comments.length >= 1)) {
+        const { comments } = nextProps
+
+        if ( comments && (comments !== prevState.comments) && (comments.length >= 1)) {
             prevState.comments.push(comments[comments.length -1])
             return { comments: prevState.comments}
         }
@@ -56,7 +58,6 @@ debugger
         this.state.comments.map(c => <Comment comment={c} />)
 
     render() {
-        debugger
         return (
             <>
                 <CommentSUI.Group>
@@ -75,3 +76,5 @@ debugger
         )
     }
 }
+
+export default withUtilsConsumer(Comments)

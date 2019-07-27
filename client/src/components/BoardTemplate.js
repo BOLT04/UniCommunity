@@ -6,8 +6,9 @@ import './css/BoardTemplate.css'
 
 import asyncCollectionRspToList from '../api/mapper/collectionJson-mapper'
 import { COLLECTION_JSON } from '../common/constants'
+import { withUtilsConsumer } from './withUtilsConsumer'
 
-export default class BoardTemplate extends Component {
+class BoardTemplate extends Component {
   static propTypes = {
     modules: PropTypes.arrayOf(PropTypes.string),
     activateTemplate: PropTypes.func
@@ -21,10 +22,10 @@ export default class BoardTemplate extends Component {
   }
 
   async componentDidMount() {
-    const rsp = await this.props.asyncRelativeFetch('/templates', COLLECTION_JSON)
+    const rsp = await this.props.utilsObj.asyncRelativeFetch('/templates', COLLECTION_JSON)
     //TODO: remove hardcoded url
     //TODO: catch error in case the promise is rejected
-    const templates = await asyncCollectionRspToList(rsp)
+    const templates = (await asyncCollectionRspToList(rsp)).items
     console.log(templates)
     
     this.setState({ templates })
@@ -109,3 +110,5 @@ export default class BoardTemplate extends Component {
     this.props.activateTemplate(templateId) // update parent's state.
   }
 }
+
+export default withUtilsConsumer(BoardTemplate)

@@ -4,7 +4,6 @@ export default class HypermediaObject {
     }
 
     getHrefOfRelHal(rel) {
-        debugger
         const link = this.links[rel]
         return link ? link.href : null
     }

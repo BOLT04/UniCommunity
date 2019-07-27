@@ -5,14 +5,14 @@ import { Image } from 'semantic-ui-react'
 
 import auth from './auth'
 
-const UserProfile = () => (
+const UserProfileNavItem = () => (
     <>
         <Image
             src='/img/default-profile.png'
             avatar
             circular />
-
         { auth.user && <span> {auth.user.name} </span> }
     </>
 )
-export default UserProfile
+
+export default UserProfileNavItem

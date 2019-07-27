@@ -19,6 +19,7 @@ export const rels = {
     getBoard: '/rels/getBoard',
     editBoard: '/rels/editBoard',
     addMemberToBoard: '/rels/addMemberToBoard',
+    removeMemberToBoard: '/rels/removeMemberToBoard',
 
     createBoard: '/rels/createBoard',
     login: '/rels/login',
@@ -69,10 +70,10 @@ const relsRegistery = {
     // The property "propName" is used to specify the property's name of the object in each component's state
     // For example in App.js it will define state.home.navMenuUrl
     [rels.nav]: {
-        propName: "navMenuUrl"
+        propName: 'navMenuUrl'
     },
     [rels.feed]: {
-        propName: "feedUrl"
+        propName: 'feedUrl'
     },
     [rels.userProfile]: {
         clientHref: '/profile',

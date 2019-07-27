@@ -19,15 +19,16 @@ import CreateComment from './CreateComment'
 import rspToForumItemAsync from '../../api/mapper/forumItem-mapper'
 
 import { APPLICATION_HAL_JSON } from '../../common/constants'
+import { withUtilsConsumer } from '../withUtilsConsumer'
 
-export default class PostDetails extends Component {
+class PostDetails extends Component {
 
     state = {
         loading: true
     }
 
     async componentDidMount() {
-        const rsp = await this.props.asyncRelativeFetch(this.props.location.state.getPostUrl, APPLICATION_HAL_JSON)
+        const rsp = await this.props.utilsObj.asyncRelativeFetch(this.props.location.state.getPostUrl, APPLICATION_HAL_JSON)
         const post = await rspToForumItemAsync(rsp)
         
         this.setState({ post, loading: false })
@@ -83,4 +84,6 @@ debugger
                     ? <Loader active={loading} inline />
                     : renderPost()
     }
-} 
+}
+
+export default withUtilsConsumer(PostDetails)
