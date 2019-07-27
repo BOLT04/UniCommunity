@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom'
 
 import { List } from 'semantic-ui-react'
 
-import { removeFunctionsFrom } from '../common/common'
-import routes from '../common/routes'
-import { rels } from '../common/rels-registery'
+import { removeFunctionsFrom } from '../../../common/common'
+import routes from '../../../common/routes'
+import { rels } from '../../../common/rels-registery'
 
 import SubscribeModal from './SubscribeModal'
 import UnsubscribeModal from './UnsubscribeModal'

@@ -4,9 +4,9 @@ import { Grid, Checkbox } from 'semantic-ui-react'
 
 import './css/BoardTemplate.css'
 
-import asyncCollectionRspToList from '../api/mapper/collectionJson-mapper'
-import { COLLECTION_JSON } from '../common/constants'
-import { withUtilsConsumer } from './withUtilsConsumer'
+import asyncCollectionRspToList from '../../../service/mapper/collectionJson-mapper'
+import { COLLECTION_JSON } from '../../../common/constants'
+import { withUtilsConsumer } from '../../withUtilsConsumer'
 
 class BoardTemplate extends Component {
   static propTypes = {

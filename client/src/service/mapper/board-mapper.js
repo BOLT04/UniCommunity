@@ -17,8 +17,8 @@ import asyncParseHalFormRsp from './halForms-mapper'
 
 import relsRegistery, { rels } from '../../common/rels-registery'
 
-import Board from '../../components/board_details/model/Board'
-import Blackboard from '../../components/board_details/model/Blackboard'
+import Board from '../../components/pages/board_details/model/Board'
+import Blackboard from '../../components/pages/board_details/model/Blackboard'
 
 import HypermediaObject from './HypermediaObject'
 import { MappingError } from '../../common/errors'

@@ -3,12 +3,12 @@ import React, { Component } from 'react'
 import { Header, Comment as CommentSUI } from 'semantic-ui-react'
 
 import { Comment } from './Comment'
-import ListLoader from '../ListLoader'
+import ListLoader from '../../common/ListLoader'
 
-import asyncCollectionRspToList from '../../api/mapper/collectionJson-mapper'
+import asyncCollectionRspToList from '../../../service/mapper/collectionJson-mapper'
 
-import { COLLECTION_JSON } from '../../common/constants'
-import { withUtilsConsumer } from '../withUtilsConsumer'
+import { COLLECTION_JSON } from '../../../common/constants'
+import { withUtilsConsumer } from '../../withUtilsConsumer'
 
 class Comments extends Component {
 

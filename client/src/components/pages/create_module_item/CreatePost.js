@@ -3,15 +3,15 @@ import PropTypes from 'prop-types'
 
 import { Input, Form, Checkbox, Button } from 'semantic-ui-react'
  
-import { createForumPostsAsync } from '../../api/ForumApiImpl'
-import rspToBoardAsync from '../../api/mapper/board-mapper'
+import { createForumPostsAsync } from '../../../service/ForumApiImpl'
+import rspToBoardAsync from '../../../service/mapper/board-mapper'
 
-import { APPLICATION_HAL_JSON } from '../../common/constants'
-import { asyncRelativeFetch, removeFunctionsFrom } from '../../common/common'
-import routes from '../../common/routes'
-import { rels } from '../../common/rels-registery'
+import { APPLICATION_HAL_JSON } from '../../../common/constants'
+import { asyncRelativeFetch, removeFunctionsFrom } from '../../../common/common'
+import routes from '../../../common/routes'
+import { rels } from '../../../common/rels-registery'
 
-import CreateBoardApi from '../../api/CreateBoardApi'
+import CreateBoardApi from '../../../service/CreateBoardApi'
 import CreateModuleItem from './CreateModuleItem'
 
 export default class CreatePost extends Component {

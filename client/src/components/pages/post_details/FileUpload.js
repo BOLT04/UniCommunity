@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import { Input, Form, Checkbox, Button } from 'semantic-ui-react'
 
-import CreateBoardApi from '../../api/CreateBoardApi';
+import CreateBoardApi from '../../service/CreateBoardApi'
 
 export default class FileUpload extends Component {
   static propTypes = {

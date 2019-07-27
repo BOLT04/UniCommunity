@@ -9,7 +9,7 @@ import Forum from './Forum'
 import { CreateModuleButton } from './CreateModuleButton'
 import EditModuleButton from './EditModuleButton'
 
-import { withUtilsConsumer } from '../withUtilsConsumer'
+import { withUtilsConsumer } from '../../withUtilsConsumer'
 
 /**
  * This component is used to display the modules/blackboards of a Board, for example the Summary and

@@ -2,18 +2,12 @@ import React, { Component } from 'react'
 
 import { Input, Form, TextArea, Button } from 'semantic-ui-react'
 
-import ErrorMessage from './ErrorMessage'
+import ErrorMessage from './common/ErrorMessage'
 
 import './css/Login.css'
 
-import auth from './auth'
+import auth from '../service/auth'
 import routes from '../common/routes'
-import config from '../unicommunity-config.json'
-
-// The core Firebase JS SDK is always required
-/*import * as firebase from 'firebase'
-
-firebase.initializeApp(config.firebase)*/
 
 export default class Login extends Component {
   

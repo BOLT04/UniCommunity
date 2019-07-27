@@ -1,4 +1,4 @@
-import Comment from '../../components/post/model/CommentModel'
+import Comment from '../../components/pages/post_details/model/CommentModel'
 
 /**
  * @returns {Comment}   - The forum item object that represents a post on the UI.

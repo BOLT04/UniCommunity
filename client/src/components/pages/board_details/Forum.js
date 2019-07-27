@@ -1,4 +1,3 @@
-'use strict'
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
@@ -7,7 +6,7 @@ import { Accordion, Icon, Transition, List } from 'semantic-ui-react'
 
 import ReactMarkdown from 'react-markdown'
 
-import routes from '../../common/routes'
+import routes from '../../../common/routes'
 
 /**
  * This component is used to display the Forum module of a Board.

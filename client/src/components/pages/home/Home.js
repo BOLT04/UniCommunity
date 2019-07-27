@@ -3,11 +3,11 @@ import PropTypes from 'prop-types'
 
 import { Image, Header } from 'semantic-ui-react'
 
-import HomeApi from '../../api/HomeApi'
+import HomeApi from '../../../service/HomeApi'
 import HomeStepsContent from './HomeStepsContent'
 import Feed from './feed/Feed'
 
-import '../css/Home.css'
+import './css/Home.css'
 
 export default class Home extends Component {
   static propTypes = {

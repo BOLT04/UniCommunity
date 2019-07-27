@@ -5,16 +5,16 @@ import { Input, Form, Checkbox, Button } from 'semantic-ui-react'
 
 import MdEditor from 'react-markdown-editor-lite'
  
-import { asyncCreateBlackboardItem } from '../../api/BlackBoardApiImpl'
-import rspToBoardAsync from '../../api/mapper/board-mapper'
+import { asyncCreateBlackboardItem } from '../../../service/BlackBoardApiImpl'
+import rspToBoardAsync from '../../../service/mapper/board-mapper'
 
-import { APPLICATION_HAL_JSON } from '../../common/constants'
+import { APPLICATION_HAL_JSON } from '../../../common/constants'
 
-import { rels } from '../../common/rels-registery'
-import { asyncRelativeFetch, removeFunctionsFrom } from '../../common/common'
+import { rels } from '../../../common/rels-registery'
+import { asyncRelativeFetch, removeFunctionsFrom } from '../../../common/common'
 
-import routes from '../../common/routes'
-import CreateBoardApi from '../../api/CreateBoardApi'
+import routes from '../../../common/routes'
+import CreateBoardApi from '../../../service/CreateBoardApi'
 import CreateModuleItem from './CreateModuleItem'
 
 export default class CreateBlackboardItem extends Component {

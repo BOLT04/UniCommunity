@@ -12,17 +12,6 @@ import {
     Header as SemanticHeader 
 } from 'semantic-ui-react'
 
-// custom component imports
-import Header from './Header'
-import ForumPostHeader from './ForumPostHeader'
-import Comments from './post/Comments'
-import CreateComment from './post/CreateComment'
-
-// api imports
-import rspToForumItemAsync from '../api/mapper/forumItem-mapper'
-
-import { APPLICATION_HAL_JSON } from '../common/constants'
-
 export default class UserProfile extends Component {
 
     state = {

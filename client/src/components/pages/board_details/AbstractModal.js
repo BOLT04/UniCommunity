@@ -12,7 +12,7 @@ import {
     Message
 } from 'semantic-ui-react'
 
-import { withUtilsConsumer } from '../../components/withUtilsConsumer'
+import { withUtilsConsumer } from '../../withUtilsConsumer'
 
 /**
  * This component handles the state required to display a modal with the configurations given in props.

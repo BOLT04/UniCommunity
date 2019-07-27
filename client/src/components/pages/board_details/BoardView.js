@@ -5,18 +5,18 @@ import { Route } from 'react-router-dom'
 // Semantic UI imports
 import { Loader, Button } from 'semantic-ui-react'
 
-import rspToBoardAsync from '../../api/mapper/board-mapper'
-import { APPLICATION_HAL_JSON, httpStatus } from '../../common/constants'
-import { rels } from '../../common/rels-registery'
-import routes from '../../common/routes'
+import rspToBoardAsync from '../../../service/mapper/board-mapper'
+import { APPLICATION_HAL_JSON, httpStatus } from '../../../common/constants'
+import { rels } from '../../../common/rels-registery'
+import routes from '../../../common/routes'
 
-import BookmarkableComponent from '../../components/BookmarkableComponent'
-import CreateBlackboardItem from '../post/CreateBlackboardItem'
+import BookmarkableComponent from '../../common/BookmarkableComponent'
+import CreateBlackboardItem from '../create_module_item/CreateBlackboardItem'
 import ModulesView from './ModulesView'
 import EditBoardButton from './EditBoardButton'
-import Header from '../Header'
+import Header from '../../Header'
 
-import { withUtilsConsumer } from '../../components/withUtilsConsumer'
+import { withUtilsConsumer } from '../../withUtilsConsumer'
 
 class BoardView extends BookmarkableComponent {
   //TODO: how do I specify the entrance of the model (board) to this component? 

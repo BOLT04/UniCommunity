@@ -2,16 +2,16 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import './index.css'
-import 'semantic-ui-css/semantic.min.css'
+import 'semantic-ui-css/semantic.min.css'//TODO: remove this since we are using semantic UI react
 
 import App from './components/App'
-import HomeApiImpl from './api/HomeApiImpl'
+import HomeApiImpl from './service/HomeApiImpl'
 import { 
     asyncRelativeFetch,
     asyncRelativeHttpRequest,
     asyncHalFormsRequest,
 } from './common/common'
-import asyncParseHalFormRsp from './api/mapper/halForms-mapper'
+import asyncParseHalFormRsp from './service/mapper/halForms-mapper'
 
 import config from './unicommunity-config.json'
 

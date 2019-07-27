@@ -2,15 +2,15 @@ import React, { Component } from 'react'
 
 import { Button, Form, Checkbox } from 'semantic-ui-react'
 
-import auth from '../auth'
+import auth from '../../../service/auth'
 
-import asyncRspToComment from '../../api/mapper/comment-mapper'
-import rspToForumItemAsync from '../../api/mapper/forumItem-mapper'
-import { asyncFetch } from '../../api/ForumApiImpl'
+import asyncRspToComment from '../../../service/mapper/comment-mapper'
+import rspToForumItemAsync from '../../../service/mapper/forumItem-mapper'
+import { asyncFetch } from '../../../service/ForumApiImpl'
 
 export default class CreateComment extends Component {
     commentText = ''
-    isAnonymous = false// TODO: use this on the response
+    isAnonymous = false
 
     state = {
         hasText: false

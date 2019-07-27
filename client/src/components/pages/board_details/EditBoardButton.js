@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { rels } from '../../common/rels-registery'
+import { rels } from '../../../common/rels-registery'
 
-import rspToBoardAsync from '../../api/mapper/board-mapper'
-import { withUtilsConsumer } from '../../components/withUtilsConsumer'
+import rspToBoardAsync from '../../../service/mapper/board-mapper'
+import { withUtilsConsumer } from '../../withUtilsConsumer'
 import AbstractModal from './AbstractModal'
 
 const propertiesConfig = {

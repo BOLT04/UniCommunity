@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import { Image, Header, Icon, Step } from 'semantic-ui-react'
 
-import '../css/Home.css'
+import './css/Home.css'
 
 export default class Home extends Component {
   // TODO: is the image responsive?

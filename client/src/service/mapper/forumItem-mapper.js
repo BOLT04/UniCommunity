@@ -4,7 +4,7 @@ import { APPLICATION_HAL_JSON } from '../../common/constants'
 import relsRegistery, { rels } from '../../common/rels-registery'
 import { MappingError } from '../../common/errors'
 
-import ForumItem from '../../components/post/model/ForumItem'
+import ForumItem from '../../components/pages/post_details/model/ForumItem'
 
 /**
  * @throws {MappingError} - Throws this exception in case the Content-Type header isn't the correct one.

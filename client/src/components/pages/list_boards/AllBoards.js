@@ -3,19 +3,19 @@ import PropTypes from 'prop-types'
 
 import { List } from 'semantic-ui-react'
 
-import asyncCollectionRspToList from '../api/mapper/collectionJson-mapper'
-import CreateBoardApi from '../api/CreateBoardApi'
+import asyncCollectionRspToList from '../../../service/mapper/collectionJson-mapper'
+import CreateBoardApi from '../../../service/CreateBoardApi'
 
 import { BoardListItem } from './BoardListItem'
-import ListLoader from './ListLoader'
+import ListLoader from '../../common/ListLoader'
 import Paginator from './Paginator'
-import BookmarkableComponent from './BookmarkableComponent'
+import BookmarkableComponent from '../../common/BookmarkableComponent'
 
-import { COLLECTION_JSON, httpStatus } from '../common/constants'
-import routes from '../common/routes'
-import { rels } from '../common/rels-registery'
+import { COLLECTION_JSON, httpStatus } from '../../../common/constants'
+import routes from '../../../common/routes'
+import { rels } from '../../../common/rels-registery'
 
-import { withUtilsConsumer } from './withUtilsConsumer'
+import { withUtilsConsumer } from '../../withUtilsConsumer'
 
 class AllBoards extends BookmarkableComponent {
 	static propTypes = {

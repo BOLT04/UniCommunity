@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 
-import rspToBoardAsync from '../api/mapper/board-mapper'
+import rspToBoardAsync from '../../../service/mapper/board-mapper'
 
-import routes from '../common/routes'
+import routes from '../../../common/routes'
 
 import CreateBoardPresenter from './CreateBoardPresenter'
 

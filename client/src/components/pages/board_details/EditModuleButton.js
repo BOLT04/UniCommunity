@@ -4,10 +4,10 @@ import PropTypes from 'prop-types'
 import { Checkbox } from 'semantic-ui-react'
 
 import Blackboard from './model/Blackboard'
-import { rels } from '../../common/rels-registery'
+import { rels } from '../../../common/rels-registery'
 
-import { parseOutputModelToBlackboard } from '../../api/mapper/board-mapper'
-import { withUtilsConsumer } from '../../components/withUtilsConsumer'
+import { parseOutputModelToBlackboard } from '../../../service/mapper/board-mapper'
+import { withUtilsConsumer } from '../../withUtilsConsumer'
 
 import AbstractModal from './AbstractModal'
 

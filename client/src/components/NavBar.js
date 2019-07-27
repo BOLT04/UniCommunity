@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 
 import { Menu } from 'semantic-ui-react'
 
-import NavBarApi from '../api/NavBarApi'
+import NavBarApi from '../service/NavBarApi'
 
 import { APPLICATION_HAL_JSON } from '../common/constants'
 import relsRegistery from '../common/rels-registery'
