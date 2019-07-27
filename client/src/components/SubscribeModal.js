@@ -19,10 +19,15 @@ class SubscribeModal extends Component {
 	}
 
 	yesOnClickHander = async e => {
-		const { board } = this.props
+		const { board, utilsObj, firebase } = this.props
 		const url = board.getHrefOfRel(rels.addMemberToBoard)
+		const rsp = await utilsObj.asyncRelativeFetch(rels.addMemberToBoard)
+    	const { _templates: { default: reqInfo } } = await utilsObj.asyncParseHalFormRsp(rsp)
 		try {
-			const rsp = await this.props.utilsObj.asyncRelativeFetch(url, APPLICATION_HAL_JSON)
+			const messaging = firebase.messaging()
+			const token = await messaging.getToken()
+			console.log(token)
+			const rsp = await utilsObj.asyncRelativeHttpRequest(url, reqInfo.method)
 			if (!rsp.ok) {}//TODO: handle error
 
 			const redirectPath = routes.getBoardUri(board.id)
@@ -37,9 +42,7 @@ class SubscribeModal extends Component {
 
 		return (
 			<Modal trigger={
-				<Button primary>
-					Subscribe
-				</Button>
+				<Button primary content='Subscribe' />
 			} basic size='small'>
 				<Header icon='archive' content={`Subscribe to ${board.name}`} />
 				<Modal.Content>

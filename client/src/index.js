@@ -62,7 +62,10 @@ const utilsObj = {
     asyncParseHalFormRsp,
 }
 ReactDOM.render(
-    <UtilsContext.Provider value={utilsObj}>
+    <UtilsContext.Provider value={{
+        utilsObj,
+        firebase
+    }}>
         <AppWithUtils
             baseUri={baseUri}
             api={new HomeApiImpl(baseUri, config.serverEntryPoint)} />

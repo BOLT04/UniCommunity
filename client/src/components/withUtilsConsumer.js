@@ -13,8 +13,9 @@ export default UtilsContext
  export const withUtilsConsumer = Component => 
     props => (
         <UtilsContext.Consumer>
-            { utilsObj => 
-                <Component {...props} utilsObj={utilsObj} />
+            { ({ utilsObj, firebase }) => 
+                <Component {...props} utilsObj={utilsObj} firebase={firebase} />
             }
         </UtilsContext.Consumer>
     )
+    //TODO: add a type for utilsObj, so that the consumers know what properties the object has
