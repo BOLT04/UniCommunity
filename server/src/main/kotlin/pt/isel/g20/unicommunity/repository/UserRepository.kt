@@ -9,4 +9,5 @@ import javax.transaction.Transactional
 @Transactional
 interface UserRepository : CrudRepository<User, Long> {
     fun findByEmail(email: String?): User?
+    fun findByName(name: String?): User?
 }

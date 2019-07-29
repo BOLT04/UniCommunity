@@ -24,6 +24,13 @@ dependencies {
 	implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
 	runtimeOnly 'com.h2database:h2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// HTTP Lib
+	// https://mvnrepository.com/artifact/com.github.jkcclemens/khttp
+	//compile group: 'com.github.jkcclemens', name: 'khttp', version: '0.1.0'
+    // https://mvnrepository.com/artifact/khttp/khttp
+    runtime group: 'khttp', name: 'khttp', version: '1.0.0'
+
 }
 
 compileKotlin {

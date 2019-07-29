@@ -1,5 +1,7 @@
 package pt.isel.g20.unicommunity.config
 
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.web.method.HandlerMethod
 import org.springframework.web.servlet.HandlerInterceptor
 import pt.isel.g20.unicommunity.auth.service.IAuthService
@@ -7,7 +9,10 @@ import pt.isel.g20.unicommunity.common.presentation.AuthorizationException
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationOptional
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
 import pt.isel.g20.unicommunity.user.model.User
+import pt.isel.g20.unicommunity.user.service.IUserService
 import java.io.UnsupportedEncodingException
+import java.net.HttpURLConnection
+import java.net.URL
 import java.nio.charset.Charset
 import java.util.*
 import javax.servlet.http.HttpServletRequest
@@ -18,10 +23,9 @@ import javax.servlet.http.HttpSession
  * Request handling interceptor used to check whether the authorization requirements are met.
  */
 class AuthorizationInterceptor(
-        private val authService: IAuthService
+        private val authService: IAuthService,
+        private val userService: IUserService
 ) : HandlerInterceptor {
-
-    private val decoder = Base64.getDecoder()
 
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
         if(handler is HandlerMethod){
@@ -40,17 +44,19 @@ class AuthorizationInterceptor(
                         throw AuthorizationException()
                 }
                 else when (authHeaderList[0]) {
-                        "Basic" -> processBasicAuthorization(authHeaderList[1], request)
+                    "Basic"  -> processBasicAuthorization(authHeaderList[1], request)
+                    "Bearer" -> processBearerAuthorization(authHeaderList[1], request)
                 }
             }
         }
         return true
     }
 
+    private val decoder = Base64.getDecoder()
+
     /**
      * @param encodedCred The enconded credentials in Base64 that came in the request header Authorization
      */
-
     private fun processBasicAuthorization(encodedCred: String, request: HttpServletRequest) {
         val credBytes = decoder.decode(encodedCred)
         try {
@@ -72,9 +78,46 @@ class AuthorizationInterceptor(
         }
     }
 
+    private fun processBearerAuthorization(accessToken: String, request: HttpServletRequest) {
+        val token = sendPost(accessToken)
+        if (!token.active)
+            throw AuthorizationException()
+        val user = userService.getUserByName(token.user_id)
+        addToModelUserDetails(request.session, user)
+    }
+
     private fun addToModelUserDetails(session: HttpSession, user: User?) {
         session.setAttribute("user", user)
     }
+
+    //TODO: Refactor this code to use an HTTP library instead
+    private val objectMapper = ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+
+    fun sendPost(token: String): TokenIntrospect {
+        val url = URL("http://35.242.140.186/openid-connect-server-webapp/introspect")
+
+        with(url.openConnection() as HttpURLConnection) {
+            requestMethod = "POST"
+            val userCredentials = "caf3021e-1da6-41e6-9d38-d994fe7bb2a0:NavdJNvyaDNYi6beGakeaJrFLytxKoG4NxcxtA77nR-PKxfOLDBPsmXQlsVAIuFpaALEZA5W-GrvwH6v_TPkJQ"
+            val basicAuth = "Basic " + String(Base64.getEncoder().encode(userCredentials.toByteArray()))
+
+            this.setRequestProperty("Authorization", basicAuth)
+            this.setRequestProperty("Content-Type",  "application/x-www-form-urlencoded")
+            val body = "token=$token"
+            doOutput = true
+            this.outputStream.write(body.toByteArray())
+            println("\nSent 'POST' request to URL : $url; Response Code : $responseCode")
+            val json = inputStream.bufferedReader().readLine()
+
+            return objectMapper.readValue(json, TokenIntrospect::class.java)
+        }
+    }
+
+    class TokenIntrospect(
+        val active: Boolean = false,
+        val scope: String = "",
+        val user_id: String = ""
+    )
 }
 
 
