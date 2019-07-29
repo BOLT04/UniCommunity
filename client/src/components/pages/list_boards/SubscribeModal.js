@@ -11,7 +11,7 @@ import { rels } from '../../../common/rels-registery'
 import { withUtilsConsumer } from '../../withUtilsConsumer'
 
 class SubscribeModal extends Component {
-	
+
 	constructor(props) {
 		super(props)
 
@@ -22,20 +22,23 @@ class SubscribeModal extends Component {
 		const { board, utilsObj, firebase } = this.props
 		const url = board.getHrefOfRel(rels.addMemberToBoard)
 		const rsp = await utilsObj.asyncRelativeFetch(rels.addMemberToBoard)
-    	const { _templates: { default: reqInfo } } = await utilsObj.asyncParseHalFormRsp(rsp)
+		const { _templates: { default: reqInfo } } = await utilsObj.asyncParseHalFormRsp(rsp)
 		try {
 			const messaging = firebase.messaging()
 			const token = await messaging.getToken()
+			
 			console.log(token)
 			const rsp = await utilsObj.asyncRelativeHttpRequest(url, reqInfo.method)
-			if (!rsp.ok) {}//TODO: handle error
+			if (!rsp.ok) { }//TODO: handle error
 
 			const redirectPath = routes.getBoardUri(board.id)
 			this.props.history.push(redirectPath, { board: removeFunctionsFrom(board) })
-		} catch(e) {
+		} catch (e) {
 			//TODO: handle error
 		}
 	}
+
+  	
 
 	render() {
 		const { board } = this.props
@@ -59,7 +62,6 @@ class SubscribeModal extends Component {
 					</Button>
 				</Modal.Actions>
 			</Modal>
-				
 		)
 	}
 }

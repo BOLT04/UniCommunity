@@ -45,10 +45,6 @@ messaging.requestPermission()
 })()
 console.log(12)*/
 messaging.usePublicVapidKey('BIOXb526ZIqXFesteNvXDtm39e2Y_hTnv-iQUlFzDmmtQ4WgnMROs3XlVfGBJjjlxkD42Fdxcd7twP7QvHgV23g')
-messaging.onMessage(payload => {
-    console.log(1)
-    console.log({payload})
-}, e => console.log({e}), c => console.log({c}))
 
 require('./common/storage-extensions')()
 

@@ -10,7 +10,6 @@ function Auth() {
     // Add a getter to user, so that it fetches the object from local storage when not available already.
     Object.defineProperty(this, 'user', {
         get: () => {
-            debugger
             return localStorage.getObject('user')
         }
     })
