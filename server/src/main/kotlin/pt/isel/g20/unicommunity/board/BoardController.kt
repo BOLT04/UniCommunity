@@ -1,5 +1,6 @@
 package pt.isel.g20.unicommunity.board
 
+import kotlinx.coroutines.*
 import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -16,6 +17,7 @@ import pt.isel.g20.unicommunity.common.Uri.BOARD_MEMBERS
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
 import pt.isel.g20.unicommunity.user.model.User
 import retrofit2.Call
+import retrofit2.HttpException
 import retrofit2.Response
 import javax.security.auth.callback.Callback
 
@@ -26,12 +28,28 @@ class BoardController(private val service: IBoardService) {
     @GetMapping(path = ["/retrofit"])
     fun getRetrofit(): List<Post>? {
         val service = RetrofitFactory.makeRetrofitService()
-        val response = service.getPosts()
-        val execute = response.execute()
-        if (execute.isSuccessful) {
-            return execute.body()
+        return runBlocking {
+            val response = withContext(Dispatchers.IO) {
+                service.getPosts()
+            }
+            //if (response.isSuccessful)
+                response.body()
+            //} else {
+            //    emptyList<List<Post>>()//"Error: ${response.code()}"
+            //}
+/*
+            try {
+                if (response.isSuccessful) {
+                    response.body()
+                } else {
+                    emptyList<List<Post>>()//"Error: ${response.code()}"
+                }
+            } catch (e: HttpException) {
+                emptyList<List<Post>>()//return "Exception ${e.message}"
+            } catch (e: Throwable) {
+                emptyList<List<Post>>()//return "Ooops: Something else went wrong"
+            }*/
         }
-        else return emptyList()
     }
 
 

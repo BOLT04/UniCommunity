@@ -1,9 +1,9 @@
 package pt.isel.g20.unicommunity.board
 
-import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.annotation.JsonProperty
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
 import retrofit2.http.GET
@@ -18,7 +18,7 @@ data class Post constructor(
 
 interface RetrofitService {
     @GET("/posts")
-    fun getPosts(): Call<List<Post>>
+    suspend fun getPosts(): Response<List<Post>>
 }
 
 object RetrofitFactory {

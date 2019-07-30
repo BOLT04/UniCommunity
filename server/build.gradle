@@ -12,6 +12,7 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
 repositories {
+	jcenter()
 	mavenCentral()
 }
 
@@ -31,8 +32,12 @@ dependencies {
     // https://mvnrepository.com/artifact/khttp/khttp
     //runtime group: 'khttp', name: 'khttp', version: '1.0.0'
 
+	// Retrofit
 	implementation 'com.squareup.retrofit2:retrofit:2.6.0'
 	implementation 'com.squareup.retrofit2:converter-jackson:2.5.0'
+
+	// Coroutines
+	implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1"
 }
 
 compileKotlin {
