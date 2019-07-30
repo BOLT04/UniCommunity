@@ -20,14 +20,15 @@ import pt.isel.g20.unicommunity.hateoas.ExtendedProblemJson
 import pt.isel.g20.unicommunity.hateoas.Link
 import pt.isel.g20.unicommunity.hateoas.ProblemJson
 import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
+import pt.isel.g20.unicommunity.user.service.IUserService
 
 @Configuration
 @ControllerAdvice
 @EnableWebMvc
-class InterceptorConfig(val authService: AuthService) : WebMvcConfigurer {
+class InterceptorConfig(val authService: AuthService, val userService: IUserService) : WebMvcConfigurer {
 
     override fun addInterceptors(registry: InterceptorRegistry) {
-        registry.addInterceptor(AuthorizationInterceptor(authService))
+        registry.addInterceptor(AuthorizationInterceptor(authService, userService))
     }
 //TODO: i cant set the default page start count to be '1' instead of '0'!!!!
     override fun addArgumentResolvers(resolvers: MutableList<HandlerMethodArgumentResolver>) {
