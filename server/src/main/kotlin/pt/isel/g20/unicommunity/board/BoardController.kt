@@ -15,10 +15,27 @@ import pt.isel.g20.unicommunity.board.model.*
 import pt.isel.g20.unicommunity.common.Uri.BOARD_MEMBERS
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
 import pt.isel.g20.unicommunity.user.model.User
+import retrofit2.Call
+import retrofit2.Response
+import javax.security.auth.callback.Callback
 
 @RestController
 @RequestMapping(produces = ["application/hal+json", "application/json", "application/vnd.collection+json"])
 class BoardController(private val service: IBoardService) {
+
+    @GetMapping(path = ["/retrofit"])
+    fun getRetrofit(): List<Post>? {
+        val service = RetrofitFactory.makeRetrofitService()
+        val response = service.getPosts()
+        val execute = response.execute()
+        if (execute.isSuccessful) {
+            return execute.body()
+        }
+        else return emptyList()
+    }
+
+
+
 
     @AuthorizationRequired
     @GetMapping(path = [BOARDS_ROUTE], produces = ["application/vnd.collection+json"])

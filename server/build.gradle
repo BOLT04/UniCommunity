@@ -29,8 +29,10 @@ dependencies {
 	// https://mvnrepository.com/artifact/com.github.jkcclemens/khttp
 	//compile group: 'com.github.jkcclemens', name: 'khttp', version: '0.1.0'
     // https://mvnrepository.com/artifact/khttp/khttp
-    runtime group: 'khttp', name: 'khttp', version: '1.0.0'
+    //runtime group: 'khttp', name: 'khttp', version: '1.0.0'
 
+	implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+	implementation 'com.squareup.retrofit2:converter-jackson:2.5.0'
 }
 
 compileKotlin {
