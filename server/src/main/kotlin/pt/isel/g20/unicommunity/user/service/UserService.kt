@@ -15,6 +15,7 @@ class UserService(val usersRepo: UserRepository, val boardsRepo: BoardRepository
     override fun getAllUsers(): Iterable<User> = usersRepo.findAll()
 
     override fun getUserById(userId: Long) = usersRepo.findByIdOrNull(userId) ?: throw NotFoundUserException()
+    override fun getUserByName(name: String) = usersRepo.findByName(name) ?: throw NotFoundUserException()
 
     override fun createUser(name: String, email: String, password: String, githubId: String?): User {
         if (getAllUsers().map { it.email }.contains(email)) {

@@ -54,6 +54,7 @@ compileTestKotlin {
 }
 
 repositories {
+	jcenter()
 	mavenCentral()
 	maven { url "https://repo.spring.io/snapshot" }
 	maven { url "https://repo.spring.io/milestone" }
@@ -77,13 +78,19 @@ dependencies {
 	compile "io.springfox:springfox-swagger2:2.9.2-SNAPSHOT"
 	compile "io.springfox:springfox-swagger-ui:2.9.2-SNAPSHOT"
 
+  // Test
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.2'
+  testImplementation 'org.junit.jupiter:junit-jupiter-api:5.4.2'
 	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+
+	// Retrofit HTTP Lib
+	implementation 'com.squareup.retrofit2:retrofit:2.6.0'
+	implementation 'com.squareup.retrofit2:converter-jackson:2.6.0'
+	implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
+	
+	// Coroutines
+	implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1"
 
 	// https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
 	compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.9'
 }
-
-
-

@@ -1,5 +1,6 @@
 package pt.isel.g20.unicommunity.board
 
+import kotlinx.coroutines.*
 import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -15,10 +16,64 @@ import pt.isel.g20.unicommunity.board.model.*
 import pt.isel.g20.unicommunity.common.Uri.BOARD_MEMBERS
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
 import pt.isel.g20.unicommunity.user.model.User
+import retrofit2.Call
+import retrofit2.HttpException
+import retrofit2.Response
+import javax.security.auth.callback.Callback
 
 @RestController
 @RequestMapping(produces = ["application/hal+json", "application/json", "application/vnd.collection+json"])
 class BoardController(private val service: IBoardService) {
+
+    @GetMapping(path = ["/retrofit"])
+    fun getRetrofit(): List<Post>? {
+        val service = RetrofitFactory.makeRetrofitService()
+        return runBlocking {
+            val response = withContext(Dispatchers.IO) {
+                service.getPosts()
+            }
+
+            //if (response.isSuccessful)
+                response.body()
+            //} else {
+            //    emptyList<List<Post>>()//"Error: ${response.code()}"
+            //}
+/*
+            try {
+                if (response.isSuccessful) {
+                    response.body()
+                } else {
+                    emptyList<List<Post>>()//"Error: ${response.code()}"
+                }
+            } catch (e: HttpException) {
+                emptyList<List<Post>>()//return "Exception ${e.message}"
+            } catch (e: Throwable) {
+                emptyList<List<Post>>()//return "Ooops: Something else went wrong"
+            }*/
+        }
+    }
+
+    @GetMapping(path = ["/retrofit/parallel"])
+    fun getRetrofitParallel(): List<Post> {
+        val service = RetrofitFactory.makeRetrofitService()
+        return runBlocking {
+            val blackboards = arrayOf(1, 2, 3, 4)
+            val promisses = blackboards.map {
+                async {
+                    service.getPosts()
+                }
+            }
+
+            //TODO: Promise.all()??
+            promisses.forEach {
+                it.await()
+            }
+            emptyList<Post>()
+        }
+    }
+
+
+
 
     @AuthorizationRequired
     @GetMapping(path = [BOARDS_ROUTE], produces = ["application/vnd.collection+json"])
@@ -116,8 +171,9 @@ class BoardController(private val service: IBoardService) {
     @PostMapping(path = [BOARD_MEMBERS], produces = ["application/hal+json"])
     fun addUserToBoard(
             @PathVariable boardId: Long,
-            @SessionAttribute("user") user: User): ResponseEntity<SingleBoardResponse>{
-        return service.addUserToBoard(boardId, user.id).let {
+            @SessionAttribute("user") user: User,
+            @RequestBody subscribeDto: SubscribeDto): ResponseEntity<SingleBoardResponse>{
+        return service.addUserToBoard(boardId, user.id, subscribeDto.token).let {
             val response = SingleBoardResponse(it)
 
             ResponseEntity

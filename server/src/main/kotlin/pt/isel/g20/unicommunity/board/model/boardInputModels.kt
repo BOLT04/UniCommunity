@@ -9,3 +9,5 @@ data class BoardDto @JsonCreator constructor(
     val blackboardNames: List<String>?,
     val hasForum: Boolean?
 )
+
+data class SubscribeDto @JsonCreator constructor(val token: String)
