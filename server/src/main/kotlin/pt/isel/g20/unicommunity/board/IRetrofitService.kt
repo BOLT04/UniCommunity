@@ -22,7 +22,7 @@ interface RetrofitService {
 }
 
 object RetrofitFactory {
-    const val BASE_URL = "https://jsonplaceholder.typicode.com"
+    private const val BASE_URL = "https://jsonplaceholder.typicode.com"
 
     fun makeRetrofitService(): RetrofitService {
         return Retrofit.Builder()

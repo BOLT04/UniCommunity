@@ -94,11 +94,11 @@ class AuthorizationInterceptor(
     private val objectMapper = ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
     fun sendPost(token: String): TokenIntrospect {
-        val url = URL("http://35.242.140.186/openid-connect-server-webapp/introspect")
+        val url = URL("http://localhost:8080/openid-connect-server-webapp/introspect")
 
         with(url.openConnection() as HttpURLConnection) {
             requestMethod = "POST"
-            val userCredentials = "caf3021e-1da6-41e6-9d38-d994fe7bb2a0:NavdJNvyaDNYi6beGakeaJrFLytxKoG4NxcxtA77nR-PKxfOLDBPsmXQlsVAIuFpaALEZA5W-GrvwH6v_TPkJQ"
+            val userCredentials = "1c5f3ee5-a077-498e-8093-f77c70b2a677:AOOjTBV3mORH7th3uH0ZQzQ53MkkYExzAfceONi1qCw6kZKb6NY4jIXX7iQQrppNqgZ0NgayzdkCQF8lA3gWj9M"
             val basicAuth = "Basic " + String(Base64.getEncoder().encode(userCredentials.toByteArray()))
 
             this.setRequestProperty("Authorization", basicAuth)

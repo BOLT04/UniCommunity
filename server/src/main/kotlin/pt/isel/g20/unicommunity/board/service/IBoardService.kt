@@ -28,7 +28,7 @@ interface IBoardService {
     fun deleteBoard(boardId: Long):Board
 
     @Throws(NotFoundBoardException::class, NotFoundUserException::class)
-    fun addUserToBoard(boardId: Long, userId: Long): Board
+    fun addUserToBoard(boardId: Long, userId: Long, token: String): Board
 
     @Throws(NotFoundBoardException::class, NotFoundUserException::class)
     fun removeUserFromBoard(boardId: Long, userId: Long): Board

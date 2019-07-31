@@ -1,13 +1,20 @@
 package pt.isel.g20.unicommunity.board.service
 
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import pt.isel.g20.unicommunity.blackboard.service.IBlackboardService
+import pt.isel.g20.unicommunity.board.RetrofitFactory
 import pt.isel.g20.unicommunity.board.exception.InvalidTemplateConfigurationException
 import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
+import pt.isel.g20.unicommunity.board.exception.SubscribeToTopicException
 import pt.isel.g20.unicommunity.board.model.Board
+import pt.isel.g20.unicommunity.fcm.FcmServiceFactory
 import pt.isel.g20.unicommunity.forum.service.IForumService
 import pt.isel.g20.unicommunity.repository.BoardRepository
 import pt.isel.g20.unicommunity.repository.TemplateRepository
@@ -107,7 +114,9 @@ class BoardService(
         return boardsRepo.save(newBoard)
     }
 
-    override fun addUserToBoard(boardId: Long, userId: Long):Board {
+    val fcmService = FcmServiceFactory.makeFcmServiceService()
+
+    override fun addUserToBoard(boardId: Long, userId: Long, token: String): Board {
         val board = getBoardById(boardId)
         val user = usersRepo.findByIdOrNull(userId) ?: throw NotFoundUserException()
 
@@ -117,7 +126,27 @@ class BoardService(
         val newBoard = boardsRepo.save(board)
         usersRepo.save(user)
 
-        return newBoard
+        return runBlocking {
+            val promisses = board.blackBoards.map {
+                async {
+                    //TODO: This topic name has a problem. Since we are separating the ids by the char '-', then
+                    //TODO: the blackboard name can't contain that character.
+                    //TODO: Also, I'm only using the blackboard name so that the topic name is more readable (not just ids)
+                    val topicName = "${board.id}-${it.id}-${it.name}"
+
+                    fcmService.subscribeAppToTopic(token, topicName)
+                }
+            }
+
+            promisses.forEach {
+                val rsp = it.await()
+                println("in addUserToBoard: ${rsp.code()}")
+                if (!rsp.isSuccessful) throw SubscribeToTopicException()
+            }
+
+            println("in addUserToBoard: returning")
+            newBoard
+        }
     }
 
     override fun removeUserFromBoard(boardId: Long, userId: Long):Board {

@@ -17,7 +17,6 @@ repositories {
 }
 
 dependencies {
-	//implementation "org.springframework.boot:spring-boot-starter-security"
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
@@ -25,17 +24,12 @@ dependencies {
 	implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
 	runtimeOnly 'com.h2database:h2'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
-	// HTTP Lib
-	// https://mvnrepository.com/artifact/com.github.jkcclemens/khttp
-	//compile group: 'com.github.jkcclemens', name: 'khttp', version: '0.1.0'
-    // https://mvnrepository.com/artifact/khttp/khttp
-    //runtime group: 'khttp', name: 'khttp', version: '1.0.0'
-
-	// Retrofit
+	
+	// Retrofit HTTP Lib
 	implementation 'com.squareup.retrofit2:retrofit:2.6.0'
-	implementation 'com.squareup.retrofit2:converter-jackson:2.5.0'
-
+	implementation 'com.squareup.retrofit2:converter-jackson:2.6.0'
+	implementation 'com.squareup.okhttp3:logging-interceptor:3.12.1'
+	
 	// Coroutines
 	implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.1"
 }

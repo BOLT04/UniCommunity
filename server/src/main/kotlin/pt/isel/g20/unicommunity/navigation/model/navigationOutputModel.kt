@@ -11,7 +11,7 @@ class NavigationResponse(userId: Long)
                 "self" to Link(Uri.NAVIGATION_ROUTE),
                 Rels.HOME to Link(Uri.HOME_ROUTE),
                 Rels.LOGOUT to Link("/logout"),
-                Rels.USER_PROFILE to Link("/profile"),
+                Rels.USER_PROFILE to Link(Uri.forSingleUserText(userId)),
                 Rels.MY_BOARDS to Link("/myBoards"),
                 Rels.GET_MULTIPLE_BOARDS to Link(Uri.forAllBoards()),
                 Rels.CREATE_BOARD to Link(Uri.forAllBoards())

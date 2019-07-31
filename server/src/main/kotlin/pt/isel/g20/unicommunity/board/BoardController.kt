@@ -32,6 +32,7 @@ class BoardController(private val service: IBoardService) {
             val response = withContext(Dispatchers.IO) {
                 service.getPosts()
             }
+
             //if (response.isSuccessful)
                 response.body()
             //} else {
@@ -49,6 +50,25 @@ class BoardController(private val service: IBoardService) {
             } catch (e: Throwable) {
                 emptyList<List<Post>>()//return "Ooops: Something else went wrong"
             }*/
+        }
+    }
+
+    @GetMapping(path = ["/retrofit/parallel"])
+    fun getRetrofitParallel(): List<Post> {
+        val service = RetrofitFactory.makeRetrofitService()
+        return runBlocking {
+            val blackboards = arrayOf(1, 2, 3, 4)
+            val promisses = blackboards.map {
+                async {
+                    service.getPosts()
+                }
+            }
+
+            //TODO: Promise.all()??
+            promisses.forEach {
+                it.await()
+            }
+            emptyList<Post>()
         }
     }
 
@@ -151,8 +171,9 @@ class BoardController(private val service: IBoardService) {
     @PostMapping(path = [BOARD_MEMBERS], produces = ["application/hal+json"])
     fun addUserToBoard(
             @PathVariable boardId: Long,
-            @SessionAttribute("user") user: User): ResponseEntity<SingleBoardResponse>{
-        return service.addUserToBoard(boardId, user.id).let {
+            @SessionAttribute("user") user: User,
+            @RequestBody subscribeDto: SubscribeDto): ResponseEntity<SingleBoardResponse>{
+        return service.addUserToBoard(boardId, user.id, subscribeDto.token).let {
             val response = SingleBoardResponse(it)
 
             ResponseEntity
