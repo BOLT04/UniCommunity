@@ -1,20 +1,17 @@
 package pt.isel.g20.unicommunity.board.service
 
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import pt.isel.g20.unicommunity.blackboard.service.IBlackboardService
-import pt.isel.g20.unicommunity.board.RetrofitFactory
 import pt.isel.g20.unicommunity.board.exception.InvalidTemplateConfigurationException
 import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
 import pt.isel.g20.unicommunity.board.exception.SubscribeToTopicException
 import pt.isel.g20.unicommunity.board.model.Board
-import pt.isel.g20.unicommunity.fcm.FcmServiceFactory
+import pt.isel.g20.unicommunity.fcm.GoogleServiceFactory
 import pt.isel.g20.unicommunity.forum.service.IForumService
 import pt.isel.g20.unicommunity.repository.BoardRepository
 import pt.isel.g20.unicommunity.repository.TemplateRepository
@@ -114,7 +111,7 @@ class BoardService(
         return boardsRepo.save(newBoard)
     }
 
-    val fcmService = FcmServiceFactory.makeFcmServiceService()
+    val iidService = GoogleServiceFactory.makeIidServiceService()
 
     override fun addUserToBoard(boardId: Long, userId: Long, token: String): Board {
         val board = getBoardById(boardId)
@@ -127,18 +124,15 @@ class BoardService(
         usersRepo.save(user)
 
         return runBlocking {
-            val promisses = board.blackBoards.map {
+            val promises = board.blackBoards.map {
                 async {
-                    //TODO: This topic name has a problem. Since we are separating the ids by the char '-', then
-                    //TODO: the blackboard name can't contain that character.
-                    //TODO: Also, I'm only using the blackboard name so that the topic name is more readable (not just ids)
                     val topicName = "${board.id}-${it.id}-${it.name}"
 
-                    fcmService.subscribeAppToTopic(token, topicName)
+                    iidService.subscribeAppToTopic(token, topicName)
                 }
             }
 
-            promisses.forEach {
+            promises.forEach {
                 val rsp = it.await()
                 println("in addUserToBoard: ${rsp.code()}")
                 if (!rsp.isSuccessful) throw SubscribeToTopicException()

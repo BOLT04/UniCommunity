@@ -1,15 +1,18 @@
 package pt.isel.g20.unicommunity.blackboardItem.service
 
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import pt.isel.g20.unicommunity.blackboard.exception.NotFoundBlackboardException
 import pt.isel.g20.unicommunity.blackboardItem.exception.NotFoundBlackboardItemException
 import pt.isel.g20.unicommunity.blackboardItem.model.BlackboardItem
 import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
-import pt.isel.g20.unicommunity.repository.BlackboardItemRepository
-import pt.isel.g20.unicommunity.repository.BlackboardRepository
-import pt.isel.g20.unicommunity.repository.BoardRepository
-import pt.isel.g20.unicommunity.repository.UserRepository
+import pt.isel.g20.unicommunity.board.exception.SubscribeToTopicException
+import pt.isel.g20.unicommunity.fcm.FcmMessage
+import pt.isel.g20.unicommunity.fcm.GoogleServiceFactory
+import pt.isel.g20.unicommunity.fcm.UserModuleConfig
+import pt.isel.g20.unicommunity.repository.*
 import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
 import pt.isel.g20.unicommunity.user.model.User
 
@@ -18,7 +21,8 @@ class BlackboardItemService(
         val boardsRepo: BoardRepository,
         val blackboardsRepo: BlackboardRepository,
         val blackboardItemsRepo: BlackboardItemRepository,
-        val usersRepo: UserRepository
+        val usersRepo: UserRepository,
+        val userModuleConfigRepo: UserModuleConfigRepository
 ) : IBlackboardItemService {
     override fun getAllBlackboardItems(boardId: Long, bbId: Long): Iterable<BlackboardItem> {
             boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
@@ -27,6 +31,9 @@ class BlackboardItemService(
 
     override fun getBlackboardItemById(boardId: Long, bbId: Long, itemId: Long) =
             blackboardItemsRepo.findByIdOrNull(itemId) ?: throw NotFoundBlackboardItemException()
+
+
+    val fcmService = GoogleServiceFactory.makeFcmServiceService()
 
     override fun createBlackboardItem(
             boardId: Long,
@@ -47,7 +54,28 @@ class BlackboardItemService(
         blackboard.items.add(newBlackboardItem)
         blackboardsRepo.save(blackboard)
 
-        return newBlackboardItem
+        val userConfigs = userModuleConfigRepo.findByUserIdAndBlackboardId(userId, blackboard.id)
+
+        return runBlocking {
+            val promise = async {
+                    val body = FcmMessage(
+                            to= "/topics/${blackboard.name}",
+                            data= mutableMapOf(
+                                "notificationLevel" to userConfigs.notificationLevel
+                            ),
+                            notification= mutableMapOf(
+                                "title" to name,
+                                "body" to content
+                            )
+                    )
+                    fcmService.sendMessageToTopic(body)
+                }
+
+            val rsp = promise.await()
+            if (!rsp.isSuccessful) throw SubscribeToTopicException()
+
+            newBlackboardItem
+        }
     }
 
     override fun editBlackboardItem(
