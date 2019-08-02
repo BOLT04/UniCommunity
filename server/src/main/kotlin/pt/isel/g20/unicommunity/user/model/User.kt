@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import pt.isel.g20.unicommunity.blackboardItem.model.BlackboardItem
 import pt.isel.g20.unicommunity.board.model.Board
 import pt.isel.g20.unicommunity.comment.model.Comment
+import pt.isel.g20.unicommunity.fcm.UserModuleConfig
 import pt.isel.g20.unicommunity.forumItem.model.ForumItem
 import javax.persistence.*
 import javax.persistence.ManyToMany
@@ -46,6 +47,10 @@ class User(
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
     val bbItems: MutableList<BlackboardItem> = mutableListOf()
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY)
+    var userConfigs: MutableList<UserModuleConfig> = mutableListOf()
 
     constructor() : this("", "", "", "", null)
     constructor(
