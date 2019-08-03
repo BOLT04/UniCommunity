@@ -28,27 +28,16 @@ export default class Login extends Component {
 
   submitLoginHandler = async e => {
     try {
-      const links = await auth.asyncLogin(this.props.location.state.serverHref, this.emailVal, this.passVal)
+      //if (!this.addServerHrefOf('/rels/login'))
+        //throw new Error('Error: Not possible to contact the server!')
+      
+      const success = await auth.asyncLogin()
+      if (!success) throw new Error('')
 
-      if (links) {
-        this.props.reRender() // Update Navbar
-        //this.props.requestNotificationPermission()
-        /*
-        try {
-          debugger
-            const messaging = firebase.messaging()
-            await messaging.requestPermission()
+      this.props.reRender() // Update Navbar
 
-            const token = await messaging.getToken()
-            console.log(token)
-        } catch (e) {
-            alert('You won\'t receive notifications.')
-        }*/
-
-debugger
-        const redirectPath = this.props.location.state.redirectTo || routes.home
-        this.props.history.push(redirectPath)
-      }
+      const redirectPath = this.props.location.state.redirectTo || routes.home
+      this.props.history.push(redirectPath)
     } catch (error) {
       if (error.json) {
         const errorBody = await error.json()
@@ -66,16 +55,27 @@ debugger
     const { error } = this.state
 
     return (
-      <div className="ui middle aligned center aligned grid">
-        <div className="column">
-          <h2 className="ui teal header">
-            <img src={`${process.env.PUBLIC_URL}/img/logo.png`} className="image"></img>
-            <div className="content">
-              Log-in
-            </div>
-          </h2>
+      <>
+        <div className='ui middle aligned center aligned grid'>
+          <div className='column'>
+            <h2 className='ui teal header'>
+              <img src={`${process.env.PUBLIC_URL}/favicon.ico`} className='image'></img>
+              <div className='content'>
+                Log-in
+              </div>
+            </h2>
 
-{/*
+            <form className='ui large form'>
+              <div className='ui stacked segment'>
+                <div className='ui fluid large teal submit button' onClick={this.submitLoginHandler}>
+                  Login
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        { error && <ErrorMessage error={error} /> }
+        {/*
           <Form>
             <Form.Field>
               <label>Username</label>
@@ -101,38 +101,7 @@ debugger
             </Form.Field>
           </Form>
           */}
-         
-          <form className='ui large form'>
-            <div className='ui stacked segment'>
-              <div className='field'>
-                <div className='ui left icon input'>
-                  <i className='user icon' />
-                  <input 
-                    type='text'
-                    name='email'
-                    placeholder='Email'
-                    onChange={this.onEmailChange} />
-                </div>
-              </div>
-              <div className='field'>
-                <div className='ui left icon input'>
-                  <i className='lock icon' />
-                  <input 
-                    type='password'
-                    name='password'
-                    placeholder='Password'
-                    onChange={this.onPasswordChange} />
-                </div>
-              </div>
-              <div className='ui fluid large teal submit button' onClick={this.submitLoginHandler}>
-                Login
-              </div>
-            </div>
-          </form>
-        </div>
-
-        { error && <ErrorMessage error={error} /> }
-      </div>
+      </>
     )
   }
 }

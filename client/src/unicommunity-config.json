@@ -2,7 +2,7 @@
     "clientHost": "localhost",
     "serverHost": "localhost",
     "clientPort": 3000,
-    "serverPort": 8080,
+    "serverPort": 443,
     "serverEntryPoint": "/home",
     "firebase": {
         "apiKey": "AIzaSyDUKMc1kpuv192IesEX12OPZS2XFT9N3-8",
@@ -12,5 +12,7 @@
         "storageBucket": "unicommunity-f7bc8.appspot.com",
         "messagingSenderId": "256988232026",
         "appId": "1:256988232026:web:1b5543475b3d874c"
-    }
+    },
+    "authority": "http://localhost:8080/openid-connect-server-webapp",
+    "clientId": "683c49ec-8892-4860-bb04-3948a69d4906"
 }

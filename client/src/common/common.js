@@ -31,6 +31,7 @@ export function itemsToModelRepr(items) {
 
 const config = require('../unicommunity-config.json')
 const baseUri = `http://${config.serverHost}:${config.serverPort}`
+export const baseClientUri = `http://${config.clientHost}:${config.clientPort}`
 
 /**
  * Builds the uri to use in a fetch request.
@@ -116,10 +117,10 @@ export function asyncRelativeHttpRequest(relativeUrl, method, contentType, body)
 // Auxiliary function
 function fillAuthHeaderIfAuthenticated() {
     let options = {}
-    const token = localStorage.getItem('authToken')
+    const token = localStorage.getItem('authToken')//TODO: make a constant with 'authToken' since its used in /service/auth.js
     if (token)
         options.headers = {
-            'Authorization': `Basic ${token}`
+            Authorization: `Bearer ${token}`
         }
         
     return options

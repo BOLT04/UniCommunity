@@ -1,3 +1,5 @@
+// This file is the application's entry point. In here css files and scripts are loaded
+// to be used for the rest of the app. This is also where React hooks into the DOM in the root HTML element.
 import React from 'react'
 import ReactDOM from 'react-dom'
 
@@ -14,7 +16,7 @@ import {
 import asyncParseHalFormRsp from './service/mapper/halForms-mapper'
 
 import config from './unicommunity-config.json'
-
+import { userManager } from './service/auth'
 import UtilsContext, { withUtilsConsumer } from './components/withUtilsConsumer'
 
 // The core Firebase JS SDK is always required
@@ -31,6 +33,8 @@ messaging.requestPermission()
 })
 .then(console.log)
 .catch(e => console.log(`error: ${e.message}`))
+
+userManager.signinPopupCallback()
 
 /*;
 (async () => {
