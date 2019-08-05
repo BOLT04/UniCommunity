@@ -6,19 +6,7 @@ import pt.isel.g20.unicommunity.common.Rels
 import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.hateoas.*
 
-class SingleBlackboardResponse(blackboard: Blackboard)
-    : HalObject(
-        mutableMapOf(
-                "self" to Link(Uri.forSingleBlackboardText(blackboard.board.id, blackboard.id)),
-                Rels.GET_MULTIPLE_BLACKBOARDS to Link(Uri.forAllBlackboards(blackboard.board.id)),
-                Rels.EDIT_BLACKBOARD to Link(Uri.forSingleBlackboardText(blackboard.board.id, blackboard.board.id)),
-                Rels.DELETE_BLACKBOARD to Link(Uri.forSingleBlackboardText(blackboard.board.id, blackboard.board.id)),
-
-                Rels.CREATE_BLACKBOARDITEM to Link(Uri.forAllBlackboardItems(blackboard.board.id, blackboard.id)),
-                Rels.GET_MULTIPLE_BLACKBOARDITEMS to Link(Uri.forAllBlackboardItems(blackboard.board.id, blackboard.id))
-
-        )
-){
+class SingleBlackboardResponse(blackboard: Blackboard) : HalObject(){
     val id = blackboard.id
     val name : String = blackboard.name
     val description : String? = blackboard.description
@@ -26,9 +14,12 @@ class SingleBlackboardResponse(blackboard: Blackboard)
 
     init {
         val board = blackboard.board
+        val boardId = board.id
+        val blackboardId = blackboard.id
+
         val partialBoard = PartialBoardObject(
                 board.name,
-                mapOf("self" to Link(Uri.forSingleBoardText(board.id)))
+                mapOf("self" to Link(Uri.forSingleBoardText(boardId)))
         )
         super._embedded?.putAll(sequenceOf(
                 Rels.GET_SINGLE_BOARD to listOf(partialBoard)
@@ -40,10 +31,20 @@ class SingleBlackboardResponse(blackboard: Blackboard)
                         PartialBlackboardItemObject(
                                 it.name,
                                 it.author.name,
-                                mapOf("self" to Link(Uri.forSingleBlackboardItemText(board.id, it.blackboard.id, it.id)))
+                                mapOf("self" to Link(Uri.forSingleBlackboardItemText(boardId, blackboardId, it.id)))
                         )
                     }
             ))
+        
+        super._links?.putAll(sequenceOf(
+                "self" to Link(Uri.forSingleBlackboardText(boardId, blackboardId)),
+                Rels.GET_MULTIPLE_BLACKBOARDS to Link(Uri.forAllBlackboards(boardId)),
+                Rels.EDIT_BLACKBOARD to Link(Uri.forSingleBlackboardText(boardId, blackboardId)),
+                Rels.DELETE_BLACKBOARD to Link(Uri.forSingleBlackboardText(boardId, blackboardId)),
+
+                Rels.CREATE_BLACKBOARDITEM to Link(Uri.forAllBlackboardItems(boardId, blackboardId)),
+                Rels.GET_MULTIPLE_BLACKBOARDITEMS to Link(Uri.forAllBlackboardItems(boardId, blackboardId))
+        ))
     }
 }
 
