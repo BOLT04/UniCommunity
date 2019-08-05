@@ -39,3 +39,9 @@ class MultipleBlackboardItemsResponse(
         ),
         items = blackboards
 )
+
+class PartialBlackboardItemObject(
+        val name: String,
+        val author: String,
+        val _links: Map<String, Link>
+) : HalResourceObject()
