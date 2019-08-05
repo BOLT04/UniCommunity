@@ -22,3 +22,9 @@ class MultipleTemplatesResponse(
         ),
         items = templates
 )
+
+class PartialTemplateObject(
+        val name: String,
+        val hasForum: Boolean,
+        val _links: Map<String, Link>
+) : HalResourceObject()
