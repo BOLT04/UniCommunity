@@ -41,7 +41,7 @@ class SingleForumItemResponse(forumItem: ForumItem) : HalObject(mutableMapOf(), 
                 mapOf("self" to Link(Uri.forSingleUserText(author.id)))
         )
         super._embedded?.putAll(sequenceOf(
-                Rels.GET_SINGLE_BOARD to listOf(partialUser)
+                Rels.GET_SINGLE_USER to listOf(partialUser)
         ))
 
         if(forumItem.comments.size != 0)
