@@ -6,11 +6,11 @@ import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.forumItem.model.PartialForumItemObject
 import pt.isel.g20.unicommunity.hateoas.*
 
-class SingleForumResponse(forum: Forum)
-    : HalObject(){
+class SingleForumResponse(forum: Forum) : HalObject(){
     init {
         val board = forum.board
         val boardId = board.id
+
         val partialBoard = PartialBoardObject(
                 board.name,
                 mapOf("self" to Link(Uri.forSingleBoardText(boardId)))
@@ -38,3 +38,7 @@ class SingleForumResponse(forum: Forum)
         ))
     }
 }
+
+class PartialForumObject(
+        val _links: Map<String, Link>
+) : HalResourceObject()

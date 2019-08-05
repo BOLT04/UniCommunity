@@ -8,8 +8,7 @@ import javax.persistence.*
 class Forum(
         @Id
         var id: Long,
-        @OneToOne var board: Board,
-        var isAllowImagePosts: Boolean = false
+        @OneToOne var board: Board
 ) {
     @OneToMany(fetch = FetchType.LAZY)
     @JoinColumn

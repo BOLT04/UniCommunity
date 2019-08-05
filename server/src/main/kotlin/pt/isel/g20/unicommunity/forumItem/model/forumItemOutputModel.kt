@@ -4,40 +4,38 @@ import pt.isel.g20.unicommunity.board.model.PartialBoardObject
 import pt.isel.g20.unicommunity.comment.model.PartialCommentObject
 import pt.isel.g20.unicommunity.common.Rels
 import pt.isel.g20.unicommunity.common.Uri
+import pt.isel.g20.unicommunity.forum.model.PartialForumObject
 import pt.isel.g20.unicommunity.hateoas.*
 import pt.isel.g20.unicommunity.user.model.PartialUserObject
 
-class SingleForumItemResponse(forumItem: ForumItem)
-    : HalObject(
-        mutableMapOf(
-                "self" to Link(Uri.forSingleForumItemText(forumItem.forum.board.id, forumItem.id)),
-                Rels.NAVIGATION to Link(Uri.NAVIGATION_ROUTE),
-                Rels.GET_SINGLE_BOARD to Link(Uri.forSingleBoardText(forumItem.forum.board.id)),
-                Rels.GET_SINGLE_FORUM to Link(Uri.forSingleForumText(forumItem.forum.board.id)),
-                Rels.CREATE_FORUMITEM to Link(Uri.forAllForumItems(forumItem.forum.board.id)),
-                Rels.GET_MULTIPLE_FORUMITEMS to Link(Uri.forAllForumItems(forumItem.forum.board.id)),
-                Rels.EDIT_FORUMITEM to Link(Uri.forSingleForumItemText(forumItem.forum.board.id, forumItem.id)),
-                Rels.DELETE_FORUMITEM to Link(Uri.forSingleForumItemText(forumItem.forum.board.id, forumItem.id)),
-
-                Rels.GET_MULTIPLE_COMMENTS to Link(Uri.forAllComments(forumItem.forum.board.id, forumItem.id)),
-                Rels.CREATE_COMMENT to Link(Uri.forAllComments(forumItem.forum.board.id, forumItem.id))
-        )
-){
+class SingleForumItemResponse(forumItem: ForumItem) : HalObject(){
     val name : String = forumItem.name
     val content : String = forumItem.content
     val createdAt : String = forumItem.createdAt.toString()
 
     init{
         val board = forumItem.forum.board
+        val forum = forumItem.forum
+        val author = forumItem.author
+        val boardId = board.id
+        val forumId = forum.id
+        val forumItemId = forumItem.id
+
         val partialBoard = PartialBoardObject(
                 board.name,
-                mapOf("self" to Link(Uri.forSingleBoardText(board.id)))
+                mapOf("self" to Link(Uri.forSingleBoardText(boardId)))
         )
         super._embedded?.putAll(sequenceOf(
                 Rels.GET_SINGLE_BOARD to listOf(partialBoard)
         ))
 
-        val author = forumItem.author
+        val partialForum = PartialForumObject(
+                mapOf("self" to Link(Uri.forSingleForumText(forum.id)))
+        )
+        super._embedded?.putAll(sequenceOf(
+                Rels.GET_SINGLE_FORUM to listOf(partialForum)
+        ))
+
         val partialUser = PartialUserObject(
                 author.name,
                 mapOf("self" to Link(Uri.forSingleUserText(author.id)))
@@ -52,10 +50,24 @@ class SingleForumItemResponse(forumItem: ForumItem)
                         PartialCommentObject(
                                 it.content,
                                 if(it.anonymousComment) null else it.author.name,
-                                mapOf("self" to Link(Uri.forSingleCommentText(board.id, forumItem.id, it.id)))
+                                mapOf("self" to Link(Uri.forSingleCommentText(boardId, forumItemId, it.id)))
                         )
                     }
             ))
+        
+        super._links?.putAll(sequenceOf(
+                "self" to Link(Uri.forSingleForumItemText(boardId, forumId)),
+                Rels.GET_SINGLE_BOARD to Link(Uri.forSingleBoardText(boardId)),
+                Rels.GET_SINGLE_FORUM to Link(Uri.forSingleForumText(boardId)),
+
+                Rels.CREATE_FORUMITEM to Link(Uri.forAllForumItems(boardId)),
+                Rels.GET_MULTIPLE_FORUMITEMS to Link(Uri.forAllForumItems(boardId)),
+                Rels.EDIT_FORUMITEM to Link(Uri.forSingleForumItemText(boardId, forumId)),
+                Rels.DELETE_FORUMITEM to Link(Uri.forSingleForumItemText(boardId, forumId)),
+
+                Rels.GET_MULTIPLE_COMMENTS to Link(Uri.forAllComments(boardId, forumId)),
+                Rels.CREATE_COMMENT to Link(Uri.forAllComments(boardId, forumId))
+        ))
     }
 }
 
