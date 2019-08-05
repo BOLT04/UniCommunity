@@ -8,16 +8,17 @@ import pt.isel.g20.unicommunity.hateoas.*
 import pt.isel.g20.unicommunity.user.model.PartialUserObject
 
 class SingleBlackboardItemResponse(bbItem: BlackboardItem) : HalObject(){
-    val name : String = bbItem.name
-    val content : String = bbItem.content
-    val createdAt: String = bbItem.createdAt.toString()
+    val id = bbItem.id
+    val name = bbItem.name
+    val content = bbItem.content
+    val createdAt = bbItem.createdAt.toString()
 
     init{
         val board = bbItem.blackboard.board
         val blackboard = bbItem.blackboard
         val author = bbItem.author
         val boardId = board.id
-        val blackboardId = blackboard.id
+        val id = blackboard.id
         val bbItemId = bbItem.id
 
         val partialBoard = PartialBoardObject(
@@ -30,7 +31,7 @@ class SingleBlackboardItemResponse(bbItem: BlackboardItem) : HalObject(){
 
         val partialBlackboard = PartialBlackboardObject(
                 board.name,
-                mapOf("self" to Link(Uri.forSingleBlackboardText(boardId,blackboardId)))
+                mapOf("self" to Link(Uri.forSingleBlackboardText(boardId, id)))
         )
         super._embedded?.putAll(sequenceOf(
                 Rels.GET_SINGLE_BLACKBOARD to listOf(partialBlackboard)
@@ -45,11 +46,11 @@ class SingleBlackboardItemResponse(bbItem: BlackboardItem) : HalObject(){
         ))
 
         super._links?.putAll(sequenceOf(
-                "self" to Link(Uri.forSingleBlackboardItemText(boardId, blackboardId, bbItemId )),
-                Rels.CREATE_BLACKBOARDITEM to Link(Uri.forAllBlackboardItems(boardId, blackboardId)),
-                Rels.GET_MULTIPLE_BLACKBOARDITEMS to Link(Uri.forAllBlackboardItems(boardId, blackboardId)),
-                Rels.EDIT_BLACKBOARDITEM to Link(Uri.forSingleBlackboardItemText(boardId, blackboardId, bbItemId)),
-                Rels.DELETE_BLACKBOARDITEM to Link(Uri.forSingleBlackboardItemText(boardId, blackboardId, bbItemId))
+                "self" to Link(Uri.forSingleBlackboardItemText(boardId, id, bbItemId )),
+                Rels.CREATE_BLACKBOARDITEM to Link(Uri.forAllBlackboardItems(boardId, id)),
+                Rels.GET_MULTIPLE_BLACKBOARDITEMS to Link(Uri.forAllBlackboardItems(boardId, id)),
+                Rels.EDIT_BLACKBOARDITEM to Link(Uri.forSingleBlackboardItemText(boardId, id, bbItemId)),
+                Rels.DELETE_BLACKBOARDITEM to Link(Uri.forSingleBlackboardItemText(boardId, id, bbItemId))
         ))
     }
 }

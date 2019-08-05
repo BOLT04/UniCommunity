@@ -7,32 +7,35 @@ import pt.isel.g20.unicommunity.forumItem.model.PartialForumItemObject
 import pt.isel.g20.unicommunity.hateoas.*
 import pt.isel.g20.unicommunity.user.model.PartialUserObject
 
-class SingleCommentResponse(comment: Comment)
-    : HalObject(){
-    val content : String = comment.content
-    val createdAt: String = comment.createdAt.toString()
+class SingleCommentResponse(comment: Comment) : HalObject(){
+    val id = comment.id
+    val content  = comment.content
+    val createdAt = comment.createdAt.toString()
 
     init{
         val board = comment.forumItem.forum.board
+        val forumItem = comment.forumItem
+        val author = comment.author
+        val boardId = board.id
+        val forumItemId = forumItem.id
+
         val partialBoard = PartialBoardObject(
                 board.name,
-                mapOf("self" to Link(Uri.forSingleBoardText(board.id)))
+                mapOf("self" to Link(Uri.forSingleBoardText(boardId)))
         )
         super._embedded?.putAll(sequenceOf(
                 Rels.GET_SINGLE_BOARD to listOf(partialBoard)
         ))
 
-        val forumItem = comment.forumItem
         val partialForumItem = PartialForumItemObject(
                 forumItem.name,
                 if(comment.anonymousComment) null else forumItem.author.name,
-                mapOf("self" to Link(Uri.forSingleForumItemText(board.id, forumItem.id)))
+                mapOf("self" to Link(Uri.forSingleForumItemText(boardId, forumItemId)))
         )
         super._embedded?.putAll(sequenceOf(
                 Rels.GET_SINGLE_FORUMITEM to listOf(partialForumItem)
         ))
 
-        val author = comment.author
         val partialUser = PartialUserObject(
                 author.name,
                 mapOf("self" to Link(Uri.forSingleUserText(author.id)))
@@ -43,31 +46,31 @@ class SingleCommentResponse(comment: Comment)
 
         super._links?.putAll(sequenceOf(
                 "self" to Link(Uri.forSingleCommentText(
-                        board.id,
-                        forumItem.id,
-                        comment.id
+                        boardId,
+                        forumItemId,
+                        id
                 )),
                 Rels.GET_SINGLE_FORUMITEM to Link(Uri.forSingleForumItemText(
-                        board.id,
-                        forumItem.id
+                        boardId,
+                        forumItemId
                 )),
                 Rels.CREATE_COMMENT to Link(Uri.forAllComments(
-                        board.id,
-                        forumItem.id
+                        boardId,
+                        forumItemId
                 )),
                 Rels.GET_MULTIPLE_COMMENTS to Link(Uri.forAllComments(
-                        board.id,
-                        forumItem.id
+                        boardId,
+                        forumItemId
                 )),
                 Rels.EDIT_COMMENT to Link(Uri.forSingleCommentText(
-                        board.id,
-                        forumItem.id,
-                        comment.id
+                        boardId,
+                        forumItemId,
+                        id
                 )),
                 Rels.DELETE_COMMENT to Link(Uri.forSingleCommentText(
-                        board.id,
-                        forumItem.id,
-                        comment.id
+                        boardId,
+                        forumItemId,
+                        id
                 ))
         ))
     }

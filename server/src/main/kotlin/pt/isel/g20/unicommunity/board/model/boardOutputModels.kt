@@ -5,19 +5,16 @@ import pt.isel.g20.unicommunity.blackboard.model.PartialBlackboardObject
 import pt.isel.g20.unicommunity.common.Rels
 import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.common.getFirstPageable
-import pt.isel.g20.unicommunity.common.getLastPage
 import pt.isel.g20.unicommunity.hateoas.*
 import pt.isel.g20.unicommunity.template.model.PartialTemplateObject
 import pt.isel.g20.unicommunity.user.model.PartialUserObject
 
 class SingleBoardResponse(board: Board) : HalObject() {
-    val name : String = board.name
     val id : Long = board.id
+    val name : String = board.name
     val description : String? = board.description
 
     init {
-        val boardId = board.id
-
         val template = board.template
         val partialTemplate = PartialTemplateObject(
                 template.name,
@@ -33,7 +30,7 @@ class SingleBoardResponse(board: Board) : HalObject() {
                     Rels.GET_MULTIPLE_BLACKBOARDS to board.blackBoards.map {
                         PartialBlackboardObject(
                                 it.name,
-                                mapOf("self" to Link(Uri.forSingleBlackboardText(boardId, it.id)))
+                                mapOf("self" to Link(Uri.forSingleBlackboardText(id, it.id)))
                         )
                     }
             ))
@@ -49,19 +46,19 @@ class SingleBoardResponse(board: Board) : HalObject() {
             ))
 
         super._links?.putAll(sequenceOf(
-                "self" to Link(Uri.forSingleBoardText(boardId)),
-                Rels.GET_MULTIPLE_BLACKBOARDS to Link(Uri.forAllBlackboards(boardId)),
+                "self" to Link(Uri.forSingleBoardText(id)),
+                Rels.GET_MULTIPLE_BLACKBOARDS to Link(Uri.forAllBlackboards(id)),
                 Rels.CREATE_BOARD to Link(Uri.forAllBoards()),
                 Rels.GET_MULTIPLE_BOARDS to Link(Uri.forAllBoards()),
-                Rels.EDIT_BOARD to Link(Uri.forSingleBoardText(boardId)),
-                Rels.DELETE_BOARD to Link(Uri.forSingleBoardText(boardId)),
-                Rels.ADD_MEMBER_TO_BOARD to Link(Uri.forBoardMembers(boardId)),
-                Rels.REMOVE_MEMBER_TO_BOARD to Link(Uri.forBoardMembers(boardId))
+                Rels.EDIT_BOARD to Link(Uri.forSingleBoardText(id)),
+                Rels.DELETE_BOARD to Link(Uri.forSingleBoardText(id)),
+                Rels.ADD_MEMBER_TO_BOARD to Link(Uri.forBoardMembers(id)),
+                Rels.REMOVE_MEMBER_TO_BOARD to Link(Uri.forBoardMembers(id))
         ))
 
         if (board.forum != null) {
             super._links?.putAll(sequenceOf(
-                    Rels.GET_SINGLE_FORUM to Link(Uri.forSingleForumText(boardId))
+                    Rels.GET_SINGLE_FORUM to Link(Uri.forSingleForumText(id))
             ))
         }
     }

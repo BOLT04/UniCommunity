@@ -9,9 +9,10 @@ import pt.isel.g20.unicommunity.hateoas.*
 import pt.isel.g20.unicommunity.user.model.PartialUserObject
 
 class SingleForumItemResponse(forumItem: ForumItem) : HalObject(){
-    val name : String = forumItem.name
-    val content : String = forumItem.content
-    val createdAt : String = forumItem.createdAt.toString()
+    val id = forumItem.id
+    val name = forumItem.name
+    val content = forumItem.content
+    val createdAt = forumItem.createdAt.toString()
 
     init{
         val board = forumItem.forum.board
@@ -19,7 +20,6 @@ class SingleForumItemResponse(forumItem: ForumItem) : HalObject(){
         val author = forumItem.author
         val boardId = board.id
         val forumId = forum.id
-        val forumItemId = forumItem.id
 
         val partialBoard = PartialBoardObject(
                 board.name,
@@ -50,7 +50,7 @@ class SingleForumItemResponse(forumItem: ForumItem) : HalObject(){
                         PartialCommentObject(
                                 it.content,
                                 if(it.anonymousComment) null else it.author.name,
-                                mapOf("self" to Link(Uri.forSingleCommentText(boardId, forumItemId, it.id)))
+                                mapOf("self" to Link(Uri.forSingleCommentText(boardId, id, it.id)))
                         )
                     }
             ))

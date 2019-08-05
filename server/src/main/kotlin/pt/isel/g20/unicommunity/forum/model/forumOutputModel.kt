@@ -7,6 +7,8 @@ import pt.isel.g20.unicommunity.forumItem.model.PartialForumItemObject
 import pt.isel.g20.unicommunity.hateoas.*
 
 class SingleForumResponse(forum: Forum) : HalObject(){
+    val id = forum.id
+
     init {
         val board = forum.board
         val boardId = board.id
@@ -25,7 +27,7 @@ class SingleForumResponse(forum: Forum) : HalObject(){
                         PartialForumItemObject(
                                 it.name,
                                 if(it.anonymousPost) null else it.author.name,
-                                mapOf("self" to Link(Uri.forSingleBlackboardItemText(boardId, forum.id, it.id)))
+                                mapOf("self" to Link(Uri.forSingleBlackboardItemText(boardId, id, it.id)))
                         )
                     }
             ))
