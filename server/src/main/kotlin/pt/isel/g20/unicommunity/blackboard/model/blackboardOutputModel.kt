@@ -6,7 +6,7 @@ import pt.isel.g20.unicommunity.common.Rels
 import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.hateoas.*
 
-class SingleBlackboardResponse(blackboard: Blackboard) : HalObject(){
+class SingleBlackboardResponse(blackboard: Blackboard) : HalObject(mutableMapOf(), mutableMapOf()){
     val id = blackboard.id
     val name = blackboard.name
     val description = blackboard.description

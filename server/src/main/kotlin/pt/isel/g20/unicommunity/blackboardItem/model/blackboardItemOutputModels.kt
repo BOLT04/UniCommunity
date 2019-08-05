@@ -7,7 +7,7 @@ import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.hateoas.*
 import pt.isel.g20.unicommunity.user.model.PartialUserObject
 
-class SingleBlackboardItemResponse(bbItem: BlackboardItem) : HalObject(){
+class SingleBlackboardItemResponse(bbItem: BlackboardItem) : HalObject(mutableMapOf(), mutableMapOf()){
     val id = bbItem.id
     val name = bbItem.name
     val content = bbItem.content

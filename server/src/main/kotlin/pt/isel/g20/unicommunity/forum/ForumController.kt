@@ -6,7 +6,6 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
 import pt.isel.g20.unicommunity.forum.exception.NotFoundForumException
-import pt.isel.g20.unicommunity.forum.model.ForumDto
 import pt.isel.g20.unicommunity.forum.model.SingleForumResponse
 import pt.isel.g20.unicommunity.forum.service.IForumService
 import pt.isel.g20.unicommunity.common.Uri
@@ -35,8 +34,8 @@ class ForumController(private val service: IForumService) {
     @AuthorizationRequired
     @PostMapping(path = [FORUM_ROUTE], produces = ["application/hal+json"])
     @ResponseStatus(HttpStatus.CREATED)
-    fun createForum(@PathVariable boardId: Long, @RequestBody forumDto: ForumDto) =
-            service.createForum(boardId, forumDto.allowImagePosts).let {
+    fun createForum(@PathVariable boardId: Long) =
+            service.createForum(boardId).let {
                 ResponseEntity
                         .created(Uri.forSingleForumUri(it.board.id))
                         .cacheControl(
@@ -49,8 +48,8 @@ class ForumController(private val service: IForumService) {
 
     @AuthorizationRequired
     @PutMapping(path = [FORUM_ROUTE], produces = ["application/hal+json"])
-    fun editForum(@PathVariable boardId: Long, @RequestBody forumDto: ForumDto) =
-            service.editForum(boardId, forumDto.allowImagePosts).let {
+    fun editForum(@PathVariable boardId: Long) =
+            service.editForum(boardId).let {
                 ResponseEntity
                         .ok()
                         .cacheControl(

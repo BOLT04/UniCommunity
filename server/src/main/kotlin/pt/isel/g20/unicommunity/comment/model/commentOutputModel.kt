@@ -7,7 +7,7 @@ import pt.isel.g20.unicommunity.forumItem.model.PartialForumItemObject
 import pt.isel.g20.unicommunity.hateoas.*
 import pt.isel.g20.unicommunity.user.model.PartialUserObject
 
-class SingleCommentResponse(comment: Comment) : HalObject(){
+class SingleCommentResponse(comment: Comment) : HalObject(mutableMapOf(), mutableMapOf()){
     val id = comment.id
     val content  = comment.content
     val createdAt = comment.createdAt.toString()

@@ -6,7 +6,7 @@ import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.forumItem.model.PartialForumItemObject
 import pt.isel.g20.unicommunity.hateoas.*
 
-class SingleForumResponse(forum: Forum) : HalObject(){
+class SingleForumResponse(forum: Forum) : HalObject(mutableMapOf(), mutableMapOf()){
     val id = forum.id
 
     init {

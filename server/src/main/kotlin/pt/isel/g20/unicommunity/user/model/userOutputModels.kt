@@ -8,7 +8,7 @@ import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.forumItem.model.PartialForumItemObject
 import pt.isel.g20.unicommunity.hateoas.*
 
-class SingleUserResponse(user: User) : HalObject(){
+class SingleUserResponse(user: User) : HalObject(mutableMapOf(), mutableMapOf()){
     val id = user.id
     val name = user.name
     val email = user.email

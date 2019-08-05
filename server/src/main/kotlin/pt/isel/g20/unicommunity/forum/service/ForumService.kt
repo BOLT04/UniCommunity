@@ -17,8 +17,8 @@ class ForumService(
             forumsRepo.findByIdOrNull(boardId) ?: throw NotFoundForumException()
 
     override fun createForum(
-            boardId: Long,
-            allowImagePosts: Boolean?
+            boardId: Long
+
     ): Forum {
         val board = boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
 
@@ -31,11 +31,8 @@ class ForumService(
         return newForum
     }
 
-    override fun editForum(boardId: Long, allowImagePosts: Boolean?): Forum {
+    override fun editForum(boardId: Long): Forum {
         val forum = getForumById(boardId)
-
-        if(allowImagePosts != null)
-            forum.isAllowImagePosts = allowImagePosts
 
         return forumsRepo.save(forum)
     }

@@ -8,7 +8,7 @@ import pt.isel.g20.unicommunity.forum.model.PartialForumObject
 import pt.isel.g20.unicommunity.hateoas.*
 import pt.isel.g20.unicommunity.user.model.PartialUserObject
 
-class SingleForumItemResponse(forumItem: ForumItem) : HalObject(){
+class SingleForumItemResponse(forumItem: ForumItem) : HalObject(mutableMapOf(), mutableMapOf()){
     val id = forumItem.id
     val name = forumItem.name
     val content = forumItem.content

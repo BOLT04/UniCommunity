@@ -103,7 +103,7 @@ class BoardService(
         templatesRepo.save(template)
 
         if (template.hasForum) {
-            forumService.createForum(newBoard.id, true)
+            forumService.createForum(newBoard.id)
             newBoard = boardsRepo.save(board)
         }
 

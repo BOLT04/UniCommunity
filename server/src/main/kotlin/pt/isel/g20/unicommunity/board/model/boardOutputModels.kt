@@ -9,7 +9,7 @@ import pt.isel.g20.unicommunity.hateoas.*
 import pt.isel.g20.unicommunity.template.model.PartialTemplateObject
 import pt.isel.g20.unicommunity.user.model.PartialUserObject
 
-class SingleBoardResponse(board: Board) : HalObject() {
+class SingleBoardResponse(board: Board) : HalObject(mutableMapOf(), mutableMapOf()) {
     val id : Long = board.id
     val name : String = board.name
     val description : String? = board.description
@@ -61,6 +61,7 @@ class SingleBoardResponse(board: Board) : HalObject() {
                     Rels.GET_SINGLE_FORUM to Link(Uri.forSingleForumText(id))
             ))
         }
+
     }
 }
 
