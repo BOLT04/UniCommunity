@@ -1,28 +1,54 @@
 package pt.isel.g20.unicommunity.blackboardItem.model
 
+import pt.isel.g20.unicommunity.blackboard.model.PartialBlackboardObject
+import pt.isel.g20.unicommunity.board.model.PartialBoardObject
 import pt.isel.g20.unicommunity.common.Rels
 import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.hateoas.*
+import pt.isel.g20.unicommunity.user.model.PartialUserObject
 
 class SingleBlackboardItemResponse(bbItem: BlackboardItem)
     : HalObject(
         mutableMapOf(
                 "self" to Link(Uri.forSingleBlackboardItemText(bbItem.blackboard.board.id, bbItem.blackboard.id, bbItem.id )),
-                Rels.NAVIGATION to Link(Uri.NAVIGATION_ROUTE),
-                Rels.GET_SINGLE_BLACKBOARD to Link(Uri.forSingleBlackboardText(bbItem.blackboard.board.id, bbItem.blackboard.id)),
-                Rels.GET_SINGLE_BOARD to Link(Uri.forSingleBoardText(bbItem.blackboard.board.id)),
                 Rels.CREATE_BLACKBOARDITEM to Link(Uri.forAllBlackboardItems(bbItem.blackboard.board.id, bbItem.blackboard.id)),
                 Rels.GET_MULTIPLE_BLACKBOARDITEMS to Link(Uri.forAllBlackboardItems(bbItem.blackboard.board.id, bbItem.blackboard.id)),
                 Rels.EDIT_BLACKBOARDITEM to Link(Uri.forSingleBlackboardItemText(bbItem.blackboard.board.id, bbItem.blackboard.id, bbItem.id)),
                 Rels.DELETE_BLACKBOARDITEM to Link(Uri.forSingleBlackboardItemText(bbItem.blackboard.board.id, bbItem.blackboard.id, bbItem.id))
         )
 ){
-    val boardName: String = bbItem.blackboard.board.name
-    val blackboardName: String = bbItem.blackboard.name
     val name : String = bbItem.name
     val content : String = bbItem.content
-    val authorName: String = bbItem.author.name
     val createdAt: String = bbItem.createdAt.toString()
+
+    init{
+        val board = bbItem.blackboard.board
+        val partialBoard = PartialBoardObject(
+                board.name,
+                mapOf("self" to Link(Uri.forSingleBoardText(board.id)))
+        )
+        super._embedded?.putAll(sequenceOf(
+                Rels.GET_SINGLE_BOARD to listOf(partialBoard)
+        ))
+
+        val blackboard = bbItem.blackboard
+        val partialBlackboard = PartialBlackboardObject(
+                board.name,
+                mapOf("self" to Link(Uri.forSingleBlackboardText(board.id,blackboard.id)))
+        )
+        super._embedded?.putAll(sequenceOf(
+                Rels.GET_SINGLE_BLACKBOARD to listOf(partialBlackboard)
+        ))
+
+        val author = bbItem.author
+        val partialUser = PartialUserObject(
+                bbItem.name,
+                mapOf("self" to Link(Uri.forSingleUserText(author.id)))
+        )
+        super._embedded?.putAll(sequenceOf(
+                Rels.GET_SINGLE_BOARD to listOf(partialUser)
+        ))
+    }
 }
 
 
