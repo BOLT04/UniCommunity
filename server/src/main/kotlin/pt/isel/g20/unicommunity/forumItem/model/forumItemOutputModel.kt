@@ -1,8 +1,11 @@
 package pt.isel.g20.unicommunity.forumItem.model
 
+import pt.isel.g20.unicommunity.board.model.PartialBoardObject
+import pt.isel.g20.unicommunity.comment.model.PartialCommentObject
 import pt.isel.g20.unicommunity.common.Rels
 import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.hateoas.*
+import pt.isel.g20.unicommunity.user.model.PartialUserObject
 
 class SingleForumItemResponse(forumItem: ForumItem)
     : HalObject(
@@ -20,11 +23,40 @@ class SingleForumItemResponse(forumItem: ForumItem)
                 Rels.CREATE_COMMENT to Link(Uri.forAllComments(forumItem.forum.board.id, forumItem.id))
         )
 ){
-    val boardName: String = forumItem.forum.board.name
     val name : String = forumItem.name
     val content : String = forumItem.content
-    val authorName : String? = if(forumItem.anonymousPost) null else forumItem.author.name
     val createdAt : String = forumItem.createdAt.toString()
+
+    init{
+        val board = forumItem.forum.board
+        val partialBoard = PartialBoardObject(
+                board.name,
+                mapOf("self" to Link(Uri.forSingleBoardText(board.id)))
+        )
+        super._embedded?.putAll(sequenceOf(
+                Rels.GET_SINGLE_BOARD to listOf(partialBoard)
+        ))
+
+        val author = forumItem.author
+        val partialUser = PartialUserObject(
+                author.name,
+                mapOf("self" to Link(Uri.forSingleUserText(author.id)))
+        )
+        super._embedded?.putAll(sequenceOf(
+                Rels.GET_SINGLE_BOARD to listOf(partialUser)
+        ))
+
+        if(forumItem.comments.size != 0)
+            super._embedded?.putAll(sequenceOf(
+                    Rels.GET_MULTIPLE_COMMENTS to forumItem.comments.map {
+                        PartialCommentObject(
+                                it.content,
+                                if(it.anonymousComment) null else it.author.name,
+                                mapOf("self" to Link(Uri.forSingleCommentText(board.id, forumItem.id, it.id)))
+                        )
+                    }
+            ))
+    }
 }
 
 
@@ -41,3 +73,9 @@ class MultipleForumItemsResponse(
         ),
         items = forumItems
 )
+
+class PartialForumItemObject(
+        val name: String,
+        val author: String?,
+        val _links: Map<String, Link>
+) : HalResourceObject()

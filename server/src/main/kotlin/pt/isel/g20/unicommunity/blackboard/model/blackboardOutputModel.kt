@@ -40,7 +40,7 @@ class SingleBlackboardResponse(blackboard: Blackboard)
                         PartialBlackboardItemObject(
                                 it.name,
                                 it.author.name,
-                                mapOf("self" to Link(Uri.forSingleBlackboardItemText(it.blackboard.board.id, it.blackboard.id, it.id)))
+                                mapOf("self" to Link(Uri.forSingleBlackboardItemText(board.id, it.blackboard.id, it.id)))
                         )
                     }
             ))
