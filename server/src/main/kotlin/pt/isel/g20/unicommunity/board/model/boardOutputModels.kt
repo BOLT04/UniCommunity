@@ -47,13 +47,16 @@ class SingleBoardResponse(board: Board) : HalObject(mutableMapOf(), mutableMapOf
 
         super._links?.putAll(sequenceOf(
                 "self" to Link(Uri.forSingleBoardText(id)),
-                Rels.GET_MULTIPLE_BLACKBOARDS to Link(Uri.forAllBlackboards(id)),
                 Rels.CREATE_BOARD to Link(Uri.forAllBoards()),
                 Rels.GET_MULTIPLE_BOARDS to Link(Uri.forAllBoards()),
                 Rels.EDIT_BOARD to Link(Uri.forSingleBoardText(id)),
                 Rels.DELETE_BOARD to Link(Uri.forSingleBoardText(id)),
+
+                Rels.GET_BOARD_MEMBERS to Link(Uri.forBoardMembers(id)),
                 Rels.ADD_MEMBER_TO_BOARD to Link(Uri.forBoardMembers(id)),
-                Rels.REMOVE_MEMBER_TO_BOARD to Link(Uri.forBoardMembers(id))
+                Rels.REMOVE_MEMBER_TO_BOARD to Link(Uri.forBoardMembers(id)),
+
+                Rels.GET_MULTIPLE_BLACKBOARDS to Link(Uri.forAllBlackboards(id))
         ))
 
         if (board.forum != null) {
@@ -61,7 +64,6 @@ class SingleBoardResponse(board: Board) : HalObject(mutableMapOf(), mutableMapOf
                     Rels.GET_SINGLE_FORUM to Link(Uri.forSingleForumText(id))
             ))
         }
-
     }
 }
 
