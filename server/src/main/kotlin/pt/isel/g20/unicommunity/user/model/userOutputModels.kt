@@ -68,6 +68,11 @@ class SingleUserResponse(user: User) : HalObject(mutableMapOf(), mutableMapOf())
                         )
                     }
             ))
+
+        super._links?.putAll(sequenceOf(
+                "self" to Link(Uri.forSingleUserText(id)),
+                Rels.EDIT_USER to Link(Uri.forSingleUserText(id))
+        ))
     }
 }
 
