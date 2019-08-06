@@ -57,9 +57,6 @@ class SingleForumItemResponse(forumItem: ForumItem) : HalObject(mutableMapOf(), 
         
         super._links?.putAll(sequenceOf(
                 "self" to Link(Uri.forSingleForumItemText(boardId, forumId)),
-                Rels.GET_SINGLE_BOARD to Link(Uri.forSingleBoardText(boardId)),
-                Rels.GET_SINGLE_FORUM to Link(Uri.forSingleForumText(boardId)),
-
                 Rels.CREATE_FORUMITEM to Link(Uri.forAllForumItems(boardId)),
                 Rels.GET_MULTIPLE_FORUMITEMS to Link(Uri.forAllForumItems(boardId)),
                 Rels.EDIT_FORUMITEM to Link(Uri.forSingleForumItemText(boardId, forumId)),
