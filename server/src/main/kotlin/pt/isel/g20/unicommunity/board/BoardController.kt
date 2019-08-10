@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit
 import pt.isel.g20.unicommunity.board.model.*
 import pt.isel.g20.unicommunity.common.Uri.BOARD_MEMBERS
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
+import pt.isel.g20.unicommunity.common.presentation.TeacherRoleRequired
 import pt.isel.g20.unicommunity.user.model.User
 import retrofit2.Call
 import retrofit2.HttpException
@@ -112,6 +113,7 @@ class BoardController(private val service: IBoardService) {
                         .body(response)
             }
 
+    @TeacherRoleRequired
     @AuthorizationRequired
     @PostMapping(path = [BOARDS_ROUTE], produces = ["application/hal+json"])
     @ResponseStatus(HttpStatus.CREATED)
