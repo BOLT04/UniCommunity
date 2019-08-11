@@ -3,9 +3,7 @@ import { Button, Header, Icon, Modal } from 'semantic-ui-react'
 
 import { withRouter } from 'react-router-dom'
 
-import { APPLICATION_HAL_JSON } from '../../../common/constants'
 import routes from '../../../common/routes'
-import { removeFunctionsFrom } from '../../../common/common'
 import { rels } from '../../../common/rels-registery'
 
 import { withUtilsConsumer } from '../../withUtilsConsumer'

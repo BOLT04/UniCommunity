@@ -1,9 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Route } from 'react-router-dom'
 
 // Semantic UI imports
-import { Loader, Button } from 'semantic-ui-react'
+import { Loader } from 'semantic-ui-react'
 
 import rspToBoardAsync from '../../../service/mapper/board-mapper'
 import { APPLICATION_HAL_JSON, httpStatus } from '../../../common/constants'
@@ -11,7 +10,6 @@ import { rels } from '../../../common/rels-registery'
 import routes from '../../../common/routes'
 
 import BookmarkableComponent from '../../common/BookmarkableComponent'
-import CreateBlackboardItem from '../create_module_item/CreateBlackboardItem'
 import ModulesView from './ModulesView'
 import EditBoardButton from './EditBoardButton'
 import Header from '../../Header'
@@ -21,9 +19,9 @@ import { withUtilsConsumer } from '../../withUtilsConsumer'
 class BoardView extends BookmarkableComponent {
   //TODO: how do I specify the entrance of the model (board) to this component? 
   //TODO: I dont want it to be in props.location.state.board because that is coupled to CreateBoard component!
-  /*static propTypes = {
-    board: PropTypes.object
-  }*/
+  static propTypes = {
+    home: PropTypes.object
+  }
   constructor(props) {
     super(props)
 
@@ -63,7 +61,7 @@ class BoardView extends BookmarkableComponent {
 
   async fetchData() {
     const rsp = await this.props.utilsObj.asyncRelativeFetch(this.serverHref, APPLICATION_HAL_JSON)
-    if (rsp.status == httpStatus.UNAUTHORIZED) {
+    if (rsp.status === httpStatus.UNAUTHORIZED) {//TODO: move this lgic to a reusable component!
       this.props.history.push(routes.login, { redirectTo: this.props.location.pathname })
       return
     }

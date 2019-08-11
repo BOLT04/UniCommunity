@@ -12,12 +12,13 @@ export default async function asyncRspToComment(rsp) {
         // Sanity check. In the HTTP request we sent the header Accept, so we check if the server does support it.
         const { id, avatarSrc, author, createdAt, content, ...body } = await rsp.json()
 
-        let commentArgs = []
-        commentArgs.push(id)
-        commentArgs.push(avatarSrc)
-        commentArgs.push(author)
-        commentArgs.push(createdAt)
-        commentArgs.push(content)
+        const commentArgs = [
+            id,
+            avatarSrc,
+            author,
+            createdAt,
+            content
+        ]
 
         const comment = new Comment(...commentArgs)
 

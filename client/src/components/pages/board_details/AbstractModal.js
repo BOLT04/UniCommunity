@@ -51,13 +51,15 @@ class AbstractModal extends Component {
          * This render function gives the outside component, control over the UI of a field.
          */
         propertiesConfig: PropTypes.object.isRequired,
-        updateUi: PropTypes.func.isRequired,
+        updateUi: PropTypes.func.isRequired,        
+        modalHeader: PropTypes.string.isRequired,
         cancelActionText: PropTypes.string,
         submitActionText: PropTypes.string,
         errorHeader: PropTypes.string,
         errorContent: PropTypes.string,
-        submitActionText: PropTypes.string,
-        submitActionText: PropTypes.string,
+        successHeader: PropTypes.string,
+        successContent: PropTypes.string,
+        triggerIcon: PropTypes.string
     }
 
     state = {
@@ -214,6 +216,9 @@ function AbstractModalPresenter(props) {
                 break
             case 'checkbox':
                 fieldChildren = propertiesConfig[name].render(property, onChangeCheckBox)
+                break
+            default:
+                fieldChildren = null
         }
         
         return (

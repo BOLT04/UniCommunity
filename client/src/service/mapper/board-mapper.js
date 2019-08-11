@@ -1,11 +1,5 @@
 // Maps a response of the endpoint 'Create a Board' to the model representation of a Board in the UI.
 
-//todo: REMOVE MOCKS
-//import fetchBlackboardAsync from '../BlackBoardApi'
-//import fetchForumPostsAsync from '../ForumApi'
-import fetchForumPostsAsync from '../ForumApiImpl'
-import fetchBlackboardAsync from '../BlackBoardApiImpl'
-
 import {
     itemsToModelRepr,
     asyncRelativeFetch,
@@ -35,12 +29,7 @@ export default async function rspToBoardAsync(rsp) {//TODO: maybe move these con
         // Sanity check. In the HTTP request we sent the header Accept, so we check if the server does support it.
         const { name, description, _links, _embedded } = await rsp.json()
 
-        let board = {
-            name,
-            description,
-            modules: {}
-        }
-
+        const board = new Board(name, description, {})
         let forumLink
 
         if (_links) {//TODO: i dont know what to do here...
@@ -179,7 +168,7 @@ async function fetchForumAsync(forumLink) {
     const { collection: { links, items } } = await rsp.json()
 
     //TODO: use asyncCollectionRspToList in collectionJson mapper since its the same code
-    const posts = items.length == 0 ? [] : itemsToModelRepr(items)
+    const posts = items.length === 0 ? [] : itemsToModelRepr(items)
     let createPostHrefObj
     // Check if the link to create a post exists
     links.forEach(l => {

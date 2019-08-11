@@ -13,7 +13,7 @@ import './css/BackToTopButton.css'
 export default class BackToTopButton extends Component {
 
     handleClick = e => {
-        if (e.target.children.length == 0) // Then the icon was clicked
+        if (e.target.children.length === 0) // Then the icon was clicked
             e.target.parentElement.classList.add('hidden')
         e.target.classList.add('hidden')
     }

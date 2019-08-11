@@ -5,15 +5,14 @@ import BoardTemplate from './BoardTemplate'
 
 export default function(props) {
   const {
+    asyncRelativeFetch,
     onTitleChange,
     onDescriptionChange,
-    getBoardTemplateRef,
     boardTemplateApi,
     addToModules,
     updateHasForum,
     activateTemplate,
-    createSubmitBtnOnClick,
-    asyncRelativeFetch
+    createSubmitBtnOnClick
   } = props
 
   return (

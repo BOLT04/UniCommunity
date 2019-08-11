@@ -42,7 +42,7 @@ export default class CreateBoard extends Component {
 
     // Validate user input
     // In case the user chooses neither options
-    if (this.templateId == null && (this.blackboardNames.length == 0 && !this.hasForum))
+    if (this.templateId == null && (this.blackboardNames.length === 0 && !this.hasForum))
       throw Error('please specify the modules manually or choose a template')
     
     // In case the user chooses both options

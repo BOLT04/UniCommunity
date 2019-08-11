@@ -15,7 +15,7 @@ export default class CreateBoardApiImpl extends CreateBoardApi {
       description
     }
 
-    if (templateId != undefined)
+    if (templateId !== undefined)
       body.templateId = templateId
     else {// TODO: is there a way to do this cleaner in es6?
       body.blackboardNames = blackboardNames

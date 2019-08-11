@@ -42,7 +42,7 @@ class AllBoards extends BookmarkableComponent {
 
 	async fetchData(url) {
 		const rsp = await this.props.utilsObj.asyncRelativeFetch(url, COLLECTION_JSON)
-		if (rsp.status == httpStatus.UNAUTHORIZED) {
+		if (rsp.status === httpStatus.UNAUTHORIZED) {
 			this.props.history.push(routes.login, { 
 				redirectTo: this.props.location.pathname,
 				error: rsp
@@ -64,7 +64,7 @@ class AllBoards extends BookmarkableComponent {
 
 	render() {
 		const { body } = this.state || {}
-		const list = body && body.items || null
+		const list = (body && body.items) || null
 
 		return (
 			<>

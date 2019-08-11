@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
-import { Link, withRouter } from 'react-router-dom'
-import { Menu, Segment, Message, Transition,Button, Image } from 'semantic-ui-react'
+import { withRouter } from 'react-router-dom'
+import { Menu, Segment, Message, Transition } from 'semantic-ui-react'
 
 import NavBarApi from '../service/NavBarApi'
 
@@ -80,7 +80,7 @@ class NavBar extends Component {
   }
 
   buildLinks() {
-    const { navMenu, activeItem, payload, visible } = this.state
+    const { navMenu, activeItem, visible } = this.state
 
     //TODO: right now this only supports one link with the property: "toDisplayOnRight", since it would create another div on the next link with the same prop.
     //TODO: later this probably receives an array of registeries to include multiple links on the right menu like: Search bar, Logout, Login, user profile, etc
@@ -167,9 +167,9 @@ class NavBar extends Component {
 
   render = () => (
     <Segment inverted size='tiny'>
-    <Menu inverted pointing secondary stackable>
-      {this.buildLinks()}
-    </Menu>
+      <Menu inverted pointing secondary stackable>
+        {this.buildLinks()}
+      </Menu>
     </Segment>
   )
 }
@@ -184,7 +184,7 @@ class NavBarLink extends Component {
     const { reg, activeItem, className } = this.props
     return (
       <Menu.Item
-      link
+        link
         href={reg.clientHref}
         className={className}
         key={reg.name}

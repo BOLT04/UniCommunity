@@ -25,14 +25,14 @@ export default async function asyncRspToHome(rsp) {
                 .keys(_embedded)
                 .forEach(prop => {
                     const resourceObjectArr = _embedded[prop]
-                    if (resourceObjectArr.length == 0) return;
+                    if (resourceObjectArr.length === 0) return;
 
                     const { _links } = resourceObjectArr[0]
                     if (_links && _links.self)
                         home[prop] = _links.self.href
                 })
         }
-debugger
+
         return home
     }
 }

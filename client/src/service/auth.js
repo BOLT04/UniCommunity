@@ -1,7 +1,6 @@
 // The type Auth defined in this module is responsible for authentication services.
 // It tracks the login status, so if the user is authenticated or not for example.
 import { UserManager } from 'oidc-client'
-import { buildUri } from '../common/common'
 import { LogoutError } from '../common/errors'
 import config from '../unicommunity-config.json'
 import { baseClientUri } from '../common/common'

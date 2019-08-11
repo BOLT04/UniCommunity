@@ -1,4 +1,3 @@
-import { itemsToModelRepr } from '../../common/common'
 import { APPLICATION_HAL_JSON } from '../../common/constants'
 
 import relsRegistery, { rels } from '../../common/rels-registery'
@@ -50,7 +49,7 @@ export default async function rspToForumItemAsync(rsp) {
 
         // Check if the comments rel is present
         if (body._embedded) {
-            const commentsArr = body._embedded['/rels/getComments']
+            const commentsArr = body._embedded[rels.getComments]
             if (commentsArr) {}
                 /*TODOcomments = await Promise.all(
                     commentsArr.map(async i => 

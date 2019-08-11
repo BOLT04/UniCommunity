@@ -14,10 +14,29 @@ import MdEditor from 'react-markdown-editor-lite'
  * Form.Field in most cases.
  */
 export default class CreateModuleItem extends Component {
+  static propTypes = {
+    /**
+     * The click handler function for the 'Post' button.
+     * Descriptor of the function: (string, string) -> undefined
+     */
+    submitOnClick: PropTypes.func.isRequired,
+    /**
+     * Header text for the form.
+     */
+    header: PropTypes.string.isRequired,
+  
+    /**
+     * An array of other React components that represent more form fields.
+     * The child components should use the Form.Field SUI component.
+     * {@link https://developer.mozilla.org/pt-BR/docs/Web/API/Response} //TODO: make Form.Field link!!!!!!!
+     */
+    children: PropTypes.object.isRequired
+  }
+
   titleVal = ''
   mdEditor = null
 
-  handleEditorChange({ html, text }) {    
+  handleEditorChange({ html, text }) {
     //console.log('handleEditorChange', html, text)
   }
 
@@ -37,29 +56,29 @@ export default class CreateModuleItem extends Component {
   render() {
     const { header } = this.props
 
-    return (      
-      <div style={{height: 500}}>
+    return (
+      <div style={{ height: 500 }}>
         <h1 className='ui header'>{header}</h1>
         <Form>
           <Form.Field required>
             <label>Title</label>
-            <Input 
+            <Input
               name='title'
               onChange={this.onTitleChange}
-            />   
+            />
           </Form.Field>
           <Form.Field required>
             <MdEditor
               value=''
               ref={node => this.mdEditor = node}
-              onChange={this.handleEditorChange} 
+              onChange={this.handleEditorChange}
             />
           </Form.Field>
 
-          {this.props.children}   
+          {this.props.children}
         </Form>
 
-        <Button content='Post' primary style={{marginTop: 10}} onClick={this.submitOnClickReq} />
+        <Button content='Post' primary style={{ marginTop: 10 }} onClick={this.submitOnClickReq} />
       </div>
     )
   }

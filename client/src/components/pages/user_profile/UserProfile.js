@@ -1,13 +1,8 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
 
 // Semantic UI imports
-import { 
-    Icon,
+import {
     Image,
-    Loader, 
-    Segment, 
-    Divider,
     Grid,
     Header as SemanticHeader 
 } from 'semantic-ui-react'
@@ -29,6 +24,7 @@ debugger
 
 
     render() {
+        //TODO: use for progile
         const { post, loading } = this.state
         return (
             <>

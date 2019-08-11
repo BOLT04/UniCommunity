@@ -25,9 +25,9 @@ export default class BookmarkableComponent extends Component {
                     this.serverHref = home[rel]
                 else { // Then check if the value is already provided by an outside component
                     const state = this.props.location.state
-                    this.serverHref = state && state.serverHref || home[rel]
+                    this.serverHref = (state && state.serverHref) || home[rel]
                 }
-debugger
+
                 if (parseTemplate) this.serverHref = parseTemplate(this.serverHref)
 
                 return true
@@ -55,8 +55,8 @@ debugger
                 if (!checkState)
                     this.serverHref = mapRelsToHrefs()
                 else { // Then check if the value is already provided by an outside component
-                    const state = this.props.location.state
-                    this.serverHref = state && state.serverHrefArr || mapRelsToHrefs()
+                    const { state } = this.props.location
+                    this.serverHref = (state && state.serverHrefArr) || mapRelsToHrefs()
                 }
 
                 return true

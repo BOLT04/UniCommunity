@@ -9,7 +9,7 @@ import { Loader, Message } from 'semantic-ui-react'
 export default ( { list, emptyListHeaderMsg, emptyListMsg, render }) =>
   !list
     ? <Loader />
-    : list.length == 0
+    : list.length === 0
       ? renderMessage(emptyListHeaderMsg, emptyListMsg)
       : render()
 

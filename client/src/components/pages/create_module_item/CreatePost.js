@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { Input, Form, Checkbox, Button } from 'semantic-ui-react'
+import { Form, Checkbox } from 'semantic-ui-react'
  
 import { createForumPostsAsync } from '../../../service/ForumApiImpl'
 import rspToBoardAsync from '../../../service/mapper/board-mapper'

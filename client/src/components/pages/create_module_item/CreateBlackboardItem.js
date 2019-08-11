@@ -1,17 +1,13 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { Input, Form, Checkbox, Button } from 'semantic-ui-react'
-
-import MdEditor from 'react-markdown-editor-lite'
- 
 import { asyncCreateBlackboardItem } from '../../../service/BlackBoardApiImpl'
 import rspToBoardAsync from '../../../service/mapper/board-mapper'
 
 import { APPLICATION_HAL_JSON } from '../../../common/constants'
 
 import { rels } from '../../../common/rels-registery'
-import { asyncRelativeFetch, removeFunctionsFrom } from '../../../common/common'
+import { removeFunctionsFrom } from '../../../common/common'
 
 import routes from '../../../common/routes'
 import CreateBoardApi from '../../../service/CreateBoardApi'

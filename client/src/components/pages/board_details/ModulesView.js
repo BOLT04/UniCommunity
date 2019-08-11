@@ -104,7 +104,7 @@ class ModulesView extends Component {
         
         // If the blackboards array is defined then the index of the Forum is the array length. If not its 0
         const auxArr = board.modules.blackboards
-        const index = auxArr && auxArr.length || 0
+        const index = (auxArr && auxArr.length) || 0
         const { activeIndex } = this.state
         const isActive = activeIndex === index
         

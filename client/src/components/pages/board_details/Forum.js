@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
-import { Accordion, Icon, Transition, List } from 'semantic-ui-react'
+import { List } from 'semantic-ui-react'
 
 import ReactMarkdown from 'react-markdown'
 

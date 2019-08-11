@@ -12,6 +12,7 @@ export const rels = {
     createBlackboardItem: '/rels/createBlackboardItem',
     editBlackboard: '/rels/editBlackboard',
     createForumItem: '/rels/createForumItem',
+    
     createComment: '/rels/createComment',
     getComments: '/rels/getComments',
 

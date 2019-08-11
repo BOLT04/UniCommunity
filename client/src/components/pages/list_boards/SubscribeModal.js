@@ -3,7 +3,7 @@ import { Button, Header, Icon, Modal } from 'semantic-ui-react'
 
 import { withRouter } from 'react-router-dom'
 
-import { APPLICATION_HAL_JSON } from '../../../common/constants'
+import { APPLICATION_JSON } from '../../../common/constants'
 import routes from '../../../common/routes'
 import { removeFunctionsFrom } from '../../../common/common'
 import { rels } from '../../../common/rels-registery'
@@ -20,6 +20,7 @@ class SubscribeModal extends Component {
 
 	yesOnClickHander = async e => {
 		const { board, utilsObj, firebase } = this.props
+		// TODO: remove all this code necessary for the HTTP request, and delegate it to an api object like the other components
 		const url = board.getHrefOfRel(rels.addMemberToBoard)
 		const rsp = await utilsObj.asyncRelativeFetch(rels.addMemberToBoard)
 		const { _templates: { default: reqInfo } } = await utilsObj.asyncParseHalFormRsp(rsp)
@@ -27,8 +28,8 @@ class SubscribeModal extends Component {
 			const messaging = firebase.messaging()
 			const token = await messaging.getToken()
 			
-			console.log(token)
-			const rsp = await utilsObj.asyncRelativeHttpRequest(url, reqInfo.method)
+			const body = { token }
+			const rsp = await utilsObj.asyncRelativeHttpRequest(url, reqInfo.method, APPLICATION_JSON, body)
 			if (!rsp.ok) { }//TODO: handle error
 
 			const redirectPath = routes.getBoardUri(board.id)

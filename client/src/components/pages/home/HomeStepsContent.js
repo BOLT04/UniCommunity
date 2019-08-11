@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { Image, Header, Icon, Step } from 'semantic-ui-react'
+import { Icon, Step } from 'semantic-ui-react'
 
 import './css/Home.css'
 
@@ -8,12 +8,12 @@ export default class Home extends Component {
   // TODO: is the image responsive?
   render() {
     return (
-      <div className="ui vertical stripe segment">
-          <div className="ui middle aligned stackable grid container">
-            <div className="row">
-              <div className="eight wide column">
-                <h3 className="ui header">As a Teacher</h3>
-                <Step.Group vertical size="big">
+      <div className='ui vertical stripe segment'>
+          <div className='ui middle aligned stackable grid container'>
+            <div className='row'>
+              <div className='eight wide column'>
+                <h3 className='ui header'>As a Teacher</h3>
+                <Step.Group vertical size='big'>
                   <Step href='/signup'>
                     <Icon name='signup' />
                     <Step.Content>

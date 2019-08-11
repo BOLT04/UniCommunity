@@ -10,7 +10,6 @@ import UserProfile from './pages/user_profile/UserProfile'
 import CreateBoard from './pages/create_board/CreateBoard'
 import AllBoards from './pages/list_boards/AllBoards'
 import BoardView from './pages/board_details/BoardView'
-import BackToTopButton from './BackToTopButton'
 import Home from './pages/home/Home'
 
 import CreatePost from './pages/create_module_item/CreatePost'
@@ -23,7 +22,6 @@ import asyncRspToHome from '../service/mapper/home-mapper'
 import NavBarApiImpl from '../service/NavBarApiImpl'
 import CreateBoardApiImpl from '../service/CreateBoardApiImpl'
 
-import relsRegistery from '../common/rels-registery'
 import { asyncRelativeHttpRequest } from '../common/common'
 //TODO: The App component might have too many responsabilities, because it has the one commented below
 //TODO: plus it serves as the Service Locator, the one responsible to give all components their dependencies,

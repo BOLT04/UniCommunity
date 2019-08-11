@@ -5,8 +5,6 @@ import { Button, Form, Checkbox } from 'semantic-ui-react'
 import auth from '../../../service/auth'
 
 import asyncRspToComment from '../../../service/mapper/comment-mapper'
-import rspToForumItemAsync from '../../../service/mapper/forumItem-mapper'
-import { asyncFetch } from '../../../service/ForumApiImpl'
 
 export default class CreateComment extends Component {
     commentText = ''
