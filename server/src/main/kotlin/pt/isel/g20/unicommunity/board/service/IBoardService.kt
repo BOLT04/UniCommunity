@@ -8,7 +8,7 @@ import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
 
 interface IBoardService {
     fun getAllBoards() : Iterable<Board>
-    fun getAllBoards(page: Int, pageSize: Int = 2) : Page<Board>
+    fun getAllBoards(page: Int, pageSize: Int = 1000) : Page<Board> // TODO: 1000 boards per page temporarily
 
     @Throws(NotFoundBoardException::class)
     fun getBoardById(boardId: Long): Board
