@@ -7,8 +7,8 @@ import routes from '../../../common/routes'
 import CreateBoardPresenter from './CreateBoardPresenter'
 
 export default class CreateBoard extends Component {
-  titleVal = ""
-  descVal = ""
+  titleVal = ''
+  descVal = ''
   blackboardNames = [] //array<string>
   hasForum = false
   templateId = null

@@ -77,8 +77,8 @@ export default class Login extends Component {
           <Form>
             <Form.Field>
               <label>Username</label>
-              <div className="ui left icon input">
-                <i className="user icon"></i>
+              <div className='ui left icon input'>
+                <i className='user icon'></i>
                 <Input
                   name='username'
                   placeholder='Username'
@@ -88,8 +88,8 @@ export default class Login extends Component {
             </Form.Field>
             <Form.Field>
               <label>Password</label>
-              <div className="ui left icon input">
-                <i className="lock icon"></i>
+              <div className='ui left icon input'>
+                <i className='lock icon'></i>
                 <Input
                   name='password'
                   placeholder='Password'

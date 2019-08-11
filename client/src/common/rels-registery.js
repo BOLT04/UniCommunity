@@ -68,7 +68,7 @@ const relsRegistery = {
     [rels.getBlackboards]: {
         //TODO:
     },
-    // The property "propName" is used to specify the property's name of the object in each component's state
+    // The property 'propName' is used to specify the property's name of the object in each component's state
     // For example in App.js it will define state.home.navMenuUrl
     [rels.nav]: {
         propName: 'navMenuUrl'

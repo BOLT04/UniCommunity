@@ -66,8 +66,8 @@ export default class App extends Component {
     //TODO: is there a way to avoid this dependency?
     return (
       <BrowserRouter>   
-        <div className="App" style={{ display:"flex", minHeight:"100vh", flexDirection:"column" }}>
-          <div className="ui container" style={{ flex: 1 }}>
+        <div className='App' style={{ display:'flex', minHeight:'100vh', flexDirection:'column' }}>
+          <div className='ui container' style={{ flex: 1 }}>
             {home.navMenuUrl && 
               <NavBar
                 reRender= {this.state.reRenderNavBar}
