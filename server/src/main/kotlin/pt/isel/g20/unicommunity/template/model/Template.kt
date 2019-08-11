@@ -13,8 +13,4 @@ class Template(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0
-
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn
-    var boards: MutableList<Board> = mutableListOf()
 }

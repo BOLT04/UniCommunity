@@ -27,9 +27,7 @@ class HomeResponse : HalObject(
         Rels.LOGIN to listOf(
             HalObject(_links= mutableMapOf("self" to Link(Uri.LOGIN_ROUTE)))),
         Rels.GET_MULTIPLE_BOARDS to listOf(
-            HalObject(_links= mutableMapOf("self" to Link(Uri.BOARDS_ROUTE)))),
-        Rels.GET_SINGLE_BOARD to listOf(
-            HalObject(_links= mutableMapOf("self" to Link(Uri.SINGLE_BOARD_ROUTE))))
+            HalObject(_links= mutableMapOf("self" to Link(Uri.BOARDS_ROUTE))))
     )
 )
 

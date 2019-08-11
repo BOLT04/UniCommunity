@@ -3,7 +3,6 @@ package pt.isel.g20.unicommunity.template.service
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import pt.isel.g20.unicommunity.repository.TemplateRepository
-import pt.isel.g20.unicommunity.template.exception.CannotModifyTemplatesBeingUsedException
 import pt.isel.g20.unicommunity.template.exception.NotFoundTemplateException
 import pt.isel.g20.unicommunity.template.model.Template
 
@@ -25,9 +24,6 @@ class TemplateService(val templatesRepo: TemplateRepository) : ITemplateService 
 
         template.name = name
 
-        if(template.boards.size != 0)
-            throw CannotModifyTemplatesBeingUsedException()
-
         if(hasForum != null)
             template.hasForum = hasForum
 
@@ -39,8 +35,6 @@ class TemplateService(val templatesRepo: TemplateRepository) : ITemplateService 
 
     override fun deleteTemplate(templateId: Long): Template {
         val template = getTemplateById(templateId)
-        if(template.boards.size != 0)
-            throw CannotModifyTemplatesBeingUsedException()
 
         templatesRepo.delete(template)
         return template

@@ -9,7 +9,6 @@ import javax.persistence.*
 @Entity
 class Board(
         @Column(nullable = false) var name: String,
-        @ManyToOne var template: Template,
         @Column var description: String? = null
 ) {
 

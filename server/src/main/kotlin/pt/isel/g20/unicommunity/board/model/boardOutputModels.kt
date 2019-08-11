@@ -6,7 +6,6 @@ import pt.isel.g20.unicommunity.common.Rels
 import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.common.getFirstPageable
 import pt.isel.g20.unicommunity.hateoas.*
-import pt.isel.g20.unicommunity.template.model.PartialTemplateObject
 import pt.isel.g20.unicommunity.user.model.PartialUserObject
 
 class SingleBoardResponse(board: Board) : HalObject(mutableMapOf(), mutableMapOf()) {
@@ -15,16 +14,6 @@ class SingleBoardResponse(board: Board) : HalObject(mutableMapOf(), mutableMapOf
     val description : String? = board.description
 
     init {
-        val template = board.template
-        val partialTemplate = PartialTemplateObject(
-                template.name,
-                template.hasForum,
-                mapOf("self" to Link(Uri.forSingleTemplateText(template.id)))
-        )
-        super._embedded?.putAll(sequenceOf(
-                Rels.GET_SINGLE_TEMPLATE to listOf(partialTemplate)
-        ))
-
         if(board.blackBoards.size != 0)
             super._embedded?.putAll(sequenceOf(
                     Rels.GET_MULTIPLE_BLACKBOARDS to board.blackBoards.map {

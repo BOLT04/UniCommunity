@@ -50,7 +50,7 @@ class BoardService(
         val board: Board = if(templateId != null)
             createBoardWithTemplate(name,  description, templateId)
         else
-            createBoardWithCustomModules(name, description, blackboardNames, hasForum)
+            createBoardWithCustomModules(name, blackboardNames, hasForum, description)
 
         return boardsRepo.save(board)
     }
@@ -73,41 +73,47 @@ class BoardService(
         return board
     }
 
-    private fun createBoardWithCustomModules(
-            name: String,
-            description: String?,
-            blackboardNames: List<String>?,
-            hasForum: Boolean?
-    ): Board {
-        if (blackboardNames.isNullOrEmpty() || hasForum == null) throw InvalidTemplateConfigurationException()
-        val templateName = name+"Template"
-        val bbNames = blackboardNames.joinToString(",")
-        val template = templateService.createTemplate(templateName, hasForum, bbNames)
-
-        return createBoardWithTemplate(name, description, template.id)
-    }
-
     private fun createBoardWithTemplate(
             name: String,
             description: String?,
             templateId: Long
     ): Board {
-        val blackboards: MutableList<String> = mutableListOf()
         val template = templatesRepo.findByIdOrNull(templateId) ?: throw NotFoundTemplateException()
-        blackboards.addAll(template.blackboardNames.split(","))
 
-        val board = Board(name, template, description)
+        val blackboardNames: MutableList<String> = mutableListOf()
+        blackboardNames.addAll(template.blackboardNames.split(","))
+
+        return createBoardWithCustomModules(name, blackboardNames, template.hasForum, description)
+    }
+
+    private fun createBoardWithCustomModules(
+            name: String,
+            blackboardNames: List<String>?,
+            hasForum: Boolean?,
+            description: String?
+    ): Board {
+        if (blackboardNames.isNullOrEmpty() || hasForum == null)
+            throw InvalidTemplateConfigurationException()
+
+        return createBoard(name, blackboardNames, hasForum, description)
+    }
+
+    private fun createBoard(
+            name: String,
+            blackboardNames: List<String>,
+            hasForum: Boolean,
+            description: String?
+    ): Board {
+
+        val board = Board(name, description)
         var newBoard = boardsRepo.save(board)
 
-        template.boards.add(newBoard)
-        templatesRepo.save(template)
-
-        if (template.hasForum) {
+        if (hasForum) {
             forumService.createForum(newBoard.id)
             newBoard = boardsRepo.save(board)
         }
 
-        blackboards.map {
+        blackboardNames.map {
             blackboardService.createBlackboard(newBoard.id, it, "TODO", "TODO")
         }
 
