@@ -38,7 +38,7 @@ class SingleBlackboardItemResponse(bbItem: BlackboardItem) : HalObject(mutableMa
         ))
 
         val partialUser = PartialUserObject(
-                bbItem.name,
+                bbItem.author.name,
                 mapOf("self" to Link(Uri.forSingleUserText(author.id)))
         )
         super._embedded?.putAll(sequenceOf(
