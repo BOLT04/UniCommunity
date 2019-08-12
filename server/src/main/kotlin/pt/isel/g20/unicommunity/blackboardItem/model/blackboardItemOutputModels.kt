@@ -25,7 +25,7 @@ class SingleBlackboardItemResponse(bbItem: BlackboardItem) : HalObject(mutableMa
                 mapOf("self" to Link(Uri.forSingleBoardText(boardId)))
         )
         super._embedded?.putAll(sequenceOf(
-                Rels.GET_SINGLE_BOARD to listOf(partialBoard)
+                Rels.GET_SINGLE_BOARD to SingleHalObj(partialBoard)
         ))
 
         val partialBlackboard = PartialBlackboardObject(
@@ -33,7 +33,7 @@ class SingleBlackboardItemResponse(bbItem: BlackboardItem) : HalObject(mutableMa
                 mapOf("self" to Link(Uri.forSingleBlackboardText(boardId, bbId)))
         )
         super._embedded?.putAll(sequenceOf(
-                Rels.GET_SINGLE_BLACKBOARD to listOf(partialBlackboard)
+                Rels.GET_SINGLE_BLACKBOARD to SingleHalObj(partialBlackboard)
         ))
 
         val partialUser = PartialUserObject(
@@ -41,7 +41,7 @@ class SingleBlackboardItemResponse(bbItem: BlackboardItem) : HalObject(mutableMa
                 mapOf("self" to Link(Uri.forSingleUserText(author.id)))
         )
         super._embedded?.putAll(sequenceOf(
-                Rels.GET_SINGLE_USER to listOf(partialUser)
+                Rels.GET_SINGLE_USER to SingleHalObj(partialUser)
         ))
 
         super._links?.putAll(sequenceOf(

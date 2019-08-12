@@ -25,14 +25,14 @@ class SingleForumItemResponse(forumItem: ForumItem) : HalObject(mutableMapOf(), 
                 mapOf("self" to Link(Uri.forSingleBoardText(boardId)))
         )
         super._embedded?.putAll(sequenceOf(
-                Rels.GET_SINGLE_BOARD to listOf(partialBoard)
+                Rels.GET_SINGLE_BOARD to SingleHalObj(partialBoard)
         ))
 
         val partialForum = PartialForumObject(
                 mapOf("self" to Link(Uri.forSingleForumText(forum.id)))
         )
         super._embedded?.putAll(sequenceOf(
-                Rels.GET_SINGLE_FORUM to listOf(partialForum)
+                Rels.GET_SINGLE_FORUM to SingleHalObj(partialForum)
         ))
 
         val partialUser = PartialUserObject(
@@ -40,18 +40,18 @@ class SingleForumItemResponse(forumItem: ForumItem) : HalObject(mutableMapOf(), 
                 mapOf("self" to Link(Uri.forSingleUserText(author.id)))
         )
         super._embedded?.putAll(sequenceOf(
-                Rels.GET_SINGLE_USER to listOf(partialUser)
+                Rels.GET_SINGLE_USER to SingleHalObj(partialUser)
         ))
 
         if(forumItem.comments.size != 0)
             super._embedded?.putAll(sequenceOf(
-                    Rels.GET_MULTIPLE_COMMENTS to forumItem.comments.map {
+                    Rels.GET_MULTIPLE_COMMENTS to MultipleHalObj(forumItem.comments.map {
                         PartialCommentObject(
                                 it.content,
                                 if(it.anonymousComment) null else it.author.name,
                                 mapOf("self" to Link(Uri.forSingleCommentText(boardId, id, it.id)))
                         )
-                    }
+                    })
             ))
         
         super._links?.putAll(sequenceOf(

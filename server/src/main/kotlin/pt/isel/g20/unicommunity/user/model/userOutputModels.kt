@@ -17,17 +17,17 @@ class SingleUserResponse(user: User) : HalObject(mutableMapOf(), mutableMapOf())
     init {
         if(user.boards.size != 0)
             super._embedded?.putAll(sequenceOf(
-                    Rels.GET_MULTIPLE_BOARDS to user.boards.map {
+                    Rels.GET_MULTIPLE_BOARDS to MultipleHalObj(user.boards.map {
                         PartialBoardObject(
                                 it.name,
                                 mapOf("self" to Link(Uri.forSingleBoardText(it.id)))
                         )
-                    }
+                    })
             ))
 
         if(user.bbItems.size != 0)
             super._embedded?.putAll(sequenceOf(
-                    Rels.GET_MULTIPLE_BLACKBOARDITEMS to user.bbItems.map {
+                    Rels.GET_MULTIPLE_BLACKBOARDITEMS to MultipleHalObj(user.bbItems.map {
                         PartialBlackboardItemObject(
                                 it.name,
                                 it.author.name,
@@ -37,12 +37,12 @@ class SingleUserResponse(user: User) : HalObject(mutableMapOf(), mutableMapOf())
                                         it.id
                                 )))
                         )
-                    }
+                    })
             ))
 
         if(user.forumItems.size != 0)
             super._embedded?.putAll(sequenceOf(
-                    Rels.GET_MULTIPLE_FORUMITEMS to user.forumItems.map {
+                    Rels.GET_MULTIPLE_FORUMITEMS to MultipleHalObj(user.forumItems.map {
                         PartialForumItemObject(
                                 it.name,
                                 it.author.name,
@@ -51,12 +51,12 @@ class SingleUserResponse(user: User) : HalObject(mutableMapOf(), mutableMapOf())
                                         it.id
                                 )))
                         )
-                    }
+                    })
             ))
 
         if(user.comments.size != 0)
             super._embedded?.putAll(sequenceOf(
-                    Rels.GET_MULTIPLE_COMMENTS to user.comments.map {
+                    Rels.GET_MULTIPLE_COMMENTS to MultipleHalObj(user.comments.map {
                         PartialCommentObject(
                                 it.content,
                                 it.author.name,
@@ -66,7 +66,7 @@ class SingleUserResponse(user: User) : HalObject(mutableMapOf(), mutableMapOf())
                                         it.id
                                 )))
                         )
-                    }
+                    })
             ))
 
         super._links?.putAll(sequenceOf(

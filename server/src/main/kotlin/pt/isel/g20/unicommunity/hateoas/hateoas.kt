@@ -1,6 +1,7 @@
 package pt.isel.g20.unicommunity.hateoas
 
 import com.fasterxml.jackson.annotation.JsonCreator
+import com.fasterxml.jackson.annotation.JsonIgnore
 import com.fasterxml.jackson.annotation.JsonInclude
 import org.springframework.http.HttpStatus
 import pt.isel.g20.unicommunity.common.Rels
@@ -30,10 +31,19 @@ open class HalResourceObject
 @JsonInclude(JsonInclude.Include.NON_NULL)
 open class HalObject(
     var _links: MutableMap<String, Link>? = null,
-    var _embedded: MutableMap<String, List<HalResourceObject>>? = null) : HalResourceObject()// TODO: how to make embedded an array OR object
-{
-    constructor() : this(null, null)
+    var _embedded: MutableMap<String, IHalObj>? = null) : HalResourceObject()// TODO: how to make embedded an array OR object
+
+interface IHalObj
+
+open class SingleHalObj<T>(val value : T): IHalObj
+
+open class MultipleHalObj<T>(
+        @JsonIgnore val list: List<T>
+) : AbstractList<T>(), IHalObj {
+    override val size: Int = list.size
+    override fun get(index: Int) = list[index]
 }
+
 
 /**
  * Abstract class to be used as a base class for HAL-FORMS representations.

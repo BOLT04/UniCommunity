@@ -21,18 +21,18 @@ class SingleBlackboardResponse(blackboard: Blackboard) : HalObject(mutableMapOf(
                 mapOf("self" to Link(Uri.forSingleBoardText(boardId)))
         )
         super._embedded?.putAll(sequenceOf(
-                Rels.GET_SINGLE_BOARD to listOf(partialBoard)
+                Rels.GET_SINGLE_BOARD to SingleHalObj(partialBoard)
         ))
 
         if(blackboard.items.size !=0)
             super._embedded?.putAll(sequenceOf(
-                    Rels.GET_MULTIPLE_BLACKBOARDITEMS to blackboard.items.map {
+                    Rels.GET_MULTIPLE_BLACKBOARDITEMS to MultipleHalObj(blackboard.items.map {
                         PartialBlackboardItemObject(
                                 it.name,
                                 it.author.name,
                                 mapOf("self" to Link(Uri.forSingleBlackboardItemText(boardId, id, it.id)))
                         )
-                    }
+                    })
             ))
         
         super._links?.putAll(sequenceOf(
