@@ -7,7 +7,7 @@ import isel.pt.unicommunity.R
 import isel.pt.unicommunity.presentation.viewmodel.MyBoardsViewModel
 
 
-class MyBoardsAdapter(
+/*class MyBoardsAdapter(
     private val viewModel: MyBoardsViewModel,
     private val onBoardClickListener: BoardClickListener
 ): RecyclerView.Adapter<AllBoardsItemViewHolder>() {
@@ -27,7 +27,7 @@ class MyBoardsAdapter(
     override fun onBindViewHolder(holder: AllBoardsItemViewHolder, position: Int) {
         holder.bindToView(viewModel.liveData.value?.get(position))
     }
-}
+}*/
 
 
 //TODO holder diferenete se tiver outro tipo de vista

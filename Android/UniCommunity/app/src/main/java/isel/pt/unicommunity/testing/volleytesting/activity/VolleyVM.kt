@@ -2,21 +2,13 @@ package isel.pt.unicommunity.testing.volleytesting.activity
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.android.volley.NetworkResponse
-import com.android.volley.Request
 import com.android.volley.RequestQueue
 import com.android.volley.Response
-import com.android.volley.toolbox.*
-import com.google.gson.Gson
-import isel.pt.unicommunity.model.webdto.CollectionJson
-import isel.pt.unicommunity.model.webdto.HalCollection
-import isel.pt.unicommunity.model.webdto.Link
+import isel.pt.unicommunity.model.webdto.old.actions.LoginOutputDto
+import isel.pt.unicommunity.model.webdto.old.board.BoardInputDtoLinkStruct
+import isel.pt.unicommunity.model.webdto.clean.*
 import isel.pt.unicommunity.repository.network.BasicAuthenticationGetRequest
-import isel.pt.unicommunity.repository.network.GetRequest
 import isel.pt.unicommunity.repository.network.PostRequest
-import isel.pt.unicommunity.testing.volleytesting.dto.Dto
-import org.json.JSONObject
-import java.nio.charset.Charset
 
 
 class VolleyVM(val queue: RequestQueue) : ViewModel(){
@@ -47,24 +39,38 @@ class VolleyVM(val queue: RequestQueue) : ViewModel(){
 
     }
 
-    fun loginRequest(succ: Response.Listener<LoginSuccess>, err : Response.ErrorListener){
+    fun loginRequest(succ: Response.Listener<LoginOutputDto>, err : Response.ErrorListener){
         val url = "http://35.246.2.65/signin"
 
         val postRequest = PostRequest(
-            LoginSuccess::class.java,
+            LoginOutputDto::class.java,
             url,
-            LoginInput("admin@gmail.com", "admin"),
+            LoginOutputDto("admin@gmail.com", "admin"),
             succ,
             err
         )
+
+
+
 
         queue.add(postRequest)
     }
 
 
-    class LoginInput (val email: String, val password:String)
-    class LoginSuccess(val email : String, val name: String, val links: Array<Link>)
 
+
+
+    class BoardDto(
+        val name : String,
+        val description: String,
+        val templateName: String,
+        val hasForum : Boolean,
+
+        val links: BoardInputDtoLinkStruct,
+        val embedded : Array<SmallBoardRep>
+    )
+
+    class SmallBoardRep(val name : String, val links: Array<Link>)
 
 /*
 
@@ -73,7 +79,7 @@ class VolleyVM(val queue: RequestQueue) : ViewModel(){
 
             val TAG = "GetRequest"
 
-            override fun parseNetworkResponseContent(response: NetworkResponse): Response< T> {
+            override fun parseNetworkResponseContentGson(response: NetworkResponse): Response< T> {
                 val dataStr = String(response.data)
                 Log.v(TAG, "parsing network response $dataStr")
 
@@ -107,9 +113,9 @@ class VolleyVM(val queue: RequestQueue) : ViewModel(){
              simpleN = SimpleNavigator(it.navigator)
 
 
-        Model(it.name,com, simpleN)
+        Model(it.APP_NAME,com, simpleN)
 
-        value.value = Model(it.name,com, simpleN)
+        value.value = Model(it.APP_NAME,com, simpleN)
 
 
 

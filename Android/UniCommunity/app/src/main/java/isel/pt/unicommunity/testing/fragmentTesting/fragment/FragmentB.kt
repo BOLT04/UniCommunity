@@ -35,12 +35,12 @@ class FragmentB : Fragment(){
                     UserDto::class.java,
                     "https://www.google.com",
                     Response.Listener {
-                        //textView.text = it.name
+                        //textView.text = it.APP_NAME
                         Log.v(TAG, "gotcha")
 
                     },
                     Response.ErrorListener {
-                        textView.text = it.localizedMessage
+                        nav_header_email.text = it.localizedMessage
                         Log.v(TAG, ""+it.message)
                         Log.v(TAG, ""+it.localizedMessage)
                         Log.v(TAG, ""+it)

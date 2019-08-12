@@ -1,4 +1,4 @@
-package isel.pt.unicommunity.presentation.fragment.modules
+package isel.pt.unicommunity.presentation.fragment.modules.forum
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,9 +8,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import isel.pt.unicommunity.R
 import isel.pt.unicommunity.kotlinx.getViewModel
+import isel.pt.unicommunity.model.webdto.rel_links.GetSingleForumItemLink
 import isel.pt.unicommunity.presentation.viewmodel.ForumItemViewModel
 
-class ForumItemFragment : Fragment() {
+class ForumItemFragment(val singleForumItemLink: GetSingleForumItemLink) : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
         inflater.inflate(R.layout.fragment_forum_item, container, false)

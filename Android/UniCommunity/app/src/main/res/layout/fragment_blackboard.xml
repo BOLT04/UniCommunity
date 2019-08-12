@@ -4,24 +4,21 @@
                                                    android:layout_height="match_parent">
 
     <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="387dp"
-            android:layout_height="587dp"
+            android:layout_width="395dp"
+            android:layout_height="541dp"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            android:layout_marginTop="24dp"
-            app:layout_constraintTop_toBottomOf="@+id/blackboard_name" android:id="@+id/blackboard_recylcerview"/>
-    <TextView
-            android:text="blackboard_name"
-            android:layout_width="114dp"
-            android:layout_height="0dp"
-            android:id="@+id/blackboard_name" android:layout_marginTop="16dp"
-            app:layout_constraintTop_toTopOf="parent" app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="148dp"/>
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/blackboard_recylcerview" android:layout_marginTop="8dp"
+            app:layout_constraintTop_toTopOf="parent"/>
+    <Button
+            android:text="Button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:clickable="true" app:srcCompat="@android:drawable/ic_menu_add"
-            android:id="@+id/blacboard_permissionButton" android:layout_marginTop="608dp"
-            app:layout_constraintTop_toTopOf="parent" android:layout_marginStart="324dp"
-            app:layout_constraintStart_toStartOf="parent"/>
+            android:id="@+id/button15" app:layout_constraintEnd_toEndOf="@+id/blackboard_recylcerview"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/blackboard_recylcerview"
+            app:layout_constraintStart_toStartOf="@+id/blackboard_recylcerview" android:layout_marginStart="8dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent" app:layout_constraintVertical_bias="0.0"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

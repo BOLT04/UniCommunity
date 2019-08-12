@@ -4,16 +4,21 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import isel.pt.unicommunity.R
 import isel.pt.unicommunity.model.to_refactor.small.SmallBoardItem
+import isel.pt.unicommunity.model.webdto.old.board.AllBoardsDto
+import isel.pt.unicommunity.model.webdto.rel_links.PartialBoardItem
 import isel.pt.unicommunity.presentation.viewmodel.AllBoardsViewModel
 
 
 class AllBoardsAdapter(
-    private val viewModel: AllBoardsViewModel,
-    private val onBoardClickListener: BoardClickListener
+    private val allBoards: List<PartialBoardItem>,
+    private val onBoardClickListener: PartialBoardItemClickListener
+
 ): RecyclerView.Adapter<AllBoardsItemViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AllBoardsItemViewHolder {
 
         val view = LayoutInflater
@@ -24,34 +29,33 @@ class AllBoardsAdapter(
     }
 
     override fun getItemCount(): Int =
-        viewModel.liveData.value?.size ?: 0
+        allBoards.size
 
 
     override fun onBindViewHolder(holder: AllBoardsItemViewHolder, position: Int) {
-        holder.bindToView(viewModel.liveData.value?.get(position))
+        holder.bindToView(allBoards[position])
     }
 }
 
-interface BoardClickListener {
-
-    fun onClickListener(smallBoardItem : SmallBoardItem?)
+interface PartialBoardItemClickListener {
+    fun onClickListener(partialBoardIem : PartialBoardItem)
 }
 
 class AllBoardsItemViewHolder(
     view: ViewGroup,
-    val onBoardClickListener: BoardClickListener
+    val onBoardClickListener: PartialBoardItemClickListener
 ): RecyclerView.ViewHolder(view) {
 
     val name : TextView = view.findViewById(R.id.title_sb)
     val desc : TextView = view.findViewById(R.id.desc_sb)
     val layout : ConstraintLayout = view.findViewById(R.id.constraint_layout)
 
-    fun bindToView(smallBoardItem : SmallBoardItem?){
+    fun bindToView(partialBoardIem: PartialBoardItem){
 
-        name.text = smallBoardItem?.name ?: "no title"
-        desc.text = smallBoardItem?.desc ?: "no desc" //todo seems shady
+        name.text = partialBoardIem.name
+        desc.text = partialBoardIem.description ?: "no desc" //todo seems shady
 
-        layout.setOnClickListener{onBoardClickListener.onClickListener(smallBoardItem)}
+        layout.setOnClickListener{onBoardClickListener.onClickListener(partialBoardIem)}
     }
 
 }

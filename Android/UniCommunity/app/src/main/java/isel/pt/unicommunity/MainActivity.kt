@@ -8,71 +8,131 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.TextView
+import androidx.core.view.forEach
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import isel.pt.unicommunity.kotlinx.getUniCommunityApp
 import isel.pt.unicommunity.presentation.fragment.*
 import isel.pt.unicommunity.kotlinx.getViewModel
 import isel.pt.unicommunity.presentation.fragment.board.AllBoardsFragment
-import isel.pt.unicommunity.presentation.fragment.board.MyBoardsFragment
+import isel.pt.unicommunity.presentation.viewmodel.MainActivityViewModel
 import isel.pt.unicommunity.presentation.viewmodel.BackStackManagingViewModel
 import isel.pt.unicommunity.testing.fragmentTesting.fragment.HomeFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, BackStackManagingActivity {
 
-    lateinit var omeFragment : Fragment
-    lateinit var allBoardsFragment: Fragment
-    lateinit var myBoardsFragment: Fragment
-    lateinit var profile: Fragment
+
 
 
     lateinit var viewModel : BackStackManagingViewModel
+    lateinit var auxVm : MainActivityViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
 
-        setSupportActionBar(toolbar)
 
-        /*fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }*/
+        val app = getUniCommunityApp()
 
-         viewModel = getViewModel("MainActivity"){
+        viewModel = getViewModel("MainActivity"){
             BackStackManagingViewModel(R.id.container)//TODO double bangs onde e que ha mesmo a verificaçao
         }
 
+        auxVm = getViewModel("auxViewModel"){ MainActivityViewModel(app) }
+        val navUrl = intent.getStringExtra("navHref")
 
-        val toggle = ActionBarDrawerToggle(
-            this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
-        )
-        drawer_layout.addDrawerListener(toggle)
-        toggle.syncState()
 
-        omeFragment= HomeFragment()
-        allBoardsFragment = AllBoardsFragment()
-        myBoardsFragment= MyBoardsFragment()
-        profile = ProfileFragment()
 
-        initialNavigation(savedInstanceState)
+        auxVm.fetchNav(navUrl)
 
-        nav_view.setNavigationItemSelectedListener(this)
+
+        auxVm.navigation.observe(this, Observer { navigationInputDto ->
+
+
+            setContentView(R.layout.activity_main)
+
+            setSupportActionBar(toolbar)
+
+            val toggle = ActionBarDrawerToggle(
+                this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
+            )
+            drawer_layout.addDrawerListener(toggle)
+            toggle.syncState()
+
+
+            val navHeader  = nav_view.getHeaderView(0)
+            val email = app.email
+            val username = app.username
+
+            navHeader.findViewById<TextView>(R.id.nav_header_email).text = email
+
+            val headerUserName = navHeader.findViewById<TextView>(R.id.nav_header_name)
+
+            if(username!=null)
+                headerUserName.text=username
+            else
+                headerUserName.isVisible=false
+
+
+
+            /*homeFragment= HomeFragment()
+            allBoardsFragment = AllBoardsFragment()
+            myBoardsFragment= MyBoardsFragment()
+            profile = ProfileFragment()*/
+
+            nav_view.menu.forEach { it.isVisible = false }
+
+            val links = navigationInputDto._links
+
+            if(links.home != null) {
+                auxVm.homeFragment = HomeFragment(links.home)
+                (nav_view as NavigationView).menu.findItem(R.id.nav_home).isVisible = true
+            }
+            if(links.allBoards != null) {
+                auxVm.allBoardsFragment = AllBoardsFragment(links.allBoards)
+                (nav_view as NavigationView).menu.findItem(R.id.nav_all_boards).isVisible = true
+            }
+
+            if(links.userProfile != null) {
+                auxVm.profile = ProfileFragment(links.userProfile)
+                (nav_view as NavigationView).menu.findItem(R.id.nav_profile).isVisible = true
+            }
+
+            initialNavigation(savedInstanceState)
+
+            nav_view.setNavigationItemSelectedListener(this)
+
+        })
     }
 
+
+
     private fun initialNavigation(savedInstanceState: Bundle?) {
-        if (savedInstanceState != null) {
+        /*if (savedInstanceState != null) {
             val starter = savedInstanceState.getString("starter")
             if (starter != null) {
-                val frag = viewModel.getStarter(starter)
+                val frag = auxVm.getStarter(starter)
                 if (frag != null)
                     navigateTo(frag)
             }
-        } else {
-            val frag = viewModel.getStarter("Home")
-            if (frag != null) // should always be true
-                navigateTo(frag)
-        }
+        } else {*/
+            nav_view.menu.forEach {
+                if(it.isVisible){
+                    val starter = auxVm.getStarter(it.title.toString())
+                    if(starter!=null){
+                        navigateTo(starter)
+                            it.isChecked = true
+                            return
+                    }
+                }
+            }
+            /*val frag = auxVm.getStarter("Home")
+            if (frag != null) // should always be true TODO --> not true, o getSingleForumLink poode nao vir na resposta
+                navigateTo(frag)*/
+        //}
     }
 
     override fun onBackPressed() {
@@ -107,12 +167,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             R.id.nav_home -> {
                 Log.v("testing", "camera")
 
-                navigateTo(omeFragment,reseting = true)
+                navigateTo(auxVm.homeFragment,reseting = true)
 /*
 
                 supportFragmentManager.beginTransaction().replace(
                     R.id.fragment_container,
-                    omeFragment
+                    homeFragment
                 ).commit()
 */
                 /*
@@ -123,7 +183,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_my_boards -> {
                 Log.v("testing", "camera")
-                navigateTo(allBoardsFragment, reseting = true)
+                navigateTo(auxVm.myBoardsFragment, reseting = true)
 /*
                 supportFragmentManager.beginTransaction().replace(
                     R.id.fragment_container,
@@ -133,7 +193,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
             }
             R.id.nav_all_boards -> {
                 Log.v("testing", "camera")
-                navigateTo(myBoardsFragment, reseting = true)
+                navigateTo(auxVm.allBoardsFragment, reseting = true)
 
 /*
                 supportFragmentManager.beginTransaction().replace(
@@ -143,7 +203,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 */
             }
             R.id.nav_profile -> {
-                navigateTo(profile, reseting = true)
+                navigateTo(auxVm.profile, reseting = true)
 /*
                 supportFragmentManager.beginTransaction().replace(
                     R.id.fragment_container,
@@ -178,7 +238,7 @@ interface BackStackManagingActivity {
 }
 
 
-private class FragmentMapper(val app: AppCompatActivity, val containerId: Int) {
+/*private class FragmentMapper(val app: AppCompatActivity, val containerId: Int) {
 
     /*
     * "self": { "href": "/" },
@@ -190,10 +250,10 @@ private class FragmentMapper(val app: AppCompatActivity, val containerId: Int) {
 
     * */
 
-    fun map(link: String): SideNavItem? {
+    fun map(getSingleForumLink: String): SideNavItem? {
 
-        return when(link){
-            "/rels/home" -> SideNavItem("Home", switchBuilder(HomeFragment()))
+        return when(getSingleForumLink){
+            "/rels/home" -> SideNavItem("Home", switchBuilder(HomeFragment(links.home.href)))
             "/rels/userProfile" -> SideNavItem("Profile", switchBuilder(ProfileFragment()))
             "/rels/allBoards" -> SideNavItem("All Boards", switchBuilder(AllBoardsFragment()))
             "/rels/myBoards" -> SideNavItem("My Boards", switchBuilder(MyBoardsFragment()))
@@ -215,7 +275,7 @@ private class FragmentMapper(val app: AppCompatActivity, val containerId: Int) {
     }
 
 }
-
+*/
 private class SideNavItem(
     val name: String,
     //val resourceId : Int,

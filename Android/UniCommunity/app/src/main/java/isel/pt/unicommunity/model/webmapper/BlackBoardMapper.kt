@@ -1,7 +1,5 @@
 package isel.pt.unicommunity.model.webmapper
 
-import isel.pt.unicommunity.model.webdto.BlackBoardDto
-import isel.pt.unicommunity.model.webdto.NavLink
 
 
 class BlackBoard(
@@ -19,12 +17,12 @@ class SmallBlackBoardItem(val name:String, val text: String
     //todo esta formatação esta mal, val goto: Ret
 )
 
-class BlackBoardMapper : IMapper<BlackBoardDto, BlackBoard>{
+/*class BlackBoardMapper : IMapper<BlackBoardDto, BlackBoard>{
 
 
     override fun dtoToModel(dto: BlackBoardDto): BlackBoard {
         val smallBBItems = dto.items.map {
-            SmallBlackBoardItem(it.name, it.text)
+            SmallBlackBoardItem(it.APP_NAME, it.text)
         }
 
         val _links = dto._links
@@ -34,7 +32,7 @@ class BlackBoardMapper : IMapper<BlackBoardDto, BlackBoard>{
         val selfRet = parseRel(_links.nav)
 
         return BlackBoard(
-            dto.name,
+            dto.APP_NAME,
             smallBBItems,
 
             self = selfRet,
@@ -49,4 +47,4 @@ class BlackBoardMapper : IMapper<BlackBoardDto, BlackBoard>{
 
 }
 
-
+*/

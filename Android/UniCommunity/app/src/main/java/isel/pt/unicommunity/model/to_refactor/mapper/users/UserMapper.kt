@@ -20,7 +20,7 @@ class UserMapper(val queue: RequestQueue) : IMapper<UserDto,User>{
            nav = NavRetriever(dto.nav.url, queue, NavMapper() )
 
        return User(
-           dto.name,
+           dto.APP_NAME,
            dto.githubId,
 
            nav = nav

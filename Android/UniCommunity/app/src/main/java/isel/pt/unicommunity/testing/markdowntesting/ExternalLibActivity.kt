@@ -150,11 +150,11 @@ class ExternalLibActivity : AppCompatActivity() {
                 "\n" +
                 "## Links\n" +
                 "\n" +
-                "[link text](http://dev.nodeca.com)\n" +
+                "[getSingleForumLink text](http://dev.nodeca.com)\n" +
                 "\n" +
-                "[link with title](http://nodeca.github.io/pica/demo/ \"title text!\")\n" +
+                "[getSingleForumLink with title](http://nodeca.github.io/pica/demo/ \"title text!\")\n" +
                 "\n" +
-                "Autoconverted link https://github.com/nodeca/pica (enable linkify to see)\n" +
+                "Autoconverted getSingleForumLink https://github.com/nodeca/pica (enable linkify to see)\n" +
                 "\n" +
 //                "\n" +
 //                "## Images\n" +
@@ -204,9 +204,9 @@ class ExternalLibActivity : AppCompatActivity() {
                 "\n" +
                 "### [Footnotes](https://github.com/markdown-it/markdown-it-footnote)\n" +
                 "\n" +
-                "Footnote 1 link[^first].\n" +
+                "Footnote 1 getSingleForumLink[^first].\n" +
                 "\n" +
-                "Footnote 2 link[^second].\n" +
+                "Footnote 2 getSingleForumLink[^second].\n" +
                 "\n" +
                 "Inline footnote^[Text of inline footnote] definition.\n" +
                 "\n" +

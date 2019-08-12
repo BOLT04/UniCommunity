@@ -77,7 +77,7 @@ class BlankFragment : Fragment() {
      * for more information.
      */
     interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
+        // TODO: Update argument type and APP_NAME
         fun onFragmentInteraction(uri: Uri)
     }
 

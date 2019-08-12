@@ -5,19 +5,19 @@
             app:startDestination="@id/myBoardsFragment2">
 
     <fragment android:id="@+id/forumItemFragment"
-              android:name="isel.pt.unicommunity.presentation.fragment.modules.ForumItemFragment"
+              android:name="isel.pt.unicommunity.presentation.fragment.modules.forum.ForumItemFragment"
               android:label="ForumItemFragment"/>
     <fragment android:id="@+id/blackBoardFragment"
-              android:name="isel.pt.unicommunity.presentation.fragment.modules.BlackBoardFragment"
+              android:name="isel.pt.unicommunity.presentation.fragment.modules.blackboard.BlackBoardFragment"
               android:label="BlackBoardFragment">
         <action android:id="@+id/action_blackBoardFragment_to_blackBoardItemFragment"
                 app:destination="@id/blackBoardItemFragment"/>
     </fragment>
     <fragment android:id="@+id/blackBoardItemFragment"
-              android:name="isel.pt.unicommunity.presentation.fragment.modules.BlackBoardItemFragment"
+              android:name="isel.pt.unicommunity.presentation.fragment.modules.blackboard.BlackBoardItemFragment"
               android:label="BlackBoardItemFragment"/>
     <fragment android:id="@+id/forumFragment"
-              android:name="isel.pt.unicommunity.presentation.fragment.modules.ForumFragment"
+              android:name="isel.pt.unicommunity.presentation.fragment.modules.forum.ForumFragment"
               android:label="ForumFragment">
         <action android:id="@+id/action_forumFragment_to_forumItemFragment" app:destination="@id/forumItemFragment"/>
     </fragment>

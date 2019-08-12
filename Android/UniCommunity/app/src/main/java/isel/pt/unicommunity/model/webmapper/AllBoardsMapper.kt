@@ -1,8 +1,7 @@
 package isel.pt.unicommunity.model.webmapper
 
-import isel.pt.unicommunity.model.webdto.AllBoardsDto
-import isel.pt.unicommunity.model.webdto.Link
-import java.lang.RuntimeException
+import isel.pt.unicommunity.model.webdto.old.board.AllBoardsDto
+import isel.pt.unicommunity.model.webdto.clean.Link
 
 class Board(
     val name:String,
@@ -35,7 +34,7 @@ class AllBoardsMapper: IMapper<AllBoardsDto,AllBoards> {
 
         val boards = dto.collection.items.map { item ->
 
-            val name = item.data.firstOrNull { it.name == "name" }
+            val name = item.data.firstOrNull { it.name == "APP_NAME" }
             val desc = item.data.firstOrNull { it.name == "description" }
 
             checkNotNull(name)

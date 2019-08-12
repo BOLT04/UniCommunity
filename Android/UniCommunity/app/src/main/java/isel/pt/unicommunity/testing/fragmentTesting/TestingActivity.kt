@@ -133,7 +133,7 @@ class TestingActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
         app.queue.add(
             navigator.get<User>(
                 Response.Listener {
-                //textView.text = it.name
+                //textView.text = it.APP_NAME
                 Log.v(TAG, "gotcha")
 
                 },

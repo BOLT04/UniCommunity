@@ -1,15 +1,15 @@
 package isel.pt.unicommunity.model.webmapper
 
-import isel.pt.unicommunity.model.webdto.NavLink
-import isel.pt.unicommunity.model.webdto.Property
+import isel.pt.unicommunity.model.webdto.clean.NavLink
+import isel.pt.unicommunity.model.webdto.clean.Property
 import java.lang.RuntimeException
 
-fun parseRel(navLink: NavLink?): Ret?{
+/*fun parseRel(navLink: NavLink?): Ret?{
     return if(navLink==null)
         null
     else
         Ret(navLink.rel, navLink.href)
-}
+}*/
 
 fun checkNotNull(vararg props : Property?){
 

@@ -121,7 +121,7 @@ fun NavigationView.setupWithNavController(
     // Optional: on item reselected, pop back stack to the destination of the graph
     setupItemReselected(graphIdToTagMap, fragmentManager)
 
-    // Handle deep link
+    // Handle deep getSingleForumLink
     setupDeepLinks(navGraphIds, fragmentManager, containerId, intent)
 
     // Finally, ensure that we update our BottomNavigationView when the back stack changes
@@ -226,7 +226,7 @@ private fun obtainNavHostFragment(
 private fun FragmentManager.isOnBackStack(backStackName: String): Boolean {
     val backStackCount = backStackEntryCount
     for (index in 0 until backStackCount) {
-        if (getBackStackEntryAt(index).name == backStackName) {
+        if (getBackStackEntryAt(index).APP_NAME == backStackName) {
             return true
         }
     }

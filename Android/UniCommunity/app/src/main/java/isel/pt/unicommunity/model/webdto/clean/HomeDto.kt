@@ -1,4 +1,4 @@
-package isel.pt.unicommunity.model.webdto
+package isel.pt.unicommunity.model.webdto.clean
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
@@ -10,9 +10,8 @@ class HomeDto(
 
 class HomeLinkStruct (
 
-    val self: SelfLink? = null,
-    @JsonProperty("/rels/nav") val nav: NavigationLink? = null,
-    @JsonProperty("/rels/feed")val feed: FeedLink? = null
+    /*val self: SelfLink? = null,
+    @JsonProperty("/rels/nav") val nav: NavigationLink? = null*/
 )
 
 
@@ -29,6 +28,6 @@ class SmallFeedItemDto(
 )
 
 class SmallFeedItemLinkStruct(
-    val self: SelfLink? = null,
-    @JsonProperty("/rels/userProfile") val userProfile: UserProfileLink? = null
+    /*val self: SelfLink? = null,
+    @JsonProperty("/rels/userProfile") val userProfile: UserProfileLink? = null*/
 )

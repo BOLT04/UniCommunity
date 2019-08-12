@@ -37,7 +37,7 @@ class FragmentA : Fragment() {
         val test = Test(User::class.java)
 
 
-        textView.text = test.a.simpleName
+        nav_header_email.text = test.a.simpleName
 
 
 
@@ -47,10 +47,10 @@ class FragmentA : Fragment() {
 
         viewModel.user.observe(act, Observer {
 
-            textView.text= it.name
+            nav_header_email.text= it.name
 
             /*it.test?.get(Response.Listener { testModel ->
-                textView.text = testModel.name
+                textView.text = testModel.APP_NAME
             },
                 Response.ErrorListener {  }
             )*/

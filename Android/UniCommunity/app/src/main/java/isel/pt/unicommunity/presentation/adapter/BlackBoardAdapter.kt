@@ -3,50 +3,65 @@ package isel.pt.unicommunity.presentation.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import isel.pt.unicommunity.R
-import isel.pt.unicommunity.model.to_refactor.small.SmallBlackBoardItem
-import isel.pt.unicommunity.presentation.viewmodel.BlackBoardViewModel
+import isel.pt.unicommunity.presentation.viewmodel.BlackBoardItemRepr
 
 
 class BlackBoardAdapter(
-    val viewModel: BlackBoardViewModel
+    val blackBoardItems: List<BlackBoardItemRepr>,
+    val onBlackBoardItemReprClickListener : OnBlackBoardItemReprClickListener
+) : RecyclerView.Adapter<BlackBoardItemReprViewHolder>(){
 
-) : RecyclerView.Adapter<SmallBlackBoardItemViewHolder>(){
 
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SmallBlackBoardItemViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BlackBoardItemReprViewHolder {
         val view = LayoutInflater
             .from(parent.context)
             .inflate(R.layout.item_blackboard, parent, false) as ViewGroup
 
-        return SmallBlackBoardItemViewHolder(view)
+        return BlackBoardItemReprViewHolder(view, onBlackBoardItemReprClickListener)
     }
 
 
     override fun getItemCount(): Int =
-        viewModel.liveData.value?.size ?: 0
+        blackBoardItems.size
 
 
 
-    override fun onBindViewHolder(holder: SmallBlackBoardItemViewHolder, position: Int) {
-        holder.bindToView(viewModel.liveData.value?.get(position))
+    override fun onBindViewHolder(holder: BlackBoardItemReprViewHolder, position: Int) {
+        holder.bindToView(blackBoardItems[position])
     }
 
 }
 
-class SmallBlackBoardItemViewHolder(view :ViewGroup) : RecyclerView.ViewHolder(view) {
+interface OnBlackBoardItemReprClickListener {
+    fun onClick(item : BlackBoardItemRepr)
+}
+
+class BlackBoardItemReprViewHolder(
+    view :ViewGroup,
+    val onBlackBoardItemReprClickListener: OnBlackBoardItemReprClickListener
+) : RecyclerView.ViewHolder(view) {
 
     val title : TextView = view.findViewById(R.id.title)
     val autor : TextView = view.findViewById(R.id.author)
     val date : TextView = view.findViewById(R.id.date)
-    val smallDesc : TextView = view.findViewById(R.id.small_desc)
 
-    fun bindToView(smallBlackBoardItem: SmallBlackBoardItem?){
-        title.text= smallBlackBoardItem?.title ?: "empty"
-        autor.text= smallBlackBoardItem?.author ?: "empty"
-        date.text= smallBlackBoardItem?.date?.toString() ?: "empty"
-        smallDesc.text= smallBlackBoardItem?.desc ?: "empty"
+
+    val layout :  ConstraintLayout = view.findViewById(R.id.blackboardItem_layout)
+
+    fun bindToView(blackBoardItemRepr: BlackBoardItemRepr){
+        title.text= blackBoardItemRepr.title
+        autor.text=blackBoardItemRepr.author
+        date.text = blackBoardItemRepr.date
+        /*autor.text= blackBoardItemRepr?.author ?: "empty"
+        date.text= blackBoardItemRepr?.date?.toString() ?: "empty"
+        smallDesc.text= blackBoardItemRepr?.desc ?: "empty" todo */
+
+        layout.setOnClickListener{
+            onBlackBoardItemReprClickListener.onClick(blackBoardItemRepr)
+        }
 
     }
 

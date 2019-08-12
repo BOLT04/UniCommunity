@@ -12,8 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import isel.pt.unicommunity.BackStackManagingActivity
 
 import isel.pt.unicommunity.R
-import isel.pt.unicommunity.presentation.adapter.BoardClickListener
-import isel.pt.unicommunity.presentation.adapter.MyBoardsAdapter
+/*import isel.pt.unicommunity.presentation.adapter.BoardClickListener
+import isel.pt.unicommunity.presentation.adapter.MyBoardsAdapter*/
 import isel.pt.unicommunity.kotlinx.getViewModel
 import isel.pt.unicommunity.model.to_refactor.small.SmallBoardItem
 import isel.pt.unicommunity.presentation.viewmodel.MyBoardsViewModel
@@ -37,7 +37,7 @@ class MyBoardsFragment : Fragment() {
             }
 
             recyclerView.layoutManager = LinearLayoutManager(activity)
-            val onBoardClickListener = object : BoardClickListener {
+            /*val onBoardClickListener = object : BoardClickListener {
                 override fun onClickListener(smallBoardItem: SmallBoardItem?) {
 
                     (activity as BackStackManagingActivity).navigateTo(BoardMenuFragment())
@@ -50,7 +50,7 @@ class MyBoardsFragment : Fragment() {
             viewModel.liveData.observe(
                 this,
                 Observer<List<SmallBoardItem>> { recyclerView.adapter =  MyBoardsAdapter(viewModel, onBoardClickListener)}
-            )
+            )*/
         }
 
 }

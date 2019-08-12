@@ -1,5 +1,6 @@
 package isel.pt.unicommunity.presentation.fragment.board
 
+import android.app.ProgressDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -12,15 +13,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import isel.pt.unicommunity.BackStackManagingActivity
 
 import isel.pt.unicommunity.R
-import isel.pt.unicommunity.presentation.adapter.AllBoardsAdapter
-import isel.pt.unicommunity.presentation.adapter.BoardClickListener
+import isel.pt.unicommunity.kotlinx.getUniCommunityApp
+
 import isel.pt.unicommunity.kotlinx.getViewModel
-import isel.pt.unicommunity.model.to_refactor.small.SmallBoardItem
+import isel.pt.unicommunity.model.webdto.rel_links.GetMultipleBoardsLink
+import isel.pt.unicommunity.model.webdto.rel_links.PartialBoardItem
+import isel.pt.unicommunity.presentation.adapter.AllBoardsAdapter
+import isel.pt.unicommunity.presentation.adapter.PartialBoardItemClickListener
 import isel.pt.unicommunity.presentation.viewmodel.AllBoardsViewModel
 import kotlinx.android.synthetic.main.fragment_all_boards.*
 
 
-class AllBoardsFragment : Fragment() {
+class AllBoardsFragment(val link: GetMultipleBoardsLink) : Fragment() {
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -32,25 +38,41 @@ class AllBoardsFragment : Fragment() {
     override fun onStart() {
         super.onStart()
 
-        val viewModel = (activity as AppCompatActivity).getViewModel("allBoards"){
-            AllBoardsViewModel()
+        val activity = (activity as AppCompatActivity)
+
+        val viewModel = activity.getViewModel("allBoards"){
+            AllBoardsViewModel(activity.getUniCommunityApp(), link)
         }
+
+        val progress = ProgressDialog(activity)
+        progress.setTitle("Loading");
+        progress.setMessage("Wait while loading...");
+        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog*/
+
+        progress.show()
+        viewModel.getAllBoards{progress.dismiss()}
 
         recyclerView.layoutManager = LinearLayoutManager(activity)
-        val onBoardClickListener = object : BoardClickListener {
-            override fun onClickListener(smallBoardItem: SmallBoardItem?) {
 
-                (activity as BackStackManagingActivity).navigateTo(BoardMenuFragment())
+        val onPartialBoardItemClickListener = object : PartialBoardItemClickListener {
+            override fun onClickListener(partialBoardIem: PartialBoardItem) {
 
-                Toast.makeText(activity, smallBoardItem?.name ?: "nullsmall board item", Toast.LENGTH_LONG).show()
+                (activity as BackStackManagingActivity).navigateTo(BoardMenuFragment(partialBoardIem))
+
+                Toast.makeText(activity, partialBoardIem.href , Toast.LENGTH_LONG).show()
+
             }
-        }
-        recyclerView.adapter = AllBoardsAdapter(viewModel, onBoardClickListener)
 
-        viewModel.liveData.observe(
-            this,
-            Observer { recyclerView.adapter =  AllBoardsAdapter(viewModel, onBoardClickListener)}
-        )
+        }
+
+        viewModel.allBoards.observe(this, Observer {
+
+
+            recyclerView.adapter =  AllBoardsAdapter(viewModel.allBoards.value?.boards ?: mutableListOf(), onPartialBoardItemClickListener)
+
+        })
+
+
     }
 
 }

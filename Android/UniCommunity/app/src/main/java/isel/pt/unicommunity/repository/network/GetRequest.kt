@@ -4,7 +4,12 @@ import com.android.volley.NetworkResponse
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.HttpHeaderParser
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import isel.pt.unicommunity.BASEURL
+import isel.pt.unicommunity.model.webdto.clean.NavLink
 import java.nio.charset.Charset
 import java.util.*
 
@@ -20,12 +25,11 @@ class GetRequest1<T>(private val type : Class<T>, url: String, success: Response
 
     val TAG = "GetRequest"
 
-    override fun parseNetworkResponseContent(response: NetworkResponse): Response< T> {
+    override fun parseNetworkResponseContentGson(response: NetworkResponse): Response< T> {
         val dataStr = String(response.data)
         Log.v(TAG, "parsing network response $dataStr")
 
-        val mapper = jacksonObjectMapper()
-                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+
         val resDto = mapper.readValue(dataStr, type ) as T
 
         logger?.invoke()
@@ -49,21 +53,40 @@ inline fun <reified T: Any> getRequestOf(
 
 */
 
+class NavLinkRequest<T>(
+    navLink : NavLink<T>,
+    onSuccessListener: Response.Listener<T>,
+    onErrorListener: Response.ErrorListener,
+    email :String,
+    password : String,
+    headers: MutableMap<String, String>? = null,
+    logger: (() -> Unit)? = null
+): BasicAuthenticationGetRequest<T>(
+    navLink.responseClass,
+    navLink.href,
+    onSuccessListener,
+    onErrorListener,
+    email,
+    password,
+    headers,
+    logger
+)
 
 
 
 
-class BasicAuthenticationGetRequest<T>(
+
+open class BasicAuthenticationGetRequest<T>(
     clazz: Class<T>,
     url: String,
     onSuccessListener: Response.Listener<T>,
     onErrorListener: Response.ErrorListener,
-    username :String,
+    email :String,
     password : String,
     headers: MutableMap<String, String>? = null,
     logger: (() -> Unit)? = null
 ): GetRequest<T>(
-    clazz, url, onSuccessListener, onErrorListener, basicAuthenticationMiddleware(headers, username, password), logger
+    clazz, url, onSuccessListener, onErrorListener, basicAuthenticationMiddleware(headers, email, password), logger
 )
 
 
@@ -89,8 +112,11 @@ open class GetRequest<T>(
     private val onSuccessListener: Response.Listener<T>,
     onErrorListener: Response.ErrorListener,
     private val headers: MutableMap<String, String>? = null,
-    private val logger: (() -> Unit)? = null) : Request<T>(Method.GET, url, onErrorListener) {
+    private val logger: (() -> Unit)? = null) : Request<T>(Method.GET, checkUrl(url), onErrorListener) {
 
+    init {
+        this.setShouldCache(false) //todo development only take this out of here
+    }
 
 
     val TAG = "GetRequest"
@@ -102,7 +128,7 @@ open class GetRequest<T>(
 
     override fun parseNetworkResponse(response: NetworkResponse?): Response<T> {
 
-        val parsedNetworkResponseContent = parseNetworkResponseContent(clazz, response)
+        val parsedNetworkResponseContent = parseNetworkResponseContentJackson(clazz, response)
 
         logger?.invoke()
 
@@ -116,18 +142,51 @@ open class GetRequest<T>(
 
 class ErrorResponse(val networkResponse: NetworkResponse){
 
-    fun getParsedError() = parseNetworkResponseContent(Error::class.java, networkResponse)
+    fun getParsedError() = parseNetworkResponseContentGson(Error::class.java, networkResponse)
 
 }
 
 class Error(val tile:String, val detail:String, val status: Int)
 
 
-private val gson = Gson()
-fun<T> parseNetworkResponseContent(clazz: Class<T>, response: NetworkResponse?): T {
+class GsonSingleton{
+    private var gson : Gson? = null
+    fun getInstance(): Gson {
+        if(gson!=null)
+            return gson!!
+
+        val gsonBuilder = GsonBuilder()
+
+
+        gson = gsonBuilder.create()
+
+        return gson!!
+    }
+}
+private val gsonBuilder = GsonBuilder()
+
+private val gson = GsonSingleton()
+fun<T> parseNetworkResponseContentGson(clazz: Class<T>, response: NetworkResponse?): T {
     val json = String(
         response?.data ?: ByteArray(0),
         Charset.forName(HttpHeaderParser.parseCharset(response?.headers)))
 
-    return gson.fromJson(json, clazz)
+    return gson.getInstance().fromJson(json, clazz)
 }
+
+
+val mapper = jacksonObjectMapper()
+    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+
+fun<T> parseNetworkResponseContentJackson(clazz: Class<T>, response: NetworkResponse?): T {
+
+    val json = String(
+        response?.data ?: ByteArray(0),
+        Charset.forName(HttpHeaderParser.parseCharset(response?.headers)))
+
+    return  mapper.readValue(json, clazz ) as T
+}
+
+//todo esta verificaçao é anti-hateoas
+
+fun checkUrl(href:String)= if(href.contains("http://")) href else "$BASEURL$href"

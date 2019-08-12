@@ -15,9 +15,9 @@ class ZActivity1 : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.__testing__viewmodel)
     }
-
+/*
     override fun onStart() {
-        super.onStart()
+       /* super.onStart()
 
         val app = getUniCommunityApp()
 
@@ -68,10 +68,10 @@ class ZActivity1 : AppCompatActivity() {
             this.startActivity(Intent(this, ZActivity2::class.java))
 
         }
-
+*/
 
     }
 
-
+*/
 
 }

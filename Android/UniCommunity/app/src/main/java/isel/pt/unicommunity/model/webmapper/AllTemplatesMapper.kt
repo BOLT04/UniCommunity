@@ -1,6 +1,6 @@
 package isel.pt.unicommunity.model.webmapper
 
-import isel.pt.unicommunity.model.webdto.AllTemplatesDto
+import isel.pt.unicommunity.model.webdto.clean.AllTemplatesDto
 import java.lang.RuntimeException
 
 class Template(
@@ -26,7 +26,7 @@ class AllTemplatesMapper : IMapper<AllTemplatesDto, AllTemplates> {
         val templates = dto.collection.items.map { item ->
             val data = item.data
 
-            val name = data.firstOrNull { it.name == "name" }
+            val name = data.firstOrNull { it.name == "APP_NAME" }
             val id = data.firstOrNull { it.name == "id" }
             val hasForum = data.firstOrNull { it.name == "hasForum" }
             val blackBoardNames = data.firstOrNull { it.name == "blackboardNames" }

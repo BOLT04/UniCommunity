@@ -14,7 +14,7 @@ class ZActivity2 : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.__testing__viewmodel)
     }
-
+/*
     override fun onStart() {
         super.onStart()
 
@@ -72,7 +72,7 @@ class ZActivity2 : AppCompatActivity() {
 
 
     }
-
+*/
 
 
 }

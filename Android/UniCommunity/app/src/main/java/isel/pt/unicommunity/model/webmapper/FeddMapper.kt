@@ -1,7 +1,6 @@
 package isel.pt.unicommunity.model.webmapper
 
-import isel.pt.unicommunity.model.webdto.FeedDto
-import java.lang.RuntimeException
+import isel.pt.unicommunity.model.webdto.clean.FeedDto
 
 class FeddMapper : IMapper<FeedDto, Feed> {
 

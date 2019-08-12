@@ -1,20 +1,19 @@
 package isel.pt.unicommunity.testing.volleytesting.activity
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import com.android.volley.Response
-import com.android.volley.toolbox.HttpHeaderParser
-import isel.pt.unicommunity.MainActivity
+import isel.pt.unicommunity.BASEURL
 import isel.pt.unicommunity.R
 import isel.pt.unicommunity.kotlinx.getUniCommunityApp
 import isel.pt.unicommunity.kotlinx.getViewModel
+import isel.pt.unicommunity.model.webdto.old.board.AllBoardsDto
+import isel.pt.unicommunity.model.webdto.old.blackboard.AllBlackBoardsDto
+import isel.pt.unicommunity.repository.network.BasicAuthenticationGetRequest
 import isel.pt.unicommunity.repository.network.ErrorResponse
 import kotlinx.android.synthetic.main.__testing__volleytesting.*
-import java.nio.charset.Charset
 
 
 class VolleyActivity : AppCompatActivity() {
@@ -29,6 +28,8 @@ class VolleyActivity : AppCompatActivity() {
             VolleyVM(queue)
         }
 
+        //val m = NavigationLink("yeets")
+        val a = 1
 
         vm.value.observe(this, Observer {
             val a = it
@@ -36,21 +37,78 @@ class VolleyActivity : AppCompatActivity() {
 
 
 
-        button2.setOnClickListener {
+        boards.setOnClickListener {
+            queue.add(BasicAuthenticationGetRequest(
+                AllBoardsDto::class.java,
+                "$BASEURL/boards",
+                Response.Listener {
+                    val a = it
+                    //val mapped = AllBoardsMapper().toModel(it)
+                    val b =1
+                },
+                Response.ErrorListener {Toast.makeText(this, ErrorResponse(it.networkResponse).getParsedError().detail, Toast.LENGTH_SHORT).show()},
+                "admin@gmail.com",
+                "admin"
+            ))
+        }
 
-            //vm.startRequest(Response.Listener{Toast.makeText(this, "we gottem boys", Toast.LENGTH_SHORT).show()})
-            vm.altRequest(
-                Response.ErrorListener {
+        /*board.setOnClickListener {
+            queue.add(BasicAuthenticationGetRequest(
+                BoardDto::class.java,
+                "$baseurl/boards/1",
+                Response.Listener { val a = it },
+                Response.ErrorListener {Toast.makeText(this, ErrorResponse(it.networkResponse).getParsedError().detail, Toast.LENGTH_SHORT).show()},
+                "admin@gmail.com",
+                "admin"
+            ))
+        }*/
+
+        blackboards.setOnClickListener {
+            queue.add(BasicAuthenticationGetRequest(
+                AllBlackBoardsDto::class.java,
+                "$BASEURL/boards/1/blackboards",
+                Response.Listener {
+                    val a = it
+                    //val mapped = AllBlackBoardsMapper().toModel(it)
+                    val b =1
+                },
+                Response.ErrorListener {Toast.makeText(this, ErrorResponse(it.networkResponse).getParsedError().detail, Toast.LENGTH_SHORT).show()},
+                "admin@gmail.com",
+                "admin"
+            ))
+        }
+
+        /*blackboard.setOnClickListener {
+            queue.add(BasicAuthenticationGetRequest(
+                BlackBoardDto::class.java,
+                "$baseurl/boards",
+                Response.Listener { val a = it },
+                Response.ErrorListener {Toast.makeText(this, ErrorResponse(it.networkResponse).getParsedError().detail, Toast.LENGTH_SHORT).show()},
+                "admin@gmail.com",
+                "admin"
+            ))
+        }*/
+
+    }
+
+}
 
 
 
-
-                    Toast.makeText(this, ErrorResponse(it.networkResponse).getParsedError().detail, Toast.LENGTH_SHORT).show()
-
-                }
-            )
 
 /*
+//vm.startRequest(Response.Listener{Toast.makeText(this, "we gottem boys", Toast.LENGTH_SHORT).show()})
+vm.altRequest(
+Response.ErrorListener {
+
+
+
+
+    Toast.makeText(this, ErrorResponse(it.networkResponse).getParsedError().detail, Toast.LENGTH_SHORT).show()
+
+}
+
+        /*
             vm.loginRequest(
                 Response.Listener { val a= it },
                 Response.ErrorListener {Toast.makeText(this, ErrorResponse(it.networkResponse).getParsedError().detail, Toast.LENGTH_SHORT).show()}
@@ -80,13 +138,3 @@ class VolleyActivity : AppCompatActivity() {
                     })
 
                 }*/
-            }
-
-        }
-
-    }
-
-
-
-
-

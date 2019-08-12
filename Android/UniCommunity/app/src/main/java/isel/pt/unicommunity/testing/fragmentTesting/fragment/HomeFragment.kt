@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 
 import isel.pt.unicommunity.R
+import isel.pt.unicommunity.model.webdto.rel_links.HomeLink
 import kotlinx.android.synthetic.main.fragment_home.*
 
 // TODO: Rename parameter arguments, choose names that match
@@ -24,11 +25,9 @@ private const val ARG_PARAM2 = "param2"
  * create an instance of this fragment.
  *
  */
-class HomeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-    //private var listener: OnFragmentInteractionListener? = null
+class HomeFragment(val link: HomeLink) : Fragment() {
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

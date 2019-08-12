@@ -3,9 +3,6 @@ package isel.pt.unicommunity.presentation.viewmodel
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModel
-import isel.pt.unicommunity.R
-import isel.pt.unicommunity.presentation.fragment.modules.ForumFragment
-import isel.pt.unicommunity.testing.fragmentTesting.fragment.HomeFragment
 
 class BackStackManagingViewModel(private val containerId: Int) : ViewModel(){
 
@@ -53,19 +50,7 @@ class BackStackManagingViewModel(private val containerId: Int) : ViewModel(){
 
     }
 
-    fun getStarter(starter : String): Fragment?{
 
-        return when(starter){
-
-            "Home" -> HomeFragment()//todo preload these
-            "Forum" -> ForumFragment()
-
-            else -> null
-        }
-
-
-
-    }
 
 
 

@@ -11,11 +11,11 @@ import isel.pt.unicommunity.BackStackManagingActivity
 import isel.pt.unicommunity.R
 import isel.pt.unicommunity.kotlinx.getUniCommunityApp
 import isel.pt.unicommunity.kotlinx.getViewModel
+import isel.pt.unicommunity.model.webdto.rel_links.UserProfileLink
 import isel.pt.unicommunity.presentation.viewmodel.ProfileViewModel
-import isel.pt.unicommunity.testing.fragmentTesting.fragment.HomeFragment
 import kotlinx.android.synthetic.main.fragment_profile.*
 
-class ProfileFragment : Fragment() {
+class ProfileFragment(userProfile: UserProfileLink) : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -54,7 +54,7 @@ class ProfileFragment : Fragment() {
 
         launcher.setOnClickListener{
             if(activity is BackStackManagingActivity)
-                (activity as BackStackManagingActivity).navigateTo(HomeFragment())
+                //(activity as BackStackManagingActivity).navigateTo(HomeFragment(links.home.href))
             else{
 
                 //TODO necessario?! activity.supportFragmentManager.

@@ -11,10 +11,14 @@ import isel.pt.unicommunity.model.to_refactor.linker.NavSupplier
 
 class UniCommunityApp : Application(){
 
-    public val commonVm = HashMap<String, ViewModel>()
+    val APP_NAME = "UniCommunity"
+    val SharedPreferences_FileName = "UniCommunity_SharedPreferences"
+
+
 
     lateinit var queue : RequestQueue
     lateinit var navSupplier : NavSupplier
+
 
     override fun onCreate() {
         super.onCreate()
@@ -29,6 +33,12 @@ class UniCommunityApp : Application(){
         navSupplier = NavSupplier(this, mock = true)
 
     }
+
+    var username : String? = null
+    lateinit var password : String
+    lateinit var email : String
+
+
 
 
 
