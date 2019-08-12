@@ -19,7 +19,6 @@ class SingleForumItemResponse(forumItem: ForumItem) : HalObject(mutableMapOf(), 
         val forum = forumItem.forum
         val author = forumItem.author
         val boardId = board.id
-        val forumId = forum.id
 
         val partialBoard = PartialBoardObject(
                 board.name,
@@ -56,14 +55,14 @@ class SingleForumItemResponse(forumItem: ForumItem) : HalObject(mutableMapOf(), 
             ))
         
         super._links?.putAll(sequenceOf(
-                "self" to Link(Uri.forSingleForumItemText(boardId, forumId)),
+                "self" to Link(Uri.forSingleForumItemText(boardId, id)),
                 Rels.CREATE_FORUMITEM to Link(Uri.forAllForumItems(boardId)),
                 Rels.GET_MULTIPLE_FORUMITEMS to Link(Uri.forAllForumItems(boardId)),
-                Rels.EDIT_FORUMITEM to Link(Uri.forSingleForumItemText(boardId, forumId)),
-                Rels.DELETE_FORUMITEM to Link(Uri.forSingleForumItemText(boardId, forumId)),
+                Rels.EDIT_FORUMITEM to Link(Uri.forSingleForumItemText(boardId, id)),
+                Rels.DELETE_FORUMITEM to Link(Uri.forSingleForumItemText(boardId, id)),
 
-                Rels.GET_MULTIPLE_COMMENTS to Link(Uri.forAllComments(boardId, forumId)),
-                Rels.CREATE_COMMENT to Link(Uri.forAllComments(boardId, forumId))
+                Rels.GET_MULTIPLE_COMMENTS to Link(Uri.forAllComments(boardId, id)),
+                Rels.CREATE_COMMENT to Link(Uri.forAllComments(boardId, id))
         ))
     }
 }
