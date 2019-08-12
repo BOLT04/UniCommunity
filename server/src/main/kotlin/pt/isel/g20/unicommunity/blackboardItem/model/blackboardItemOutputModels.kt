@@ -18,8 +18,7 @@ class SingleBlackboardItemResponse(bbItem: BlackboardItem) : HalObject(mutableMa
         val blackboard = bbItem.blackboard
         val author = bbItem.author
         val boardId = board.id
-        val id = blackboard.id
-        val bbItemId = bbItem.id
+        val bbId = blackboard.id
 
         val partialBoard = PartialBoardObject(
                 board.name,
@@ -31,7 +30,7 @@ class SingleBlackboardItemResponse(bbItem: BlackboardItem) : HalObject(mutableMa
 
         val partialBlackboard = PartialBlackboardObject(
                 board.name,
-                mapOf("self" to Link(Uri.forSingleBlackboardText(boardId, id)))
+                mapOf("self" to Link(Uri.forSingleBlackboardText(boardId, bbId)))
         )
         super._embedded?.putAll(sequenceOf(
                 Rels.GET_SINGLE_BLACKBOARD to listOf(partialBlackboard)
@@ -46,11 +45,11 @@ class SingleBlackboardItemResponse(bbItem: BlackboardItem) : HalObject(mutableMa
         ))
 
         super._links?.putAll(sequenceOf(
-                "self" to Link(Uri.forSingleBlackboardItemText(boardId, id, bbItemId )),
-                Rels.CREATE_BLACKBOARDITEM to Link(Uri.forAllBlackboardItems(boardId, id)),
-                Rels.GET_MULTIPLE_BLACKBOARDITEMS to Link(Uri.forAllBlackboardItems(boardId, id)),
-                Rels.EDIT_BLACKBOARDITEM to Link(Uri.forSingleBlackboardItemText(boardId, id, bbItemId)),
-                Rels.DELETE_BLACKBOARDITEM to Link(Uri.forSingleBlackboardItemText(boardId, id, bbItemId))
+                "self" to Link(Uri.forSingleBlackboardItemText(boardId, bbId, id )),
+                Rels.CREATE_BLACKBOARDITEM to Link(Uri.forAllBlackboardItems(boardId, bbId)),
+                Rels.GET_MULTIPLE_BLACKBOARDITEMS to Link(Uri.forAllBlackboardItems(boardId, bbId)),
+                Rels.EDIT_BLACKBOARDITEM to Link(Uri.forSingleBlackboardItemText(boardId, bbId, id)),
+                Rels.DELETE_BLACKBOARDITEM to Link(Uri.forSingleBlackboardItemText(boardId, bbId, id))
         ))
     }
 }
@@ -64,8 +63,7 @@ class MultipleBlackboardItemsResponse(
         version = "1.0",
         href = Uri.forAllBlackboardItems(boardId, bbId),
         links = mutableListOf(
-                CollectionLink("self", Rels.GET_MULTIPLE_BLACKBOARDITEMS),
-                CollectionLink(Rels.NAVIGATION, Uri.NAVIGATION_ROUTE)
+                CollectionLink("self", Rels.GET_MULTIPLE_BLACKBOARDITEMS)
         ),
         items = blackboards
 )

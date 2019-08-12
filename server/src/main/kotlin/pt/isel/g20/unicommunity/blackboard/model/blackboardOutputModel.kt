@@ -55,8 +55,7 @@ class MultipleBlackboardsResponse(
         version = "1.0",
         href = Uri.forAllBlackboards(boardId),
         links = mutableListOf(
-                CollectionLink("self", Uri.forAllBlackboards(boardId)),
-                CollectionLink(Rels.NAVIGATION, Uri.NAVIGATION_ROUTE)
+                CollectionLink("self", Uri.forAllBlackboards(boardId))
         ),
         items = blackboards
 )

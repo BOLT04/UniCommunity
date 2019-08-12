@@ -77,7 +77,6 @@ class MultipleForumItemsResponse(
         href = Uri.forAllForumItems(boardId),
         links = mutableListOf(
                 CollectionLink("self", Uri.forAllForumItems(boardId)),
-                CollectionLink(Rels.NAVIGATION, Uri.NAVIGATION_ROUTE),
                 CollectionLink(Rels.CREATE_FORUMITEM, Uri.forAllForumItems(boardId))
         ),
         items = forumItems

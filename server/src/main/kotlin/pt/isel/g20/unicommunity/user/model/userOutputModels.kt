@@ -83,8 +83,7 @@ class MultipleUsersResponse(
         version = "1.0",
         href = Uri.forAllUsers(),
         links = mutableListOf(
-                CollectionLink("self",Uri.forAllUsers()),
-                CollectionLink(Rels.NAVIGATION, Uri.NAVIGATION_ROUTE)
+                CollectionLink("self",Uri.forAllUsers())
         ),
         items = users.map { Item( Uri.forSingleUserText(it.id)) }
 )

@@ -65,8 +65,7 @@ class MultipleBoardsResponse(
         version = "1.0",
         href = Uri.forAllBoards(),
         links = mutableListOf(
-                CollectionLink("self", Uri.forAllBoards()),
-                CollectionLink(Rels.NAVIGATION, Uri.NAVIGATION_ROUTE)
+                CollectionLink("self", Uri.forAllBoards())
         ),
         items = boardsPage.content,
         queries = listOf(

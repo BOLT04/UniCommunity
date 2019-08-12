@@ -17,8 +17,7 @@ class MultipleTemplatesResponse(
         version = "1.0",
         href = Uri.forAllTemplates(),
         links = mutableListOf(
-                CollectionLink("self",Uri.forAllTemplates()),
-                CollectionLink(Rels.NAVIGATION, Uri.NAVIGATION_ROUTE)
+                CollectionLink("self",Uri.forAllTemplates())
         ),
         items = templates
 )
