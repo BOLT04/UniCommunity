@@ -1,5 +1,7 @@
 package pt.isel.g20.unicommunity.comment.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonInclude
 import pt.isel.g20.unicommunity.board.model.PartialBoardObject
 import pt.isel.g20.unicommunity.common.Rels
 import pt.isel.g20.unicommunity.common.Uri
@@ -24,7 +26,7 @@ class SingleCommentResponse(comment: Comment) : HalObject(mutableMapOf(), mutabl
                 mapOf("self" to Link(Uri.forSingleBoardText(boardId)))
         )
         super._embedded?.putAll(sequenceOf(
-                Rels.GET_SINGLE_BOARD to listOf(partialBoard)
+                Rels.GET_SINGLE_BOARD to SingleHalObj(partialBoard)
         ))
 
         val partialForumItem = PartialForumItemObject(
@@ -33,7 +35,7 @@ class SingleCommentResponse(comment: Comment) : HalObject(mutableMapOf(), mutabl
                 mapOf("self" to Link(Uri.forSingleForumItemText(boardId, forumItemId)))
         )
         super._embedded?.putAll(sequenceOf(
-                Rels.GET_SINGLE_FORUMITEM to listOf(partialForumItem)
+                Rels.GET_SINGLE_FORUMITEM to SingleHalObj(partialForumItem)
         ))
 
         val partialUser = PartialUserObject(
@@ -41,7 +43,7 @@ class SingleCommentResponse(comment: Comment) : HalObject(mutableMapOf(), mutabl
                 mapOf("self" to Link(Uri.forSingleUserText(author.id)))
         )
         super._embedded?.putAll(sequenceOf(
-                Rels.GET_SINGLE_USER to listOf(partialUser)
+                Rels.GET_SINGLE_USER to SingleHalObj(partialUser)
         ))
 
         super._links?.putAll(sequenceOf(
@@ -97,3 +99,4 @@ class PartialCommentObject(
         val author: String?,
         val _links: Map<String, Link>
 ) : HalResourceObject()
+

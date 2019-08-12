@@ -16,22 +16,22 @@ class SingleBoardResponse(board: Board) : HalObject(mutableMapOf(), mutableMapOf
     init {
         if(board.blackBoards.size != 0)
             super._embedded?.putAll(sequenceOf(
-                    Rels.GET_MULTIPLE_BLACKBOARDS to board.blackBoards.map {
+                    Rels.GET_MULTIPLE_BLACKBOARDS to MultipleHalObj(board.blackBoards.map {
                         PartialBlackboardObject(
                                 it.name,
                                 mapOf("self" to Link(Uri.forSingleBlackboardText(id, it.id)))
                         )
-                    }
+                    })
             ))
 
         if(board.members.size !=0)
             super._embedded?.putAll(sequenceOf(
-                    Rels.GET_MULTIPLE_USERS to board.members.map {
+                    Rels.GET_MULTIPLE_USERS to MultipleHalObj(board.members.map {
                         PartialUserObject(
                                 it.name,
                                 mapOf("self" to Link(Uri.forSingleUserText(it.id)))
                         )
-                    }
+                    })
             ))
 
         super._links?.putAll(sequenceOf(

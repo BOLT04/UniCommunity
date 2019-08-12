@@ -18,18 +18,18 @@ class SingleForumResponse(forum: Forum) : HalObject(mutableMapOf(), mutableMapOf
                 mapOf("self" to Link(Uri.forSingleBoardText(boardId)))
         )
         super._embedded?.putAll(sequenceOf(
-                Rels.GET_SINGLE_BOARD to listOf(partialBoard)
+                Rels.GET_SINGLE_BOARD to SingleHalObj(partialBoard)
         ))
 
         if(forum.items.size !=0)
             super._embedded?.putAll(sequenceOf(
-                    Rels.GET_MULTIPLE_FORUMITEMS to forum.items.map {
+                    Rels.GET_MULTIPLE_FORUMITEMS to MultipleHalObj(forum.items.map {
                         PartialForumItemObject(
                                 it.name,
                                 if(it.anonymousPost) null else it.author.name,
                                 mapOf("self" to Link(Uri.forSingleBlackboardItemText(boardId, id, it.id)))
                         )
-                    }
+                    })
             ))
         
         super._links?.putAll(sequenceOf(
