@@ -7,13 +7,16 @@ import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.common.getFirstPageable
 import pt.isel.g20.unicommunity.hateoas.*
 import pt.isel.g20.unicommunity.user.model.PartialUserObject
+import pt.isel.g20.unicommunity.user.model.User
 
-class SingleBoardResponse(board: Board) : HalObject(mutableMapOf(), mutableMapOf()) {
+class SingleBoardResponse(user: User, board: Board) : HalObject(mutableMapOf(), mutableMapOf()) {
     val id : Long = board.id
     val name : String = board.name
     val description : String? = board.description
 
     init {
+
+        val isCreator = user.id == board.creator.id
         if(board.blackBoards.size != 0)
             super._embedded?.putAll(sequenceOf(
                     Rels.GET_MULTIPLE_BLACKBOARDS to MultipleHalObj(board.blackBoards.map {
@@ -44,10 +47,7 @@ class SingleBoardResponse(board: Board) : HalObject(mutableMapOf(), mutableMapOf
 
         super._links?.putAll(sequenceOf(
                 "self" to Link(Uri.forSingleBoardText(id)),
-                Rels.CREATE_BOARD to Link(Uri.forAllBoards()),
                 Rels.GET_MULTIPLE_BOARDS to Link(Uri.forAllBoards()),
-                Rels.EDIT_BOARD to Link(Uri.forSingleBoardText(id)),
-                Rels.DELETE_BOARD to Link(Uri.forSingleBoardText(id)),
 
                 Rels.GET_BOARD_MEMBERS to Link(Uri.forBoardMembers(id)),
                 Rels.ADD_MEMBER_TO_BOARD to Link(Uri.forBoardMembers(id)),
@@ -55,6 +55,13 @@ class SingleBoardResponse(board: Board) : HalObject(mutableMapOf(), mutableMapOf
 
                 Rels.GET_MULTIPLE_BLACKBOARDS to Link(Uri.forAllBlackboards(id))
         ))
+
+        if(isCreator){
+            super._links?.putAll(sequenceOf(
+                    Rels.EDIT_BOARD to Link(Uri.forSingleBoardText(id)),
+                    Rels.DELETE_BOARD to Link(Uri.forSingleBoardText(id))
+            ))
+        }
 
         if (board.forum != null) {
             super._links?.putAll(sequenceOf(

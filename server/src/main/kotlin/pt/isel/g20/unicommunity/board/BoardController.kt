@@ -98,9 +98,9 @@ class BoardController(private val service: IBoardService) {
 
     @AuthorizationRequired
     @GetMapping(path = [SINGLE_BOARD_ROUTE], produces = ["application/hal+json"])
-    fun getBoardById(@PathVariable boardId: Long) =
+    fun getBoardById(@PathVariable boardId: Long,  @SessionAttribute("user") user: User) =
             service.getBoardById(boardId).let {
-                val response = SingleBoardResponse(it)
+                val response = SingleBoardResponse(user, it)
 
                 ResponseEntity
                         .ok()
@@ -123,7 +123,7 @@ class BoardController(private val service: IBoardService) {
                     boardDto.description,
                     boardDto.blackboardNames,
                     boardDto.hasForum).let {
-                val response = SingleBoardResponse(it)
+                val response = SingleBoardResponse(user, it)
 
                 ResponseEntity
                         .created(Uri.forSingleBoardUri(it.id))
@@ -137,9 +137,12 @@ class BoardController(private val service: IBoardService) {
 
     @AuthorizationRequired
     @PutMapping(path = [SINGLE_BOARD_ROUTE], produces = ["application/hal+json"])
-    fun editBoard(@PathVariable boardId: Long, @RequestBody boardDto: BoardDto) =
+    fun editBoard(@PathVariable boardId: Long,
+                  @RequestBody boardDto: BoardDto,
+                  @SessionAttribute("user") user: User
+    ) =
             service.editBoard(boardId, boardDto.name, boardDto.description).let {
-                val response = SingleBoardResponse(it)
+                val response = SingleBoardResponse(user, it)
 
                 ResponseEntity
                         .ok()
@@ -154,9 +157,9 @@ class BoardController(private val service: IBoardService) {
 
     @AuthorizationRequired
     @DeleteMapping(path = [BOARD_MEMBERS], produces = ["application/hal+json"])
-    fun deleteBoard(@PathVariable boardId: Long) =
+    fun deleteBoard(@PathVariable boardId: Long, @SessionAttribute("user") user: User) =
             service.deleteBoard(boardId).let {
-                val response = SingleBoardResponse(it)
+                val response = SingleBoardResponse(user, it)
 
                 ResponseEntity
                         .ok()
@@ -175,7 +178,7 @@ class BoardController(private val service: IBoardService) {
             @SessionAttribute("user") user: User,
             @RequestBody subscribeDto: SubscribeDto): ResponseEntity<SingleBoardResponse>{
         return service.addUserToBoard(boardId, user.id, subscribeDto.token).let {
-            val response = SingleBoardResponse(it)
+            val response = SingleBoardResponse(user, it)
 
             ResponseEntity
                     .ok()
@@ -194,7 +197,7 @@ class BoardController(private val service: IBoardService) {
             @PathVariable boardId: Long,
             @SessionAttribute("user") user: User): ResponseEntity<SingleBoardResponse>{
         return service.removeUserFromBoard(boardId, user.id).let {
-            val response = SingleBoardResponse(it)
+            val response = SingleBoardResponse(user, it)
 
             ResponseEntity
                     .ok()
