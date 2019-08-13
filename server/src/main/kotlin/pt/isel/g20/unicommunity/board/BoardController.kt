@@ -17,6 +17,8 @@ import pt.isel.g20.unicommunity.common.Uri.BOARD_MEMBERS
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_BOARD_ROUTE
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
 import pt.isel.g20.unicommunity.hateoas.CollectionObject
+import pt.isel.g20.unicommunity.template.exception.NotFoundTemplateException
+import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
 import pt.isel.g20.unicommunity.user.model.User
 import java.util.concurrent.TimeUnit
 
@@ -214,4 +216,17 @@ class BoardController(private val service: IBoardService) {
             ResponseEntity
                     .notFound()
                     .build<String>()
+
+    @ExceptionHandler
+    fun handleNotFoundTemplateException(e: NotFoundTemplateException) =
+            ResponseEntity
+                    .notFound()
+                    .build<String>()
+
+    @ExceptionHandler
+    fun handleNotFoundUserException(e: NotFoundUserException) =
+            ResponseEntity
+                    .notFound()
+                    .build<String>()
+
 }
