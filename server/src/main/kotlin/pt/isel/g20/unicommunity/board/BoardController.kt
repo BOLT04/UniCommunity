@@ -1,25 +1,24 @@
 package pt.isel.g20.unicommunity.board
 
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
+import pt.isel.g20.unicommunity.board.model.*
 import pt.isel.g20.unicommunity.board.service.IBoardService
-import pt.isel.g20.unicommunity.hateoas.CollectionObject
 import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.common.Uri.BOARDS_ROUTE
-import pt.isel.g20.unicommunity.common.Uri.SINGLE_BOARD_ROUTE
-import java.util.concurrent.TimeUnit
-import pt.isel.g20.unicommunity.board.model.*
 import pt.isel.g20.unicommunity.common.Uri.BOARD_MEMBERS
+import pt.isel.g20.unicommunity.common.Uri.SINGLE_BOARD_ROUTE
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
+import pt.isel.g20.unicommunity.hateoas.CollectionObject
 import pt.isel.g20.unicommunity.user.model.User
-import retrofit2.Call
-import retrofit2.HttpException
-import retrofit2.Response
-import javax.security.auth.callback.Callback
+import java.util.concurrent.TimeUnit
 
 @RestController
 @RequestMapping(produces = ["application/hal+json", "application/json", "application/vnd.collection+json"])

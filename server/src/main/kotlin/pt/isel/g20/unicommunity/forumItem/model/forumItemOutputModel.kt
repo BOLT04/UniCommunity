@@ -7,18 +7,21 @@ import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.forum.model.PartialForumObject
 import pt.isel.g20.unicommunity.hateoas.*
 import pt.isel.g20.unicommunity.user.model.PartialUserObject
+import pt.isel.g20.unicommunity.user.model.User
 
-class SingleForumItemResponse(forumItem: ForumItem) : HalObject(mutableMapOf(), mutableMapOf()){
+class SingleForumItemResponse(user: User, forumItem: ForumItem) : HalObject(mutableMapOf(), mutableMapOf()){
     val id = forumItem.id
     val name = forumItem.name
     val content = forumItem.content
     val createdAt = forumItem.createdAt.toString()
+    val anonymousPost = forumItem.anonymousPost
 
     init{
         val board = forumItem.forum.board
         val forum = forumItem.forum
         val author = forumItem.author
         val boardId = board.id
+        val isAuthor = user.id == author.id
 
         val partialBoard = PartialBoardObject(
                 board.name,
@@ -35,13 +38,15 @@ class SingleForumItemResponse(forumItem: ForumItem) : HalObject(mutableMapOf(), 
                 Rels.GET_SINGLE_FORUM to SingleHalObj(partialForum)
         ))
 
-        val partialUser = PartialUserObject(
-                author.name,
-                mapOf("self" to Link(Uri.forSingleUserText(author.id)))
-        )
-        super._embedded?.putAll(sequenceOf(
-                Rels.GET_SINGLE_USER to SingleHalObj(partialUser)
-        ))
+        if(!anonymousPost){
+            val partialUser = PartialUserObject(
+                    author.name,
+                    mapOf("self" to Link(Uri.forSingleUserText(author.id)))
+            )
+            super._embedded?.putAll(sequenceOf(
+                    Rels.GET_SINGLE_USER to SingleHalObj(partialUser)
+            ))
+        }
 
         if(forumItem.comments.size != 0)
             super._embedded?.putAll(sequenceOf(
@@ -58,12 +63,16 @@ class SingleForumItemResponse(forumItem: ForumItem) : HalObject(mutableMapOf(), 
                 "self" to Link(Uri.forSingleForumItemText(boardId, id)),
                 Rels.CREATE_FORUMITEM to Link(Uri.forAllForumItems(boardId)),
                 Rels.GET_MULTIPLE_FORUMITEMS to Link(Uri.forAllForumItems(boardId)),
-                Rels.EDIT_FORUMITEM to Link(Uri.forSingleForumItemText(boardId, id)),
-                Rels.DELETE_FORUMITEM to Link(Uri.forSingleForumItemText(boardId, id)),
-
                 Rels.GET_MULTIPLE_COMMENTS to Link(Uri.forAllComments(boardId, id)),
                 Rels.CREATE_COMMENT to Link(Uri.forAllComments(boardId, id))
         ))
+
+        if(isAuthor){
+            super._links?.putAll(sequenceOf(
+                    Rels.EDIT_FORUMITEM to Link(Uri.forSingleForumItemText(boardId, id)),
+                    Rels.DELETE_FORUMITEM to Link(Uri.forSingleForumItemText(boardId, id))
+            ))
+        }
     }
 }
 

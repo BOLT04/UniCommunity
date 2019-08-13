@@ -43,10 +43,11 @@ class BlackboardItemController(private val service: IBlackboardItemService) {
     fun getBlackboardItemById(
             @PathVariable boardId: Long,
             @PathVariable bbId: Long,
-            @PathVariable itemId: Long
+            @PathVariable itemId: Long,
+            @SessionAttribute("user") user: User
     ) =
             service.getBlackboardItemById(boardId, bbId, itemId).let {
-                val response = SingleBlackboardItemResponse(it)
+                val response = SingleBlackboardItemResponse(user, it)
 
                 ResponseEntity
                         .ok()
@@ -68,7 +69,7 @@ class BlackboardItemController(private val service: IBlackboardItemService) {
             @SessionAttribute("user")user: User
     ): ResponseEntity<SingleBlackboardItemResponse>{
             return service.createBlackboardItem(boardId, bbId, user.id, itemDto.name, itemDto.content).let {
-                val response = SingleBlackboardItemResponse(it)
+                val response = SingleBlackboardItemResponse(user, it)
 
                 ResponseEntity
                         .created(Uri.forSingleBlackboardItemUri(it.blackboard.board.id, it.blackboard.id, it.id))
@@ -87,10 +88,11 @@ class BlackboardItemController(private val service: IBlackboardItemService) {
             @PathVariable boardId: Long,
             @PathVariable bbId: Long,
             @PathVariable itemId: Long,
-            @RequestBody itemDto: BlackboardItemDto
+            @RequestBody itemDto: BlackboardItemDto,
+            @SessionAttribute("user") user: User
     ) =
             service.editBlackboardItem(boardId, bbId, itemId, itemDto.name, itemDto.content).let {
-                val response = SingleBlackboardItemResponse(it)
+                val response = SingleBlackboardItemResponse(user, it)
 
                 ResponseEntity
                         .ok()
@@ -107,10 +109,11 @@ class BlackboardItemController(private val service: IBlackboardItemService) {
     fun deleteBlackboardItem(
             @PathVariable boardId: Long,
             @PathVariable bbId: Long,
-            @PathVariable itemId: Long
+            @PathVariable itemId: Long,
+            @SessionAttribute("user") user: User
     ) =
             service.deleteBlackboardItem(boardId, bbId, itemId).let {
-                val response = SingleBlackboardItemResponse(it)
+                val response = SingleBlackboardItemResponse(user, it)
 
                 ResponseEntity
                         .ok()

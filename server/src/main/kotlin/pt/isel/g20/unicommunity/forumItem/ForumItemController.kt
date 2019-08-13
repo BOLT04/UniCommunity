@@ -38,9 +38,12 @@ class ForumItemController(private val service: IForumItemService) {
 
     @AuthorizationRequired
     @GetMapping(path = [SINGLE_FORUMITEM_ROUTE], produces = ["application/hal+json"])
-    fun getForumItemById(@PathVariable boardId: Long, @PathVariable forumItemId: Long) =
+    fun getForumItemById(@PathVariable boardId: Long,
+                         @PathVariable forumItemId: Long,
+                         @SessionAttribute("user") user: User
+    ) =
             service.getForumItemById(boardId, forumItemId).let {
-                val response = SingleForumItemResponse(it)
+                val response = SingleForumItemResponse(user, it)
 
                 ResponseEntity
                         .ok()
@@ -60,8 +63,14 @@ class ForumItemController(private val service: IForumItemService) {
             @RequestBody forumItemDto: ForumItemDto,
             @SessionAttribute("user")user: User
     ): ResponseEntity<SingleForumItemResponse>{
-            return service.createForumItem(boardId, user.id, forumItemDto.name, forumItemDto.content, forumItemDto.anonymousPost).let {
-                val response = SingleForumItemResponse(it)
+            return service.createForumItem(
+                    boardId,
+                    user.id,
+                    forumItemDto.name,
+                    forumItemDto.content,
+                    forumItemDto.anonymousPost
+            ).let {
+                val response = SingleForumItemResponse(user, it)
 
                 ResponseEntity
                         .created(Uri.forSingleForumItemUri(it.forum.board.id, it.id))
@@ -79,10 +88,11 @@ class ForumItemController(private val service: IForumItemService) {
     fun editForumItem(
             @PathVariable boardId: Long,
             @PathVariable forumItemId: Long,
-            @RequestBody forumItemDto: ForumItemDto
+            @RequestBody forumItemDto: ForumItemDto,
+            @SessionAttribute("user") user: User
     ) =
             service.editForumItem(boardId, forumItemId, forumItemDto.name, forumItemDto.content).let {
-                val response = SingleForumItemResponse(it)
+                val response = SingleForumItemResponse(user, it)
 
                 ResponseEntity
                         .ok()
@@ -96,9 +106,12 @@ class ForumItemController(private val service: IForumItemService) {
 
     @AuthorizationRequired
     @DeleteMapping(path = [SINGLE_FORUMITEM_ROUTE], produces = ["application/hal+json"])
-    fun deleteForumItem(@PathVariable boardId: Long, @PathVariable forumItemId: Long) =
+    fun deleteForumItem(@PathVariable boardId: Long,
+                        @PathVariable forumItemId: Long,
+                        @SessionAttribute("user") user: User
+    ) =
             service.deleteForumItem(boardId, forumItemId).let {
-                val response = SingleForumItemResponse(it)
+                val response = SingleForumItemResponse(user, it)
 
                 ResponseEntity
                         .ok()

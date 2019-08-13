@@ -1,18 +1,18 @@
 package pt.isel.g20.unicommunity.comment.model
 
-import com.fasterxml.jackson.annotation.JsonIgnore
-import com.fasterxml.jackson.annotation.JsonInclude
 import pt.isel.g20.unicommunity.board.model.PartialBoardObject
 import pt.isel.g20.unicommunity.common.Rels
 import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.forumItem.model.PartialForumItemObject
 import pt.isel.g20.unicommunity.hateoas.*
 import pt.isel.g20.unicommunity.user.model.PartialUserObject
+import pt.isel.g20.unicommunity.user.model.User
 
-class SingleCommentResponse(comment: Comment) : HalObject(mutableMapOf(), mutableMapOf()){
+class SingleCommentResponse(user: User, comment: Comment) : HalObject(mutableMapOf(), mutableMapOf()){
     val id = comment.id
     val content  = comment.content
     val createdAt = comment.createdAt.toString()
+    val anonymousComment = comment.anonymousComment
 
     init{
         val board = comment.forumItem.forum.board
@@ -20,6 +20,7 @@ class SingleCommentResponse(comment: Comment) : HalObject(mutableMapOf(), mutabl
         val author = comment.author
         val boardId = board.id
         val forumItemId = forumItem.id
+        val isAuthor = user.id == comment.author.id
 
         val partialBoard = PartialBoardObject(
                 board.name,
@@ -38,13 +39,15 @@ class SingleCommentResponse(comment: Comment) : HalObject(mutableMapOf(), mutabl
                 Rels.GET_SINGLE_FORUMITEM to SingleHalObj(partialForumItem)
         ))
 
-        val partialUser = PartialUserObject(
-                author.name,
-                mapOf("self" to Link(Uri.forSingleUserText(author.id)))
-        )
-        super._embedded?.putAll(sequenceOf(
-                Rels.GET_SINGLE_USER to SingleHalObj(partialUser)
-        ))
+        if(!anonymousComment){
+            val partialUser = PartialUserObject(
+                    author.name,
+                    mapOf("self" to Link(Uri.forSingleUserText(author.id)))
+            )
+            super._embedded?.putAll(sequenceOf(
+                    Rels.GET_SINGLE_USER to SingleHalObj(partialUser)
+            ))
+        }
 
         super._links?.putAll(sequenceOf(
                 "self" to Link(Uri.forSingleCommentText(
@@ -63,18 +66,23 @@ class SingleCommentResponse(comment: Comment) : HalObject(mutableMapOf(), mutabl
                 Rels.GET_MULTIPLE_COMMENTS to Link(Uri.forAllComments(
                         boardId,
                         forumItemId
-                )),
-                Rels.EDIT_COMMENT to Link(Uri.forSingleCommentText(
-                        boardId,
-                        forumItemId,
-                        id
-                )),
-                Rels.DELETE_COMMENT to Link(Uri.forSingleCommentText(
-                        boardId,
-                        forumItemId,
-                        id
                 ))
         ))
+
+        if(isAuthor){
+            super._links?.putAll(sequenceOf(
+                    Rels.EDIT_COMMENT to Link(Uri.forSingleCommentText(
+                            boardId,
+                            forumItemId,
+                            id
+                    )),
+                    Rels.DELETE_COMMENT to Link(Uri.forSingleCommentText(
+                            boardId,
+                            forumItemId,
+                            id
+                    ))
+            ))
+        }
     }
 }
 

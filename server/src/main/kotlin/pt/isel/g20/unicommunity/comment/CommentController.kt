@@ -8,13 +8,13 @@ import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
 import pt.isel.g20.unicommunity.comment.exception.NotFoundCommentException
 import pt.isel.g20.unicommunity.comment.model.*
 import pt.isel.g20.unicommunity.comment.service.ICommentService
-import pt.isel.g20.unicommunity.forum.exception.NotFoundForumException
-import pt.isel.g20.unicommunity.forumItem.exception.NotFoundForumItemException
-import pt.isel.g20.unicommunity.hateoas.CollectionObject
 import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.common.Uri.COMMENTS_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_COMMENT_ROUTE
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
+import pt.isel.g20.unicommunity.forum.exception.NotFoundForumException
+import pt.isel.g20.unicommunity.forumItem.exception.NotFoundForumItemException
+import pt.isel.g20.unicommunity.hateoas.CollectionObject
 import pt.isel.g20.unicommunity.user.model.User
 import java.util.concurrent.TimeUnit
 
@@ -46,17 +46,20 @@ class CommentController(private val service: ICommentService) {
     fun getCommentById(
             @PathVariable boardId: Long,
             @PathVariable forumItemId: Long,
-            @PathVariable commentId: Long
+            @PathVariable commentId: Long,
+            @SessionAttribute("user") user: User
     ) =
             service.getCommentById(boardId, forumItemId, commentId).let {
+                val response = SingleCommentResponse(user, it)
+
                 ResponseEntity
                         .ok()
                         .cacheControl(
                                 CacheControl
                                         .maxAge(1, TimeUnit.HOURS)
                                         .cachePrivate())
-                        .eTag(it.hashCode().toString())
-                        .body(SingleCommentResponse(it))
+                        .eTag(response.hashCode().toString())
+                        .body(response)
             }
 
     @AuthorizationRequired
@@ -69,14 +72,16 @@ class CommentController(private val service: ICommentService) {
             @SessionAttribute("user")user: User
     ):ResponseEntity<SingleCommentResponse>{
             return service.createComment(boardId, forumItemId, user.id, commentDto.content, commentDto.anonymous).let {
+                val response = SingleCommentResponse(user, it)
+
                 ResponseEntity
                         .created(Uri.forSingleCommentUri(it.forumItem.forum.board.id, it.forumItem.id, it.id))
                         .cacheControl(
                                 CacheControl
                                         .maxAge(1, TimeUnit.HOURS)
                                         .cachePrivate())
-                        .eTag(it.hashCode().toString())
-                        .body(SingleCommentResponse(it))
+                        .eTag(response.hashCode().toString())
+                        .body(response)
             }
     }
 
@@ -86,17 +91,20 @@ class CommentController(private val service: ICommentService) {
             @PathVariable boardId: Long,
             @PathVariable forumItemId: Long,
             @PathVariable commentId: Long,
-            @RequestBody commentDto: CommentDto
+            @RequestBody commentDto: CommentDto,
+            @SessionAttribute("user")user: User
     ) =
             service.editComment(boardId, forumItemId, commentId, commentDto.content).let {
+                val response = SingleCommentResponse(user, it)
+
                 ResponseEntity
                         .ok()
                         .cacheControl(
                                 CacheControl
                                         .maxAge(1, TimeUnit.HOURS)
                                         .cachePrivate())
-                        .eTag(it.hashCode().toString())
-                        .body(SingleCommentResponse(it))
+                        .eTag(response.hashCode().toString())
+                        .body(response)
             }
 
     @AuthorizationRequired
@@ -104,17 +112,20 @@ class CommentController(private val service: ICommentService) {
     fun deleteComment(
             @PathVariable boardId: Long,
             @PathVariable forumItemId: Long,
-            @PathVariable commentId: Long
+            @PathVariable commentId: Long,
+            @SessionAttribute("user")user: User
     ) =
             service.deleteComment(boardId, forumItemId, commentId).let {
+                val response = SingleCommentResponse(user, it)
+
                 ResponseEntity
                         .ok()
                         .cacheControl(
                                 CacheControl
                                         .maxAge(1, TimeUnit.HOURS)
                                         .cachePrivate())
-                        .eTag(it.hashCode().toString())
-                        .body(SingleCommentResponse(it))
+                        .eTag(response.hashCode().toString())
+                        .body(response)
             }
 
 

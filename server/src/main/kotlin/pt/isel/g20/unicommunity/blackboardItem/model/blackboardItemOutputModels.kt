@@ -6,8 +6,9 @@ import pt.isel.g20.unicommunity.common.Rels
 import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.hateoas.*
 import pt.isel.g20.unicommunity.user.model.PartialUserObject
+import pt.isel.g20.unicommunity.user.model.User
 
-class SingleBlackboardItemResponse(bbItem: BlackboardItem) : HalObject(mutableMapOf(), mutableMapOf()){
+class SingleBlackboardItemResponse(user: User, bbItem: BlackboardItem) : HalObject(mutableMapOf(), mutableMapOf()){
     val id = bbItem.id
     val name = bbItem.name
     val content = bbItem.content
@@ -19,6 +20,7 @@ class SingleBlackboardItemResponse(bbItem: BlackboardItem) : HalObject(mutableMa
         val author = bbItem.author
         val boardId = board.id
         val bbId = blackboard.id
+        val isCreator = user.id == board.creator.id
 
         val partialBoard = PartialBoardObject(
                 board.name,
@@ -46,11 +48,16 @@ class SingleBlackboardItemResponse(bbItem: BlackboardItem) : HalObject(mutableMa
 
         super._links?.putAll(sequenceOf(
                 "self" to Link(Uri.forSingleBlackboardItemText(boardId, bbId, id )),
-                Rels.CREATE_BLACKBOARDITEM to Link(Uri.forAllBlackboardItems(boardId, bbId)),
-                Rels.GET_MULTIPLE_BLACKBOARDITEMS to Link(Uri.forAllBlackboardItems(boardId, bbId)),
-                Rels.EDIT_BLACKBOARDITEM to Link(Uri.forSingleBlackboardItemText(boardId, bbId, id)),
-                Rels.DELETE_BLACKBOARDITEM to Link(Uri.forSingleBlackboardItemText(boardId, bbId, id))
+                Rels.GET_MULTIPLE_BLACKBOARDITEMS to Link(Uri.forAllBlackboardItems(boardId, bbId))
         ))
+
+        if(isCreator){
+            super._links?.putAll(sequenceOf(
+                    Rels.CREATE_BLACKBOARDITEM to Link(Uri.forAllBlackboardItems(boardId, bbId)),
+                    Rels.EDIT_BLACKBOARDITEM to Link(Uri.forSingleBlackboardItemText(boardId, bbId, id)),
+                    Rels.DELETE_BLACKBOARDITEM to Link(Uri.forSingleBlackboardItemText(boardId, bbId, id))
+            ))
+        }
     }
 }
 
