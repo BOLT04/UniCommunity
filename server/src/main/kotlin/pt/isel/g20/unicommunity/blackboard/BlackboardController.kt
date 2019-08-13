@@ -13,6 +13,7 @@ import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.common.Uri.BLACKBOARDS_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_BLACKBOARD_ROUTE
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
+import pt.isel.g20.unicommunity.user.model.User
 import java.util.concurrent.TimeUnit
 
 @RestController
@@ -37,9 +38,12 @@ class BlackboardController(private val service: IBlackboardService) {
 
     @AuthorizationRequired
     @GetMapping(path = [SINGLE_BLACKBOARD_ROUTE], produces = ["application/hal+json"])
-    fun getBlackboardById(@PathVariable boardId: Long, @PathVariable bbId: Long) =
+    fun getBlackboardById(@PathVariable boardId: Long,
+                          @PathVariable bbId: Long,
+                          @SessionAttribute("user") user: User
+    ) =
             service.getBlackboardById(boardId, bbId).let {
-                val response = SingleBlackboardResponse(it)
+                val response = SingleBlackboardResponse(user, it)
 
                 ResponseEntity
                         .ok()
@@ -54,14 +58,17 @@ class BlackboardController(private val service: IBlackboardService) {
     @AuthorizationRequired
     @PostMapping(path = [BLACKBOARDS_ROUTE], produces = ["application/hal+json"])
     @ResponseStatus(HttpStatus.CREATED)
-    fun createBlackboard(@PathVariable boardId: Long, @RequestBody blackboardDto: BlackboardDto) =
+    fun createBlackboard(@PathVariable boardId: Long,
+                         @RequestBody blackboardDto: BlackboardDto,
+                         @SessionAttribute("user") user: User
+    ) =
             service.createBlackboard(
                     boardId,
                     blackboardDto.name,
                     blackboardDto.notificationLevel,
                     blackboardDto.description
             ).let {
-                val response = SingleBlackboardResponse(it)
+                val response = SingleBlackboardResponse(user, it)
 
                 ResponseEntity
                         .created(Uri.forSingleBlackboardUri(it.board.id, it.id))
@@ -78,7 +85,8 @@ class BlackboardController(private val service: IBlackboardService) {
     fun editBlackboard(
             @PathVariable boardId: Long,
             @PathVariable bbId: Long,
-            @RequestBody blackboardDto: BlackboardDto
+            @RequestBody blackboardDto: BlackboardDto,
+            @SessionAttribute("user") user: User
     ) =
             service.editBlackboard(
                     boardId,
@@ -87,7 +95,7 @@ class BlackboardController(private val service: IBlackboardService) {
                     blackboardDto.notificationLevel,
                     blackboardDto.description
             ).let {
-                val response = SingleBlackboardResponse(it)
+                val response = SingleBlackboardResponse(user, it)
 
                 ResponseEntity
                         .ok()
@@ -102,9 +110,12 @@ class BlackboardController(private val service: IBlackboardService) {
 
     @AuthorizationRequired
     @DeleteMapping(path = [SINGLE_BLACKBOARD_ROUTE], produces = ["application/hal+json"])
-    fun deleteBlackboard(@PathVariable boardId: Long, @PathVariable bbId: Long) =
+    fun deleteBlackboard(@PathVariable boardId: Long,
+                         @PathVariable bbId: Long,
+                         @SessionAttribute("user") user: User
+    ) =
             service.deleteBlackboard(boardId, bbId).let {
-                val response = SingleBlackboardResponse(it)
+                val response = SingleBlackboardResponse(user, it)
 
                 ResponseEntity
                         .ok()

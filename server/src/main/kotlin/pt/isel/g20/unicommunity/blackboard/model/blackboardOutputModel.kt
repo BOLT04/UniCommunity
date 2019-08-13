@@ -5,8 +5,9 @@ import pt.isel.g20.unicommunity.board.model.PartialBoardObject
 import pt.isel.g20.unicommunity.common.Rels
 import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.hateoas.*
+import pt.isel.g20.unicommunity.user.model.User
 
-class SingleBlackboardResponse(blackboard: Blackboard) : HalObject(mutableMapOf(), mutableMapOf()){
+class SingleBlackboardResponse(user: User, blackboard: Blackboard) : HalObject(mutableMapOf(), mutableMapOf()){
     val id = blackboard.id
     val name = blackboard.name
     val description = blackboard.description
@@ -15,6 +16,7 @@ class SingleBlackboardResponse(blackboard: Blackboard) : HalObject(mutableMapOf(
     init {
         val board = blackboard.board
         val boardId = board.id
+        val isCreator = user.id == board.creator.id
 
         val partialBoard = PartialBoardObject(
                 board.name,
@@ -38,12 +40,16 @@ class SingleBlackboardResponse(blackboard: Blackboard) : HalObject(mutableMapOf(
         super._links?.putAll(sequenceOf(
                 "self" to Link(Uri.forSingleBlackboardText(boardId, id)),
                 Rels.GET_MULTIPLE_BLACKBOARDS to Link(Uri.forAllBlackboards(boardId)),
-                Rels.EDIT_BLACKBOARD to Link(Uri.forSingleBlackboardText(boardId, id)),
-                Rels.DELETE_BLACKBOARD to Link(Uri.forSingleBlackboardText(boardId, id)),
-
-                Rels.CREATE_BLACKBOARDITEM to Link(Uri.forAllBlackboardItems(boardId, id)),
                 Rels.GET_MULTIPLE_BLACKBOARDITEMS to Link(Uri.forAllBlackboardItems(boardId, id))
         ))
+
+        if(isCreator){
+            super._links?.putAll(sequenceOf(
+                    Rels.EDIT_BLACKBOARD to Link(Uri.forSingleBlackboardText(boardId, id)),
+                    Rels.DELETE_BLACKBOARD to Link(Uri.forSingleBlackboardText(boardId, id)),
+                    Rels.CREATE_BLACKBOARDITEM to Link(Uri.forAllBlackboardItems(boardId, id))
+            ))
+        }
     }
 }
 
