@@ -115,8 +115,9 @@ class BoardController(private val service: IBoardService) {
     @AuthorizationRequired
     @PostMapping(path = [BOARDS_ROUTE], produces = ["application/hal+json"])
     @ResponseStatus(HttpStatus.CREATED)
-    fun createBoard(@RequestBody boardDto: BoardDto) =
+    fun createBoard(@RequestBody boardDto: BoardDto, @SessionAttribute("user")user: User) =
             service.createBoard(
+                    user.id,
                     boardDto.name,
                     boardDto.templateId,
                     boardDto.description,

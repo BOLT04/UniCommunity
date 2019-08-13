@@ -41,16 +41,18 @@ class BoardService(
     override fun getBoardById(boardId: Long) = boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
     
     override fun createBoard(
+            creatorId: Long,
             name: String,
             templateId: Long?,
             description: String?,
             blackboardNames: List<String>?,
-            hasForum: Boolean?): Board {
+            hasForum: Boolean?
+    ): Board {
 
         val board: Board = if(templateId != null)
-            createBoardWithTemplate(name,  description, templateId)
+            createBoardWithTemplate(creatorId, name,  description, templateId)
         else
-            createBoardWithCustomModules(name, blackboardNames, hasForum, description)
+            createBoardWithCustomModules(creatorId, name, blackboardNames, hasForum, description)
 
         return boardsRepo.save(board)
     }
@@ -74,6 +76,7 @@ class BoardService(
     }
 
     private fun createBoardWithTemplate(
+            creatorId: Long,
             name: String,
             description: String?,
             templateId: Long
@@ -83,10 +86,11 @@ class BoardService(
         val blackboardNames: MutableList<String> = mutableListOf()
         blackboardNames.addAll(template.blackboardNames.split(","))
 
-        return createBoardWithCustomModules(name, blackboardNames, template.hasForum, description)
+        return createBoardWithCustomModules(creatorId, name, blackboardNames, template.hasForum, description)
     }
 
     private fun createBoardWithCustomModules(
+            creatorId: Long,
             name: String,
             blackboardNames: List<String>?,
             hasForum: Boolean?,
@@ -95,29 +99,33 @@ class BoardService(
         if (blackboardNames.isNullOrEmpty() || hasForum == null)
             throw InvalidTemplateConfigurationException()
 
-        return createBoard(name, blackboardNames, hasForum, description)
+        return createBoard(creatorId, name, blackboardNames, hasForum, description)
     }
 
     private fun createBoard(
+            creatorId: Long,
             name: String,
             blackboardNames: List<String>,
             hasForum: Boolean,
             description: String?
     ): Board {
+        val creator = usersRepo.findByIdOrNull(creatorId) ?: throw NotFoundUserException()
+        var board = Board(creator, name, description)
+        board = boardsRepo.save(board)
 
-        val board = Board(name, description)
-        var newBoard = boardsRepo.save(board)
+        creator.boards.add(board)
+        usersRepo.save(creator)
 
         if (hasForum) {
-            forumService.createForum(newBoard.id)
-            newBoard = boardsRepo.save(board)
+            forumService.createForum(board.id)
+            board = boardsRepo.save(board)
         }
 
         blackboardNames.map {
-            blackboardService.createBlackboard(newBoard.id, it, "TODO", "TODO")
+            blackboardService.createBlackboard(board.id, it, "TODO", "TODO")
         }
 
-        return boardsRepo.save(newBoard)
+        return boardsRepo.save(board)
     }
 
     val fcmService = FcmServiceFactory.makeFcmServiceService()

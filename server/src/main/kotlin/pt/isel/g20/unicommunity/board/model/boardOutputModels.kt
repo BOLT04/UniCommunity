@@ -34,6 +34,14 @@ class SingleBoardResponse(board: Board) : HalObject(mutableMapOf(), mutableMapOf
                     })
             ))
 
+        val partialUser = PartialUserObject(
+                board.creator.name,
+                mapOf("self" to Link(Uri.forSingleUserText(board.creator.id)))
+        )
+        super._embedded?.putAll(sequenceOf(
+                Rels.GET_SINGLE_USER to SingleHalObj(partialUser)
+        ))
+
         super._links?.putAll(sequenceOf(
                 "self" to Link(Uri.forSingleBoardText(id)),
                 Rels.CREATE_BOARD to Link(Uri.forAllBoards()),
