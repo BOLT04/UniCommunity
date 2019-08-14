@@ -9,7 +9,7 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import isel.pt.unicommunity.BASEURL
-import isel.pt.unicommunity.model.webdto.clean.NavLink
+import isel.pt.unicommunity.model.NavLink
 import java.nio.charset.Charset
 import java.util.*
 

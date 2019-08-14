@@ -5,8 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.android.volley.Response
 import isel.pt.unicommunity.UniCommunityApp
-import isel.pt.unicommunity.model.to_refactor.small.SmallModule
-import isel.pt.unicommunity.model.webdto.rel_links.*
+import isel.pt.unicommunity.model.collectionjson.toBlackBoardCollection
+import isel.pt.unicommunity.model.inputdto.BoardInputDto
+import isel.pt.unicommunity.model.links.GetMultipleBoardsLink
+import isel.pt.unicommunity.model.links.GetSingleBlackBoardLink
+import isel.pt.unicommunity.model.links.GetSingleBoardLink
+import isel.pt.unicommunity.model.links.GetSingleForumLink
 import isel.pt.unicommunity.repository.network.NavLinkRequest
 
 class BoardViewModel(val app: UniCommunityApp, val getSingleBoardLink: GetSingleBoardLink) : ViewModel(){
@@ -14,8 +18,6 @@ class BoardViewModel(val app: UniCommunityApp, val getSingleBoardLink: GetSingle
     val board = MutableLiveData<BoardInputDto>()
     val menu = MutableLiveData<MenuView>()
 
-
-    val liveData : MutableLiveData<List<SmallModule>> = MutableLiveData()
 
     fun fetchBoard(){
 
@@ -54,10 +56,10 @@ class BoardViewModel(val app: UniCommunityApp, val getSingleBoardLink: GetSingle
             val getBlackBoards = NavLinkRequest(
                 multipleBlackBoardsLink,
                 Response.Listener { collectionJson ->
-                    val blackBoards = blackBoardFromCollectionJson(collectionJson)
+                    val blackBoards = collectionJson.toBlackBoardCollection()
                     menu.value = MenuView(
                         blackBoards.blackBoards.map {
-                            EvenSmallerBlackBoard(it.name, GetSingleBlackBoardLink(it.href))
+                            EvenSmallerBlackBoard(it.name, it.self)
                         },
                         singleForumLink
                     )
@@ -76,26 +78,7 @@ class BoardViewModel(val app: UniCommunityApp, val getSingleBoardLink: GetSingle
 
     }
 
-    init {
-        val a = mutableListOf(
-            SmallModule("anuncios"),
-            SmallModule("trabalhos"),
-            SmallModule("notas"),
-            SmallModule("kebabs"),
-            SmallModule("rak"),
-            SmallModule("bananas"),
-            SmallModule("pen"),
-            SmallModule("pineapple"),
-            SmallModule("uh"),
-            SmallModule("pineapple-pen"),
-            SmallModule("rak as waifu forum", "forum")
-        )
 
-        Handler().postDelayed({ liveData.value= a }, 5000)
-
-
-
-    }
 
 
 }

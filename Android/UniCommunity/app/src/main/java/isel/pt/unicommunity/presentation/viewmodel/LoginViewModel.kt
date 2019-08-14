@@ -4,8 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.android.volley.Response
 import isel.pt.unicommunity.UniCommunityApp
-import isel.pt.unicommunity.model.webdto.rel_links.LoginInputDto
-import isel.pt.unicommunity.model.webdto.rel_links.LoginOutputDto
+import isel.pt.unicommunity.model.links.LoginInputDto
+import isel.pt.unicommunity.model.links.LoginOutputDto
 import isel.pt.unicommunity.repository.network.PostRequest
 
 class LoginViewModel(private val app : UniCommunityApp) : ViewModel() {

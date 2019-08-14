@@ -2,15 +2,13 @@ package isel.pt.unicommunity.testing.fragmentTesting.model
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import isel.pt.unicommunity.model.to_refactor.built.User
-import isel.pt.unicommunity.model.to_refactor.linker.NavSupplier
 
 /*public class TestingModel(val id : Int = 0,
                           val APP_NAME : String = "",
                           val salary : Int = 0,
                           val age : Int = 0)*/
 
-public class TestingModel(val navSupplier: NavSupplier): ViewModel(){
+/*public class TestingModel(val navSupplier: NavSupplier): ViewModel(){
 
     val user : MutableLiveData<User> = MutableLiveData()
 

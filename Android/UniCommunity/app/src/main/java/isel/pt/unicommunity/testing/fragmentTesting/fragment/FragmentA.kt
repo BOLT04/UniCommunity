@@ -10,8 +10,6 @@ import androidx.lifecycle.Observer
 import isel.pt.unicommunity.R
 import isel.pt.unicommunity.kotlinx.getUniCommunityApp
 import isel.pt.unicommunity.kotlinx.getViewModel
-import isel.pt.unicommunity.model.to_refactor.built.User
-import isel.pt.unicommunity.testing.fragmentTesting.model.TestingModel
 import kotlinx.android.synthetic.main.__testing__a_fragment.*
 
 class FragmentA : Fragment() {
@@ -34,18 +32,18 @@ class FragmentA : Fragment() {
         class Test<T>(val a : Class<T>)
 
 
-        val test = Test(User::class.java)
+        //val test = Test(User::class.java)
 
 
-        nav_header_email.text = test.a.simpleName
+        //nav_header_email.text = test.a.simpleName
 
 
 
-        val viewModel = act.getViewModel("test"){
-            TestingModel(app.navSupplier)
+        /*val viewModel = act.getViewModel("test"){
+           // TestingModel(app.navSupplier)
         }
-
-        viewModel.user.observe(act, Observer {
+*/
+       /* viewModel.user.observe(act, Observer {
 
             nav_header_email.text= it.name
 
@@ -56,7 +54,7 @@ class FragmentA : Fragment() {
             )*/
 
             //(it.test as Navigator).navigate(act)
-        })
+        })*/
 
 
         /*

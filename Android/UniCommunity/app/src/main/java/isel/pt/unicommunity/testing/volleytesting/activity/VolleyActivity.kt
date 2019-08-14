@@ -9,8 +9,6 @@ import isel.pt.unicommunity.BASEURL
 import isel.pt.unicommunity.R
 import isel.pt.unicommunity.kotlinx.getUniCommunityApp
 import isel.pt.unicommunity.kotlinx.getViewModel
-import isel.pt.unicommunity.model.webdto.old.board.AllBoardsDto
-import isel.pt.unicommunity.model.webdto.old.blackboard.AllBlackBoardsDto
 import isel.pt.unicommunity.repository.network.BasicAuthenticationGetRequest
 import isel.pt.unicommunity.repository.network.ErrorResponse
 import kotlinx.android.synthetic.main.__testing__volleytesting.*
@@ -37,7 +35,7 @@ class VolleyActivity : AppCompatActivity() {
 
 
 
-        boards.setOnClickListener {
+        /*boards.setOnClickListener {
             queue.add(BasicAuthenticationGetRequest(
                 AllBoardsDto::class.java,
                 "$BASEURL/boards",
@@ -50,7 +48,7 @@ class VolleyActivity : AppCompatActivity() {
                 "admin@gmail.com",
                 "admin"
             ))
-        }
+        }*/
 
         /*board.setOnClickListener {
             queue.add(BasicAuthenticationGetRequest(
@@ -63,7 +61,7 @@ class VolleyActivity : AppCompatActivity() {
             ))
         }*/
 
-        blackboards.setOnClickListener {
+        /*blackboards.setOnClickListener {
             queue.add(BasicAuthenticationGetRequest(
                 AllBlackBoardsDto::class.java,
                 "$BASEURL/boards/1/blackboards",
@@ -77,7 +75,7 @@ class VolleyActivity : AppCompatActivity() {
                 "admin"
             ))
         }
-
+*/
         /*blackboard.setOnClickListener {
             queue.add(BasicAuthenticationGetRequest(
                 BlackBoardDto::class.java,

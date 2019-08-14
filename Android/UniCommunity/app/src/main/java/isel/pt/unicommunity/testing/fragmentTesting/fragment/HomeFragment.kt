@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 
 import isel.pt.unicommunity.R
-import isel.pt.unicommunity.model.webdto.rel_links.HomeLink
+import isel.pt.unicommunity.model.links.HomeLink
 import kotlinx.android.synthetic.main.fragment_home.*
 
 // TODO: Rename parameter arguments, choose names that match

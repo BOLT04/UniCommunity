@@ -6,12 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
-import isel.pt.unicommunity.BackStackManagingActivity
+import isel.pt.unicommunity.presentation.activity.BackStackManagingActivity
 
 import isel.pt.unicommunity.R
 import isel.pt.unicommunity.kotlinx.getUniCommunityApp
 import isel.pt.unicommunity.kotlinx.getViewModel
-import isel.pt.unicommunity.model.webdto.rel_links.UserProfileLink
+import isel.pt.unicommunity.model.links.UserProfileLink
 import isel.pt.unicommunity.presentation.viewmodel.ProfileViewModel
 import kotlinx.android.synthetic.main.fragment_profile.*
 

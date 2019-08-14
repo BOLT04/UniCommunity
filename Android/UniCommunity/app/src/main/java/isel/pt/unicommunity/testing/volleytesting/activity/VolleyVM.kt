@@ -4,9 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.android.volley.RequestQueue
 import com.android.volley.Response
-import isel.pt.unicommunity.model.webdto.old.actions.LoginOutputDto
-import isel.pt.unicommunity.model.webdto.old.board.BoardInputDtoLinkStruct
-import isel.pt.unicommunity.model.webdto.clean.*
+import isel.pt.unicommunity.model.CollectionJson
+import isel.pt.unicommunity.model.Link
+import isel.pt.unicommunity.model.links.LoginOutputDto
 import isel.pt.unicommunity.repository.network.BasicAuthenticationGetRequest
 import isel.pt.unicommunity.repository.network.PostRequest
 
@@ -66,7 +66,7 @@ class VolleyVM(val queue: RequestQueue) : ViewModel(){
         val templateName: String,
         val hasForum : Boolean,
 
-        val links: BoardInputDtoLinkStruct,
+        //val links: BoardInputDtoLinkStruct,
         val embedded : Array<SmallBoardRep>
     )
 

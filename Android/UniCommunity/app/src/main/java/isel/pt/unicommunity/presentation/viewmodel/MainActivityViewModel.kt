@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.android.volley.Response
 import isel.pt.unicommunity.UniCommunityApp
-import isel.pt.unicommunity.model.webdto.rel_links.NavigationInputDto
+import isel.pt.unicommunity.model.links.NavigationInputDto
 import isel.pt.unicommunity.repository.network.BasicAuthenticationGetRequest
 
 class MainActivityViewModel(val app:UniCommunityApp) : ViewModel(){

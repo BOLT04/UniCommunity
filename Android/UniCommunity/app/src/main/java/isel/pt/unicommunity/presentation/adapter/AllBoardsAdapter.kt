@@ -4,17 +4,13 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.lifecycle.LiveData
 import androidx.recyclerview.widget.RecyclerView
 import isel.pt.unicommunity.R
-import isel.pt.unicommunity.model.to_refactor.small.SmallBoardItem
-import isel.pt.unicommunity.model.webdto.old.board.AllBoardsDto
-import isel.pt.unicommunity.model.webdto.rel_links.PartialBoardItem
-import isel.pt.unicommunity.presentation.viewmodel.AllBoardsViewModel
+import isel.pt.unicommunity.model.collectionjson.BoardCollection
 
 
 class AllBoardsAdapter(
-    private val allBoards: List<PartialBoardItem>,
+    private val allBoards: List<BoardCollection.PartialBoard>,
     private val onBoardClickListener: PartialBoardItemClickListener
 
 ): RecyclerView.Adapter<AllBoardsItemViewHolder>() {
@@ -38,7 +34,7 @@ class AllBoardsAdapter(
 }
 
 interface PartialBoardItemClickListener {
-    fun onClickListener(partialBoardIem : PartialBoardItem)
+    fun onClickListener(partialBoardIem : BoardCollection.PartialBoard)
 }
 
 class AllBoardsItemViewHolder(
@@ -50,7 +46,7 @@ class AllBoardsItemViewHolder(
     val desc : TextView = view.findViewById(R.id.desc_sb)
     val layout : ConstraintLayout = view.findViewById(R.id.constraint_layout)
 
-    fun bindToView(partialBoardIem: PartialBoardItem){
+    fun bindToView(partialBoardIem: BoardCollection.PartialBoard){
 
         name.text = partialBoardIem.name
         desc.text = partialBoardIem.description ?: "no desc" //todo seems shady

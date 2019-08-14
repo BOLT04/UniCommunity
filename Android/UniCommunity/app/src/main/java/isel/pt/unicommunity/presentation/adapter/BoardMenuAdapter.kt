@@ -6,8 +6,8 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import isel.pt.unicommunity.R
-import isel.pt.unicommunity.model.webdto.rel_links.GetSingleBlackBoardLink
-import isel.pt.unicommunity.model.webdto.rel_links.GetSingleForumLink
+import isel.pt.unicommunity.model.links.GetSingleBlackBoardLink
+import isel.pt.unicommunity.model.links.GetSingleForumLink
 import isel.pt.unicommunity.presentation.viewmodel.BoardViewModel
 
 

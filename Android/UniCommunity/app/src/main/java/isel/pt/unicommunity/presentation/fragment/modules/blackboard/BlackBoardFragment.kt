@@ -9,14 +9,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import isel.pt.unicommunity.MainActivity
+import isel.pt.unicommunity.presentation.activity.MainActivity
 import isel.pt.unicommunity.R
 import isel.pt.unicommunity.kotlinx.getUniCommunityApp
 import isel.pt.unicommunity.presentation.adapter.BlackBoardAdapter
 import isel.pt.unicommunity.kotlinx.getViewModel
-import isel.pt.unicommunity.model.webdto.rel_links.GetSingleBlackBoardLink
+import isel.pt.unicommunity.model.links.GetSingleBlackBoardLink
 import isel.pt.unicommunity.presentation.adapter.OnBlackBoardItemReprClickListener
-import isel.pt.unicommunity.presentation.viewmodel.BlackBoardItemRepr
 import isel.pt.unicommunity.presentation.viewmodel.BlackBoardViewModel
 import kotlinx.android.synthetic.main.fragment_blackboard.*
 
@@ -61,7 +60,7 @@ class BlackBoardFragment(val blackBoardLink: GetSingleBlackBoardLink) : Fragment
 
 
         val onBlackBoardItemReprClickListener = object : OnBlackBoardItemReprClickListener{
-            override fun onClick(item: BlackBoardItemRepr) {
+            override fun onClick(item: BlackBoardViewModel.BlackBoardItemRepr) {
                 Toast.makeText(activity, item.getSingleBlackBoardItemLink.href , Toast.LENGTH_LONG).show()
                 activity.navigateTo(
                     BlackBoardItemFragment(

@@ -10,14 +10,14 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import isel.pt.unicommunity.BackStackManagingActivity
+import isel.pt.unicommunity.presentation.activity.BackStackManagingActivity
 
 import isel.pt.unicommunity.R
 import isel.pt.unicommunity.kotlinx.getUniCommunityApp
 
 import isel.pt.unicommunity.kotlinx.getViewModel
-import isel.pt.unicommunity.model.webdto.rel_links.GetMultipleBoardsLink
-import isel.pt.unicommunity.model.webdto.rel_links.PartialBoardItem
+import isel.pt.unicommunity.model.links.GetMultipleBoardsLink
+import isel.pt.unicommunity.model.collectionjson.BoardCollection
 import isel.pt.unicommunity.presentation.adapter.AllBoardsAdapter
 import isel.pt.unicommunity.presentation.adapter.PartialBoardItemClickListener
 import isel.pt.unicommunity.presentation.viewmodel.AllBoardsViewModel
@@ -55,11 +55,11 @@ class AllBoardsFragment(val link: GetMultipleBoardsLink) : Fragment() {
         recyclerView.layoutManager = LinearLayoutManager(activity)
 
         val onPartialBoardItemClickListener = object : PartialBoardItemClickListener {
-            override fun onClickListener(partialBoardIem: PartialBoardItem) {
+            override fun onClickListener(partialBoardIem: BoardCollection.PartialBoard) {
 
-                (activity as BackStackManagingActivity).navigateTo(BoardMenuFragment(partialBoardIem))
+                (activity as BackStackManagingActivity).navigateTo(BoardMenuFragment(partialBoardIem.self))
 
-                Toast.makeText(activity, partialBoardIem.href , Toast.LENGTH_LONG).show()
+                Toast.makeText(activity, partialBoardIem.self.href , Toast.LENGTH_LONG).show()
 
             }
 
@@ -67,8 +67,10 @@ class AllBoardsFragment(val link: GetMultipleBoardsLink) : Fragment() {
 
         viewModel.allBoards.observe(this, Observer {
 
-
-            recyclerView.adapter =  AllBoardsAdapter(viewModel.allBoards.value?.boards ?: mutableListOf(), onPartialBoardItemClickListener)
+            recyclerView.adapter =  AllBoardsAdapter(
+                viewModel.allBoards.value?.boards ?: mutableListOf(),
+                onPartialBoardItemClickListener
+            )
 
         })
 

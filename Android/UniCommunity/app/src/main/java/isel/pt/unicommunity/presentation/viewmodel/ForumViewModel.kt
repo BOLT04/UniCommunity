@@ -4,7 +4,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.android.volley.Response
 import isel.pt.unicommunity.UniCommunityApp
-import isel.pt.unicommunity.model.webdto.rel_links.*
+import isel.pt.unicommunity.model.collectionjson.toForumItemCollection
+import isel.pt.unicommunity.model.inputdto.ForumInputDto
+import isel.pt.unicommunity.model.links.GetMultipleForumItemsLink
+import isel.pt.unicommunity.model.links.GetSingleForumItemLink
+import isel.pt.unicommunity.model.links.GetSingleForumLink
 import isel.pt.unicommunity.repository.network.NavLinkRequest
 
 class ForumViewModel(val app: UniCommunityApp, val getSingleForumLink: GetSingleForumLink) : ViewModel(){
@@ -64,7 +68,7 @@ class ForumViewModel(val app: UniCommunityApp, val getSingleForumLink: GetSingle
         val getMultipleForumItemsRequest = NavLinkRequest(
             getMultipleForumItemsLink,
             Response.Listener { collectionJson ->
-                forumItems.value = ForumItemFromCollectionJson(collectionJson).forumItems.map {
+                forumItems.value = collectionJson.toForumItemCollection().forumItems.map {
                     PartialForumItemView(
                         it.name,
                         it.authorName,

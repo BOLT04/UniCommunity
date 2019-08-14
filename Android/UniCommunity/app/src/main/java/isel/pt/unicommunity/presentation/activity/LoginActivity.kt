@@ -8,7 +8,6 @@ import android.util.Log
 import android.widget.Toast
 import com.android.volley.Response
 import isel.pt.unicommunity.BASEURL
-import isel.pt.unicommunity.MainActivity
 import isel.pt.unicommunity.R
 import isel.pt.unicommunity.kotlinx.getUniCommunityApp
 import isel.pt.unicommunity.kotlinx.getViewModel

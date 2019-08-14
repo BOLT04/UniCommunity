@@ -10,7 +10,6 @@ import androidx.fragment.app.Fragment
 import com.android.volley.Response
 import isel.pt.unicommunity.R
 import isel.pt.unicommunity.kotlinx.getUniCommunityApp
-import isel.pt.unicommunity.model.to_refactor.dto.users.UserDto
 import isel.pt.unicommunity.repository.network.GetRequest
 import kotlinx.android.synthetic.main.__testing__a_fragment.*
 
@@ -26,7 +25,7 @@ class FragmentB : Fragment(){
         super.onStart()
 
 
-        textBtn.setOnClickListener {
+        /*textBtn.setOnClickListener {
             Log.v(TAG, "button clicked")
             //textView.text= "macarena"
 
@@ -52,7 +51,7 @@ class FragmentB : Fragment(){
 
             (activity as AppCompatActivity).getUniCommunityApp().queue.add(getRequest)
 
-        }
+        }*/
 
 
     }

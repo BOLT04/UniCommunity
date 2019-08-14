@@ -4,8 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.android.volley.Response
 import isel.pt.unicommunity.UniCommunityApp
-import isel.pt.unicommunity.model.webdto.rel_links.BlackBoardItemInputDto
-import isel.pt.unicommunity.model.webdto.rel_links.GetSingleBlackBoardItemLink
+import isel.pt.unicommunity.model.links.GetSingleBlackBoardItemLink
+import isel.pt.unicommunity.model.inputdto.BlackBoardItemInputDto
 import isel.pt.unicommunity.repository.network.NavLinkRequest
 
 class BlackBoardItemViewModel(

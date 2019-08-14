@@ -5,14 +5,14 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.HttpHeaderParser
 import com.google.gson.Gson
-import isel.pt.unicommunity.model.webdto.BodyNavLink
+import isel.pt.unicommunity.model.BodyNavLink
 import java.nio.charset.Charset
 
 private val gson = Gson()
 
 
 class NavLinkPostRequest<O,I>(
-    bodyNavLink: BodyNavLink<O,I>,
+    bodyNavLink: BodyNavLink<O, I>,
     body: O?,
     onSuccessListener: Response.Listener<I>,
     onErrorListener: Response.ErrorListener,

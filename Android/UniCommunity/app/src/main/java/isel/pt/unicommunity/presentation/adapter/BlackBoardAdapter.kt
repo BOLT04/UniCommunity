@@ -6,11 +6,11 @@ import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import isel.pt.unicommunity.R
-import isel.pt.unicommunity.presentation.viewmodel.BlackBoardItemRepr
+import isel.pt.unicommunity.presentation.viewmodel.BlackBoardViewModel
 
 
 class BlackBoardAdapter(
-    val blackBoardItems: List<BlackBoardItemRepr>,
+    val blackBoardItems: List<BlackBoardViewModel.BlackBoardItemRepr>,
     val onBlackBoardItemReprClickListener : OnBlackBoardItemReprClickListener
 ) : RecyclerView.Adapter<BlackBoardItemReprViewHolder>(){
 
@@ -36,7 +36,7 @@ class BlackBoardAdapter(
 }
 
 interface OnBlackBoardItemReprClickListener {
-    fun onClick(item : BlackBoardItemRepr)
+    fun onClick(item : BlackBoardViewModel.BlackBoardItemRepr)
 }
 
 class BlackBoardItemReprViewHolder(
@@ -51,7 +51,7 @@ class BlackBoardItemReprViewHolder(
 
     val layout :  ConstraintLayout = view.findViewById(R.id.blackboardItem_layout)
 
-    fun bindToView(blackBoardItemRepr: BlackBoardItemRepr){
+    fun bindToView(blackBoardItemRepr: BlackBoardViewModel.BlackBoardItemRepr){
         title.text= blackBoardItemRepr.title
         autor.text=blackBoardItemRepr.author
         date.text = blackBoardItemRepr.date

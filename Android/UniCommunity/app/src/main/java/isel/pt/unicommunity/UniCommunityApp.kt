@@ -6,7 +6,6 @@ import com.android.volley.RequestQueue
 import com.android.volley.toolbox.BasicNetwork
 import com.android.volley.toolbox.DiskBasedCache
 import com.android.volley.toolbox.HurlStack
-import isel.pt.unicommunity.model.to_refactor.linker.NavSupplier
 
 
 class UniCommunityApp : Application(){
@@ -17,7 +16,6 @@ class UniCommunityApp : Application(){
 
 
     lateinit var queue : RequestQueue
-    lateinit var navSupplier : NavSupplier
 
 
     override fun onCreate() {
@@ -30,7 +28,6 @@ class UniCommunityApp : Application(){
             start()
         }
 
-        navSupplier = NavSupplier(this, mock = true)
 
     }
 

@@ -9,23 +9,22 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import isel.pt.unicommunity.MainActivity
+import isel.pt.unicommunity.presentation.activity.MainActivity
 import isel.pt.unicommunity.R
 import isel.pt.unicommunity.kotlinx.getUniCommunityApp
 import isel.pt.unicommunity.presentation.adapter.BoardMenuAdapter
 import isel.pt.unicommunity.presentation.adapter.BlackBoardClickListener
 import isel.pt.unicommunity.kotlinx.getViewModel
-import isel.pt.unicommunity.model.webdto.rel_links.GetSingleBlackBoardLink
-import isel.pt.unicommunity.model.webdto.rel_links.GetSingleBoardLink
-import isel.pt.unicommunity.model.webdto.rel_links.GetSingleForumLink
-import isel.pt.unicommunity.model.webdto.rel_links.PartialBoardItem
+import isel.pt.unicommunity.model.links.GetSingleBlackBoardLink
+import isel.pt.unicommunity.model.links.GetSingleBoardLink
+import isel.pt.unicommunity.model.links.GetSingleForumLink
 import isel.pt.unicommunity.presentation.adapter.ForumClickListener
 import isel.pt.unicommunity.presentation.fragment.modules.blackboard.BlackBoardFragment
 import isel.pt.unicommunity.presentation.fragment.modules.forum.ForumFragment
 import isel.pt.unicommunity.presentation.viewmodel.BoardViewModel
 import kotlinx.android.synthetic.main.fragment_all_boards.*
 
-class BoardMenuFragment(val partialBoardIem: PartialBoardItem) : Fragment() {
+class BoardMenuFragment(val link: GetSingleBoardLink) : Fragment() {
 
 
     override fun onCreateView(
@@ -43,8 +42,8 @@ class BoardMenuFragment(val partialBoardIem: PartialBoardItem) : Fragment() {
 
         val app = activity.getUniCommunityApp()
 
-        val viewModel = activity.getViewModel("boardID${partialBoardIem.href}"){
-            BoardViewModel(app, GetSingleBoardLink(partialBoardIem.href))
+        val viewModel = activity.getViewModel("boardID${link.href}"){
+            BoardViewModel(app, link)
         }
 
 

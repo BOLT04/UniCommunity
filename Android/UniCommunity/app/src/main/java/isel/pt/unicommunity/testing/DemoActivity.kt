@@ -2,9 +2,8 @@ package isel.pt.unicommunity.testing
 
 import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity;
-import isel.pt.unicommunity.MainActivity
+import isel.pt.unicommunity.presentation.activity.MainActivity
 import isel.pt.unicommunity.R
 import isel.pt.unicommunity.testing.fragmentTesting.TestingActivity
 import isel.pt.unicommunity.testing.markdowntesting.ExternalLibActivity

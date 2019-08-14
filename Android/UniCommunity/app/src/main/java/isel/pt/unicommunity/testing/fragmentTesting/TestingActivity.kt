@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuItem
 import androidx.fragment.app.Fragment
-import isel.pt.unicommunity.BackStackManagingActivity
+import isel.pt.unicommunity.presentation.activity.BackStackManagingActivity
 import isel.pt.unicommunity.testing.EmptyAFActivity
 import isel.pt.unicommunity.R
 import isel.pt.unicommunity.kotlinx.getViewModel

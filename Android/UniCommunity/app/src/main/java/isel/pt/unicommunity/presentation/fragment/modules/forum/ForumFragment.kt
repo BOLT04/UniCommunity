@@ -10,11 +10,11 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import isel.pt.unicommunity.MainActivity
+import isel.pt.unicommunity.presentation.activity.MainActivity
 import isel.pt.unicommunity.R
 import isel.pt.unicommunity.kotlinx.getUniCommunityApp
 import isel.pt.unicommunity.kotlinx.getViewModel
-import isel.pt.unicommunity.model.webdto.rel_links.GetSingleForumLink
+import isel.pt.unicommunity.model.links.GetSingleForumLink
 import isel.pt.unicommunity.presentation.adapter.ForumAdapter
 import isel.pt.unicommunity.presentation.adapter.PartialForumItemClickListener
 import isel.pt.unicommunity.presentation.viewmodel.ForumViewModel

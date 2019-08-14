@@ -1,12 +1,14 @@
 package isel.pt.unicommunity.presentation.viewmodel
 
-import android.os.Handler
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.android.volley.Response
 import isel.pt.unicommunity.UniCommunityApp
-import isel.pt.unicommunity.model.to_refactor.small.SmallBlackBoardItem
-import isel.pt.unicommunity.model.webdto.rel_links.*
+import isel.pt.unicommunity.model.collectionjson.toBlackBoardItemCollection
+import isel.pt.unicommunity.model.inputdto.BlackBoardInputDto
+import isel.pt.unicommunity.model.links.GetMultipleBlackBoardItemsLink
+import isel.pt.unicommunity.model.links.GetSingleBlackBoardItemLink
+import isel.pt.unicommunity.model.links.GetSingleBlackBoardLink
 import isel.pt.unicommunity.repository.network.NavLinkRequest
 
 class BlackBoardViewModel(
@@ -14,7 +16,6 @@ class BlackBoardViewModel(
     val blackBoardLink: GetSingleBlackBoardLink
 ) : ViewModel(){
 
-    val liveData : MutableLiveData<List<SmallBlackBoardItem>> = MutableLiveData()
 
     val blackBoard : MutableLiveData<BlackBoardInputDto> = MutableLiveData()
     val blackBoardItems : MutableLiveData<List<BlackBoardItemRepr>> = MutableLiveData()
@@ -42,7 +43,7 @@ class BlackBoardViewModel(
             getMultipleBlackBoardItemsLink,
             Response.Listener { collectionJson ->
                 blackBoardItems.value =
-                    BlackBoardItemFromCollectionJson(collectionJson).blackboardItems.map {
+                    collectionJson.toBlackBoardItemCollection().blackboardItems.map {
                         BlackBoardItemRepr(it.name, it.content, it.createdAt, it.authorName, it.self)
                     }
             },
@@ -54,29 +55,13 @@ class BlackBoardViewModel(
         app.queue.add(navLinkRequest)
     }
 
-    init {
-        val a = mutableListOf(
-            SmallBlackBoardItem("we in this"),
-            SmallBlackBoardItem("amanha nao vou"),
-            SmallBlackBoardItem("amanha vou duas vezes"),
-            SmallBlackBoardItem("amanha eu vou e voces nao vao"),
-            SmallBlackBoardItem("rak is best"),
-            SmallBlackBoardItem("rak is waifu", "dont judge me please"),
-            SmallBlackBoardItem("♥_♥"),
-            SmallBlackBoardItem("rak as waifu forum", "forum")
-        )
-
-        Handler().postDelayed({ liveData.value= a }, 5000)
 
 
-
-    }
+    class BlackBoardItemRepr(
+        val title : String,
+        val description : String?,
+        val date : String,
+        val author : String,
+        val getSingleBlackBoardItemLink: GetSingleBlackBoardItemLink
+    )
 }
-
-class BlackBoardItemRepr(
-    val title : String,
-    val description : String?,
-    val date : String,
-    val author : String,
-    val getSingleBlackBoardItemLink: GetSingleBlackBoardItemLink
-)

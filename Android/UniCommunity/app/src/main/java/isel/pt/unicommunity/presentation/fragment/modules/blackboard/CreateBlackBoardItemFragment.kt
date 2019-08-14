@@ -9,11 +9,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.android.volley.Response
-import isel.pt.unicommunity.MainActivity
+import isel.pt.unicommunity.presentation.activity.MainActivity
 import isel.pt.unicommunity.R
 import isel.pt.unicommunity.kotlinx.getUniCommunityApp
 import isel.pt.unicommunity.kotlinx.getViewModel
-import isel.pt.unicommunity.model.webdto.rel_links.CreateBlackBoardItemLink
+import isel.pt.unicommunity.model.links.CreateBlackBoardItemLink
 import isel.pt.unicommunity.presentation.viewmodel.CreateBlackBoardItemViewModel
 import kotlinx.android.synthetic.main.fragment_create_blackboard_item.*
 
