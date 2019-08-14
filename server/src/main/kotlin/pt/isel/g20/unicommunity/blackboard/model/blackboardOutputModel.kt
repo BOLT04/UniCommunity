@@ -23,7 +23,7 @@ class SingleBlackboardResponse(user: User, blackboard: Blackboard) : HalObject(m
                 mapOf("self" to Link(Uri.forSingleBoardText(boardId)))
         )
         super._embedded?.putAll(sequenceOf(
-                Rels.GET_SINGLE_BOARD to SingleHalObj(partialBoard)
+                Rels.GET_SINGLE_BOARD to partialBoard
         ))
 
         if(blackboard.items.size !=0)
@@ -69,4 +69,4 @@ class MultipleBlackboardsResponse(
 class PartialBlackboardObject(
         val name: String,
         val _links: Map<String, Link>
-) : HalResourceObject()
+) : IHalObj

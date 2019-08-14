@@ -27,7 +27,7 @@ class SingleCommentResponse(user: User, comment: Comment) : HalObject(mutableMap
                 mapOf("self" to Link(Uri.forSingleBoardText(boardId)))
         )
         super._embedded?.putAll(sequenceOf(
-                Rels.GET_SINGLE_BOARD to SingleHalObj(partialBoard)
+                Rels.GET_SINGLE_BOARD to partialBoard
         ))
 
         val partialForumItem = PartialForumItemObject(
@@ -36,7 +36,7 @@ class SingleCommentResponse(user: User, comment: Comment) : HalObject(mutableMap
                 mapOf("self" to Link(Uri.forSingleForumItemText(boardId, forumItemId)))
         )
         super._embedded?.putAll(sequenceOf(
-                Rels.GET_SINGLE_FORUMITEM to SingleHalObj(partialForumItem)
+                Rels.GET_SINGLE_FORUMITEM to partialForumItem
         ))
 
         if(!anonymousComment){
@@ -45,7 +45,7 @@ class SingleCommentResponse(user: User, comment: Comment) : HalObject(mutableMap
                     mapOf("self" to Link(Uri.forSingleUserText(author.id)))
             )
             super._embedded?.putAll(sequenceOf(
-                    Rels.GET_SINGLE_USER to SingleHalObj(partialUser)
+                    Rels.GET_SINGLE_USER to partialUser
             ))
         }
 
@@ -105,5 +105,5 @@ class PartialCommentObject(
         val content: String,
         val author: String?,
         val _links: Map<String, Link>
-) : HalResourceObject()
+) : IHalObj
 

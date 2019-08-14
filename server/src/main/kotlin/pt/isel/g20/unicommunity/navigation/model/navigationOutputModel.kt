@@ -4,7 +4,6 @@ import pt.isel.g20.unicommunity.hateoas.HalObject
 import pt.isel.g20.unicommunity.hateoas.Link
 import pt.isel.g20.unicommunity.common.Rels
 import pt.isel.g20.unicommunity.common.Uri
-import pt.isel.g20.unicommunity.hateoas.SingleHalObj
 
 class NavigationResponse(userId: Long)
     : HalObject(
@@ -25,10 +24,10 @@ class HomeResponse : HalObject(
         Rels.NAVIGATION to Link(Uri.NAVIGATION_ROUTE)
     ),
     _embedded = mutableMapOf(
-        Rels.LOGIN to SingleHalObj(
-            HalObject(_links= mutableMapOf("self" to Link(Uri.LOGIN_ROUTE)))),
-        Rels.GET_MULTIPLE_BOARDS to SingleHalObj(
-            HalObject(_links= mutableMapOf("self" to Link(Uri.BOARDS_ROUTE))))
+        Rels.LOGIN to
+            HalObject(_links= mutableMapOf("self" to Link(Uri.LOGIN_ROUTE))),
+        Rels.GET_MULTIPLE_BOARDS to
+            HalObject(_links= mutableMapOf("self" to Link(Uri.BOARDS_ROUTE)))
     )
 )
 

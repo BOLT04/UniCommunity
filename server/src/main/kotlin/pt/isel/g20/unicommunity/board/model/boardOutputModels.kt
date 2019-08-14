@@ -42,7 +42,7 @@ class SingleBoardResponse(user: User, board: Board) : HalObject(mutableMapOf(), 
                 mapOf("self" to Link(Uri.forSingleUserText(board.creator.id)))
         )
         super._embedded?.putAll(sequenceOf(
-                Rels.GET_SINGLE_USER to SingleHalObj(partialUser)
+                Rels.GET_SINGLE_USER to partialUser
         ))
 
         super._links?.putAll(sequenceOf(
@@ -111,4 +111,4 @@ class MultipleBoardsResponse(
 class PartialBoardObject(
         val name: String,
         val _links: Map<String, Link>
-) : HalResourceObject()
+) : IHalObj

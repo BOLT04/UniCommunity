@@ -20,7 +20,6 @@ data class Link @JsonCreator constructor(
         val href: String,
         val templated: Boolean? = null)
 
-open class HalResourceObject
 
 /**
  * Abstract class to be used as a base class for HAL representations.
@@ -31,11 +30,11 @@ open class HalResourceObject
 @JsonInclude(JsonInclude.Include.NON_NULL)
 open class HalObject(
     var _links: MutableMap<String, Link>? = null,
-    var _embedded: MutableMap<String, IHalObj>? = null) : HalResourceObject()// TODO: how to make embedded an array OR object
+    var _embedded: MutableMap<String, IHalObj>? = null) : IHalObj
 
 interface IHalObj
 
-open class SingleHalObj<T>(val value : T): IHalObj
+
 
 open class MultipleHalObj<T>(
         @JsonIgnore val list: List<T>

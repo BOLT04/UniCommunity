@@ -28,14 +28,14 @@ class SingleForumItemResponse(user: User, forumItem: ForumItem) : HalObject(muta
                 mapOf("self" to Link(Uri.forSingleBoardText(boardId)))
         )
         super._embedded?.putAll(sequenceOf(
-                Rels.GET_SINGLE_BOARD to SingleHalObj(partialBoard)
+                Rels.GET_SINGLE_BOARD to partialBoard
         ))
 
         val partialForum = PartialForumObject(
                 mapOf("self" to Link(Uri.forSingleForumText(forum.id)))
         )
         super._embedded?.putAll(sequenceOf(
-                Rels.GET_SINGLE_FORUM to SingleHalObj(partialForum)
+                Rels.GET_SINGLE_FORUM to partialForum
         ))
 
         if(!anonymousPost){
@@ -44,7 +44,7 @@ class SingleForumItemResponse(user: User, forumItem: ForumItem) : HalObject(muta
                     mapOf("self" to Link(Uri.forSingleUserText(author.id)))
             )
             super._embedded?.putAll(sequenceOf(
-                    Rels.GET_SINGLE_USER to SingleHalObj(partialUser)
+                    Rels.GET_SINGLE_USER to partialUser
             ))
         }
 
@@ -94,4 +94,4 @@ class PartialForumItemObject(
         val name: String,
         val author: String?,
         val _links: Map<String, Link>
-) : HalResourceObject()
+) : IHalObj

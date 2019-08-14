@@ -18,7 +18,7 @@ class SingleForumResponse(forum: Forum) : HalObject(mutableMapOf(), mutableMapOf
                 mapOf("self" to Link(Uri.forSingleBoardText(boardId)))
         )
         super._embedded?.putAll(sequenceOf(
-                Rels.GET_SINGLE_BOARD to SingleHalObj(partialBoard)
+                Rels.GET_SINGLE_BOARD to partialBoard
         ))
 
         if(forum.items.size !=0)
@@ -43,4 +43,4 @@ class SingleForumResponse(forum: Forum) : HalObject(mutableMapOf(), mutableMapOf
 
 class PartialForumObject(
         val _links: Map<String, Link>
-) : HalResourceObject()
+) : IHalObj

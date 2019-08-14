@@ -91,4 +91,4 @@ class MultipleUsersResponse(
 class PartialUserObject(
         val name: String,
         val _links: Map<String, Link>
-) : HalResourceObject()
+) : IHalObj
