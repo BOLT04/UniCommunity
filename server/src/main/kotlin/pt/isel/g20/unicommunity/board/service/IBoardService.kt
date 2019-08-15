@@ -1,7 +1,9 @@
 package pt.isel.g20.unicommunity.board.service
 
 import org.springframework.data.domain.Page
+import pt.isel.g20.unicommunity.board.exception.InvalidTemplateConfigurationException
 import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
+import pt.isel.g20.unicommunity.board.exception.SubscribeToTopicException
 import pt.isel.g20.unicommunity.board.model.Board
 import pt.isel.g20.unicommunity.template.exception.NotFoundTemplateException
 import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
@@ -13,7 +15,11 @@ interface IBoardService {
     @Throws(NotFoundBoardException::class)
     fun getBoardById(boardId: Long): Board
 
-    @Throws(NotFoundTemplateException::class)
+    @Throws(
+            NotFoundTemplateException::class,
+            InvalidTemplateConfigurationException::class,
+            NotFoundUserException::class
+    )
     fun createBoard(
             creatorId: Long,
             name: String,
@@ -29,7 +35,11 @@ interface IBoardService {
     @Throws(NotFoundBoardException::class)
     fun deleteBoard(boardId: Long):Board
 
-    @Throws(NotFoundBoardException::class, NotFoundUserException::class)
+    @Throws(
+            NotFoundBoardException::class,
+            NotFoundUserException::class,
+            SubscribeToTopicException::class
+    )
     fun addUserToBoard(boardId: Long, userId: Long, token: String): Board
 
     @Throws(NotFoundBoardException::class, NotFoundUserException::class)
