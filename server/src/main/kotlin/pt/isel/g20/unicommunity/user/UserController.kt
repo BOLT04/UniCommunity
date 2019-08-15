@@ -90,12 +90,12 @@ class UserController(private val service: IUserService) {
     @ExceptionHandler
     fun handleInvalidUserEmailException(e: InvalidUserEmailException) =
             ResponseEntity
-                    .notFound()
-                    .build<String>()
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body("The given email is invalid")
 
     @ExceptionHandler
     fun handleNotFoundUserException(e: NotFoundUserException) =
             ResponseEntity
-                    .notFound()
-                    .build<String>()
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("User was not found")
 }
