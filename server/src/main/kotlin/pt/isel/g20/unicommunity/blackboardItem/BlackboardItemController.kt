@@ -129,25 +129,25 @@ class BlackboardItemController(private val service: IBlackboardItemService) {
     @ExceptionHandler
     fun handleNotFoundBlackboardItemException(e: NotFoundBlackboardItemException) =
             ResponseEntity
-                    .notFound()
-                    .build<String>()
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Blackboard item was not found")
 
     @ExceptionHandler
     fun handleNotFoundBlackboardException(e: NotFoundBlackboardException) =
             ResponseEntity
-                    .notFound()
-                    .build<String>()
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Blackboard was not found")
 
     @ExceptionHandler
     fun handleNotFoundBoardException(e: NotFoundBoardException) =
             ResponseEntity
-                    .notFound()
-                    .build<String>()
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Board was not found")
 
     @ExceptionHandler
     fun handleNotFoundUserException(e: NotFoundUserException) =
             ResponseEntity
-                    .notFound()
-                    .build<String>()
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("User was not found")
 
 }
