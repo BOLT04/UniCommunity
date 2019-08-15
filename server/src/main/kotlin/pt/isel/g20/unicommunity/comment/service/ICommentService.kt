@@ -5,14 +5,11 @@ import pt.isel.g20.unicommunity.comment.exception.NotFoundCommentException
 import pt.isel.g20.unicommunity.comment.model.Comment
 import pt.isel.g20.unicommunity.forum.exception.NotFoundForumException
 import pt.isel.g20.unicommunity.forumItem.exception.NotFoundForumItemException
+import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
 
 
 interface ICommentService {
-    @Throws(
-            NotFoundBoardException::class,
-            NotFoundForumItemException::class,
-            NotFoundForumException::class
-    )
+    @Throws(NotFoundBoardException::class, NotFoundForumItemException::class, NotFoundForumException::class)
     fun getAllComments(boardId: Long, forumItemId: Long) : Iterable<Comment>
 
     @Throws(
@@ -26,7 +23,8 @@ interface ICommentService {
     @Throws(
             NotFoundBoardException::class,
             NotFoundForumItemException::class,
-            NotFoundForumException::class
+            NotFoundForumException::class,
+            NotFoundUserException::class
     )
     fun createComment(boardId: Long, forumItemId: Long, authorId: Long, content: String, anonymous: Boolean): Comment
 

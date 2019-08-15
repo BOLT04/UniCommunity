@@ -15,6 +15,7 @@ import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
 import pt.isel.g20.unicommunity.forum.exception.NotFoundForumException
 import pt.isel.g20.unicommunity.forumItem.exception.NotFoundForumItemException
 import pt.isel.g20.unicommunity.hateoas.CollectionObject
+import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
 import pt.isel.g20.unicommunity.user.model.User
 import java.util.concurrent.TimeUnit
 
@@ -132,24 +133,30 @@ class CommentController(private val service: ICommentService) {
     @ExceptionHandler
     fun handleNotFoundCommentException(e: NotFoundCommentException) =
             ResponseEntity
-                    .notFound()
-                    .build<String>()
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Comment was not found")
 
     @ExceptionHandler
     fun handleNotFoundBoardException(e: NotFoundBoardException) =
             ResponseEntity
-                    .notFound()
-                    .build<String>()
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Board was not found")
 
     @ExceptionHandler
     fun handleNotFoundForumItemException(e: NotFoundForumItemException) =
             ResponseEntity
-                    .notFound()
-                    .build<String>()
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Forum item was not found")
 
     @ExceptionHandler
     fun handleNotFoundForumException(e: NotFoundForumException) =
             ResponseEntity
-                    .notFound()
-                    .build<String>()
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Forum was not found")
+
+    @ExceptionHandler
+    fun handleNotFoundUserException(e: NotFoundUserException) =
+            ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("User was not found")
 }
