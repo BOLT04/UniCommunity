@@ -130,12 +130,12 @@ class BlackboardController(private val service: IBlackboardService) {
     @ExceptionHandler
     fun handleNotFoundBlackboardException(e: NotFoundBlackboardException) =
             ResponseEntity
-                    .notFound()
-                    .build<String>()
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Blackboard was not found")
 
     @ExceptionHandler
     fun handleNotFoundBoardException(e: NotFoundBoardException) =
             ResponseEntity
-                    .notFound()
-                    .build<String>()
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Board was not found")
 }
