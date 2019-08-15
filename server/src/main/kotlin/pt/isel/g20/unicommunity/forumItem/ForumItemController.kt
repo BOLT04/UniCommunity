@@ -13,6 +13,8 @@ import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.common.Uri.FORUMITEMS_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_FORUMITEM_ROUTE
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
+import pt.isel.g20.unicommunity.forum.exception.NotFoundForumException
+import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
 import pt.isel.g20.unicommunity.user.model.User
 import java.util.concurrent.TimeUnit
 
@@ -127,12 +129,24 @@ class ForumItemController(private val service: IForumItemService) {
     @ExceptionHandler
     fun handleNotFoundForumItemException(e: NotFoundForumItemException) =
             ResponseEntity
-                    .notFound()
-                    .build<String>()
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Forum item was not found")
+
+    @ExceptionHandler
+    fun handleNotFoundForumException(e: NotFoundForumException) =
+            ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Forum was not found")
 
     @ExceptionHandler
     fun handleNotFoundBoardException(e: NotFoundBoardException) =
             ResponseEntity
-                    .notFound()
-                    .build<String>()
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Board was not found")
+
+    @ExceptionHandler
+    fun handleNotFoundUserException(e: NotFoundUserException) =
+            ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("User was not found")
 }
