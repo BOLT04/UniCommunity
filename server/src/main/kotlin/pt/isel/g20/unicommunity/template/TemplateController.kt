@@ -100,6 +100,6 @@ class TemplateController(private val service: ITemplateService) {
     @ExceptionHandler
     fun handleNotFoundTemplateException(e: NotFoundTemplateException) =
             ResponseEntity
-                    .notFound()
-                    .build<String>()
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Template was not found")
 }
