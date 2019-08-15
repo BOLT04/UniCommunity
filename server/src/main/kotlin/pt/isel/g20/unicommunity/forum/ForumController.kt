@@ -78,12 +78,12 @@ class ForumController(private val service: IForumService) {
     @ExceptionHandler
     fun handleNotFoundForumException(e: NotFoundForumException) =
             ResponseEntity
-                    .notFound()
-                    .build<String>()
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Forum was not found")
 
     @ExceptionHandler
     fun handleNotFoundBoardException(e: NotFoundBoardException) =
             ResponseEntity
-                    .notFound()
-                    .build<String>()
+                    .status(HttpStatus.NOT_FOUND)
+                    .body("Board was not found")
 }
