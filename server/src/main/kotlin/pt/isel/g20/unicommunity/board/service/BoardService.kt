@@ -1,27 +1,20 @@
 package pt.isel.g20.unicommunity.board.service
 
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import pt.isel.g20.unicommunity.blackboard.service.IBlackboardService
-import pt.isel.g20.unicommunity.board.RetrofitFactory
-import pt.isel.g20.unicommunity.board.exception.InvalidTemplateConfigurationException
-import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
-import pt.isel.g20.unicommunity.board.exception.SubscribeToTopicException
 import pt.isel.g20.unicommunity.board.model.Board
+import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.fcm.FcmServiceFactory
 import pt.isel.g20.unicommunity.forum.service.IForumService
 import pt.isel.g20.unicommunity.repository.BoardRepository
 import pt.isel.g20.unicommunity.repository.TemplateRepository
 import pt.isel.g20.unicommunity.repository.UserRepository
-import pt.isel.g20.unicommunity.template.exception.NotFoundTemplateException
 import pt.isel.g20.unicommunity.template.service.TemplateService
-import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
 
 @Service
 class BoardService(

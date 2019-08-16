@@ -1,7 +1,7 @@
 package pt.isel.g20.unicommunity.auth.service
 
-import pt.isel.g20.unicommunity.auth.exception.BadAuthenticationException
-import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
+import pt.isel.g20.unicommunity.common.BadAuthenticationException
+import pt.isel.g20.unicommunity.common.NotFoundUserException
 import pt.isel.g20.unicommunity.user.model.User
 
 interface IAuthService {

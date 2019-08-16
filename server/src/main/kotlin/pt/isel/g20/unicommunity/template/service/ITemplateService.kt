@@ -1,6 +1,6 @@
 package pt.isel.g20.unicommunity.template.service
 
-import pt.isel.g20.unicommunity.template.exception.NotFoundTemplateException
+import pt.isel.g20.unicommunity.common.NotFoundTemplateException
 import pt.isel.g20.unicommunity.template.model.Template
 
 interface ITemplateService {

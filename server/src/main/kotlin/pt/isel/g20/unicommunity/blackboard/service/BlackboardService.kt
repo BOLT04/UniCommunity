@@ -2,10 +2,9 @@ package pt.isel.g20.unicommunity.blackboard.service
 
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import pt.isel.g20.unicommunity.blackboard.exception.NotFoundBlackboardException
 import pt.isel.g20.unicommunity.blackboard.model.Blackboard
-import pt.isel.g20.unicommunity.blackboardItem.model.BlackboardItem
-import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
+import pt.isel.g20.unicommunity.common.NotFoundBlackboardException
+import pt.isel.g20.unicommunity.common.NotFoundBoardException
 import pt.isel.g20.unicommunity.repository.BlackboardRepository
 import pt.isel.g20.unicommunity.repository.BoardRepository
 

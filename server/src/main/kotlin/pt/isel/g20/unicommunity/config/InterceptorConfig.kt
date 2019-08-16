@@ -7,19 +7,13 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.ControllerAdvice
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.method.support.HandlerMethodArgumentResolver
-import org.springframework.web.servlet.config.annotation.CorsRegistry
 import org.springframework.web.servlet.config.annotation.EnableWebMvc
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import pt.isel.g20.unicommunity.auth.service.AuthService
-import pt.isel.g20.unicommunity.common.Rels
-import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationException
 import pt.isel.g20.unicommunity.common.presentation.authorizationProblemJson
-import pt.isel.g20.unicommunity.hateoas.ExtendedProblemJson
-import pt.isel.g20.unicommunity.hateoas.Link
 import pt.isel.g20.unicommunity.hateoas.ProblemJson
-import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
 import pt.isel.g20.unicommunity.user.service.IUserService
 
 @Configuration

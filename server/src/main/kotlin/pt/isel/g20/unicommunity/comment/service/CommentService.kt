@@ -2,13 +2,9 @@ package pt.isel.g20.unicommunity.comment.service
 
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
-import pt.isel.g20.unicommunity.comment.exception.NotFoundCommentException
 import pt.isel.g20.unicommunity.comment.model.Comment
-import pt.isel.g20.unicommunity.forum.exception.NotFoundForumException
-import pt.isel.g20.unicommunity.forumItem.exception.NotFoundForumItemException
+import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.repository.*
-import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
 
 @Service
 class CommentService(

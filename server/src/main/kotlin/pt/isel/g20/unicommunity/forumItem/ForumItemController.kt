@@ -4,17 +4,13 @@ import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
-import pt.isel.g20.unicommunity.forumItem.exception.NotFoundForumItemException
+import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.forumItem.model.*
 import pt.isel.g20.unicommunity.forumItem.service.IForumItemService
 import pt.isel.g20.unicommunity.hateoas.CollectionObject
-import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.common.Uri.FORUMITEMS_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_FORUMITEM_ROUTE
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
-import pt.isel.g20.unicommunity.forum.exception.NotFoundForumException
-import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
 import pt.isel.g20.unicommunity.user.model.User
 import java.util.concurrent.TimeUnit
 
@@ -124,29 +120,4 @@ class ForumItemController(private val service: IForumItemService) {
                         .eTag(response.hashCode().toString())
                         .body(response)
             }
-
-
-    @ExceptionHandler
-    fun handleNotFoundForumItemException(e: NotFoundForumItemException) =
-            ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("Forum item was not found")
-
-    @ExceptionHandler
-    fun handleNotFoundForumException(e: NotFoundForumException) =
-            ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("Forum was not found")
-
-    @ExceptionHandler
-    fun handleNotFoundBoardException(e: NotFoundBoardException) =
-            ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("Board was not found")
-
-    @ExceptionHandler
-    fun handleNotFoundUserException(e: NotFoundUserException) =
-            ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("User was not found")
 }

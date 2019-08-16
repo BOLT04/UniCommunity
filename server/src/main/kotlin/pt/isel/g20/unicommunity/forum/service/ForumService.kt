@@ -2,8 +2,8 @@ package pt.isel.g20.unicommunity.forum.service
 
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
-import pt.isel.g20.unicommunity.forum.exception.NotFoundForumException
+import pt.isel.g20.unicommunity.common.NotFoundBoardException
+import pt.isel.g20.unicommunity.common.NotFoundForumException
 import pt.isel.g20.unicommunity.forum.model.Forum
 import pt.isel.g20.unicommunity.repository.ForumRepository
 import pt.isel.g20.unicommunity.repository.BoardRepository

@@ -4,17 +4,13 @@ import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import pt.isel.g20.unicommunity.blackboard.exception.NotFoundBlackboardException
-import pt.isel.g20.unicommunity.blackboardItem.exception.NotFoundBlackboardItemException
 import pt.isel.g20.unicommunity.blackboardItem.model.*
 import pt.isel.g20.unicommunity.blackboardItem.service.IBlackboardItemService
-import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
+import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.hateoas.CollectionObject
-import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.common.Uri.BLACKBOARDITEMS_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_BLACKBOARDITEM_ROUTE
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
-import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
 import pt.isel.g20.unicommunity.user.model.User
 import java.util.concurrent.TimeUnit
 
@@ -124,30 +120,4 @@ class BlackboardItemController(private val service: IBlackboardItemService) {
                         .eTag(response.hashCode().toString())
                         .body(response)
             }
-
-
-    @ExceptionHandler
-    fun handleNotFoundBlackboardItemException(e: NotFoundBlackboardItemException) =
-            ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("Blackboard item was not found")
-
-    @ExceptionHandler
-    fun handleNotFoundBlackboardException(e: NotFoundBlackboardException) =
-            ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("Blackboard was not found")
-
-    @ExceptionHandler
-    fun handleNotFoundBoardException(e: NotFoundBoardException) =
-            ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("Board was not found")
-
-    @ExceptionHandler
-    fun handleNotFoundUserException(e: NotFoundUserException) =
-            ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("User was not found")
-
 }

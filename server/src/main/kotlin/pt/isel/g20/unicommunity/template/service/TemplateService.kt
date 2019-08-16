@@ -2,15 +2,16 @@ package pt.isel.g20.unicommunity.template.service
 
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import pt.isel.g20.unicommunity.common.NotFoundTemplateException
 import pt.isel.g20.unicommunity.repository.TemplateRepository
-import pt.isel.g20.unicommunity.template.exception.NotFoundTemplateException
 import pt.isel.g20.unicommunity.template.model.Template
 
 @Service
 class TemplateService(val templatesRepo: TemplateRepository) : ITemplateService {
     override fun getAllTemplates(): Iterable<Template> = templatesRepo.findAll()
 
-    override fun getTemplateById(templateId: Long) = templatesRepo.findByIdOrNull(templateId) ?: throw NotFoundTemplateException()
+    override fun getTemplateById(templateId: Long)
+            = templatesRepo.findByIdOrNull(templateId) ?: throw NotFoundTemplateException()
 
     override fun createTemplate(name: String, hasForum: Boolean, blackboardNames: String): Template {
 

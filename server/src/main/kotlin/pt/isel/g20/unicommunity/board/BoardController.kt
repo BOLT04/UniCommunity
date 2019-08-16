@@ -1,6 +1,5 @@
 package pt.isel.g20.unicommunity.board
 
-import com.sun.org.apache.xerces.internal.util.HTTPInputSource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
@@ -9,19 +8,14 @@ import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import pt.isel.g20.unicommunity.board.exception.InvalidTemplateConfigurationException
-import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
-import pt.isel.g20.unicommunity.board.exception.SubscribeToTopicException
 import pt.isel.g20.unicommunity.board.model.*
 import pt.isel.g20.unicommunity.board.service.IBoardService
-import pt.isel.g20.unicommunity.common.Uri
+import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.common.Uri.BOARDS_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.BOARD_MEMBERS
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_BOARD_ROUTE
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
 import pt.isel.g20.unicommunity.hateoas.CollectionObject
-import pt.isel.g20.unicommunity.template.exception.NotFoundTemplateException
-import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
 import pt.isel.g20.unicommunity.user.model.User
 import java.util.concurrent.TimeUnit
 
@@ -213,35 +207,4 @@ class BoardController(private val service: IBoardService) {
                     .body(response)
         }
     }
-
-    @ExceptionHandler
-    fun handleNotFoundBoardException(e: NotFoundBoardException) =
-            ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("Board was not found")
-
-    @ExceptionHandler
-    fun handleNotFoundTemplateException(e: NotFoundTemplateException) =
-            ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("Template was not found")
-
-    @ExceptionHandler
-    fun handleNotFoundUserException(e: NotFoundUserException) =
-            ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("User was not found")
-
-    @ExceptionHandler
-    fun handleInvalidTemplateConfigurationException(e: InvalidTemplateConfigurationException) =
-            ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body("The provided configuration is invalid")
-
-    @ExceptionHandler
-    fun handleSubscribeToTopicException(e: SubscribeToTopicException) =
-            ResponseEntity
-                    .status(HttpStatus.BAD_GATEWAY)
-                    .body("An error occured when trying to join the board")
-
 }

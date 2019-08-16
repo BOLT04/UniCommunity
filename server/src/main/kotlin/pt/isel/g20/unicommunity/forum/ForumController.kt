@@ -4,8 +4,8 @@ import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
-import pt.isel.g20.unicommunity.forum.exception.NotFoundForumException
+import pt.isel.g20.unicommunity.common.NotFoundBoardException
+import pt.isel.g20.unicommunity.common.NotFoundForumException
 import pt.isel.g20.unicommunity.forum.model.SingleForumResponse
 import pt.isel.g20.unicommunity.forum.service.IForumService
 import pt.isel.g20.unicommunity.common.Uri
@@ -73,17 +73,4 @@ class ForumController(private val service: IForumService) {
                         .eTag(it.hashCode().toString())
                         .body(SingleForumResponse(it))
             }
-
-
-    @ExceptionHandler
-    fun handleNotFoundForumException(e: NotFoundForumException) =
-            ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("Forum was not found")
-
-    @ExceptionHandler
-    fun handleNotFoundBoardException(e: NotFoundBoardException) =
-            ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("Board was not found")
 }

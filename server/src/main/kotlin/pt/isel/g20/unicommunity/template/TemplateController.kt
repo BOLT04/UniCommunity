@@ -4,11 +4,11 @@ import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import pt.isel.g20.unicommunity.common.NotFoundTemplateException
 import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_TEMPLATE_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.TEMPLATES_ROUTE
 import pt.isel.g20.unicommunity.hateoas.CollectionObject
-import pt.isel.g20.unicommunity.template.exception.NotFoundTemplateException
 import pt.isel.g20.unicommunity.template.model.*
 import pt.isel.g20.unicommunity.template.service.ITemplateService
 import java.util.concurrent.TimeUnit
@@ -95,11 +95,4 @@ class TemplateController(private val service: ITemplateService) {
                         .eTag(response.hashCode().toString())
                         .body(response)
             }
-
-
-    @ExceptionHandler
-    fun handleNotFoundTemplateException(e: NotFoundTemplateException) =
-            ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("Template was not found")
 }

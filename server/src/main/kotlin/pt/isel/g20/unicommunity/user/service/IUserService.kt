@@ -1,7 +1,7 @@
 package pt.isel.g20.unicommunity.user.service
 
-import pt.isel.g20.unicommunity.user.exception.InvalidUserEmailException
-import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
+import pt.isel.g20.unicommunity.common.InvalidUserEmailException
+import pt.isel.g20.unicommunity.common.NotFoundUserException
 import pt.isel.g20.unicommunity.user.model.User
 
 interface IUserService {

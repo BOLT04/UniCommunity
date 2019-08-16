@@ -9,9 +9,9 @@ import pt.isel.g20.unicommunity.auth.model.LoginResponse
 import pt.isel.g20.unicommunity.auth.service.IAuthService
 import pt.isel.g20.unicommunity.common.APPLICATION_HAL_JSON
 import pt.isel.g20.unicommunity.common.APPLICATION_JSON
+import pt.isel.g20.unicommunity.common.NotFoundUserException
 import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.common.presentation.authorizationProblemJson
-import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
 import java.util.concurrent.TimeUnit
 
 @RestController

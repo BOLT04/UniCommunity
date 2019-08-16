@@ -2,11 +2,10 @@ package pt.isel.g20.unicommunity.user.service
 
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
+import pt.isel.g20.unicommunity.common.InvalidUserEmailException
+import pt.isel.g20.unicommunity.common.NotFoundUserException
 import pt.isel.g20.unicommunity.repository.BoardRepository
 import pt.isel.g20.unicommunity.repository.UserRepository
-import pt.isel.g20.unicommunity.user.exception.InvalidUserEmailException
-import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
 import pt.isel.g20.unicommunity.user.model.User
 
 @Service

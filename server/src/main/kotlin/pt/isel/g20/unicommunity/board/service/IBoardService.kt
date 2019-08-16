@@ -1,12 +1,8 @@
 package pt.isel.g20.unicommunity.board.service
 
 import org.springframework.data.domain.Page
-import pt.isel.g20.unicommunity.board.exception.InvalidTemplateConfigurationException
-import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
-import pt.isel.g20.unicommunity.board.exception.SubscribeToTopicException
 import pt.isel.g20.unicommunity.board.model.Board
-import pt.isel.g20.unicommunity.template.exception.NotFoundTemplateException
-import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
+import pt.isel.g20.unicommunity.common.*
 
 interface IBoardService {
     fun getAllBoards() : Iterable<Board>

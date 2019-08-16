@@ -1,11 +1,10 @@
 package pt.isel.g20.unicommunity.forumItem.service
 
-import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
-import pt.isel.g20.unicommunity.forum.exception.NotFoundForumException
-import pt.isel.g20.unicommunity.forum.model.Forum
-import pt.isel.g20.unicommunity.forumItem.exception.NotFoundForumItemException
+import pt.isel.g20.unicommunity.common.NotFoundBoardException
+import pt.isel.g20.unicommunity.common.NotFoundForumException
+import pt.isel.g20.unicommunity.common.NotFoundForumItemException
+import pt.isel.g20.unicommunity.common.NotFoundUserException
 import pt.isel.g20.unicommunity.forumItem.model.ForumItem
-import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
 
 
 interface IForumItemService {

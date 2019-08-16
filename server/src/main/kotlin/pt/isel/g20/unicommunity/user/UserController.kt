@@ -4,12 +4,12 @@ import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import pt.isel.g20.unicommunity.common.InvalidUserEmailException
+import pt.isel.g20.unicommunity.common.NotFoundUserException
 import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_USER_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.USERS_ROUTE
 import pt.isel.g20.unicommunity.hateoas.CollectionObject
-import pt.isel.g20.unicommunity.user.exception.InvalidUserEmailException
-import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
 import pt.isel.g20.unicommunity.user.model.*
 import pt.isel.g20.unicommunity.user.service.IUserService
 import java.util.concurrent.TimeUnit
@@ -86,16 +86,4 @@ class UserController(private val service: IUserService) {
                         .eTag(it.hashCode().toString())
                         .body(SingleUserResponse(it))
             }
-
-    @ExceptionHandler
-    fun handleInvalidUserEmailException(e: InvalidUserEmailException) =
-            ResponseEntity
-                    .status(HttpStatus.BAD_REQUEST)
-                    .body("The given email is invalid")
-
-    @ExceptionHandler
-    fun handleNotFoundUserException(e: NotFoundUserException) =
-            ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("User was not found")
 }

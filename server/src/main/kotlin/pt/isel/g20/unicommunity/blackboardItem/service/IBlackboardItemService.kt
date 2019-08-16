@@ -1,11 +1,10 @@
 package pt.isel.g20.unicommunity.blackboardItem.service
 
-import pt.isel.g20.unicommunity.blackboard.exception.NotFoundBlackboardException
-import pt.isel.g20.unicommunity.blackboardItem.exception.NotFoundBlackboardItemException
 import pt.isel.g20.unicommunity.blackboardItem.model.BlackboardItem
-import pt.isel.g20.unicommunity.board.exception.NotFoundBoardException
-import pt.isel.g20.unicommunity.user.exception.NotFoundUserException
-import pt.isel.g20.unicommunity.user.model.User
+import pt.isel.g20.unicommunity.common.NotFoundBlackboardException
+import pt.isel.g20.unicommunity.common.NotFoundBlackboardItemException
+import pt.isel.g20.unicommunity.common.NotFoundBoardException
+import pt.isel.g20.unicommunity.common.NotFoundUserException
 
 interface IBlackboardItemService {
     @Throws(NotFoundBoardException::class, NotFoundBlackboardException::class)
