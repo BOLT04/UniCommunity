@@ -37,7 +37,7 @@ class SingleForumResponse(forum: Forum) : HalObject(mutableMapOf(), mutableMapOf
                 "self" to Link(Uri.forSingleForumText(boardId)),
 
                 Rels.GET_MULTIPLE_FORUMITEMS to Link(Uri.forAllForumItems(boardId)),
-                Rels.CREATE_FORUMITEM to Link(Uri.forSingleForumText(boardId))
+                Rels.CREATE_FORUMITEM to Link(Uri.forAllForumItems(boardId))
         ))
     }
 }
