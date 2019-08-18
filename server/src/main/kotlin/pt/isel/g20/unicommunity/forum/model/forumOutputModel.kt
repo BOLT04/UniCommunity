@@ -27,6 +27,7 @@ class SingleForumResponse(forum: Forum) : HalObject(mutableMapOf(), mutableMapOf
                         PartialForumItemObject(
                                 it.name,
                                 if(it.anonymousPost) null else it.author.name,
+                                it.createdAt.toString(),
                                 mapOf("self" to Link(Uri.forSingleForumItemText(boardId, it.id)))
                         )
                     })

@@ -33,6 +33,7 @@ class SingleCommentResponse(user: User, comment: Comment) : HalObject(mutableMap
         val partialForumItem = PartialForumItemObject(
                 forumItem.name,
                 if(comment.anonymousComment) null else forumItem.author.name,
+                forumItem.createdAt.toString(),
                 mapOf("self" to Link(Uri.forSingleForumItemText(boardId, forumItemId)))
         )
         super._embedded?.putAll(sequenceOf(
@@ -104,6 +105,7 @@ class MultipleCommentsResponse(
 class PartialCommentObject(
         val content: String,
         val author: String?,
+        val createdAt: String,
         val _links: Map<String, Link>
 ) : IHalObj
 

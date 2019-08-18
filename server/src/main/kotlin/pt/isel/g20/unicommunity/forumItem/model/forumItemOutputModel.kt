@@ -54,6 +54,7 @@ class SingleForumItemResponse(user: User, forumItem: ForumItem) : HalObject(muta
                         PartialCommentObject(
                                 it.content,
                                 if(it.anonymousComment) null else it.author.name,
+                                it.createdAt.toString(),
                                 mapOf("self" to Link(Uri.forSingleCommentText(boardId, id, it.id)))
                         )
                     })
@@ -93,5 +94,6 @@ class MultipleForumItemsResponse(
 class PartialForumItemObject(
         val name: String,
         val author: String?,
+        val createdAt: String,
         val _links: Map<String, Link>
 ) : IHalObj

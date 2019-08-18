@@ -31,6 +31,7 @@ class SingleUserResponse(user: User) : HalObject(mutableMapOf(), mutableMapOf())
                         PartialBlackboardItemObject(
                                 it.name,
                                 it.author.name,
+                                it.createdAt.toString(),
                                 mapOf("self" to Link(Uri.forSingleBlackboardItemText(
                                         it.blackboard.board.id,
                                         it.blackboard.id,
@@ -46,6 +47,7 @@ class SingleUserResponse(user: User) : HalObject(mutableMapOf(), mutableMapOf())
                         PartialForumItemObject(
                                 it.name,
                                 it.author.name,
+                                it.createdAt.toString(),
                                 mapOf("self" to Link(Uri.forSingleForumItemText(
                                         it.forum.board.id,
                                         it.id
@@ -60,6 +62,7 @@ class SingleUserResponse(user: User) : HalObject(mutableMapOf(), mutableMapOf())
                         PartialCommentObject(
                                 it.content,
                                 it.author.name,
+                                it.createdAt.toString(),
                                 mapOf("self" to Link(Uri.forSingleCommentText(
                                         it.forumItem.forum.board.id,
                                         it.forumItem.id,

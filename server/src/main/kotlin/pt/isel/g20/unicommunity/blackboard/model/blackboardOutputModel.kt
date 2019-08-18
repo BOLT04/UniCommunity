@@ -32,6 +32,7 @@ class SingleBlackboardResponse(user: User, blackboard: Blackboard) : HalObject(m
                         PartialBlackboardItemObject(
                                 it.name,
                                 it.author.name,
+                                it.createdAt.toString(),
                                 mapOf("self" to Link(Uri.forSingleBlackboardItemText(boardId, id, it.id)))
                         )
                     })

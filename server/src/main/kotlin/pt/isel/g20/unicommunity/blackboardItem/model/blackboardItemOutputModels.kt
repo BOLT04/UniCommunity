@@ -78,5 +78,6 @@ class MultipleBlackboardItemsResponse(
 class PartialBlackboardItemObject(
         val name: String,
         val author: String,
+        val createdAt: String,
         val _links: Map<String, Link>
 ) : IHalObj
