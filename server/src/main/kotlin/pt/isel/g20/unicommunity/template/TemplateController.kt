@@ -4,6 +4,7 @@ import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
+import pt.isel.g20.unicommunity.common.APPLICATION_COLLECTION_JSON
 import pt.isel.g20.unicommunity.common.NotFoundTemplateException
 import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_TEMPLATE_ROUTE
@@ -17,7 +18,7 @@ import java.util.concurrent.TimeUnit
 @RequestMapping(produces = ["application/json", "application/hal+json", "application/vnd.collection+json"])
 class TemplateController(private val service: ITemplateService) {
 
-    @GetMapping(path = [TEMPLATES_ROUTE])
+    @GetMapping(path = [TEMPLATES_ROUTE], produces = [APPLICATION_COLLECTION_JSON])
     fun getAllTemplates() =
             service
                     .getAllTemplates()
