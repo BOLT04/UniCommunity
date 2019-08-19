@@ -154,7 +154,7 @@ class BoardController(private val service: IBoardService) {
 
 
     @AuthorizationRequired
-    @DeleteMapping(path = [BOARD_MEMBERS], produces = ["application/hal+json"])
+    @DeleteMapping(path = [SINGLE_BOARD_ROUTE], produces = ["application/hal+json"])
     fun deleteBoard(@PathVariable boardId: Long, @SessionAttribute("user") user: User) =
             service.deleteBoard(boardId).let {
                 val response = SingleBoardResponse(user, it)
