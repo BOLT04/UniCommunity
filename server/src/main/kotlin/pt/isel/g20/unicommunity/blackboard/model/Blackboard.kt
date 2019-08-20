@@ -18,6 +18,5 @@ class Blackboard(
     var id: Long = 0
 
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE])
-    @JoinColumn
     var items: MutableList<BlackboardItem> = mutableListOf()
 }

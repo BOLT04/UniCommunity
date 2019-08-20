@@ -20,12 +20,16 @@ class BlackboardItemService(
         val usersRepo: UserRepository
 ) : IBlackboardItemService {
     override fun getAllBlackboardItems(boardId: Long, bbId: Long): Iterable<BlackboardItem> {
-            boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
-            return blackboardsRepo.findByIdOrNull(bbId)?.items ?: throw NotFoundBlackboardException()
+        boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
+        blackboardsRepo.findByIdOrNull(bbId) ?: throw NotFoundBlackboardException()
+        return blackboardItemsRepo.findByBlackboardIdOrderByCreatedAtDesc(bbId).asIterable()
     }
 
-    override fun getBlackboardItemById(boardId: Long, bbId: Long, itemId: Long) =
-            blackboardItemsRepo.findByIdOrNull(itemId) ?: throw NotFoundBlackboardItemException()
+    override fun getBlackboardItemById(boardId: Long, bbId: Long, itemId: Long) : BlackboardItem {
+        boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
+        blackboardsRepo.findByIdOrNull(bbId) ?: throw NotFoundBlackboardException()
+        return blackboardItemsRepo.findByBlackboardIdAndId(bbId, itemId) ?: throw NotFoundBlackboardItemException()
+    }
 
     override fun createBlackboardItem(
             boardId: Long,

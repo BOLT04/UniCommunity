@@ -22,14 +22,14 @@ class ForumItemService(
 ) : IForumItemService {
     override fun getAllForumItems(boardId: Long): Iterable<ForumItem>{
         boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
-        val forum = forumsRepo.findByIdOrNull(boardId) ?: throw NotFoundForumException()
-        return forum.items
+        forumsRepo.findByIdOrNull(boardId) ?: throw NotFoundForumException()
+        return forumItemsRepo.findByForumIdOrderByCreatedAtDesc(boardId).asIterable()
     }
 
     override fun getForumItemById(boardId: Long, forumItemId: Long): ForumItem {
         boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
-        val forum = forumsRepo.findByIdOrNull(boardId) ?: throw NotFoundForumException()
-        return forum.items.find { it.id == forumItemId } ?: throw NotFoundForumItemException()
+        forumsRepo.findByIdOrNull(boardId) ?: throw NotFoundForumException()
+        return forumItemsRepo.findByForumIdAndId(boardId, forumItemId) ?: throw NotFoundForumItemException()
     }
 
     override fun createForumItem(

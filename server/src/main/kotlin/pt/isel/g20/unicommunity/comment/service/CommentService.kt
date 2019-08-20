@@ -17,7 +17,8 @@ class CommentService(
     override fun getAllComments(boardId: Long, forumItemId: Long): Iterable<Comment> {
         boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
         forumsRepo.findByIdOrNull(boardId) ?: throw NotFoundForumException()
-        return forumItemsRepo.findByIdOrNull(forumItemId)?.comments ?: throw NotFoundForumItemException()
+        forumItemsRepo.findByIdOrNull(forumItemId) ?: throw NotFoundForumItemException()
+        return commentsRepo.findByForumItemIdOrderByCreatedAtDesc(forumItemId).asIterable()
     }
 
     override fun getCommentById(boardId: Long, forumItemId: Long, commentId: Long): Comment {

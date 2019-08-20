@@ -13,7 +13,7 @@ class BlackboardItem(
         @Column var name: String,
         @Column var content: String,
         @ManyToOne @JoinColumn var author: User,
-        @JsonIgnore @ManyToOne var blackboard: Blackboard
+        @JsonIgnore @ManyToOne @JoinColumn(name="blackboardId") var blackboard: Blackboard
 ) {
 
     @Id

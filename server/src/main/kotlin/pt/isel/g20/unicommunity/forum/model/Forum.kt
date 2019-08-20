@@ -14,6 +14,5 @@ class Forum(
     var id: Long = 0
 
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE])
-    @JoinColumn
     var items: MutableList<ForumItem> = mutableListOf()
 }
