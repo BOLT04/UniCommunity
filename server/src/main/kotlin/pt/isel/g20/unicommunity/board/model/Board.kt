@@ -7,7 +7,7 @@ import javax.persistence.*
 
 @Entity
 class Board(
-        @ManyToOne(fetch = FetchType.LAZY) @JoinColumn var creator: User,
+        @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name="creatorId") var creator: User,
         @Column(nullable = false) var name: String,
         @Column var description: String? = null
 ) {

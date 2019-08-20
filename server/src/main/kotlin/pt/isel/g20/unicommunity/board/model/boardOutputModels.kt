@@ -108,6 +108,24 @@ class MultipleBoardsResponse(
     }
 }
 
+class MultipleBoardsResponseWithoutPagination(
+        boards : List<Item>
+): JsonCollection(
+        version = "1.0",
+        href = Uri.forAllBoards(),
+        links = mutableListOf(
+                CollectionLink("self", Uri.forAllBoards())
+        ),
+        items = boards,
+        queries = listOf(
+                Query(
+                        href= Uri.forAllBoards(),
+                        rel= "self" /*TODO: what rel should we use here?*/,
+                        data= listOf()
+                )
+        )
+)
+
 class PartialBoardObject(
         val name: String,
         val _links: Map<String, Link>

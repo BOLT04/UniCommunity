@@ -110,6 +110,7 @@ class BoardService(
     ): Board {
         val creator = usersRepo.findByIdOrNull(creatorId) ?: throw NotFoundUserException()
         var board = Board(creator, name, description)
+        board.members.add(creator)
         board = boardsRepo.save(board)
 
         creator.boards.add(board)
