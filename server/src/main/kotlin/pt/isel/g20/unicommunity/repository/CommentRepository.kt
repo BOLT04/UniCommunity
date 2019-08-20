@@ -11,4 +11,5 @@ interface CommentRepository : CrudRepository<Comment, Long>{
     fun findByAnonymousCommentTrue(): List<Comment>
     fun findByAnonymousCommentFalse(): List<Comment>
     fun findByForumItemIdOrderByCreatedAtDesc(forumItemId: Long): List<Comment>
+    fun findByForumItemIdAndId(forumItemId: Long, commentId: Long): Comment?
 }

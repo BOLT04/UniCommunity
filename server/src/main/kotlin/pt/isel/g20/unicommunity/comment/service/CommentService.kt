@@ -24,9 +24,8 @@ class CommentService(
     override fun getCommentById(boardId: Long, forumItemId: Long, commentId: Long): Comment {
         boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
         forumsRepo.findByIdOrNull(boardId) ?: throw NotFoundForumException()
-        val forumItem = forumItemsRepo.findByIdOrNull(forumItemId) ?: throw NotFoundForumItemException()
-
-        return forumItem.comments.find { it.id == commentId } ?: throw NotFoundCommentException()
+        forumItemsRepo.findByIdOrNull(forumItemId) ?: throw NotFoundForumItemException()
+        return commentsRepo.findByForumItemIdAndId(forumItemId, commentId) ?: throw NotFoundCommentException()
     }
 
     override fun createComment(boardId: Long, forumItemId: Long, authorId: Long, content: String, anonymous: Boolean): Comment {
