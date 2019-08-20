@@ -2,6 +2,7 @@ package pt.isel.g20.unicommunity.board.service
 
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
+import org.hibernate.Hibernate
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
@@ -64,6 +65,11 @@ class BoardService(
 
     override fun deleteBoard(boardId: Long): Board {
         val board = getBoardById(boardId)
+
+        Hibernate.initialize(board.blackBoards)
+        Hibernate.initialize(board.forum)
+        Hibernate.initialize(board.members)
+
         boardsRepo.delete(board)
         return board
     }

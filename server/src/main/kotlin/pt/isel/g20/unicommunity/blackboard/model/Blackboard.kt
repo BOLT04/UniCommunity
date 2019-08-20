@@ -17,7 +17,7 @@ class Blackboard(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE])
     @JoinColumn
     var items: MutableList<BlackboardItem> = mutableListOf()
 }

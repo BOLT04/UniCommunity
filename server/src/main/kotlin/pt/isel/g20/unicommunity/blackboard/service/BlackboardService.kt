@@ -1,5 +1,6 @@
 package pt.isel.g20.unicommunity.blackboard.service
 
+import org.hibernate.Hibernate
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import pt.isel.g20.unicommunity.blackboard.model.Blackboard
@@ -59,6 +60,9 @@ class BlackboardService(
 
     override fun deleteBlackboard(boardId: Long, bbId: Long): Blackboard {
         val blackboard = getBlackboardById(boardId, bbId)
+
+        Hibernate.initialize(blackboard.items)
+
         blackboardsRepo.delete(blackboard)
         return blackboard
     }

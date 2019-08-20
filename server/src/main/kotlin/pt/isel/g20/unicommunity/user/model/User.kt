@@ -6,9 +6,6 @@ import pt.isel.g20.unicommunity.board.model.Board
 import pt.isel.g20.unicommunity.comment.model.Comment
 import pt.isel.g20.unicommunity.forumItem.model.ForumItem
 import javax.persistence.*
-import javax.persistence.ManyToMany
-
-
 
 @Entity(name = "users")
 class User(
@@ -32,30 +29,18 @@ class User(
     var id: Long = 0
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "members")
+    @ManyToMany(mappedBy = "members", cascade = [CascadeType.REMOVE])
     val boards : MutableList<Board> = mutableListOf()
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author", cascade = [CascadeType.REMOVE])
     val comments: MutableList<Comment> = mutableListOf()
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author", cascade = [CascadeType.REMOVE])
     val forumItems: MutableList<ForumItem> = mutableListOf()
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author", cascade = [CascadeType.REMOVE])
     val bbItems: MutableList<BlackboardItem> = mutableListOf()
-
-    constructor() : this("", "", "", "", null)
-    constructor(
-            id: Long,
-            name: String,
-            email: String,
-            pw: String,
-            role: String,
-            githubId: String?
-    ) : this(name, email, pw, role, githubId){
-        this.id = id
-    }
 }

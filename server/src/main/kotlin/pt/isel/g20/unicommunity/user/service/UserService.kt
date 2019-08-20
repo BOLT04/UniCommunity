@@ -1,5 +1,6 @@
 package pt.isel.g20.unicommunity.user.service
 
+import org.hibernate.Hibernate
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import pt.isel.g20.unicommunity.common.InvalidUserEmailException
@@ -53,6 +54,12 @@ class UserService(val usersRepo: UserRepository, val boardsRepo: BoardRepository
 
     override fun deleteUser(userId: Long): User {
         val user = getUserById(userId)
+
+        Hibernate.initialize(user.bbItems)
+        Hibernate.initialize(user.boards)
+        Hibernate.initialize(user.comments)
+        Hibernate.initialize(user.forumItems)
+
         usersRepo.delete(user)
         return user
     }

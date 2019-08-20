@@ -9,8 +9,8 @@ import javax.persistence.*
 
 @Entity
 class Comment(
-        @ManyToOne @JoinColumn var forumItem: ForumItem,
-        @ManyToOne(fetch = FetchType.LAZY) @JoinColumn var author: User,
+        @ManyToOne var forumItem: ForumItem,
+        @ManyToOne @JoinColumn var author: User,
         @Column(nullable = false) var content: String,
         @Column(nullable = false) var anonymousComment: Boolean
 

@@ -2,7 +2,6 @@ package pt.isel.g20.unicommunity.board.model
 
 import pt.isel.g20.unicommunity.blackboard.model.Blackboard
 import pt.isel.g20.unicommunity.forum.model.Forum
-import pt.isel.g20.unicommunity.template.model.Template
 import pt.isel.g20.unicommunity.user.model.User
 import javax.persistence.*
 
@@ -17,15 +16,14 @@ class Board(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0
 
-    @OneToOne
-    @JoinColumn
+    @OneToOne(fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE], mappedBy = "board")
     var forum: Forum? = null
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE])
     @JoinColumn
     val blackBoards: MutableList<Blackboard> = mutableListOf()
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE])
     @JoinTable(
             name = "boards_users",
             joinColumns = [JoinColumn(name = "board_id", referencedColumnName = "id")],

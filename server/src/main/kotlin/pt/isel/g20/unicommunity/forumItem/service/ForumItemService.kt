@@ -1,5 +1,6 @@
 package pt.isel.g20.unicommunity.forumItem.service
 
+import org.hibernate.Hibernate
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import pt.isel.g20.unicommunity.common.NotFoundBoardException
@@ -7,8 +8,8 @@ import pt.isel.g20.unicommunity.common.NotFoundForumException
 import pt.isel.g20.unicommunity.common.NotFoundForumItemException
 import pt.isel.g20.unicommunity.common.NotFoundUserException
 import pt.isel.g20.unicommunity.forumItem.model.ForumItem
-import pt.isel.g20.unicommunity.repository.ForumItemRepository
 import pt.isel.g20.unicommunity.repository.BoardRepository
+import pt.isel.g20.unicommunity.repository.ForumItemRepository
 import pt.isel.g20.unicommunity.repository.ForumRepository
 import pt.isel.g20.unicommunity.repository.UserRepository
 
@@ -72,6 +73,9 @@ class ForumItemService(
 
     override fun deleteForumItem(boardId: Long, forumItemId: Long): ForumItem {
         val forumItem = getForumItemById(boardId, forumItemId)
+
+        Hibernate.initialize(forumItem.comments)
+
         forumItemsRepo.delete(forumItem)
         return forumItem
     }

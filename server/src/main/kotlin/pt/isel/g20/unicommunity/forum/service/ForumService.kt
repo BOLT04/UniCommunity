@@ -1,12 +1,13 @@
 package pt.isel.g20.unicommunity.forum.service
 
+import org.hibernate.Hibernate
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import pt.isel.g20.unicommunity.common.NotFoundBoardException
 import pt.isel.g20.unicommunity.common.NotFoundForumException
 import pt.isel.g20.unicommunity.forum.model.Forum
-import pt.isel.g20.unicommunity.repository.ForumRepository
 import pt.isel.g20.unicommunity.repository.BoardRepository
+import pt.isel.g20.unicommunity.repository.ForumRepository
 
 @Service
 class ForumService(
@@ -22,7 +23,8 @@ class ForumService(
     ): Forum {
         val board = boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
 
-        val forum = Forum(boardId, board)
+        val forum = Forum(board)
+        forum.id = board.id
         val newForum = forumsRepo.save(forum)
 
         board.forum = newForum
@@ -39,6 +41,9 @@ class ForumService(
 
     override fun deleteForum(boardId: Long): Forum {
         val forum = getForumById(boardId)
+
+        Hibernate.initialize(forum.items)
+
         forumsRepo.delete(forum)
         return forum
     }
