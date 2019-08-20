@@ -10,13 +10,13 @@ class Blackboard(
         @Column(nullable = false) var name: String,
         @Column var notificationLevel: String,
         @Column var description: String? = null,
-        @JsonIgnore @ManyToOne(fetch = FetchType.LAZY) var board: Board
+        @JsonIgnore @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name="boardId") var board: Board
 ) {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE])
+    @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE], mappedBy = "blackboard")
     var items: MutableList<BlackboardItem> = mutableListOf()
 }

@@ -13,6 +13,6 @@ class Forum(
     @Column
     var id: Long = 0
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE])
+    @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE], mappedBy = "forum")
     var items: MutableList<ForumItem> = mutableListOf()
 }

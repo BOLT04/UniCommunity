@@ -19,8 +19,7 @@ class Board(
     @OneToOne(fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE], mappedBy = "board")
     var forum: Forum? = null
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE])
-    @JoinColumn
+    @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE], mappedBy = "board")
     val blackBoards: MutableList<Blackboard> = mutableListOf()
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE])
