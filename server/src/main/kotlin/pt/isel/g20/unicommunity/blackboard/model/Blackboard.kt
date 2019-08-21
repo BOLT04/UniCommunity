@@ -18,6 +18,7 @@ class Blackboard(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0
 
+    @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE], mappedBy = "blackboard")
     var items: MutableList<BlackboardItem> = mutableListOf()
 

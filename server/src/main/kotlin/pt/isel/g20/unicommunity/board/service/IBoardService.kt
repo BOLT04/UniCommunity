@@ -36,8 +36,8 @@ interface IBoardService {
             NotFoundUserException::class,
             SubscribeToTopicException::class
     )
-    fun addUserToBoard(boardId: Long, userId: Long, token: String): Board
+    fun subscribe(boardId: Long, userId: Long, token: String): Board
 
     @Throws(NotFoundBoardException::class, NotFoundUserException::class)
-    fun removeUserFromBoard(boardId: Long, userId: Long): Board
+    fun unsubscribe(boardId: Long, userId: Long): Board
 }

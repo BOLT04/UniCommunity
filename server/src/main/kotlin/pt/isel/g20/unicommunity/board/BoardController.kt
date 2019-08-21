@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import pt.isel.g20.unicommunity.board.model.*
 import pt.isel.g20.unicommunity.board.service.IBoardService
-import pt.isel.g20.unicommunity.common.*
+import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.common.Uri.BOARDS_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.BOARD_MEMBERS
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_BOARD_ROUTE
@@ -171,11 +171,12 @@ class BoardController(private val service: IBoardService) {
 
     @AuthorizationRequired
     @PostMapping(path = [BOARD_MEMBERS], produces = ["application/hal+json"])
-    fun addUserToBoard(
+    fun subscribe(
             @PathVariable boardId: Long,
             @SessionAttribute("user") user: User,
-            @RequestBody subscribeDto: SubscribeDto): ResponseEntity<SingleBoardResponse>{
-        return service.addUserToBoard(boardId, user.id, subscribeDto.token).let {
+            @RequestBody subscribeDto: SubscribeDto
+    ): ResponseEntity<SingleBoardResponse>{
+        return service.subscribe(boardId, user.id, subscribeDto.token).let {
             val response = SingleBoardResponse(user, it)
 
             ResponseEntity
@@ -191,10 +192,11 @@ class BoardController(private val service: IBoardService) {
 
     @AuthorizationRequired
     @PostMapping(path = [SINGLE_BOARD_ROUTE], produces = ["application/hal+json"])//TODO: should be a delete? Maybe not since no resource is created in addUserToBoard, the processing is add to a list and remove
-    fun removeUserFromBoard(
+    fun unsubscribe(
             @PathVariable boardId: Long,
-            @SessionAttribute("user") user: User): ResponseEntity<SingleBoardResponse>{
-        return service.removeUserFromBoard(boardId, user.id).let {
+            @SessionAttribute("user") user: User
+    ): ResponseEntity<SingleBoardResponse>{
+        return service.unsubscribe(boardId, user.id).let {
             val response = SingleBoardResponse(user, it)
 
             ResponseEntity

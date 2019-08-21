@@ -129,7 +129,7 @@ class BoardService(
 
     val fcmService = FcmServiceFactory.makeFcmServiceService()
 
-    override fun addUserToBoard(boardId: Long, userId: Long, token: String): Board {
+    override fun subscribe(boardId: Long, userId: Long, token: String): Board {
         val board = getBoardById(boardId)
         val user = usersRepo.findByIdOrNull(userId) ?: throw NotFoundUserException()
 
@@ -173,16 +173,28 @@ class BoardService(
         }
     }
 
-    override fun removeUserFromBoard(boardId: Long, userId: Long):Board {
-        val board = getBoardById(boardId)
+    override fun unsubscribe(boardId: Long, userId: Long):Board {
+        var board = getBoardById(boardId)
         val user = usersRepo.findByIdOrNull(userId) ?: throw NotFoundUserException()
 
         board.members.remove(user)
         user.boards.remove(board)
 
-        val newBoard = boardsRepo.save(board)
+        board = boardsRepo.save(board)
         usersRepo.save(user)
 
-        return newBoard
+        board.blackBoards.forEach { item -> run {
+            val userBlackboard = usersBlackboardsRepository.findByUserIdAndBlackboardId(userId, item.id)
+            usersBlackboardsRepository.delete(userBlackboard)
+
+            user.blackboardsSettings.remove(userBlackboard)
+            usersRepo.save(user)
+
+            item.usersSettings.remove(userBlackboard)
+            blackboardsRepo.save(item)
+        } }
+        board = boardsRepo.save(board)
+
+        return board
     }
 }

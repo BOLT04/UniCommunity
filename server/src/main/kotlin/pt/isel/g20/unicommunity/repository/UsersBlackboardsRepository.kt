@@ -7,4 +7,6 @@ import javax.transaction.Transactional
 
 @Repository
 @Transactional
-interface UsersBlackboardsRepository : CrudRepository<UsersBlackboards, Long>
+interface UsersBlackboardsRepository : CrudRepository<UsersBlackboards, Long>{
+    fun findByUserIdAndBlackboardId(userId: Long, blackboardId: Long): UsersBlackboards
+}
