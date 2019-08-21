@@ -191,7 +191,7 @@ class BoardController(private val service: IBoardService) {
     }
 
     @AuthorizationRequired
-    @PostMapping(path = [SINGLE_BOARD_ROUTE], produces = ["application/hal+json"])//TODO: should be a delete? Maybe not since no resource is created in addUserToBoard, the processing is add to a list and remove
+    @DeleteMapping(path = [BOARD_MEMBERS], produces = ["application/hal+json"])//TODO: should be a delete? Maybe not since no resource is created in addUserToBoard, the processing is add to a list and remove
     fun unsubscribe(
             @PathVariable boardId: Long,
             @SessionAttribute("user") user: User
