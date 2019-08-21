@@ -5,6 +5,7 @@ import pt.isel.g20.unicommunity.blackboardItem.model.BlackboardItem
 import pt.isel.g20.unicommunity.board.model.Board
 import pt.isel.g20.unicommunity.comment.model.Comment
 import pt.isel.g20.unicommunity.forumItem.model.ForumItem
+import pt.isel.g20.unicommunity.usersBlackboards.UsersBlackboards
 import javax.persistence.*
 
 @Entity(name = "users")
@@ -31,6 +32,10 @@ class User(
     @JsonIgnore
     @ManyToMany(mappedBy = "members", cascade = [CascadeType.REMOVE])
     val boards : MutableList<Board> = mutableListOf()
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.REMOVE])
+    val blackboardsSettings : MutableList<UsersBlackboards> = mutableListOf()
 
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "author", cascade = [CascadeType.REMOVE])

@@ -7,6 +7,7 @@ import pt.isel.g20.unicommunity.common.Rels
 import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.forumItem.model.PartialForumItemObject
 import pt.isel.g20.unicommunity.hateoas.*
+import pt.isel.g20.unicommunity.usersBlackboards.PartialUsersBlackboardsObject
 
 class SingleUserResponse(user: User) : HalObject(mutableMapOf(), mutableMapOf()){
     val id = user.id
@@ -68,6 +69,22 @@ class SingleUserResponse(user: User) : HalObject(mutableMapOf(), mutableMapOf())
                                         it.forumItem.id,
                                         it.id
                                 )))
+                        )
+                    })
+            ))
+
+        if(user.blackboardsSettings.size != 0)
+            super._embedded?.putAll(sequenceOf(
+                    Rels.GET_USER_BLACKBOARDS_SETTINGS to MultipleHalObj(user.blackboardsSettings.map {
+                        PartialUsersBlackboardsObject(
+                                it.user.id,
+                                it.blackboard.board.id,
+                                it.blackboard.id,
+                                it.user.email,
+                                it.blackboard.board.name,
+                                it.blackboard.name,
+                                it.notificationLevel,
+                                mapOf()
                         )
                     })
             ))

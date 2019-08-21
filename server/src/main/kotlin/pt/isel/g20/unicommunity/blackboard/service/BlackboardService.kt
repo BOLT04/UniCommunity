@@ -6,13 +6,19 @@ import org.springframework.stereotype.Service
 import pt.isel.g20.unicommunity.blackboard.model.Blackboard
 import pt.isel.g20.unicommunity.common.NotFoundBlackboardException
 import pt.isel.g20.unicommunity.common.NotFoundBoardException
+import pt.isel.g20.unicommunity.common.NotFoundUserException
 import pt.isel.g20.unicommunity.repository.BlackboardRepository
 import pt.isel.g20.unicommunity.repository.BoardRepository
+import pt.isel.g20.unicommunity.repository.UserRepository
+import pt.isel.g20.unicommunity.repository.UsersBlackboardsRepository
+import pt.isel.g20.unicommunity.usersBlackboards.UsersBlackboards
 
 @Service
 class BlackboardService(
         val blackboardsRepo: BlackboardRepository,
-        val boardsRepo: BoardRepository
+        val boardsRepo: BoardRepository,
+        val usersRepo: UserRepository,
+        val usersBlackboardsRepository: UsersBlackboardsRepository
 ) : IBlackboardService {
     override fun getAllBlackboards(boardId: Long): Iterable<Blackboard> {
         boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
@@ -25,14 +31,27 @@ class BlackboardService(
     }
 
     override fun createBlackboard(
+            userId: Long,
             boardId: Long,
             name: String,
             notificationLevel: String,
             description: String?
     ): Blackboard {
         val board = boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
+        val user = usersRepo.findByIdOrNull(userId) ?: throw NotFoundUserException()
 
-        val blackboard = Blackboard(name, notificationLevel, description, board)
+        var blackboard = Blackboard(name, notificationLevel, description, board)
+        blackboard = blackboardsRepo.save(blackboard)
+
+        val userBlackboard = UsersBlackboards(user, blackboard, notificationLevel)
+        usersBlackboardsRepository.save(userBlackboard)
+
+        blackboard.usersSettings.add(userBlackboard)
+        blackboard = blackboardsRepo.save(blackboard)
+
+        user.blackboardsSettings.add(userBlackboard)
+        usersRepo.save(user)
+
         val newBlackboard = blackboardsRepo.save(blackboard)
 
         board.blackBoards.add(newBlackboard)

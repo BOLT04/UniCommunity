@@ -12,19 +12,18 @@ import pt.isel.g20.unicommunity.board.model.Board
 import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.fcm.FcmServiceFactory
 import pt.isel.g20.unicommunity.forum.service.IForumService
-import pt.isel.g20.unicommunity.repository.BoardRepository
-import pt.isel.g20.unicommunity.repository.TemplateRepository
-import pt.isel.g20.unicommunity.repository.UserRepository
-import pt.isel.g20.unicommunity.template.service.TemplateService
+import pt.isel.g20.unicommunity.repository.*
+import pt.isel.g20.unicommunity.usersBlackboards.UsersBlackboards
 
 @Service
 class BoardService(
         val boardsRepo: BoardRepository,
         val templatesRepo: TemplateRepository,
-        val forumService: IForumService,
         val blackboardService: IBlackboardService,
-        val templateService: TemplateService,
-        val usersRepo: UserRepository
+        val usersBlackboardsRepository: UsersBlackboardsRepository,
+        val usersRepo: UserRepository,
+        val blackboardsRepo: BlackboardRepository,
+        val forumService: IForumService
 ) : IBoardService {
 
     override fun getAllBoards(): Iterable<Board> = boardsRepo.findAll()
@@ -122,7 +121,7 @@ class BoardService(
         }
 
         blackboardNames.map {
-            blackboardService.createBlackboard(board.id, it, "TODO", "TODO")
+            blackboardService.createBlackboard(creatorId, board.id, it, "TODO", "TODO")
         }
 
         return boardsRepo.save(board)
@@ -139,6 +138,17 @@ class BoardService(
 
         val newBoard = boardsRepo.save(board)
         usersRepo.save(user)
+
+        board.blackBoards.forEach { item -> run {
+            val userBlackboard = UsersBlackboards(user, item, item.notificationLevel)
+            usersBlackboardsRepository.save(userBlackboard)
+
+            user.blackboardsSettings.add(userBlackboard)
+            usersRepo.save(user)
+
+            item.usersSettings.add(userBlackboard)
+            blackboardsRepo.save(item)
+        } }
 
         return runBlocking {
             val promisses = board.blackBoards.map {

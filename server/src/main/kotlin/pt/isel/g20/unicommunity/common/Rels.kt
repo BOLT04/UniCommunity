@@ -60,4 +60,6 @@ object Rels {
     const val GET_MULTIPLE_TEMPLATES = "$RELS_PREFIX/getTemplates"
     const val EDIT_TEMPLATE = "$RELS_PREFIX/editTemplate"
     const val DELETE_TEMPLATE = "$RELS_PREFIX/deleteTemplate"
+
+    const val GET_USER_BLACKBOARDS_SETTINGS = "$RELS_PREFIX/blackboardsSettings"
 }

@@ -6,13 +6,11 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import pt.isel.g20.unicommunity.blackboard.model.*
 import pt.isel.g20.unicommunity.blackboard.service.IBlackboardService
-import pt.isel.g20.unicommunity.common.NotFoundBlackboardException
-import pt.isel.g20.unicommunity.common.NotFoundBoardException
-import pt.isel.g20.unicommunity.hateoas.CollectionObject
 import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.common.Uri.BLACKBOARDS_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_BLACKBOARD_ROUTE
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
+import pt.isel.g20.unicommunity.hateoas.CollectionObject
 import pt.isel.g20.unicommunity.user.model.User
 import java.util.concurrent.TimeUnit
 
@@ -63,6 +61,7 @@ class BlackboardController(private val service: IBlackboardService) {
                          @SessionAttribute("user") user: User
     ) =
             service.createBlackboard(
+                    user.id,
                     boardId,
                     blackboardDto.name,
                     blackboardDto.notificationLevel,

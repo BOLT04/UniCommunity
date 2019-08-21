@@ -3,6 +3,7 @@ package pt.isel.g20.unicommunity.blackboard.model
 import com.fasterxml.jackson.annotation.JsonIgnore
 import pt.isel.g20.unicommunity.blackboardItem.model.BlackboardItem
 import pt.isel.g20.unicommunity.board.model.Board
+import pt.isel.g20.unicommunity.usersBlackboards.UsersBlackboards
 import javax.persistence.*
 
 @Entity
@@ -19,4 +20,8 @@ class Blackboard(
 
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE], mappedBy = "blackboard")
     var items: MutableList<BlackboardItem> = mutableListOf()
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "blackboard", cascade = [CascadeType.REMOVE])
+    val usersSettings : MutableList<UsersBlackboards> = mutableListOf()
 }

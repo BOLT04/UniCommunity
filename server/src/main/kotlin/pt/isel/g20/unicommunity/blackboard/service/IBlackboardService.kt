@@ -12,7 +12,7 @@ interface IBlackboardService {
     fun getBlackboardById(boardId: Long, bbId: Long): Blackboard
 
     @Throws(NotFoundBoardException::class)
-    fun createBlackboard(boardId: Long, name: String, notificationLevel: String, description: String?): Blackboard
+    fun createBlackboard(userId: Long, boardId: Long, name: String, notificationLevel: String, description: String?): Blackboard
 
     @Throws(NotFoundBlackboardException::class, NotFoundBoardException::class)
     fun editBlackboard(boardId: Long, bbId: Long, name: String?, notificationLevel: String?, description: String?): Blackboard
