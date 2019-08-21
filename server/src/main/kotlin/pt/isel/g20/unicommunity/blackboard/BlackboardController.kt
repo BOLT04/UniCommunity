@@ -36,9 +36,10 @@ class BlackboardController(private val service: IBlackboardService) {
 
     @AuthorizationRequired
     @GetMapping(path = [SINGLE_BLACKBOARD_ROUTE], produces = ["application/hal+json"])
-    fun getBlackboardById(@PathVariable boardId: Long,
-                          @PathVariable bbId: Long,
-                          @SessionAttribute("user") user: User
+    fun getBlackboardById(
+            @PathVariable boardId: Long,
+            @PathVariable bbId: Long,
+            @SessionAttribute("user") user: User
     ) =
             service.getBlackboardById(boardId, bbId).let {
                 val response = SingleBlackboardResponse(user, it)
@@ -56,9 +57,10 @@ class BlackboardController(private val service: IBlackboardService) {
     @AuthorizationRequired
     @PostMapping(path = [BLACKBOARDS_ROUTE], produces = ["application/hal+json"])
     @ResponseStatus(HttpStatus.CREATED)
-    fun createBlackboard(@PathVariable boardId: Long,
-                         @RequestBody blackboardDto: BlackboardDto,
-                         @SessionAttribute("user") user: User
+    fun createBlackboard(
+            @PathVariable boardId: Long,
+            @RequestBody blackboardDto: BlackboardDto,
+            @SessionAttribute("user") user: User
     ) =
             service.createBlackboard(
                     user.id,
@@ -109,9 +111,10 @@ class BlackboardController(private val service: IBlackboardService) {
 
     @AuthorizationRequired
     @DeleteMapping(path = [SINGLE_BLACKBOARD_ROUTE], produces = ["application/hal+json"])
-    fun deleteBlackboard(@PathVariable boardId: Long,
-                         @PathVariable bbId: Long,
-                         @SessionAttribute("user") user: User
+    fun deleteBlackboard(
+            @PathVariable boardId: Long,
+            @PathVariable bbId: Long,
+            @SessionAttribute("user") user: User
     ) =
             service.deleteBlackboard(boardId, bbId).let {
                 val response = SingleBlackboardResponse(user, it)
