@@ -5,12 +5,11 @@ import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import pt.isel.g20.unicommunity.common.InvalidUserEmailException
 import pt.isel.g20.unicommunity.common.NotFoundUserException
-import pt.isel.g20.unicommunity.repository.BoardRepository
 import pt.isel.g20.unicommunity.repository.UserRepository
 import pt.isel.g20.unicommunity.user.model.User
 
 @Service
-class UserService(val usersRepo: UserRepository, val boardsRepo: BoardRepository) : IUserService {
+class UserService(val usersRepo: UserRepository) : IUserService {
 
     override fun getAllUsers(): Iterable<User> = usersRepo.findAll()
 
@@ -59,6 +58,7 @@ class UserService(val usersRepo: UserRepository, val boardsRepo: BoardRepository
         Hibernate.initialize(user.boards)
         Hibernate.initialize(user.comments)
         Hibernate.initialize(user.forumItems)
+        Hibernate.initialize(user.blackboardsSettings)
 
         usersRepo.delete(user)
         return user

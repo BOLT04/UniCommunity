@@ -6,7 +6,10 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import pt.isel.g20.unicommunity.comment.model.*
 import pt.isel.g20.unicommunity.comment.service.ICommentService
-import pt.isel.g20.unicommunity.common.*
+import pt.isel.g20.unicommunity.common.APPLICATION_COLLECTION_JSON
+import pt.isel.g20.unicommunity.common.APPLICATION_HAL_JSON
+import pt.isel.g20.unicommunity.common.APPLICATION_JSON
+import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.common.Uri.COMMENTS_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_COMMENT_ROUTE
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
@@ -15,11 +18,11 @@ import pt.isel.g20.unicommunity.user.model.User
 import java.util.concurrent.TimeUnit
 
 @RestController
-@RequestMapping(produces = ["application/hal+json", "application/json", "application/vnd.collection+json"])
+@RequestMapping(produces = [APPLICATION_HAL_JSON, APPLICATION_JSON, APPLICATION_COLLECTION_JSON])
 class CommentController(private val service: ICommentService) {
 
     @AuthorizationRequired
-    @GetMapping(path = [COMMENTS_ROUTE], produces = ["application/vnd.collection+json"])
+    @GetMapping(path = [COMMENTS_ROUTE], produces = [APPLICATION_COLLECTION_JSON])
     fun getAllComments(
             @PathVariable boardId: Long,
             @PathVariable forumItemId: Long
@@ -38,7 +41,7 @@ class CommentController(private val service: ICommentService) {
             }
 
     @AuthorizationRequired
-    @GetMapping(path = [SINGLE_COMMENT_ROUTE], produces = ["application/hal+json"])
+    @GetMapping(path = [SINGLE_COMMENT_ROUTE], produces = [APPLICATION_HAL_JSON])
     fun getCommentById(
             @PathVariable boardId: Long,
             @PathVariable forumItemId: Long,
@@ -59,7 +62,7 @@ class CommentController(private val service: ICommentService) {
             }
 
     @AuthorizationRequired
-    @PostMapping(path = [COMMENTS_ROUTE], produces = ["application/hal+json"])
+    @PostMapping(path = [COMMENTS_ROUTE], produces = [APPLICATION_HAL_JSON])
     @ResponseStatus(HttpStatus.CREATED)
     fun createComment(
             @PathVariable boardId: Long,
@@ -82,7 +85,7 @@ class CommentController(private val service: ICommentService) {
     }
 
     @AuthorizationRequired
-    @PutMapping(path = [SINGLE_COMMENT_ROUTE], produces = ["application/hal+json"])
+    @PutMapping(path = [SINGLE_COMMENT_ROUTE], produces = [APPLICATION_HAL_JSON])
     fun editComment(
             @PathVariable boardId: Long,
             @PathVariable forumItemId: Long,
@@ -104,7 +107,7 @@ class CommentController(private val service: ICommentService) {
             }
 
     @AuthorizationRequired
-    @DeleteMapping(path = [SINGLE_COMMENT_ROUTE], produces = ["application/hal+json"])
+    @DeleteMapping(path = [SINGLE_COMMENT_ROUTE], produces = [APPLICATION_HAL_JSON])
     fun deleteComment(
             @PathVariable boardId: Long,
             @PathVariable forumItemId: Long,

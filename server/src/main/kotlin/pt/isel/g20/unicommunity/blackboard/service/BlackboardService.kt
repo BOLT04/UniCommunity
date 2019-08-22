@@ -85,6 +85,7 @@ class BlackboardService(
         val blackboard = getBlackboardById(boardId, bbId)
 
         Hibernate.initialize(blackboard.items)
+        Hibernate.initialize(blackboard.usersSettings)
 
         blackboardsRepo.delete(blackboard)
         return blackboard

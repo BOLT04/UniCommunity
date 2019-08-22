@@ -6,6 +6,9 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import pt.isel.g20.unicommunity.blackboard.model.*
 import pt.isel.g20.unicommunity.blackboard.service.IBlackboardService
+import pt.isel.g20.unicommunity.common.APPLICATION_COLLECTION_JSON
+import pt.isel.g20.unicommunity.common.APPLICATION_HAL_JSON
+import pt.isel.g20.unicommunity.common.APPLICATION_JSON
 import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.common.Uri.BLACKBOARDS_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_BLACKBOARD_ROUTE
@@ -15,11 +18,10 @@ import pt.isel.g20.unicommunity.user.model.User
 import java.util.concurrent.TimeUnit
 
 @RestController
-@RequestMapping(produces = ["application/hal+json", "application/json", "application/vnd.collection+json"])
+@RequestMapping(produces = [APPLICATION_HAL_JSON, APPLICATION_JSON, APPLICATION_COLLECTION_JSON])
 class BlackboardController(private val service: IBlackboardService) {
-
     @AuthorizationRequired
-    @GetMapping(path = [BLACKBOARDS_ROUTE], produces = ["application/vnd.collection+json"])
+    @GetMapping(path = [BLACKBOARDS_ROUTE], produces = [APPLICATION_COLLECTION_JSON])
     fun getAllBlackboards(@PathVariable boardId: Long) =
             service.getAllBlackboards(boardId).map(Blackboard::toItemRepr).let {
                 val response = CollectionObject(MultipleBlackboardsResponse(boardId, it))
@@ -35,7 +37,7 @@ class BlackboardController(private val service: IBlackboardService) {
             }
 
     @AuthorizationRequired
-    @GetMapping(path = [SINGLE_BLACKBOARD_ROUTE], produces = ["application/hal+json"])
+    @GetMapping(path = [SINGLE_BLACKBOARD_ROUTE], produces = [APPLICATION_HAL_JSON])
     fun getBlackboardById(
             @PathVariable boardId: Long,
             @PathVariable bbId: Long,
@@ -55,7 +57,7 @@ class BlackboardController(private val service: IBlackboardService) {
             }
 
     @AuthorizationRequired
-    @PostMapping(path = [BLACKBOARDS_ROUTE], produces = ["application/hal+json"])
+    @PostMapping(path = [BLACKBOARDS_ROUTE], produces = [APPLICATION_HAL_JSON])
     @ResponseStatus(HttpStatus.CREATED)
     fun createBlackboard(
             @PathVariable boardId: Long,
@@ -82,7 +84,7 @@ class BlackboardController(private val service: IBlackboardService) {
             }
 
     @AuthorizationRequired
-    @PutMapping(path = [SINGLE_BLACKBOARD_ROUTE], produces = ["application/hal+json"])
+    @PutMapping(path = [SINGLE_BLACKBOARD_ROUTE], produces = [APPLICATION_HAL_JSON])
     fun editBlackboard(
             @PathVariable boardId: Long,
             @PathVariable bbId: Long,
@@ -108,9 +110,8 @@ class BlackboardController(private val service: IBlackboardService) {
                         .body(response)
             }
 
-
     @AuthorizationRequired
-    @DeleteMapping(path = [SINGLE_BLACKBOARD_ROUTE], produces = ["application/hal+json"])
+    @DeleteMapping(path = [SINGLE_BLACKBOARD_ROUTE], produces = [APPLICATION_HAL_JSON])
     fun deleteBlackboard(
             @PathVariable boardId: Long,
             @PathVariable bbId: Long,

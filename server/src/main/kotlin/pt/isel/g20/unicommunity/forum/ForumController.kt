@@ -4,21 +4,22 @@ import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import pt.isel.g20.unicommunity.common.NotFoundBoardException
-import pt.isel.g20.unicommunity.common.NotFoundForumException
-import pt.isel.g20.unicommunity.forum.model.SingleForumResponse
-import pt.isel.g20.unicommunity.forum.service.IForumService
+import pt.isel.g20.unicommunity.common.APPLICATION_COLLECTION_JSON
+import pt.isel.g20.unicommunity.common.APPLICATION_HAL_JSON
+import pt.isel.g20.unicommunity.common.APPLICATION_JSON
 import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.common.Uri.FORUM_ROUTE
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
+import pt.isel.g20.unicommunity.forum.model.SingleForumResponse
+import pt.isel.g20.unicommunity.forum.service.IForumService
 import java.util.concurrent.TimeUnit
 
 @RestController
-@RequestMapping(produces = ["application/hal+json", "application/json", "application/vnd.collection+json"])
+@RequestMapping(produces = [APPLICATION_HAL_JSON, APPLICATION_JSON, APPLICATION_COLLECTION_JSON])
 class ForumController(private val service: IForumService) {
 
     @AuthorizationRequired
-    @GetMapping(path = [FORUM_ROUTE], produces = ["application/hal+json"])
+    @GetMapping(path = [FORUM_ROUTE], produces = [APPLICATION_HAL_JSON])
     fun getForumById(@PathVariable boardId: Long) =
             service.getForumById(boardId).let {
                 ResponseEntity
@@ -32,7 +33,7 @@ class ForumController(private val service: IForumService) {
             }
 
     @AuthorizationRequired
-    @PostMapping(path = [FORUM_ROUTE], produces = ["application/hal+json"])
+    @PostMapping(path = [FORUM_ROUTE], produces = [APPLICATION_HAL_JSON])
     @ResponseStatus(HttpStatus.CREATED)
     fun createForum(@PathVariable boardId: Long) =
             service.createForum(boardId).let {
@@ -47,7 +48,7 @@ class ForumController(private val service: IForumService) {
             }
 
     @AuthorizationRequired
-    @PutMapping(path = [FORUM_ROUTE], produces = ["application/hal+json"])
+    @PutMapping(path = [FORUM_ROUTE], produces = [APPLICATION_HAL_JSON])
     fun editForum(@PathVariable boardId: Long) =
             service.editForum(boardId).let {
                 ResponseEntity
@@ -61,7 +62,7 @@ class ForumController(private val service: IForumService) {
             }
 
     @AuthorizationRequired
-    @DeleteMapping(path = [FORUM_ROUTE], produces = ["application/hal+json"])
+    @DeleteMapping(path = [FORUM_ROUTE], produces = [APPLICATION_HAL_JSON])
     fun deleteForum(@PathVariable boardId: Long) =
             service.deleteForum(boardId).let {
                 ResponseEntity

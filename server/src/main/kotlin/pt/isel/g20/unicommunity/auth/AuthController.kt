@@ -15,8 +15,7 @@ import pt.isel.g20.unicommunity.common.presentation.authorizationProblemJson
 import java.util.concurrent.TimeUnit
 
 @RestController
-@RequestMapping(
-        produces = [APPLICATION_HAL_JSON, APPLICATION_JSON])
+@RequestMapping(produces = [APPLICATION_HAL_JSON, APPLICATION_JSON])
 class AuthenticationController(private val service: IAuthService) {
     @PostMapping(Uri.LOGIN_ROUTE)
     fun login(@RequestBody loginDto: LoginDto): ResponseEntity<LoginResponse> =

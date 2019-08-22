@@ -5,7 +5,8 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import pt.isel.g20.unicommunity.common.APPLICATION_COLLECTION_JSON
-import pt.isel.g20.unicommunity.common.NotFoundTemplateException
+import pt.isel.g20.unicommunity.common.APPLICATION_HAL_JSON
+import pt.isel.g20.unicommunity.common.APPLICATION_JSON
 import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_TEMPLATE_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.TEMPLATES_ROUTE
@@ -15,7 +16,7 @@ import pt.isel.g20.unicommunity.template.service.ITemplateService
 import java.util.concurrent.TimeUnit
 
 @RestController
-@RequestMapping(produces = ["application/json", "application/hal+json", "application/vnd.collection+json"])
+@RequestMapping(produces = [APPLICATION_HAL_JSON, APPLICATION_JSON, APPLICATION_COLLECTION_JSON])
 class TemplateController(private val service: ITemplateService) {
 
     @GetMapping(path = [TEMPLATES_ROUTE], produces = [APPLICATION_COLLECTION_JSON])
@@ -35,7 +36,7 @@ class TemplateController(private val service: ITemplateService) {
                         .body(response)
             }
 
-    @GetMapping(path = [SINGLE_TEMPLATE_ROUTE], produces = ["application/json"])
+    @GetMapping(path = [SINGLE_TEMPLATE_ROUTE], produces = [APPLICATION_JSON])
     fun getTemplateById(@PathVariable templateId: Long) =
             service.getTemplateById(templateId).let {
                 val response = SingleTemplateResponse(it)
@@ -50,7 +51,7 @@ class TemplateController(private val service: ITemplateService) {
                         .body(response)
             }
 
-    @PostMapping(path = [TEMPLATES_ROUTE], produces = ["application/json"])
+    @PostMapping(path = [TEMPLATES_ROUTE], produces = [APPLICATION_JSON])
     @ResponseStatus(HttpStatus.CREATED)
     fun createTemplate(@RequestBody templateDto: TemplateDto) =
             service.createTemplate(templateDto.name, templateDto.hasForum, templateDto.blackboardNames).let {
@@ -66,7 +67,7 @@ class TemplateController(private val service: ITemplateService) {
                         .body(response)
             }
 
-    @PutMapping(path = [SINGLE_TEMPLATE_ROUTE], produces = ["application/json"])
+    @PutMapping(path = [SINGLE_TEMPLATE_ROUTE], produces = [APPLICATION_JSON])
     fun editTemplate(@PathVariable templateId: Long, @RequestBody templateDto: TemplateDto) =
             service.editTemplate(templateId, templateDto.name, templateDto.hasForum, templateDto.blackboardNames).let {
                 val response = SingleTemplateResponse(it)
@@ -82,7 +83,7 @@ class TemplateController(private val service: ITemplateService) {
             }
 
 
-    @DeleteMapping(path = [SINGLE_TEMPLATE_ROUTE], produces = ["application/json"])
+    @DeleteMapping(path = [SINGLE_TEMPLATE_ROUTE], produces = [APPLICATION_JSON])
     fun deleteTemplate(@PathVariable templateId: Long) =
             service.deleteTemplate(templateId).let {
                 val response = SingleTemplateResponse(it)

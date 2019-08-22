@@ -4,22 +4,25 @@ import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import pt.isel.g20.unicommunity.common.*
-import pt.isel.g20.unicommunity.forumItem.model.*
-import pt.isel.g20.unicommunity.forumItem.service.IForumItemService
-import pt.isel.g20.unicommunity.hateoas.CollectionObject
+import pt.isel.g20.unicommunity.common.APPLICATION_COLLECTION_JSON
+import pt.isel.g20.unicommunity.common.APPLICATION_HAL_JSON
+import pt.isel.g20.unicommunity.common.APPLICATION_JSON
+import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.common.Uri.FORUMITEMS_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_FORUMITEM_ROUTE
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
+import pt.isel.g20.unicommunity.forumItem.model.*
+import pt.isel.g20.unicommunity.forumItem.service.IForumItemService
+import pt.isel.g20.unicommunity.hateoas.CollectionObject
 import pt.isel.g20.unicommunity.user.model.User
 import java.util.concurrent.TimeUnit
 
 @RestController
-@RequestMapping(produces = ["application/hal+json", "application/json", "application/vnd.collection+json"])
+@RequestMapping(produces = [APPLICATION_HAL_JSON, APPLICATION_JSON, APPLICATION_COLLECTION_JSON])
 class ForumItemController(private val service: IForumItemService) {
 
     @AuthorizationRequired
-    @GetMapping(path = [FORUMITEMS_ROUTE], produces = ["application/vnd.collection+json"])
+    @GetMapping(path = [FORUMITEMS_ROUTE], produces = [APPLICATION_COLLECTION_JSON])
     fun getAllForumItems(@PathVariable boardId: Long) : ResponseEntity<CollectionObject> =
             service.getAllForumItems(boardId).map(ForumItem::toItemRepr).let {
                 val response = CollectionObject(MultipleForumItemsResponse(boardId, it))
@@ -35,10 +38,11 @@ class ForumItemController(private val service: IForumItemService) {
             }
 
     @AuthorizationRequired
-    @GetMapping(path = [SINGLE_FORUMITEM_ROUTE], produces = ["application/hal+json"])
-    fun getForumItemById(@PathVariable boardId: Long,
-                         @PathVariable forumItemId: Long,
-                         @SessionAttribute("user") user: User
+    @GetMapping(path = [SINGLE_FORUMITEM_ROUTE], produces = [APPLICATION_HAL_JSON])
+    fun getForumItemById(
+            @PathVariable boardId: Long,
+            @PathVariable forumItemId: Long,
+            @SessionAttribute("user") user: User
     ) =
             service.getForumItemById(boardId, forumItemId).let {
                 val response = SingleForumItemResponse(user, it)
@@ -54,7 +58,7 @@ class ForumItemController(private val service: IForumItemService) {
             }
 
     @AuthorizationRequired
-    @PostMapping(path = [FORUMITEMS_ROUTE], produces = ["application/hal+json"])
+    @PostMapping(path = [FORUMITEMS_ROUTE], produces = [APPLICATION_HAL_JSON])
     @ResponseStatus(HttpStatus.CREATED)
     fun createForumItem(
             @PathVariable boardId: Long,
@@ -82,7 +86,7 @@ class ForumItemController(private val service: IForumItemService) {
     }
 
     @AuthorizationRequired
-    @PutMapping(path = [SINGLE_FORUMITEM_ROUTE], produces = ["application/hal+json"])
+    @PutMapping(path = [SINGLE_FORUMITEM_ROUTE], produces = [APPLICATION_HAL_JSON])
     fun editForumItem(
             @PathVariable boardId: Long,
             @PathVariable forumItemId: Long,
@@ -103,10 +107,11 @@ class ForumItemController(private val service: IForumItemService) {
             }
 
     @AuthorizationRequired
-    @DeleteMapping(path = [SINGLE_FORUMITEM_ROUTE], produces = ["application/hal+json"])
-    fun deleteForumItem(@PathVariable boardId: Long,
-                        @PathVariable forumItemId: Long,
-                        @SessionAttribute("user") user: User
+    @DeleteMapping(path = [SINGLE_FORUMITEM_ROUTE], produces = [APPLICATION_HAL_JSON])
+    fun deleteForumItem(
+            @PathVariable boardId: Long,
+            @PathVariable forumItemId: Long,
+            @SessionAttribute("user") user: User
     ) =
             service.deleteForumItem(boardId, forumItemId).let {
                 val response = SingleForumItemResponse(user, it)

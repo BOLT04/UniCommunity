@@ -10,6 +10,9 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import pt.isel.g20.unicommunity.board.model.*
 import pt.isel.g20.unicommunity.board.service.IBoardService
+import pt.isel.g20.unicommunity.common.APPLICATION_COLLECTION_JSON
+import pt.isel.g20.unicommunity.common.APPLICATION_HAL_JSON
+import pt.isel.g20.unicommunity.common.APPLICATION_JSON
 import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.common.Uri.BOARDS_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.BOARD_MEMBERS
@@ -20,7 +23,7 @@ import pt.isel.g20.unicommunity.user.model.User
 import java.util.concurrent.TimeUnit
 
 @RestController
-@RequestMapping(produces = ["application/hal+json", "application/json", "application/vnd.collection+json"])
+@RequestMapping(produces = [APPLICATION_HAL_JSON, APPLICATION_JSON, APPLICATION_COLLECTION_JSON])
 class BoardController(private val service: IBoardService) {
 
     @GetMapping(path = ["/retrofit"])
@@ -74,7 +77,7 @@ class BoardController(private val service: IBoardService) {
 
 
     @AuthorizationRequired
-    @GetMapping(path = [BOARDS_ROUTE], produces = ["application/vnd.collection+json"])
+    @GetMapping(path = [BOARDS_ROUTE], produces = [APPLICATION_COLLECTION_JSON])
     fun getAllBoards(
             @SessionAttribute("user") user: User,
             @RequestParam(value = "page", required = false, defaultValue = "0") page: Int
@@ -95,8 +98,11 @@ class BoardController(private val service: IBoardService) {
         }
 
     @AuthorizationRequired
-    @GetMapping(path = [SINGLE_BOARD_ROUTE], produces = ["application/hal+json"])
-    fun getBoardById(@PathVariable boardId: Long,  @SessionAttribute("user") user: User) =
+    @GetMapping(path = [SINGLE_BOARD_ROUTE], produces = [APPLICATION_HAL_JSON])
+    fun getBoardById(
+            @PathVariable boardId: Long,
+            @SessionAttribute("user") user: User
+    ) =
             service.getBoardById(boardId).let {
                 val response = SingleBoardResponse(user, it)
 
@@ -111,9 +117,12 @@ class BoardController(private val service: IBoardService) {
             }
 
     @AuthorizationRequired
-    @PostMapping(path = [BOARDS_ROUTE], produces = ["application/hal+json"])
+    @PostMapping(path = [BOARDS_ROUTE], produces = [APPLICATION_HAL_JSON])
     @ResponseStatus(HttpStatus.CREATED)
-    fun createBoard(@RequestBody boardDto: BoardDto, @SessionAttribute("user")user: User) =
+    fun createBoard(
+            @RequestBody boardDto: BoardDto,
+            @SessionAttribute("user")user: User
+    ) =
             service.createBoard(
                     user.id,
                     boardDto.name,
@@ -134,7 +143,7 @@ class BoardController(private val service: IBoardService) {
             }
 
     @AuthorizationRequired
-    @PutMapping(path = [SINGLE_BOARD_ROUTE], produces = ["application/hal+json"])
+    @PutMapping(path = [SINGLE_BOARD_ROUTE], produces = [APPLICATION_HAL_JSON])
     fun editBoard(@PathVariable boardId: Long,
                   @RequestBody boardDto: BoardDto,
                   @SessionAttribute("user") user: User
@@ -154,8 +163,11 @@ class BoardController(private val service: IBoardService) {
 
 
     @AuthorizationRequired
-    @DeleteMapping(path = [SINGLE_BOARD_ROUTE], produces = ["application/hal+json"])
-    fun deleteBoard(@PathVariable boardId: Long, @SessionAttribute("user") user: User) =
+    @DeleteMapping(path = [SINGLE_BOARD_ROUTE], produces = [APPLICATION_HAL_JSON])
+    fun deleteBoard(
+            @PathVariable boardId: Long,
+            @SessionAttribute("user") user: User
+    ) =
             service.deleteBoard(boardId).let {
                 val response = SingleBoardResponse(user, it)
 
@@ -170,7 +182,7 @@ class BoardController(private val service: IBoardService) {
             }
 
     @AuthorizationRequired
-    @PostMapping(path = [BOARD_MEMBERS], produces = ["application/hal+json"])
+    @PostMapping(path = [BOARD_MEMBERS], produces = [APPLICATION_HAL_JSON])
     fun subscribe(
             @PathVariable boardId: Long,
             @SessionAttribute("user") user: User,
@@ -191,7 +203,7 @@ class BoardController(private val service: IBoardService) {
     }
 
     @AuthorizationRequired
-    @DeleteMapping(path = [BOARD_MEMBERS], produces = ["application/hal+json"])//TODO: should be a delete? Maybe not since no resource is created in addUserToBoard, the processing is add to a list and remove
+    @DeleteMapping(path = [BOARD_MEMBERS], produces = [APPLICATION_HAL_JSON])
     fun unsubscribe(
             @PathVariable boardId: Long,
             @SessionAttribute("user") user: User
