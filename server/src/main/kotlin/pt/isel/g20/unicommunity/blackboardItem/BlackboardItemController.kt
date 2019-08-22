@@ -1,21 +1,15 @@
 package pt.isel.g20.unicommunity.blackboardItem
 
-import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import pt.isel.g20.unicommunity.blackboardItem.model.*
 import pt.isel.g20.unicommunity.blackboardItem.service.IBlackboardItemService
-import pt.isel.g20.unicommunity.common.APPLICATION_COLLECTION_JSON
-import pt.isel.g20.unicommunity.common.APPLICATION_HAL_JSON
-import pt.isel.g20.unicommunity.common.APPLICATION_JSON
-import pt.isel.g20.unicommunity.common.Uri
+import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.common.Uri.BLACKBOARDITEMS_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_BLACKBOARDITEM_ROUTE
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
 import pt.isel.g20.unicommunity.hateoas.CollectionObject
 import pt.isel.g20.unicommunity.user.model.User
-import java.util.concurrent.TimeUnit
 
 @RestController
 @RequestMapping(produces = [APPLICATION_HAL_JSON, APPLICATION_JSON, APPLICATION_COLLECTION_JSON])
@@ -24,18 +18,17 @@ class BlackboardItemController(private val service: IBlackboardItemService) {
     @AuthorizationRequired
     @GetMapping(path = [BLACKBOARDITEMS_ROUTE], produces = [APPLICATION_COLLECTION_JSON])
     fun getAllBlackboardItems(@PathVariable boardId: Long, @PathVariable bbId: Long) =
-            service.getAllBlackboardItems(boardId, bbId).map(BlackboardItem::toItemRepr).let {
-                val response = CollectionObject(MultipleBlackboardItemsResponse(boardId, bbId, it))
-
-                ResponseEntity
-                        .ok()
-                        .cacheControl(
-                                CacheControl
-                                        .maxAge(1, TimeUnit.HOURS)
-                                        .cachePrivate())
-                        .eTag(response.hashCode().toString())
-                        .body(response)
-            }
+            cacheOkResponse(
+                    CollectionObject(
+                            MultipleBlackboardItemsResponse(
+                                    boardId,
+                                    bbId,
+                                    service
+                                            .getAllBlackboardItems(boardId, bbId)
+                                            .map(BlackboardItem::toItemRepr)
+                            )
+                    )
+            )
 
     @AuthorizationRequired
     @GetMapping(path = [SINGLE_BLACKBOARDITEM_ROUTE], produces = [APPLICATION_HAL_JSON])
@@ -45,18 +38,12 @@ class BlackboardItemController(private val service: IBlackboardItemService) {
             @PathVariable itemId: Long,
             @SessionAttribute("user") user: User
     ) =
-            service.getBlackboardItemById(boardId, bbId, itemId).let {
-                val response = SingleBlackboardItemResponse(user, it)
-
-                ResponseEntity
-                        .ok()
-                        .cacheControl(
-                                CacheControl
-                                        .maxAge(1, TimeUnit.HOURS)
-                                        .cachePrivate())
-                        .eTag(response.hashCode().toString())
-                        .body(response)
-            }
+            cacheOkResponse(
+                    SingleBlackboardItemResponse(
+                            user,
+                            service.getBlackboardItemById(boardId, bbId, itemId)
+                    )
+            )
 
     @AuthorizationRequired
     @PostMapping(path = [BLACKBOARDITEMS_ROUTE], produces = [APPLICATION_HAL_JSON])
@@ -66,20 +53,22 @@ class BlackboardItemController(private val service: IBlackboardItemService) {
             @PathVariable bbId: Long,
             @RequestBody itemDto: BlackboardItemDto,
             @SessionAttribute("user")user: User
-    ): ResponseEntity<SingleBlackboardItemResponse>{
-            return service.createBlackboardItem(boardId, bbId, user.id, itemDto.name, itemDto.content).let {
-                val response = SingleBlackboardItemResponse(user, it)
-
-                ResponseEntity
-                        .created(Uri.forSingleBlackboardItemUri(it.blackboard.board.id, it.blackboard.id, it.id))
-                        .cacheControl(
-                                CacheControl
-                                        .maxAge(1, TimeUnit.HOURS)
-                                        .cachePrivate())
-                        .eTag(response.hashCode().toString())
-                        .body(response)
+    ) =
+            service.createBlackboardItem(
+                    boardId,
+                    bbId,
+                    user.id,
+                    itemDto.name,
+                    itemDto.content
+            ).let {
+                val responseBody = SingleBlackboardItemResponse(user, it)
+                val newResourceHref = Uri.forSingleBlackboardItemUri(
+                        it.blackboard.board.id,
+                        it.blackboard.id,
+                        it.id
+                )
+                cacheCreatedResponse(responseBody, newResourceHref)
             }
-    }
 
     @AuthorizationRequired
     @PutMapping(path = [SINGLE_BLACKBOARDITEM_ROUTE], produces = [APPLICATION_HAL_JSON])
@@ -90,18 +79,18 @@ class BlackboardItemController(private val service: IBlackboardItemService) {
             @RequestBody itemDto: BlackboardItemDto,
             @SessionAttribute("user") user: User
     ) =
-            service.editBlackboardItem(boardId, bbId, itemId, itemDto.name, itemDto.content).let {
-                val response = SingleBlackboardItemResponse(user, it)
-
-                ResponseEntity
-                        .ok()
-                        .cacheControl(
-                                CacheControl
-                                        .maxAge(1, TimeUnit.HOURS)
-                                        .cachePrivate())
-                        .eTag(response.hashCode().toString())
-                        .body(response)
-            }
+            cacheOkResponse(
+                    SingleBlackboardItemResponse(
+                            user,
+                            service.editBlackboardItem(
+                                    boardId,
+                                    bbId,
+                                    itemId,
+                                    itemDto.name,
+                                    itemDto.content
+                            )
+                    )
+            )
 
     @AuthorizationRequired
     @DeleteMapping(path = [SINGLE_BLACKBOARDITEM_ROUTE], produces = [APPLICATION_HAL_JSON])
@@ -111,16 +100,10 @@ class BlackboardItemController(private val service: IBlackboardItemService) {
             @PathVariable itemId: Long,
             @SessionAttribute("user") user: User
     ) =
-            service.deleteBlackboardItem(boardId, bbId, itemId).let {
-                val response = SingleBlackboardItemResponse(user, it)
-
-                ResponseEntity
-                        .ok()
-                        .cacheControl(
-                                CacheControl
-                                        .maxAge(1, TimeUnit.HOURS)
-                                        .cachePrivate())
-                        .eTag(response.hashCode().toString())
-                        .body(response)
-            }
+            cacheOkResponse(
+                    SingleBlackboardItemResponse(
+                            user,
+                            service.deleteBlackboardItem(boardId, bbId, itemId)
+                    )
+            )
 }

@@ -1,21 +1,15 @@
 package pt.isel.g20.unicommunity.comment
 
-import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import pt.isel.g20.unicommunity.comment.model.*
 import pt.isel.g20.unicommunity.comment.service.ICommentService
-import pt.isel.g20.unicommunity.common.APPLICATION_COLLECTION_JSON
-import pt.isel.g20.unicommunity.common.APPLICATION_HAL_JSON
-import pt.isel.g20.unicommunity.common.APPLICATION_JSON
-import pt.isel.g20.unicommunity.common.Uri
+import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.common.Uri.COMMENTS_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_COMMENT_ROUTE
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
 import pt.isel.g20.unicommunity.hateoas.CollectionObject
 import pt.isel.g20.unicommunity.user.model.User
-import java.util.concurrent.TimeUnit
 
 @RestController
 @RequestMapping(produces = [APPLICATION_HAL_JSON, APPLICATION_JSON, APPLICATION_COLLECTION_JSON])
@@ -26,19 +20,18 @@ class CommentController(private val service: ICommentService) {
     fun getAllComments(
             @PathVariable boardId: Long,
             @PathVariable forumItemId: Long
-    ) : ResponseEntity<CollectionObject> =
-            service.getAllComments(boardId, forumItemId).map(Comment::toItemRepr).let {
-                val rsp = CollectionObject(MultipleCommentsResponse(boardId, forumItemId, it))
-
-                ResponseEntity
-                        .ok()
-                        .cacheControl(
-                                CacheControl
-                                        .maxAge(1, TimeUnit.HOURS)
-                                        .cachePrivate())
-                        .eTag(rsp.hashCode().toString())
-                        .body(rsp)
-            }
+    ) =
+            cacheOkResponse(
+                    CollectionObject(
+                            MultipleCommentsResponse(
+                                    boardId,
+                                    forumItemId,
+                                    service
+                                            .getAllComments(boardId, forumItemId)
+                                            .map(Comment::toItemRepr)
+                            )
+                    )
+            )
 
     @AuthorizationRequired
     @GetMapping(path = [SINGLE_COMMENT_ROUTE], produces = [APPLICATION_HAL_JSON])
@@ -48,18 +41,12 @@ class CommentController(private val service: ICommentService) {
             @PathVariable commentId: Long,
             @SessionAttribute("user") user: User
     ) =
-            service.getCommentById(boardId, forumItemId, commentId).let {
-                val response = SingleCommentResponse(user, it)
-
-                ResponseEntity
-                        .ok()
-                        .cacheControl(
-                                CacheControl
-                                        .maxAge(1, TimeUnit.HOURS)
-                                        .cachePrivate())
-                        .eTag(response.hashCode().toString())
-                        .body(response)
-            }
+            cacheOkResponse(
+                    SingleCommentResponse(
+                            user,
+                            service.getCommentById(boardId, forumItemId, commentId)
+                    )
+            )
 
     @AuthorizationRequired
     @PostMapping(path = [COMMENTS_ROUTE], produces = [APPLICATION_HAL_JSON])
@@ -69,20 +56,23 @@ class CommentController(private val service: ICommentService) {
             @PathVariable forumItemId: Long,
             @RequestBody commentDto: CommentDto,
             @SessionAttribute("user")user: User
-    ):ResponseEntity<SingleCommentResponse>{
-            return service.createComment(boardId, forumItemId, user.id, commentDto.content, commentDto.anonymous).let {
-                val response = SingleCommentResponse(user, it)
-
-                ResponseEntity
-                        .created(Uri.forSingleCommentUri(it.forumItem.forum.board.id, it.forumItem.id, it.id))
-                        .cacheControl(
-                                CacheControl
-                                        .maxAge(1, TimeUnit.HOURS)
-                                        .cachePrivate())
-                        .eTag(response.hashCode().toString())
-                        .body(response)
+    ) =
+            service.createComment(
+                    boardId,
+                    forumItemId,
+                    user.id,
+                    commentDto.content,
+                    commentDto.anonymous
+            ).let {
+                val responseBody = SingleCommentResponse(user, it)
+                val newResourceHref =
+                        Uri.forSingleCommentUri(
+                                it.forumItem.forum.board.id,
+                                it.forumItem.id,
+                                it.id
+                        )
+                cacheCreatedResponse(responseBody, newResourceHref)
             }
-    }
 
     @AuthorizationRequired
     @PutMapping(path = [SINGLE_COMMENT_ROUTE], produces = [APPLICATION_HAL_JSON])
@@ -93,18 +83,17 @@ class CommentController(private val service: ICommentService) {
             @RequestBody commentDto: CommentDto,
             @SessionAttribute("user")user: User
     ) =
-            service.editComment(boardId, forumItemId, commentId, commentDto.content).let {
-                val response = SingleCommentResponse(user, it)
-
-                ResponseEntity
-                        .ok()
-                        .cacheControl(
-                                CacheControl
-                                        .maxAge(1, TimeUnit.HOURS)
-                                        .cachePrivate())
-                        .eTag(response.hashCode().toString())
-                        .body(response)
-            }
+            cacheOkResponse(
+                    SingleCommentResponse(
+                            user,
+                            service.editComment(
+                                    boardId,
+                                    forumItemId,
+                                    commentId,
+                                    commentDto.content
+                            )
+                    )
+            )
 
     @AuthorizationRequired
     @DeleteMapping(path = [SINGLE_COMMENT_ROUTE], produces = [APPLICATION_HAL_JSON])
@@ -114,16 +103,10 @@ class CommentController(private val service: ICommentService) {
             @PathVariable commentId: Long,
             @SessionAttribute("user")user: User
     ) =
-            service.deleteComment(boardId, forumItemId, commentId).let {
-                val response = SingleCommentResponse(user, it)
-
-                ResponseEntity
-                        .ok()
-                        .cacheControl(
-                                CacheControl
-                                        .maxAge(1, TimeUnit.HOURS)
-                                        .cachePrivate())
-                        .eTag(response.hashCode().toString())
-                        .body(response)
-            }
+            cacheOkResponse(
+                    SingleCommentResponse(
+                            user,
+                            service.deleteComment(boardId, forumItemId, commentId)
+                    )
+            )
 }

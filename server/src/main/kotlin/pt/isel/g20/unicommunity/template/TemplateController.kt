@@ -1,19 +1,13 @@
 package pt.isel.g20.unicommunity.template
 
-import org.springframework.http.CacheControl
 import org.springframework.http.HttpStatus
-import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import pt.isel.g20.unicommunity.common.APPLICATION_COLLECTION_JSON
-import pt.isel.g20.unicommunity.common.APPLICATION_HAL_JSON
-import pt.isel.g20.unicommunity.common.APPLICATION_JSON
-import pt.isel.g20.unicommunity.common.Uri
+import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_TEMPLATE_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.TEMPLATES_ROUTE
 import pt.isel.g20.unicommunity.hateoas.CollectionObject
 import pt.isel.g20.unicommunity.template.model.*
 import pt.isel.g20.unicommunity.template.service.ITemplateService
-import java.util.concurrent.TimeUnit
 
 @RestController
 @RequestMapping(produces = [APPLICATION_HAL_JSON, APPLICATION_JSON, APPLICATION_COLLECTION_JSON])
@@ -21,80 +15,46 @@ class TemplateController(private val service: ITemplateService) {
 
     @GetMapping(path = [TEMPLATES_ROUTE], produces = [APPLICATION_COLLECTION_JSON])
     fun getAllTemplates() =
-            service
-                    .getAllTemplates()
-                    .map(Template::toItemRepr)
-                    .let {
-                val response = CollectionObject(MultipleTemplatesResponse(it))
-                ResponseEntity
-                        .ok()
-                        .cacheControl(
-                                CacheControl
-                                        .maxAge(1, TimeUnit.HOURS)
-                                        .cachePrivate())
-                        .eTag(response.hashCode().toString())
-                        .body(response)
-            }
+            cacheOkResponse(
+                    CollectionObject(
+                            MultipleTemplatesResponse(
+                                    service.getAllTemplates().map(Template::toItemRepr)
+                            )
+                    )
+            )
 
     @GetMapping(path = [SINGLE_TEMPLATE_ROUTE], produces = [APPLICATION_JSON])
     fun getTemplateById(@PathVariable templateId: Long) =
-            service.getTemplateById(templateId).let {
-                val response = SingleTemplateResponse(it)
-
-                ResponseEntity
-                        .ok()
-                        .cacheControl(
-                                CacheControl
-                                        .maxAge(1, TimeUnit.HOURS)
-                                        .cachePrivate())
-                        .eTag(response.hashCode().toString())
-                        .body(response)
-            }
+            cacheOkResponse(SingleTemplateResponse(service.getTemplateById(templateId)))
 
     @PostMapping(path = [TEMPLATES_ROUTE], produces = [APPLICATION_JSON])
     @ResponseStatus(HttpStatus.CREATED)
     fun createTemplate(@RequestBody templateDto: TemplateDto) =
-            service.createTemplate(templateDto.name, templateDto.hasForum, templateDto.blackboardNames).let {
-                val response = SingleTemplateResponse(it)
-
-                ResponseEntity
-                        .created(Uri.forSingleTemplateUri(it.id))
-                        .cacheControl(
-                                CacheControl
-                                        .maxAge(1, TimeUnit.HOURS)
-                                        .cachePrivate())
-                        .eTag(response.hashCode().toString())
-                        .body(response)
+            service.createTemplate(
+                    templateDto.name,
+                    templateDto.hasForum,
+                    templateDto.blackboardNames
+            ).let {
+                val responseBody = SingleTemplateResponse(it)
+                val newResourceHref = Uri.forSingleTemplateUri(it.id)
+                cacheCreatedResponse(responseBody, newResourceHref)
             }
 
     @PutMapping(path = [SINGLE_TEMPLATE_ROUTE], produces = [APPLICATION_JSON])
     fun editTemplate(@PathVariable templateId: Long, @RequestBody templateDto: TemplateDto) =
-            service.editTemplate(templateId, templateDto.name, templateDto.hasForum, templateDto.blackboardNames).let {
-                val response = SingleTemplateResponse(it)
-
-                ResponseEntity
-                        .ok()
-                        .cacheControl(
-                                CacheControl
-                                        .maxAge(1, TimeUnit.HOURS)
-                                        .cachePrivate())
-                        .eTag(response.hashCode().toString())
-                        .body(response)
-            }
+            cacheOkResponse(
+                    SingleTemplateResponse(
+                            service.editTemplate(
+                                    templateId,
+                                    templateDto.name,
+                                    templateDto.hasForum,
+                                    templateDto.blackboardNames
+                            )
+                    )
+            )
 
 
     @DeleteMapping(path = [SINGLE_TEMPLATE_ROUTE], produces = [APPLICATION_JSON])
     fun deleteTemplate(@PathVariable templateId: Long) =
-            service.deleteTemplate(templateId).let {
-                val response = SingleTemplateResponse(it)
-
-                ResponseEntity
-                        .ok()
-                        .cacheControl(
-                                CacheControl
-                                        .maxAge(1, TimeUnit.HOURS)
-                                        .cachePrivate())
-                        .eTag(response.hashCode().toString())
-                        .body(response)
-            }
+            cacheOkResponse(SingleTemplateResponse(service.deleteTemplate(templateId)))
 }
