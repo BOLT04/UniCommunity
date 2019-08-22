@@ -1,6 +1,7 @@
 package pt.isel.g20.unicommunity.user.service
 
 import pt.isel.g20.unicommunity.common.InvalidUserEmailException
+import pt.isel.g20.unicommunity.common.NotFoundBoardException
 import pt.isel.g20.unicommunity.common.NotFoundUserException
 import pt.isel.g20.unicommunity.user.model.User
 
@@ -21,4 +22,7 @@ interface IUserService {
 
     @Throws(NotFoundUserException::class)
     fun deleteUser(userId: Long): User
+
+    @Throws(NotFoundBoardException::class)
+    fun getBoardMembers(boardId: Long) : Iterable<User>
 }

@@ -4,17 +4,21 @@ import org.hibernate.Hibernate
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import pt.isel.g20.unicommunity.common.InvalidUserEmailException
+import pt.isel.g20.unicommunity.common.NotFoundBoardException
 import pt.isel.g20.unicommunity.common.NotFoundUserException
+import pt.isel.g20.unicommunity.repository.BoardRepository
 import pt.isel.g20.unicommunity.repository.UserRepository
 import pt.isel.g20.unicommunity.user.model.User
 
 @Service
-class UserService(val usersRepo: UserRepository) : IUserService {
+class UserService(val usersRepo: UserRepository, val boardsRepo: BoardRepository) : IUserService {
 
     override fun getAllUsers(): Iterable<User> = usersRepo.findAll()
 
-    override fun getUserById(userId: Long) = usersRepo.findByIdOrNull(userId) ?: throw NotFoundUserException()
-    override fun getUserByName(name: String) = usersRepo.findByName(name) ?: throw NotFoundUserException()
+    override fun getUserById(userId: Long) =
+            usersRepo.findByIdOrNull(userId) ?: throw NotFoundUserException()
+    override fun getUserByName(name: String) =
+            usersRepo.findByName(name) ?: throw NotFoundUserException()
 
     override fun createUser(name: String, email: String, password: String, githubId: String?): User {
         if (getAllUsers().map { it.email }.contains(email)) {
@@ -63,4 +67,10 @@ class UserService(val usersRepo: UserRepository) : IUserService {
         usersRepo.delete(user)
         return user
     }
+
+    override fun getBoardMembers(boardId: Long): Iterable<User>{
+        val board = boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
+        return usersRepo.findByBoards(board).asIterable()
+    }
+
 }

@@ -3,6 +3,7 @@ package pt.isel.g20.unicommunity.user
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import pt.isel.g20.unicommunity.common.*
+import pt.isel.g20.unicommunity.common.Uri.BOARD_MEMBERS
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_USER_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.USERS_ROUTE
 import pt.isel.g20.unicommunity.hateoas.CollectionObject
@@ -55,4 +56,9 @@ class UserController(private val service: IUserService) {
     @DeleteMapping(path = [SINGLE_USER_ROUTE], produces = [APPLICATION_HAL_JSON])
     fun deleteUser(@PathVariable userId: Long) =
             cacheOkResponse(SingleUserResponse(service.deleteUser(userId)))
+
+
+    @GetMapping(path = [BOARD_MEMBERS], produces = [APPLICATION_COLLECTION_JSON])
+    fun getBoardMembers(@PathVariable boardId: Long) =
+            cacheOkResponse(CollectionObject(MultipleUsersResponse(service.getBoardMembers(boardId))))
 }
