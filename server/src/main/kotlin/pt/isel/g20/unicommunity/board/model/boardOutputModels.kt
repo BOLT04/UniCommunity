@@ -72,7 +72,7 @@ class MultipleBoardsResponse(
         boardsPage : Page<Item>,
         page: Int
 ): ExtendedJsonCollection(
-        totalPages = boardsPage.totalPages,
+        totalPages = boardsPage.totalPages -1,
         version = "1.0",
         href = Uri.forAllBoards(),
         links = mutableListOf(
