@@ -2,7 +2,9 @@ package pt.isel.g20.unicommunity.board.model
 
 import pt.isel.g20.unicommunity.common.Rels
 import pt.isel.g20.unicommunity.common.Uri
-import pt.isel.g20.unicommunity.hateoas.*
+import pt.isel.g20.unicommunity.hateoas.CollectionLink
+import pt.isel.g20.unicommunity.hateoas.Data
+import pt.isel.g20.unicommunity.hateoas.Item
 
 fun Board.toItemRepr() = Item(
         href = Uri.forSingleBoardText(id),
@@ -29,11 +31,11 @@ fun Board.toItemRepr() = Item(
                         href= Uri.forAllBoards()
                 ),
                 CollectionLink(
-                        rel= Rels.ADD_MEMBER_TO_BOARD,
+                        rel= Rels.SUBSCRIBE,
                         href= Uri.forBoardMembers(id)
                 ),
                 CollectionLink(
-                        rel= Rels.REMOVE_MEMBER_TO_BOARD,
+                        rel= Rels.UNSUBSCRIBE,
                         href= Uri.forBoardMembers(id)
                 )
         )

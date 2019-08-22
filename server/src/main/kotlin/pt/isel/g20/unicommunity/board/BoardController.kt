@@ -67,9 +67,6 @@ class BoardController(private val service: IBoardService) {
         }
     }
 
-
-
-
     @AuthorizationRequired
     @GetMapping(path = [BOARDS_ROUTE], produces = [APPLICATION_COLLECTION_JSON])
     fun getAllBoards(
@@ -130,7 +127,6 @@ class BoardController(private val service: IBoardService) {
                             )
                     )
             )
-
 
     @AuthorizationRequired
     @DeleteMapping(path = [SINGLE_BOARD_ROUTE], produces = [APPLICATION_HAL_JSON])

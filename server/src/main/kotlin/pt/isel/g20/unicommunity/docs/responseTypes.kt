@@ -96,10 +96,10 @@ class EditBoardHalFormsResponse : HalFormsObject(
 
 class AddMemberToBoardHalFormsResponse : HalFormsObject(
     mapOf(
-        "self" to Link(Rels.ADD_MEMBER_TO_BOARD)
+        "self" to Link(Rels.SUBSCRIBE)
     ), HalFormsTemplateObject(
         HalFormsTemplate(
-            title = "Add a user to a board",
+            title = "Subscribe to a board",
             method = "post"
         )
     )
@@ -107,11 +107,11 @@ class AddMemberToBoardHalFormsResponse : HalFormsObject(
 
 class RemoveMemberToBoardHalFormsResponse : HalFormsObject(
     mapOf(
-        "self" to Link(Rels.REMOVE_MEMBER_TO_BOARD)
+        "self" to Link(Rels.UNSUBSCRIBE)
     ), HalFormsTemplateObject(
         HalFormsTemplate(
-            title = "Remove a user of a board",
-            method = "post"
+            title = "Unsubscribe from a board",
+            method = "delete"
         )
     )
 )

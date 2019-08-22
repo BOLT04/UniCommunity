@@ -50,8 +50,8 @@ class SingleBoardResponse(user: User, board: Board) : HalObject(mutableMapOf(), 
                 Rels.GET_MULTIPLE_BOARDS to Link(Uri.forAllBoards()),
 
                 Rels.GET_BOARD_MEMBERS to Link(Uri.forBoardMembers(id)),
-                Rels.ADD_MEMBER_TO_BOARD to Link(Uri.forBoardMembers(id)),
-                Rels.REMOVE_MEMBER_TO_BOARD to Link(Uri.forBoardMembers(id)),
+                Rels.SUBSCRIBE to Link(Uri.forBoardMembers(id)),
+                Rels.UNSUBSCRIBE to Link(Uri.forBoardMembers(id)),
 
                 Rels.GET_MULTIPLE_BLACKBOARDS to Link(Uri.forAllBlackboards(id))
         ))

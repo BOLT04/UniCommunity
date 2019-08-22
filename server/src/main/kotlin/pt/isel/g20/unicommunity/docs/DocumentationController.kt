@@ -26,9 +26,9 @@ class DocumentationController {
     @GetMapping(path = [Rels.EDIT_BOARD])
     fun editBoard() = editBoardRsp
 
-    @GetMapping(path = [Rels.ADD_MEMBER_TO_BOARD])
+    @GetMapping(path = [Rels.SUBSCRIBE])
     fun addMemberToBoard() = addMemberToBoardRsp
 
-    @GetMapping(path = [Rels.REMOVE_MEMBER_TO_BOARD])
+    @GetMapping(path = [Rels.UNSUBSCRIBE])
     fun removeMemberToBoard() = removeMemberToBoardRsp
 }
