@@ -7,7 +7,8 @@ import pt.isel.g20.unicommunity.hateoas.*
 class EditBlackboardHalFormsResponse : HalFormsObject(
     mapOf(
         "self" to Link(Rels.EDIT_BLACKBOARD)
-    ), HalFormsTemplateObject(
+    ),
+    HalFormsTemplateObject(
         HalFormsTemplate(
             title = "Edit blackboard",
             method = "put",
@@ -36,7 +37,8 @@ class EditBlackboardHalFormsResponse : HalFormsObject(
 class ListBlackboardsResponse : HalFormsObject(
     mapOf(
         "self" to Link(Rels.GET_MULTIPLE_BLACKBOARDS)
-    ), HalFormsTemplateObject(
+    ),
+    HalFormsTemplateObject(
         HalFormsTemplate(
             title = "List blackboards of board",
             method = "get"
@@ -47,7 +49,8 @@ class ListBlackboardsResponse : HalFormsObject(
 class CreateBlackboardResponse : HalFormsObject(
     mapOf(
         "self" to Link(Rels.CREATE_BLACKBOARD)
-    ), HalFormsTemplateObject(
+    ),
+    HalFormsTemplateObject(
         HalFormsTemplate(
             title = "Create a blackboard on a board",
             method = "post",
@@ -60,7 +63,8 @@ class CreateBlackboardResponse : HalFormsObject(
 class DeleteBlackboardResponse : HalFormsObject(
     mapOf(
         "self" to Link(Rels.DELETE_BLACKBOARD)
-    ), HalFormsTemplateObject(
+    ),
+    HalFormsTemplateObject(
         HalFormsTemplate(
             title = "Delete a blackboard from a board",
             method = "delete",
@@ -73,7 +77,8 @@ class DeleteBlackboardResponse : HalFormsObject(
 class EditBoardHalFormsResponse : HalFormsObject(
     mapOf(
         "self" to Link(Rels.EDIT_BOARD)
-    ), HalFormsTemplateObject(
+    ),
+    HalFormsTemplateObject(
         HalFormsTemplate(
             title = "Edit board",
             method = "put",
@@ -97,7 +102,8 @@ class EditBoardHalFormsResponse : HalFormsObject(
 class AddMemberToBoardHalFormsResponse : HalFormsObject(
     mapOf(
         "self" to Link(Rels.SUBSCRIBE)
-    ), HalFormsTemplateObject(
+    ),
+    HalFormsTemplateObject(
         HalFormsTemplate(
             title = "Subscribe to a board",
             method = "post"
@@ -108,7 +114,8 @@ class AddMemberToBoardHalFormsResponse : HalFormsObject(
 class RemoveMemberToBoardHalFormsResponse : HalFormsObject(
     mapOf(
         "self" to Link(Rels.UNSUBSCRIBE)
-    ), HalFormsTemplateObject(
+    ),
+    HalFormsTemplateObject(
         HalFormsTemplate(
             title = "Unsubscribe from a board",
             method = "delete"
