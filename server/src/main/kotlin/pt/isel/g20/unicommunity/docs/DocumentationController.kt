@@ -208,7 +208,7 @@ class DocumentationController {
     @GetMapping(path = [Rels.GET_BOARD_MEMBERS])
     fun getBoardMembers() = getBoardMembers
 
-    @GetMapping(path = [Rels.NAVIGATION])
+    @GetMapping(path = [Rels.GET_USER_BLACKBOARDS_SETTINGS])
     fun getUserBlackboardsSettings() = getUserBlackboardsSettings
 
     @GetMapping(path = [Rels.MY_BOARDS])
