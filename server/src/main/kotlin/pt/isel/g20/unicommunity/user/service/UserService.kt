@@ -3,9 +3,7 @@ package pt.isel.g20.unicommunity.user.service
 import org.hibernate.Hibernate
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import pt.isel.g20.unicommunity.common.InvalidUserEmailException
-import pt.isel.g20.unicommunity.common.NotFoundBoardException
-import pt.isel.g20.unicommunity.common.NotFoundUserException
+import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.repository.BoardRepository
 import pt.isel.g20.unicommunity.repository.UserRepository
 import pt.isel.g20.unicommunity.user.model.User
@@ -20,12 +18,18 @@ class UserService(val usersRepo: UserRepository, val boardsRepo: BoardRepository
     override fun getUserByName(name: String) =
             usersRepo.findByName(name) ?: throw NotFoundUserException()
 
-    override fun createUser(name: String, email: String, password: String, githubId: String?): User {
+    override fun createUser(sessionUserId:Long, name: String, email: String, password: String, role: String, githubId: String?): User {
+        val sessionUser = usersRepo.findByIdOrNull(sessionUserId) ?: throw UnauthorizedException()
+        if(sessionUser.role != "admin") throw UnauthorizedException()
+
         if (getAllUsers().map { it.email }.contains(email)) {
             throw InvalidUserEmailException()
         }
 
-        val user = User(name, email, password, "TEACHER", githubId)
+        if(role != "teacher" && role !="student" && role != "admin")
+            throw InvalidUserRoleException()
+
+        val user = User(name, email, password, role, githubId)
 
         return usersRepo.save(user)
     }

@@ -6,9 +6,11 @@ import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.common.Uri.BOARD_MEMBERS
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_USER_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.USERS_ROUTE
+import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
 import pt.isel.g20.unicommunity.hateoas.CollectionObject
 import pt.isel.g20.unicommunity.user.model.MultipleUsersResponse
 import pt.isel.g20.unicommunity.user.model.SingleUserResponse
+import pt.isel.g20.unicommunity.user.model.User
 import pt.isel.g20.unicommunity.user.model.UserDto
 import pt.isel.g20.unicommunity.user.service.IUserService
 
@@ -24,13 +26,16 @@ class UserController(private val service: IUserService) {
     fun getUserById(@PathVariable userId: Long) =
             cacheOkResponse(SingleUserResponse(service.getUserById(userId)))
 
+    @AuthorizationRequired
     @PostMapping(path = [USERS_ROUTE], produces = [APPLICATION_HAL_JSON])
     @ResponseStatus(HttpStatus.CREATED)
-    fun createUser(@RequestBody userDto: UserDto) =
+    fun createUser(@RequestBody userDto: UserDto, @SessionAttribute("user")user: User) =
             service.createUser(
+                    user.id,
                     userDto.name,
                     userDto.email,
                     userDto.password,
+                    userDto.role,
                     userDto.githubId
             ).let {
                 val responseBody = SingleUserResponse(it)
@@ -38,6 +43,7 @@ class UserController(private val service: IUserService) {
                 cacheCreatedResponse(responseBody, newResourceHref)
             }
 
+    @AuthorizationRequired
     @PutMapping(path = [SINGLE_USER_ROUTE], produces = [APPLICATION_HAL_JSON])
     fun editUser(@PathVariable userId: Long, @RequestBody userDto: UserDto) =
             cacheOkResponse(
@@ -52,7 +58,7 @@ class UserController(private val service: IUserService) {
                     )
             )
 
-
+    @AuthorizationRequired
     @DeleteMapping(path = [SINGLE_USER_ROUTE], produces = [APPLICATION_HAL_JSON])
     fun deleteUser(@PathVariable userId: Long) =
             cacheOkResponse(SingleUserResponse(service.deleteUser(userId)))

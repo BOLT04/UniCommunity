@@ -41,6 +41,7 @@ class SingleForumItemResponse(user: User, forumItem: ForumItem) : HalObject(muta
         if(!anonymousPost){
             val partialUser = PartialUserObject(
                     author.name,
+                    author.email,
                     mapOf("self" to Link(Uri.forSingleUserText(author.id)))
             )
             super._embedded?.putAll(sequenceOf(

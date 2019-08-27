@@ -13,6 +13,7 @@ class SingleUserResponse(user: User) : HalObject(mutableMapOf(), mutableMapOf())
     val id = user.id
     val name = user.name
     val email = user.email
+    val role = user.role
     val githubId = user.githubId
 
     init {
@@ -110,5 +111,6 @@ class MultipleUsersResponse(
 
 class PartialUserObject(
         val name: String,
+        val email: String,
         val _links: Map<String, Link>
 ) : IHalObj

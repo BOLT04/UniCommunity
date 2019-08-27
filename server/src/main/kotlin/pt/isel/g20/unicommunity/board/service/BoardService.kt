@@ -32,7 +32,7 @@ class BoardService(
         boardsRepo.findAll(PageRequest.of(page, pageSize))
 
     override fun getBoardById(boardId: Long) = boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
-    
+
     override fun createBoard(
             creatorId: Long,
             name: String,

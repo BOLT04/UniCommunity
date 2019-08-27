@@ -43,6 +43,7 @@ class SingleCommentResponse(user: User, comment: Comment) : HalObject(mutableMap
         if(!anonymousComment){
             val partialUser = PartialUserObject(
                     author.name,
+                    author.email,
                     mapOf("self" to Link(Uri.forSingleUserText(author.id)))
             )
             super._embedded?.putAll(sequenceOf(

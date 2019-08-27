@@ -182,6 +182,23 @@ class ExceptionResolver : ResponseEntityExceptionHandler() {
                 .body(error)
     }
 
+    @ExceptionHandler(InvalidUserRoleException::class)
+    fun handleInvalidUserRole(
+            ex: InvalidUserRoleException,
+            request: WebRequest
+    ): ResponseEntity<ProblemJson> {
+        val error = ProblemJson(
+                title = "Invalid user role",
+                detail = "An error occurred because the specified role for the user doesnt exist",
+                status = HttpStatus.BAD_REQUEST.value()
+        )
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_PROBLEM_JSON)
+                .body(error)
+    }
+
     @ExceptionHandler(InvalidTemplateConfigurationException::class)
     fun handleInvalidTemplateConfiguration(
             ex: InvalidTemplateConfigurationException,
@@ -212,6 +229,23 @@ class ExceptionResolver : ResponseEntityExceptionHandler() {
 
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .contentType(MediaType.APPLICATION_PROBLEM_JSON)
+                .body(error)
+    }
+
+    @ExceptionHandler(UnauthorizedException::class)
+    fun handleUnauthorized(
+            ex: UnauthorizedException,
+            request: WebRequest
+    ): ResponseEntity<ProblemJson> {
+        val error = ProblemJson(
+                title = "Unauthorized",
+                detail = "You're not logged in or dont have authorization to perform this operation",
+                status = HttpStatus.UNAUTHORIZED.value()
+        )
+
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
                 .contentType(MediaType.APPLICATION_PROBLEM_JSON)
                 .body(error)
     }

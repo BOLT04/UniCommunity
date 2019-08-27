@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*
 import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_TEMPLATE_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.TEMPLATES_ROUTE
+import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
 import pt.isel.g20.unicommunity.hateoas.CollectionObject
 import pt.isel.g20.unicommunity.template.model.*
 import pt.isel.g20.unicommunity.template.service.ITemplateService
@@ -27,6 +28,7 @@ class TemplateController(private val service: ITemplateService) {
     fun getTemplateById(@PathVariable templateId: Long) =
             cacheOkResponse(SingleTemplateResponse(service.getTemplateById(templateId)))
 
+    @AuthorizationRequired
     @PostMapping(path = [TEMPLATES_ROUTE], produces = [APPLICATION_JSON])
     @ResponseStatus(HttpStatus.CREATED)
     fun createTemplate(@RequestBody templateDto: TemplateDto) =
@@ -40,6 +42,7 @@ class TemplateController(private val service: ITemplateService) {
                 cacheCreatedResponse(responseBody, newResourceHref)
             }
 
+    @AuthorizationRequired
     @PutMapping(path = [SINGLE_TEMPLATE_ROUTE], produces = [APPLICATION_JSON])
     fun editTemplate(@PathVariable templateId: Long, @RequestBody templateDto: TemplateDto) =
             cacheOkResponse(
@@ -53,7 +56,7 @@ class TemplateController(private val service: ITemplateService) {
                     )
             )
 
-
+    @AuthorizationRequired
     @DeleteMapping(path = [SINGLE_TEMPLATE_ROUTE], produces = [APPLICATION_JSON])
     fun deleteTemplate(@PathVariable templateId: Long) =
             cacheOkResponse(SingleTemplateResponse(service.deleteTemplate(templateId)))

@@ -1,8 +1,6 @@
 package pt.isel.g20.unicommunity.user.service
 
-import pt.isel.g20.unicommunity.common.InvalidUserEmailException
-import pt.isel.g20.unicommunity.common.NotFoundBoardException
-import pt.isel.g20.unicommunity.common.NotFoundUserException
+import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.user.model.User
 
 interface IUserService {
@@ -14,8 +12,19 @@ interface IUserService {
     @Throws(NotFoundUserException::class)
     fun getUserByName(name: String): User
 
-    @Throws(InvalidUserEmailException::class)
-    fun createUser(name: String, email: String, password:String, githubId:String?): User
+    @Throws(
+            InvalidUserEmailException::class,
+            UnauthorizedException::class,
+            InvalidUserRoleException::class
+    )
+    fun createUser(
+            sessionUserId: Long,
+            name: String,
+            email: String,
+            password:String,
+            role: String,
+            githubId:String?
+    ): User
 
     @Throws(NotFoundUserException::class, InvalidUserEmailException::class)
     fun editUser(userId: Long, name: String?, email: String?, password:String?, githubId:String?): User

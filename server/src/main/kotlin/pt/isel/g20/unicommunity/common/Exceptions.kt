@@ -20,6 +20,10 @@ class BadAuthenticationException : Exception()
 
 class InvalidUserEmailException : Exception()
 
+class InvalidUserRoleException : Exception()
+
 class InvalidTemplateConfigurationException : Exception()
 
 class SubscribeToTopicException : Exception()
+
+class UnauthorizedException : Exception()

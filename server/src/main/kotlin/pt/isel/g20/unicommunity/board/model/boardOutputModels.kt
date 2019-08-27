@@ -32,6 +32,7 @@ class SingleBoardResponse(user: User, board: Board) : HalObject(mutableMapOf(), 
                     Rels.GET_MULTIPLE_USERS to MultipleHalObj(board.members.map {
                         PartialUserObject(
                                 it.name,
+                                it.email,
                                 mapOf("self" to Link(Uri.forSingleUserText(it.id)))
                         )
                     })
@@ -39,6 +40,7 @@ class SingleBoardResponse(user: User, board: Board) : HalObject(mutableMapOf(), 
 
         val partialUser = PartialUserObject(
                 board.creator.name,
+                board.creator.email,
                 mapOf("self" to Link(Uri.forSingleUserText(board.creator.id)))
         )
         super._embedded?.putAll(sequenceOf(

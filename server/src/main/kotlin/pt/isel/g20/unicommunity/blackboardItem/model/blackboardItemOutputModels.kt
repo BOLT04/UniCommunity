@@ -40,6 +40,7 @@ class SingleBlackboardItemResponse(user: User, bbItem: BlackboardItem) : HalObje
 
         val partialUser = PartialUserObject(
                 bbItem.author.name,
+                bbItem.author.email,
                 mapOf("self" to Link(Uri.forSingleUserText(author.id)))
         )
         super._embedded?.putAll(sequenceOf(
