@@ -52,9 +52,6 @@ class SingleBoardResponse(user: User, board: Board) : HalObject(mutableMapOf(), 
                 Rels.GET_MULTIPLE_BOARDS to Link(Uri.forAllBoards()),
 
                 Rels.GET_BOARD_MEMBERS to Link(Uri.forBoardMembers(id)),
-                Rels.SUBSCRIBE to Link(Uri.forBoardMembers(id)),
-                Rels.UNSUBSCRIBE to Link(Uri.forBoardMembers(id)),
-
                 Rels.GET_MULTIPLE_BLACKBOARDS to Link(Uri.forAllBlackboards(id))
         ))
 
@@ -64,6 +61,12 @@ class SingleBoardResponse(user: User, board: Board) : HalObject(mutableMapOf(), 
                     Rels.DELETE_BOARD to Link(Uri.forSingleBoardText(id))
             ))
         }
+
+        if(board.members.contains(user))
+            super._links?.putAll(sequenceOf(Rels.SUBSCRIBE to Link(Uri.forBoardMembers(id))))
+        else
+            super._links?.putAll(sequenceOf(Rels.UNSUBSCRIBE to Link(Uri.forBoardMembers(id))))
+
 
         if (board.forum != null) {
             super._links?.putAll(sequenceOf(

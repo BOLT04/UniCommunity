@@ -45,14 +45,20 @@ class UserController(private val service: IUserService) {
 
     @AuthorizationRequired
     @PutMapping(path = [SINGLE_USER_ROUTE], produces = [APPLICATION_HAL_JSON])
-    fun editUser(@PathVariable userId: Long, @RequestBody userDto: UserDto) =
+    fun editUser(
+            @PathVariable userId: Long,
+            @RequestBody userDto: UserDto,
+            @SessionAttribute("user")user: User
+    ) =
             cacheOkResponse(
                     SingleUserResponse(
                             service.editUser(
+                                    user.id,
                                     userId,
                                     userDto.name,
                                     userDto.email,
                                     userDto.password,
+                                    userDto.role,
                                     userDto.githubId
                             )
                     )
