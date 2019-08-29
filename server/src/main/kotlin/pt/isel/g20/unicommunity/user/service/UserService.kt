@@ -25,13 +25,13 @@ class UserService(
 
     override fun createUser(sessionUserId:Long, name: String, email: String, password: String, role: String, githubId: String?): User {
         val sessionUser = usersRepo.findByIdOrNull(sessionUserId) ?: throw UnauthorizedException()
-        if(sessionUser.role != "admin") throw UnauthorizedException()
+        if(sessionUser.role != ADMIN) throw UnauthorizedException()
 
         if (getAllUsers().map { it.email }.contains(email)) {
             throw InvalidUserEmailException()
         }
 
-        if(role != "teacher" && role !="student" && role != "admin")
+        if(role != TEACHER && role != STUDENT && role != ADMIN)
             throw InvalidUserRoleException()
 
         val hashedPassword = BCryptPasswordEncoder().encode(password)
@@ -40,27 +40,20 @@ class UserService(
         return usersRepo.save(user)
     }
 
-    override fun editUser(userId: Long, name: String?, email: String?, password: String?, githubId: String?): User {
+    override fun editUser(sessionUserId: Long, userId: Long, name: String, email: String, password: String, role: String, githubId: String?): User {
+        val sessionUser = usersRepo.findByIdOrNull(sessionUserId) ?: throw UnauthorizedException()
+
         val user = getUserById(userId)
+        if(sessionUser.role != ADMIN && user.role != role)
+            throw UnauthorizedException()
 
-        if(email != null) {
-            if(
-                    email != user.email
-                    &&
-                    (getAllUsers().map { it.email }.contains(email))
-            )
-                throw InvalidUserEmailException()
+        if(email != user.email && (getAllUsers().map { it.email }.contains(email)))
+            throw InvalidUserEmailException()
 
-            user.email = email
-        }
-        if(name != null)
-            user.name = name
-
-        if(password != null)
-            user.pw = BCryptPasswordEncoder().encode(password)
-
-        if(githubId != null)
-            user.githubId = password
+        user.email = email
+        user.name = name
+        user.pw = BCryptPasswordEncoder().encode(password)
+        user.githubId = password
 
         return usersRepo.save(user)
     }

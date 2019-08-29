@@ -4,6 +4,7 @@ import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
+import pt.isel.g20.unicommunity.common.ADMIN
 import pt.isel.g20.unicommunity.repository.TemplateRepository
 import pt.isel.g20.unicommunity.repository.UserRepository
 import pt.isel.g20.unicommunity.template.model.Template
@@ -42,7 +43,7 @@ class DataLoader(
                 "Admin",
                 "admin@gmail.com",
                 BCryptPasswordEncoder().encode("admin"),
-                "admin",
+                ADMIN,
                 "gitAdmin"
         )
         usersRepo.save(user)

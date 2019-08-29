@@ -26,8 +26,20 @@ interface IUserService {
             githubId:String?
     ): User
 
-    @Throws(NotFoundUserException::class, InvalidUserEmailException::class)
-    fun editUser(userId: Long, name: String?, email: String?, password:String?, githubId:String?): User
+    @Throws(
+            NotFoundUserException::class,
+            UnauthorizedException::class,
+            InvalidUserEmailException::class
+    )
+    fun editUser(
+            sessionUserId: Long,
+            userId: Long,
+            name: String,
+            email: String,
+            password:String,
+            role: String,
+            githubId:String?
+    ): User
 
     @Throws(NotFoundUserException::class)
     fun deleteUser(userId: Long): User
