@@ -4,7 +4,6 @@ import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
-import pt.isel.g20.unicommunity.common.NotFoundUserException
 import pt.isel.g20.unicommunity.repository.TemplateRepository
 import pt.isel.g20.unicommunity.repository.UserRepository
 import pt.isel.g20.unicommunity.template.model.Template
@@ -47,9 +46,5 @@ class DataLoader(
                 "gitAdmin"
         )
         usersRepo.save(user)
-
-        val foundUser = usersRepo.findByEmail("admin@gmail.com") ?: throw NotFoundUserException()
-        System.out.println(foundUser.id.toString() + " - " + foundUser.name + " - " + foundUser.email + " - " + foundUser.pw)
-
     }
 }
