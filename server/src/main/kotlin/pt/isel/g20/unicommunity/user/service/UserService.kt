@@ -2,6 +2,7 @@ package pt.isel.g20.unicommunity.user.service
 
 import org.hibernate.Hibernate
 import org.springframework.data.repository.findByIdOrNull
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
 import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.repository.BoardRepository
@@ -9,7 +10,11 @@ import pt.isel.g20.unicommunity.repository.UserRepository
 import pt.isel.g20.unicommunity.user.model.User
 
 @Service
-class UserService(val usersRepo: UserRepository, val boardsRepo: BoardRepository) : IUserService {
+class UserService(
+        val usersRepo: UserRepository,
+        val boardsRepo: BoardRepository
+        //val passwordEncoder: PasswordEncoder
+) : IUserService {
 
     override fun getAllUsers(): Iterable<User> = usersRepo.findAll()
 
@@ -29,7 +34,8 @@ class UserService(val usersRepo: UserRepository, val boardsRepo: BoardRepository
         if(role != "teacher" && role !="student" && role != "admin")
             throw InvalidUserRoleException()
 
-        val user = User(name, email, password, role, githubId)
+        val hashedPassword = BCryptPasswordEncoder().encode(password)
+        val user = User(name, email, hashedPassword, role, githubId)
 
         return usersRepo.save(user)
     }
@@ -51,7 +57,7 @@ class UserService(val usersRepo: UserRepository, val boardsRepo: BoardRepository
             user.name = name
 
         if(password != null)
-            user.pw = password
+            user.pw = BCryptPasswordEncoder().encode(password)
 
         if(githubId != null)
             user.githubId = password

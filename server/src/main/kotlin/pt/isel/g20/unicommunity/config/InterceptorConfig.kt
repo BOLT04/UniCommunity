@@ -10,7 +10,7 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.servlet.config.annotation.EnableWebMvc
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
-import pt.isel.g20.unicommunity.auth.service.AuthService
+import pt.isel.g20.unicommunity.auth.service.IAuthService
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationException
 import pt.isel.g20.unicommunity.common.presentation.authorizationProblemJson
 import pt.isel.g20.unicommunity.hateoas.ProblemJson
@@ -19,7 +19,7 @@ import pt.isel.g20.unicommunity.user.service.IUserService
 @Configuration
 @ControllerAdvice
 @EnableWebMvc
-class InterceptorConfig(val authService: AuthService, val userService: IUserService) : WebMvcConfigurer {
+class InterceptorConfig(val authService: IAuthService, val userService: IUserService) : WebMvcConfigurer {
 
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(AuthorizationInterceptor(authService, userService))
