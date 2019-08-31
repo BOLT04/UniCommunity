@@ -26,5 +26,7 @@ class Board(
 
     @JsonIgnore
     @OneToMany(mappedBy = "board", cascade = [CascadeType.REMOVE])
-    val members : MutableList<UsersBoards> = mutableListOf()
+    val usersBoards : MutableList<UsersBoards> = mutableListOf()
+
+    fun getMembers() = usersBoards.map { it.user }
 }

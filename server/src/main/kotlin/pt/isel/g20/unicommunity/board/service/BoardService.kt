@@ -76,10 +76,10 @@ class BoardService(
         val userBoard = UsersBoards(creator, board)
         usersBoardsRepo.save(userBoard)
 
-        board.members.add(userBoard)
+        board.usersBoards.add(userBoard)
         board = boardsRepo.save(board)
 
-        creator.boards.add(userBoard)
+        creator.usersBoards.add(userBoard)
         usersRepo.save(creator)
 
         if (hasForum) {
@@ -106,8 +106,8 @@ class BoardService(
         val userBoard = UsersBoards(user, board)
         usersBoardsRepo.save(userBoard)
 
-        board.members.add(userBoard)
-        user.boards.add(userBoard)
+        board.usersBoards.add(userBoard)
+        user.usersBoards.add(userBoard)
 
         board = boardsRepo.save(board)
         usersRepo.save(user)
@@ -205,7 +205,7 @@ class BoardService(
 
         Hibernate.initialize(board.blackBoards)
         Hibernate.initialize(board.forum)
-        Hibernate.initialize(board.members)
+        Hibernate.initialize(board.usersBoards)
 
         boardsRepo.delete(board)
         return board

@@ -64,7 +64,7 @@ class UserService(
         val user = getUserById(userId)
 
         Hibernate.initialize(user.bbItems)
-        Hibernate.initialize(user.boards)
+        Hibernate.initialize(user.usersBoards)
         Hibernate.initialize(user.comments)
         Hibernate.initialize(user.forumItems)
         Hibernate.initialize(user.blackboardsSettings)

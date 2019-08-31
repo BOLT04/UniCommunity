@@ -17,12 +17,12 @@ class SingleUserResponse(user: User) : HalObject(mutableMapOf(), mutableMapOf())
     val githubId = user.githubId
 
     init {
-        if(user.boards.size != 0)
+        if(user.usersBoards.size != 0)
             super._embedded?.putAll(sequenceOf(
-                    Rels.GET_MULTIPLE_BOARDS to MultipleHalObj(user.boards.map {
+                    Rels.GET_MULTIPLE_BOARDS to MultipleHalObj(user.getBoards().map {
                         PartialBoardObject(
-                                it.board.name,
-                                mapOf("self" to Link(Uri.forSingleBoardText(it.board.id)))
+                                it.name,
+                                mapOf("self" to Link(Uri.forSingleBoardText(it.id)))
                         )
                     })
             ))

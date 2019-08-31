@@ -31,7 +31,7 @@ class User(
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = [CascadeType.REMOVE])
-    val boards : MutableList<UsersBoards> = mutableListOf()
+    val usersBoards : MutableList<UsersBoards> = mutableListOf()
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = [CascadeType.REMOVE])
@@ -48,4 +48,6 @@ class User(
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "author", cascade = [CascadeType.REMOVE])
     val bbItems: MutableList<BlackboardItem> = mutableListOf()
+
+    fun getBoards() = usersBoards.map { it.board }
 }
