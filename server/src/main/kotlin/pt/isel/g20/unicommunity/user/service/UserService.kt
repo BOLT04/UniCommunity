@@ -7,12 +7,14 @@ import org.springframework.stereotype.Service
 import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.repository.BoardRepository
 import pt.isel.g20.unicommunity.repository.UserRepository
+import pt.isel.g20.unicommunity.repository.UsersBoardsRepository
 import pt.isel.g20.unicommunity.user.model.User
 
 @Service
 class UserService(
         val usersRepo: UserRepository,
-        val boardsRepo: BoardRepository
+        val boardsRepo: BoardRepository,
+        val usersBoardsRepo: UsersBoardsRepository
         //val passwordEncoder: PasswordEncoder
 ) : IUserService {
 
@@ -73,7 +75,7 @@ class UserService(
 
     override fun getBoardMembers(boardId: Long): Iterable<User>{
         val board = boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
-        return usersRepo.findByBoards(board).asIterable()
+        return usersBoardsRepo.findByBoardId(boardId).map { it.user }
     }
 
 }

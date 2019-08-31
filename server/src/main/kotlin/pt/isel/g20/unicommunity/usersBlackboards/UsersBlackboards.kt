@@ -7,10 +7,10 @@ import javax.persistence.*
 
 @Entity(name = "users_blackboards")
 class UsersBlackboards(
-        @JsonIgnore @ManyToOne(cascade = [CascadeType.REMOVE]) @JoinColumn(name = "userId")
+        @JsonIgnore @ManyToOne @JoinColumn(name = "userId")
         val user : User,
 
-        @JsonIgnore @ManyToOne(cascade = [CascadeType.REMOVE]) @JoinColumn(name = "blackboardId")
+        @JsonIgnore @ManyToOne @JoinColumn(name = "blackboardId")
         val blackboard :Blackboard,
 
         val notificationLevel: String

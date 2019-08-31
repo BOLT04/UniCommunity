@@ -21,8 +21,8 @@ class SingleUserResponse(user: User) : HalObject(mutableMapOf(), mutableMapOf())
             super._embedded?.putAll(sequenceOf(
                     Rels.GET_MULTIPLE_BOARDS to MultipleHalObj(user.boards.map {
                         PartialBoardObject(
-                                it.name,
-                                mapOf("self" to Link(Uri.forSingleBoardText(it.id)))
+                                it.board.name,
+                                mapOf("self" to Link(Uri.forSingleBoardText(it.board.id)))
                         )
                     })
             ))

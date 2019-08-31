@@ -27,3 +27,7 @@ class InvalidTemplateConfigurationException : Exception()
 class SubscribeToTopicException : Exception()
 
 class UnauthorizedException : Exception()
+
+class AlreadyAMemberException : Exception()
+
+class NotAMemberException : Exception()

@@ -2,10 +2,10 @@ package pt.isel.g20.unicommunity.user.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import pt.isel.g20.unicommunity.blackboardItem.model.BlackboardItem
-import pt.isel.g20.unicommunity.board.model.Board
 import pt.isel.g20.unicommunity.comment.model.Comment
 import pt.isel.g20.unicommunity.forumItem.model.ForumItem
 import pt.isel.g20.unicommunity.usersBlackboards.UsersBlackboards
+import pt.isel.g20.unicommunity.usersBoards.UsersBoards
 import javax.persistence.*
 
 @Entity(name = "users")
@@ -30,8 +30,8 @@ class User(
     var id: Long = 0
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "members", cascade = [CascadeType.REMOVE])
-    val boards : MutableList<Board> = mutableListOf()
+    @OneToMany(mappedBy = "user", cascade = [CascadeType.REMOVE])
+    val boards : MutableList<UsersBoards> = mutableListOf()
 
     @JsonIgnore
     @OneToMany(mappedBy = "user", cascade = [CascadeType.REMOVE])

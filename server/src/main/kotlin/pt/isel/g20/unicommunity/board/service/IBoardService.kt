@@ -25,12 +25,6 @@ interface IBoardService {
             hasForum: Boolean?
     ): Board
 
-    @Throws(NotFoundBoardException::class)
-    fun editBoard(boardId: Long, name: String?, description: String?): Board
-
-    @Throws(NotFoundBoardException::class)
-    fun deleteBoard(boardId: Long):Board
-
     @Throws(
             NotFoundBoardException::class,
             NotFoundUserException::class,
@@ -40,4 +34,10 @@ interface IBoardService {
 
     @Throws(NotFoundBoardException::class, NotFoundUserException::class)
     fun unsubscribe(boardId: Long, userId: Long): Board
+
+    @Throws(NotFoundBoardException::class)
+    fun editBoard(boardId: Long, name: String?, description: String?): Board
+
+    @Throws(NotFoundBoardException::class)
+    fun deleteBoard(boardId: Long):Board
 }

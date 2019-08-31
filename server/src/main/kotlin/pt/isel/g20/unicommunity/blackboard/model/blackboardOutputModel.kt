@@ -16,7 +16,7 @@ class SingleBlackboardResponse(user: User, blackboard: Blackboard) : HalObject(m
     init {
         val board = blackboard.board
         val boardId = board.id
-        val isCreator = user.id == board.creator.id
+        val isCreator = user.id == board.creator!!.id
 
         val partialBoard = PartialBoardObject(
                 board.name,

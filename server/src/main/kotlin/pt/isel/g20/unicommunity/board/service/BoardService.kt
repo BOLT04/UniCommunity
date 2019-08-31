@@ -14,13 +14,15 @@ import pt.isel.g20.unicommunity.fcm.FcmServiceFactory
 import pt.isel.g20.unicommunity.forum.service.IForumService
 import pt.isel.g20.unicommunity.repository.*
 import pt.isel.g20.unicommunity.usersBlackboards.UsersBlackboards
+import pt.isel.g20.unicommunity.usersBoards.UsersBoards
 
 @Service
 class BoardService(
         val boardsRepo: BoardRepository,
         val templatesRepo: TemplateRepository,
         val blackboardService: IBlackboardService,
-        val usersBlackboardsRepository: UsersBlackboardsRepository,
+        val usersBlackboardsRepo: UsersBlackboardsRepository,
+        val usersBoardsRepo: UsersBoardsRepository,
         val usersRepo: UserRepository,
         val blackboardsRepo: BlackboardRepository,
         val forumService: IForumService
@@ -32,46 +34,6 @@ class BoardService(
         boardsRepo.findAll(PageRequest.of(page, pageSize))
 
     override fun getBoardById(boardId: Long) = boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
-
-    override fun createBoard(
-            creatorId: Long,
-            name: String,
-            templateId: Long?,
-            description: String?,
-            blackboardNames: List<String>?,
-            hasForum: Boolean?
-    ): Board {
-
-        val board: Board = if(templateId != null)
-            createBoardWithTemplate(creatorId, name,  description, templateId)
-        else
-            createBoardWithCustomModules(creatorId, name, blackboardNames, hasForum, description)
-
-        return boardsRepo.save(board)
-    }
-
-    override fun editBoard(boardId: Long, name: String?, description: String?): Board {
-        val board = getBoardById(boardId)
-
-        if(name != null)
-            board.name = name
-
-        if(description != null)
-            board.description = description
-
-        return boardsRepo.save(board)
-    }
-
-    override fun deleteBoard(boardId: Long): Board {
-        val board = getBoardById(boardId)
-
-        Hibernate.initialize(board.blackBoards)
-        Hibernate.initialize(board.forum)
-        Hibernate.initialize(board.members)
-
-        boardsRepo.delete(board)
-        return board
-    }
 
     private fun createBoardWithTemplate(
             creatorId: Long,
@@ -109,10 +71,15 @@ class BoardService(
     ): Board {
         val creator = usersRepo.findByIdOrNull(creatorId) ?: throw NotFoundUserException()
         var board = Board(creator, name, description)
-        board.members.add(creator)
+        boardsRepo.save(board)
+
+        val userBoard = UsersBoards(creator, board)
+        usersBoardsRepo.save(userBoard)
+
+        board.members.add(userBoard)
         board = boardsRepo.save(board)
 
-        creator.boards.add(board)
+        creator.boards.add(userBoard)
         usersRepo.save(creator)
 
         if (hasForum) {
@@ -130,18 +97,24 @@ class BoardService(
     val fcmService = FcmServiceFactory.makeFcmServiceService()
 
     override fun subscribe(boardId: Long, userId: Long, token: String): Board {
-        val board = getBoardById(boardId)
+        var board = getBoardById(boardId)
         val user = usersRepo.findByIdOrNull(userId) ?: throw NotFoundUserException()
 
-        board.members.add(user)
-        user.boards.add(board)
+        if(usersBoardsRepo.findByUserIdAndBoardId(userId, boardId) != null)
+            throw AlreadyAMemberException()
 
-        val newBoard = boardsRepo.save(board)
+        val userBoard = UsersBoards(user, board)
+        usersBoardsRepo.save(userBoard)
+
+        board.members.add(userBoard)
+        user.boards.add(userBoard)
+
+        board = boardsRepo.save(board)
         usersRepo.save(user)
 
         board.blackBoards.forEach { item -> run {
             val userBlackboard = UsersBlackboards(user, item, item.notificationLevel)
-            usersBlackboardsRepository.save(userBlackboard)
+            usersBlackboardsRepo.save(userBlackboard)
 
             user.blackboardsSettings.add(userBlackboard)
             usersRepo.save(user)
@@ -169,23 +142,23 @@ class BoardService(
             }
 
             println("in addUserToBoard: returning")
-            newBoard
+            board
         }
     }
 
     override fun unsubscribe(boardId: Long, userId: Long):Board {
         var board = getBoardById(boardId)
         val user = usersRepo.findByIdOrNull(userId) ?: throw NotFoundUserException()
+        val userBoard = usersBoardsRepo.findByUserIdAndBoardId(userId, boardId) ?: throw NotAMemberException()
 
-        board.members.remove(user)
-        user.boards.remove(board)
+        usersBoardsRepo.delete(userBoard)
 
         board = boardsRepo.save(board)
         usersRepo.save(user)
 
         board.blackBoards.forEach { item -> run {
-            val userBlackboard = usersBlackboardsRepository.findByUserIdAndBlackboardId(userId, item.id)
-            usersBlackboardsRepository.delete(userBlackboard)
+            val userBlackboard = usersBlackboardsRepo.findByUserIdAndBlackboardId(userId, item.id)
+            usersBlackboardsRepo.delete(userBlackboard)
 
             user.blackboardsSettings.remove(userBlackboard)
             usersRepo.save(user)
@@ -195,6 +168,46 @@ class BoardService(
         } }
         board = boardsRepo.save(board)
 
+        return board
+    }
+
+    override fun createBoard(
+            creatorId: Long,
+            name: String,
+            templateId: Long?,
+            description: String?,
+            blackboardNames: List<String>?,
+            hasForum: Boolean?
+    ): Board {
+
+        val board: Board = if(templateId != null)
+            createBoardWithTemplate(creatorId, name,  description, templateId)
+        else
+            createBoardWithCustomModules(creatorId, name, blackboardNames, hasForum, description)
+
+        return boardsRepo.save(board)
+    }
+
+    override fun editBoard(boardId: Long, name: String?, description: String?): Board {
+        val board = getBoardById(boardId)
+
+        if(name != null)
+            board.name = name
+
+        if(description != null)
+            board.description = description
+
+        return boardsRepo.save(board)
+    }
+
+    override fun deleteBoard(boardId: Long): Board {
+        var board = getBoardById(boardId)
+
+        Hibernate.initialize(board.blackBoards)
+        Hibernate.initialize(board.forum)
+        Hibernate.initialize(board.members)
+
+        boardsRepo.delete(board)
         return board
     }
 }

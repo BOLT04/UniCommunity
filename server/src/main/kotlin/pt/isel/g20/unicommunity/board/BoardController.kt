@@ -111,32 +111,6 @@ class BoardController(private val service: IBoardService) {
             }
 
     @AuthorizationRequired
-    @PutMapping(path = [SINGLE_BOARD_ROUTE], produces = [APPLICATION_HAL_JSON])
-    fun editBoard(
-            @PathVariable boardId: Long,
-            @RequestBody boardDto: BoardDto,
-            @SessionAttribute("user") user: User
-    ) =
-            cacheOkResponse(
-                    SingleBoardResponse(
-                            user,
-                            service.editBoard(
-                                    boardId,
-                                    boardDto.name,
-                                    boardDto.description
-                            )
-                    )
-            )
-
-    @AuthorizationRequired
-    @DeleteMapping(path = [SINGLE_BOARD_ROUTE], produces = [APPLICATION_HAL_JSON])
-    fun deleteBoard(
-            @PathVariable boardId: Long,
-            @SessionAttribute("user") user: User
-    ) =
-            cacheOkResponse(SingleBoardResponse(user, service.deleteBoard(boardId)))
-
-    @AuthorizationRequired
     @PostMapping(path = [BOARD_MEMBERS], produces = [APPLICATION_HAL_JSON])
     fun subscribe(
             @PathVariable boardId: Long,
@@ -162,4 +136,30 @@ class BoardController(private val service: IBoardService) {
                             service.unsubscribe(boardId, user.id)
                     )
             )
+
+    @AuthorizationRequired
+    @PutMapping(path = [SINGLE_BOARD_ROUTE], produces = [APPLICATION_HAL_JSON])
+    fun editBoard(
+            @PathVariable boardId: Long,
+            @RequestBody boardDto: BoardDto,
+            @SessionAttribute("user") user: User
+    ) =
+            cacheOkResponse(
+                    SingleBoardResponse(
+                            user,
+                            service.editBoard(
+                                    boardId,
+                                    boardDto.name,
+                                    boardDto.description
+                            )
+                    )
+            )
+
+    @AuthorizationRequired
+    @DeleteMapping(path = [SINGLE_BOARD_ROUTE], produces = [APPLICATION_HAL_JSON])
+    fun deleteBoard(
+            @PathVariable boardId: Long,
+            @SessionAttribute("user") user: User
+    ) =
+            cacheOkResponse(SingleBoardResponse(user, service.deleteBoard(boardId)))
 }

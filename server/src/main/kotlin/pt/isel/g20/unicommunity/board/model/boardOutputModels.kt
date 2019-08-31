@@ -8,6 +8,7 @@ import pt.isel.g20.unicommunity.common.getFirstPageable
 import pt.isel.g20.unicommunity.hateoas.*
 import pt.isel.g20.unicommunity.user.model.PartialUserObject
 import pt.isel.g20.unicommunity.user.model.User
+import pt.isel.g20.unicommunity.usersBoards.UsersBoards
 
 class SingleBoardResponse(user: User, board: Board) : HalObject(mutableMapOf(), mutableMapOf()) {
     val id : Long = board.id
@@ -31,9 +32,9 @@ class SingleBoardResponse(user: User, board: Board) : HalObject(mutableMapOf(), 
             super._embedded?.putAll(sequenceOf(
                     Rels.GET_MULTIPLE_USERS to MultipleHalObj(board.members.map {
                         PartialUserObject(
-                                it.name,
-                                it.email,
-                                mapOf("self" to Link(Uri.forSingleUserText(it.id)))
+                                it.user.name,
+                                it.user.email,
+                                mapOf("self" to Link(Uri.forSingleUserText(it.user.id)))
                         )
                     })
             ))
@@ -62,7 +63,7 @@ class SingleBoardResponse(user: User, board: Board) : HalObject(mutableMapOf(), 
             ))
         }
 
-        if(board.members.contains(user))
+        if(board.members.contains(UsersBoards(user, board)))
             super._links?.putAll(sequenceOf(Rels.SUBSCRIBE to Link(Uri.forBoardMembers(id))))
         else
             super._links?.putAll(sequenceOf(Rels.UNSUBSCRIBE to Link(Uri.forBoardMembers(id))))

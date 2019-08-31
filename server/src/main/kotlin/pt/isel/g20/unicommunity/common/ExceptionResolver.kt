@@ -250,6 +250,40 @@ class ExceptionResolver : ResponseEntityExceptionHandler() {
                 .body(error)
     }
 
+    @ExceptionHandler(AlreadyAMemberException::class)
+    fun handleAlreadyAMember(
+            ex: AlreadyAMemberException,
+            request: WebRequest
+    ): ResponseEntity<ProblemJson> {
+        val error = ProblemJson(
+                title = "You're already subscribed",
+                detail = "Already Subscribed",
+                status = HttpStatus.BAD_REQUEST.value()
+        )
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_PROBLEM_JSON)
+                .body(error)
+    }
+
+    @ExceptionHandler(NotAMemberException::class)
+    fun handleNotAMember(
+            ex: NotAMemberException,
+            request: WebRequest
+    ): ResponseEntity<ProblemJson> {
+        val error = ProblemJson(
+                title = "You're not a member of the board",
+                detail = "Only a member of the board can perform that action",
+                status = HttpStatus.BAD_REQUEST.value()
+        )
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_PROBLEM_JSON)
+                .body(error)
+    }
+
     @ExceptionHandler(Exception::class)
     fun handleAll(ex: Exception, request: WebRequest): ResponseEntity<ProblemJson> {
         val error = ProblemJson(

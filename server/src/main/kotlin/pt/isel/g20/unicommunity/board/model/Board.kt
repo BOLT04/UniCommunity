@@ -1,8 +1,10 @@
 package pt.isel.g20.unicommunity.board.model
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import pt.isel.g20.unicommunity.blackboard.model.Blackboard
 import pt.isel.g20.unicommunity.forum.model.Forum
 import pt.isel.g20.unicommunity.user.model.User
+import pt.isel.g20.unicommunity.usersBoards.UsersBoards
 import javax.persistence.*
 
 @Entity
@@ -22,11 +24,7 @@ class Board(
     @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE], mappedBy = "board")
     val blackBoards: MutableList<Blackboard> = mutableListOf()
 
-    @ManyToMany(fetch = FetchType.LAZY, cascade = [CascadeType.REMOVE])
-    @JoinTable(
-            name = "boards_users",
-            joinColumns = [JoinColumn(name = "board_id", referencedColumnName = "id")],
-            inverseJoinColumns = [JoinColumn(name = "user_id", referencedColumnName = "id")]
-    )
-    var members: MutableList<User> = mutableListOf()
+    @JsonIgnore
+    @OneToMany(mappedBy = "board", cascade = [CascadeType.REMOVE])
+    val members : MutableList<UsersBoards> = mutableListOf()
 }
