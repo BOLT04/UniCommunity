@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*
 import pt.isel.g20.unicommunity.board.model.*
 import pt.isel.g20.unicommunity.board.service.IBoardService
 import pt.isel.g20.unicommunity.common.*
-import pt.isel.g20.unicommunity.common.Uri.ALL_BOARDS_ROUTE
+import pt.isel.g20.unicommunity.common.Uri.ACTIVE_BOARDS_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.BOARDS_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.BOARD_MEMBERS
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_BOARD_ROUTE
@@ -69,7 +69,7 @@ class BoardController(private val service: IBoardService) {
     }
 
     @AuthorizationRequired
-    @GetMapping(path = [BOARDS_ROUTE], produces = [APPLICATION_COLLECTION_JSON])
+    @GetMapping(path = [ACTIVE_BOARDS_ROUTE], produces = [APPLICATION_COLLECTION_JSON])
     fun getActiveBoards(
             @SessionAttribute("user") user: User,
             @RequestParam(value = "page", required = false, defaultValue = "0") page: Int
@@ -84,7 +84,7 @@ class BoardController(private val service: IBoardService) {
             )
 
     @AuthorizationRequired
-    @GetMapping(path = [ALL_BOARDS_ROUTE], produces = [APPLICATION_COLLECTION_JSON])
+    @GetMapping(path = [BOARDS_ROUTE], produces = [APPLICATION_COLLECTION_JSON])
     fun getAllBoards(
             @SessionAttribute("user") user: User,
             @RequestParam(value = "page", required = false, defaultValue = "0") page: Int

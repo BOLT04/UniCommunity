@@ -30,7 +30,7 @@ class BoardService(
 ) : IBoardService {
 
     override fun getActiveBoards(page: Int, pageSize: Int): Page<Board> =
-            boardsRepo.findByActiveIsTrue(PageRequest.of(page, pageSize))
+            boardsRepo.findByActiveTrue(PageRequest.of(page, pageSize))
 
     override fun getAllBoards(page: Int, pageSize: Int): Page<Board> =
             boardsRepo.findAll(PageRequest.of(page, pageSize))
