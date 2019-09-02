@@ -4,14 +4,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import isel.pt.unicommunity.presentation.activity.MainActivity
 import isel.pt.unicommunity.R
+import isel.pt.unicommunity.common.ProgressObs
 import isel.pt.unicommunity.kotlinx.getUniCommunityApp
 import isel.pt.unicommunity.kotlinx.getViewModel
 import isel.pt.unicommunity.model.links.GetSingleBlackBoardItemLink
+import isel.pt.unicommunity.common.OptionalProgressBar
 import isel.pt.unicommunity.presentation.viewmodel.BlackBoardItemViewModel
 import kotlinx.android.synthetic.main.fragment_blackboard_item_md.*
 
@@ -23,27 +24,25 @@ class BlackBoardItemFragment(val link : GetSingleBlackBoardItemLink) : Fragment(
 
     override fun onStart() {
         super.onStart()
-        val activity =  activity as MainActivity
+        val activity =  activity as AppCompatActivity
         val app = activity.getUniCommunityApp()
 
-        val viewModel = (activity as AppCompatActivity).getViewModel("blackBoard${link.href}"){
+        val viewModel = activity.getViewModel("blackBoard${link.href}"){
             BlackBoardItemViewModel(app, link)
         }
 
-        viewModel.getBlackBoardItem()
+        val progress = OptionalProgressBar(activity) {
+            viewModel.getBlackBoardItem()
+        }
 
-        viewModel.blackboardItem.observe(this, Observer {
-
-            title.text = it.name
-            blackboard_item_content_md.loadMarkdown(it.content)
-
-            /*blackboard_item_authorname.text = it.authorName
-            blackboard_item_name.text = it.name
-            blackboard_item_createdat.text = it.createdAt
-            blackboard_item_content.text = it.content ?: ""*/
-
-
-        })
+        viewModel.blackboardItem.observe(
+            this,
+            ProgressObs(progress) {
+                title.text = it.name
+                blackboard_item_content_md.loadMarkdown(it.content)
+            },
+            ProgressObs(progress) { Toast.makeText(activity, it, Toast.LENGTH_SHORT).show() }
+        )
 
 
     }

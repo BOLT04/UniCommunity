@@ -17,15 +17,15 @@ class MainActivityViewModel(val app:UniCommunityApp) : ViewModel(){
 
 
 
-    val navigation = MutableLiveData<NavigationInputDto>()
+    val navigation = ErrorHandlingMLD<NavigationInputDto, String>()
 
 
     fun fetchNav(url:String){
         val getRequest = BasicAuthenticationGetRequest(
             NavigationInputDto::class.java,
             url,
-            Response.Listener { navigation.value = it },
-            Response.ErrorListener { val a =1/*TODO do something here*/ },
+            Response.Listener { navigation.success(it) },
+            Response.ErrorListener { navigation.error(VolleyErrorHandler.getMessage(it)) },
             app.email,
             app.password
         )

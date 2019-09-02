@@ -7,18 +7,19 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import isel.pt.unicommunity.presentation.activity.MainActivity
 import isel.pt.unicommunity.R
+import isel.pt.unicommunity.common.OptionalProgressBar
+import isel.pt.unicommunity.common.ProgressObs
 import isel.pt.unicommunity.kotlinx.getUniCommunityApp
-import isel.pt.unicommunity.presentation.adapter.BoardMenuAdapter
-import isel.pt.unicommunity.presentation.adapter.BlackBoardClickListener
+import isel.pt.unicommunity.presentation.adapter.old.BoardMenuAdapter
+import isel.pt.unicommunity.presentation.adapter.old.BlackBoardClickListener
 import isel.pt.unicommunity.kotlinx.getViewModel
 import isel.pt.unicommunity.model.links.GetSingleBlackBoardLink
 import isel.pt.unicommunity.model.links.GetSingleBoardLink
 import isel.pt.unicommunity.model.links.GetSingleForumLink
-import isel.pt.unicommunity.presentation.adapter.ForumClickListener
+import isel.pt.unicommunity.presentation.activity.BackStackManagingActivity
+import isel.pt.unicommunity.presentation.adapter.old.ForumClickListener
 import isel.pt.unicommunity.presentation.fragment.modules.blackboard.BlackBoardFragment
 import isel.pt.unicommunity.presentation.fragment.modules.forum.ForumFragment
 import isel.pt.unicommunity.presentation.viewmodel.BoardViewModel
@@ -49,39 +50,34 @@ class BoardMenuFragment(val link: GetSingleBoardLink) : Fragment() {
 
         recyclerView.layoutManager = LinearLayoutManager(activity)
 
-        viewModel.fetchBoard()
+        val progress = OptionalProgressBar(activity) {
+            viewModel.fetchBoard()
+        }
 
-        viewModel.board.observe(this, Observer { board ->
-            val smallBlackBoards = board._embedded?.smallBlackBoardBoards
-            if(smallBlackBoards == null){
-                viewModel.fetchModules(board._links.getMultipleBlackBoardsLink, board._links.getSingleForumLink)
+
+        viewModel.boardLd.observe(
+            this,
+             ProgressObs(progress) {
+
+                val smallBlackBoards = it._embedded?.smallBlackBoardBoards
+
+                if(smallBlackBoards == null)
+                    viewModel.fetchModules(it._links.getMultipleBlackBoardsLink, it._links.getSingleForumLink)
+                else
+                    viewModel.fillModules( smallBlackBoards, it )
+
+            },
+            ProgressObs(progress) {
+                Toast.makeText(activity, it, Toast.LENGTH_SHORT).show()
             }
-            else{
-
-                viewModel.menu.value = BoardViewModel.MenuView(
-
-                    smallBlackBoards.map {
-                        val name = it.name
-                        val link = it._links.self
-
-                        if(name == null || link == null){
-                            viewModel.fetchModules(board._links.getMultipleBlackBoardsLink, board._links.getSingleForumLink)
-                            return@Observer
-                        }
-
-                        BoardViewModel.EvenSmallerBlackBoard(
-                            name, link)
-                    },
-                    board._links.getSingleForumLink
-                )
-            }
-        })
+        )
 
 
-        val forumClickListener = object : ForumClickListener{
+        val forumClickListener = object :
+            ForumClickListener {
             override fun onClickListener(forumLink: GetSingleForumLink) {
                 Toast.makeText(activity, forumLink.href , Toast.LENGTH_LONG).show()
-                (activity as MainActivity).navigateTo(
+                (activity as BackStackManagingActivity).navigateTo(
                     ForumFragment(
                         forumLink
                     )
@@ -89,10 +85,11 @@ class BoardMenuFragment(val link: GetSingleBoardLink) : Fragment() {
             }
         }
 
-        val blackBoardClickListener = object : BlackBoardClickListener{
+        val blackBoardClickListener = object :
+            BlackBoardClickListener {
             override fun onClickListener(blackBoardLink: GetSingleBlackBoardLink) {
                 Toast.makeText(activity, blackBoardLink.href , Toast.LENGTH_LONG).show()
-                (activity as MainActivity).navigateTo(
+                (activity as BackStackManagingActivity).navigateTo(
                     BlackBoardFragment(
                         blackBoardLink
                     )
@@ -100,13 +97,20 @@ class BoardMenuFragment(val link: GetSingleBoardLink) : Fragment() {
             }
         }
 
-        viewModel.menu.observe(this, Observer {
-            recyclerView.adapter =  BoardMenuAdapter(
-                it,
-                blackBoardClickListener,
-                forumClickListener
-            )
-        })
+        viewModel.menuLd.observe(
+            this,
+            ProgressObs(progress) {
+                recyclerView.adapter =
+                    BoardMenuAdapter(
+                        it,
+                        blackBoardClickListener,
+                        forumClickListener
+                    )
+            },
+            ProgressObs(progress) {
+                Toast.makeText(activity, it, Toast.LENGTH_SHORT).show()
+            }
+        )
 
     }
 

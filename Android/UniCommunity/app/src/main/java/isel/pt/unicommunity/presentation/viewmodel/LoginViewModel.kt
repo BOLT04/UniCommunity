@@ -1,35 +1,78 @@
 package isel.pt.unicommunity.presentation.viewmodel
 
-import androidx.lifecycle.MutableLiveData
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.android.volley.Response
+import com.android.volley.VolleyError
+import com.fasterxml.jackson.databind.DeserializationFeature
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import isel.pt.unicommunity.UniCommunityApp
 import isel.pt.unicommunity.model.links.LoginInputDto
+import isel.pt.unicommunity.model.links.LoginLink
 import isel.pt.unicommunity.model.links.LoginOutputDto
-import isel.pt.unicommunity.repository.network.PostRequest
+import isel.pt.unicommunity.repository.network.LinkPostRequest
+import java.util.logging.Handler
 
-class LoginViewModel(private val app : UniCommunityApp) : ViewModel() {
+class LoginViewModel(private val app : UniCommunityApp, private val loginLink : LoginLink) : ViewModel() {
 
-    val loginIsOk = MutableLiveData<LoginInputDto>()
+    val loginLd = ErrorHandlingMLD<LoginInputDto, String>()
 
 
-    fun tryLogin(
-        url: String,
-        email:String,
-        password:String,
-        success :Response.Listener<LoginInputDto>,
-        error : Response.ErrorListener
-    ){
+    fun tryLogin(email : String, pw :String){
 
-        val loginRequest = PostRequest(
-            LoginInputDto::class.java,
-            url,
-            LoginOutputDto(email, password),
-            success,
-            error
+        val loginRequest = LinkPostRequest(
+            loginLink,
+            LoginOutputDto(email,pw),
+            Response.Listener {
+                loginLd.success(it)
+            },
+            Response.ErrorListener {
+
+                val handle = VolleyErrorHandler.handle(it)
+
+                loginLd.error( VolleyErrorHandler.getMessage(it) )
+            }
         )
 
         app.queue.add(loginRequest)
     }
 
 }
+
+open class Error(
+    val title: String
+)
+
+class ProblemJson(
+    val title: String,
+    val detail: String,
+    val status: Int
+)
+
+class VolleyErrorHandler {
+
+    companion object {
+        private val mapper = jacksonObjectMapper()
+            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+
+
+        fun handle(err: VolleyError): Error {
+
+            val message = err.message
+            if(message != null)
+                return Error(message)
+
+
+            val content = String(err.networkResponse.data)
+            val prblmJson = mapper.readValue(content, ProblemJson::class.java).title
+            return Error(prblmJson)
+        }
+
+        fun getMessage(err: VolleyError) = handle(err).title
+
+    }
+}
+
+
+

@@ -38,7 +38,7 @@ class BlackBoardItemCollection(
         val authorName: String,
         val createdAt: String,
 
-        val self: GetSingleBlackBoardItemLink //criado a partir do href
+        val self: GetSingleBlackBoardItemLink //criado allBoardsLd partir do href
 
         // todo val editBlackBoardLink: EditBlackBoardLink?
     )

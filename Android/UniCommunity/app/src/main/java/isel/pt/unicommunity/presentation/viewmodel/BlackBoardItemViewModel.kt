@@ -13,13 +13,13 @@ class BlackBoardItemViewModel(
     val link: GetSingleBlackBoardItemLink
 ) : ViewModel() {
 
-    val blackboardItem : MutableLiveData<BlackBoardItemInputDto> = MutableLiveData()
+    val blackboardItem = ErrorHandlingMLD<BlackBoardItemInputDto,String>()
 
     fun getBlackBoardItem() {
         val navLinkRequest = NavLinkRequest(
             link,
-            Response.Listener { blackboardItem.value = it },
-            Response.ErrorListener {  },
+            Response.Listener { blackboardItem.success(it) },
+            Response.ErrorListener { blackboardItem.error(it.message ?: it.localizedMessage) },
             app.email,
             app.password
         )

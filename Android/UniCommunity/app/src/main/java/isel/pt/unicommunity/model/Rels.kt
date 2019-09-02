@@ -19,6 +19,10 @@ object Rels {
     const val EDIT_BOARD = "$RELS_PREFIX/editBoard"
     const val DELETE_BOARD = "$RELS_PREFIX/deleteBoard"
 
+    const val GET_BOARD_MEMBERS = "$RELS_PREFIX/getMembers"
+    const val SUBSCRIBE = "$RELS_PREFIX/subscribe"
+    const val UNSUBSCRIBE = "$RELS_PREFIX/unsubscribe"
+
     const val CREATE_FORUM = "$RELS_PREFIX/createForum"
     const val GET_SINGLE_FORUM = "$RELS_PREFIX/getForum"
     const val EDIT_FORUM = "$RELS_PREFIX/editForum"
@@ -59,26 +63,16 @@ object Rels {
     const val GET_MULTIPLE_TEMPLATES = "$RELS_PREFIX/getTemplates"
     const val EDIT_TEMPLATE = "$RELS_PREFIX/editTemplate"
     const val DELETE_TEMPLATE = "$RELS_PREFIX/deleteTemplate"
+
+    const val GET_USER_BLACKBOARDS_SETTINGS = "$RELS_PREFIX/blackboardsSettings"
 }
 
 
-
-
-
-
-
-
-
-
-//class SelfLink(href: String): NavLink("self", href)
-
-
-
-
-
-
-
-
+open class NavLink<T>(
+    @JsonIgnore val rel :String,
+    val href: String,
+    @JsonIgnore val responseClass : Class<T>
+)
 
 open class BodyNavLink<O, I>(
     rel: String,

@@ -31,19 +31,20 @@
             android:text="forum_item_content"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:id="@+id/forum_item_content"
+            android:id="@+id/blackboard_item_content_md"
             app:layout_constraintTop_toBottomOf="@+id/forum_item_name"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginTop="28dp"
             android:layout_marginStart="16dp" app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
             app:layout_constraintHorizontal_bias="0.25"
     />
+
     <Button
-            android:text="Comments"
+            android:id="@+id/button2"
             android:layout_width="142dp"
             android:layout_height="37dp"
-            android:id="@+id/button2"
-            android:layout_marginTop="84dp" app:layout_constraintTop_toBottomOf="@+id/forum_item_content"
-            app:layout_constraintEnd_toEndOf="@+id/forum_item_content"
-            app:layout_constraintStart_toStartOf="@+id/forum_item_content"
-            app:layout_constraintHorizontal_bias="0.481"/>
+            android:layout_marginTop="60dp"
+            android:text="@string/comments"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/blackboard_item_content_md" />
 </androidx.constraintlayout.widget.ConstraintLayout>

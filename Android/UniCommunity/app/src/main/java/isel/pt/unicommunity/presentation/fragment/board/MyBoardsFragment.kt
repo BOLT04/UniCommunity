@@ -5,17 +5,25 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 
 import isel.pt.unicommunity.R
+import isel.pt.unicommunity.kotlinx.getUniCommunityApp
 /*import isel.pt.unicommunity.presentation.adapter.BoardClickListener
-import isel.pt.unicommunity.presentation.adapter.MyBoardsAdapter*/
+import isel.pt.unicommunity.presentation.adapter.old.MyBoardsAdapter*/
 import isel.pt.unicommunity.kotlinx.getViewModel
+import isel.pt.unicommunity.model.links.MyBoardsLink
+import isel.pt.unicommunity.presentation.activity.BackStackManagingActivity
+import isel.pt.unicommunity.presentation.adapter.GenericMyBoardsAdapter
+import isel.pt.unicommunity.presentation.adapter.OnClickListener
+import isel.pt.unicommunity.presentation.adapter.PartialBoardView
 import isel.pt.unicommunity.presentation.viewmodel.MyBoardsViewModel
-import kotlinx.android.synthetic.main.fragment_all_boards.*
+import kotlinx.android.synthetic.main.fragment_all_boards.recyclerView
 
-class MyBoardsFragment : Fragment() {
+class MyBoardsFragment(private val myBoards: MyBoardsLink) : Fragment() {
 
         override fun onCreateView(
             inflater: LayoutInflater, container: ViewGroup?,
@@ -28,25 +36,34 @@ class MyBoardsFragment : Fragment() {
         override fun onStart() {
             super.onStart()
 
-            val viewModel = (activity as AppCompatActivity).getViewModel("MyBoards"){
-                MyBoardsViewModel()
+            val app = (activity as AppCompatActivity).getUniCommunityApp()
+
+            val viewModel = (activity as AppCompatActivity).getViewModel("MyBoards${myBoards.href}"){
+                MyBoardsViewModel(myBoards, app)
             }
 
             recyclerView.layoutManager = LinearLayoutManager(activity)
-            /*val onBoardClickListener = object : BoardClickListener {
-                override fun onClickListener(smallBoardItem: SmallBoardItem?) {
 
-                    (activity as BackStackManagingActivity).navigateTo(BoardMenuFragment())
+            viewModel.getMyBoards()
 
-                    Toast.makeText(activity, smallBoardItem?.name ?: "nullsmall board item", Toast.LENGTH_LONG).show()
+            val onBoardClickListener = object : OnClickListener<PartialBoardView> {
+                override fun onClick(value: PartialBoardView) {
+
+                    (activity as BackStackManagingActivity).navigateTo(BoardMenuFragment(value.self))
+
+                    Toast.makeText(activity, value.name, Toast.LENGTH_LONG).show()
                 }
             }
-            recyclerView.adapter = MyBoardsAdapter(viewModel, onBoardClickListener)
 
-            viewModel.liveData.observe(
+
+            viewModel.myboardsLD.observe(
                 this,
-                Observer<List<SmallBoardItem>> { recyclerView.adapter =  MyBoardsAdapter(viewModel, onBoardClickListener)}
-            )*/
+                Observer {
+                    recyclerView.adapter = GenericMyBoardsAdapter(it, onBoardClickListener)
+                },
+                Observer { Toast.makeText(activity, it, Toast.LENGTH_LONG).show() }
+            )
+
         }
 
 }

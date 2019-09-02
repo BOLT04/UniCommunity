@@ -1,4 +1,4 @@
-package isel.pt.unicommunity.presentation.adapter
+package isel.pt.unicommunity.presentation.adapter.old
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -11,8 +11,14 @@ import isel.pt.unicommunity.model.links.GetSingleForumLink
 import isel.pt.unicommunity.presentation.viewmodel.BoardViewModel
 
 
+class MenuView(
+    val blackBoards : List<BoardViewModel.PartialBlackBoardView>,
+    val forum : GetSingleForumLink?
+)
+
+
 class BoardMenuAdapter(
-    menu: BoardViewModel.MenuView,
+    menu: MenuView,
     val onBlackBoardClickListener: BlackBoardClickListener,
     val onForumClickListener : ForumClickListener
 ): RecyclerView.Adapter<ModuleViewHolder>()
@@ -27,14 +33,15 @@ class BoardMenuAdapter(
 
         with(menu) {
             blackBoards.forEach {
-                list.add(Module(it.name){
+                list.add(Module(it.name) {
                     onBlackBoardClickListener.onClickListener(it.link)
                 })
             }
 
             if (forum != null) {
-                list.add(Module("Forum"){
-                    onForumClickListener.onClickListener(forum)})//TODO generalizar
+                list.add(Module("Forum") {
+                    onForumClickListener.onClickListener(forum)
+                })//TODO generalizar
             }
         }
 

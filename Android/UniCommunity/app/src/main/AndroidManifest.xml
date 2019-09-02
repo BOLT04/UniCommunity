@@ -50,9 +50,10 @@
         <activity android:name=".testing.navigationTesting.NavHolderActivity"/>
         <activity android:name=".testing.markdowntesting.ExternalLibActivity"/>
         <activity android:name=".testing.scroolTesting.ScrollingActivity"/>
+        <activity android:name=".presentation.activity.SimpleActivity"/>
 
         <service
-                android:name=".fcm.MyFirebaseMessagingService"
+                android:name="isel.pt.unicommunity.repository.fcm.MyFirebaseMessagingService"
                 android:stopWithTask="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

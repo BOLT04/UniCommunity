@@ -34,37 +34,6 @@ class ProfileFragment(userProfile: UserProfileLink) : Fragment() {
         }
 
 
-        /*viewModel.user.value?.getBoards?.get(
-
-            Response.Listener {
-                if(it.navigation != null)
-                    if(activity is BackStackManagingActivity)
-                        (activity as BackStackManagingActivity).navigateTo(MyBoardsFragment())
-                    else{
-                        //TODO necessario?! activity.supportFragmentManager.
-                    }
-                else{
-
-
-
-                }
-            },
-            Response.ErrorListener { Toast.makeText(activity, "shits fuckd yo", Toast.LENGTH_SHORT).show() }
-        )*/
-
-        launcher.setOnClickListener{
-            if(activity is BackStackManagingActivity)
-                //(activity as BackStackManagingActivity).navigateTo(HomeFragment(links.home.href))
-            else{
-
-                //TODO necessario?! activity.supportFragmentManager.
-            }
-        }
-
-
-
-
-
     }
 
 

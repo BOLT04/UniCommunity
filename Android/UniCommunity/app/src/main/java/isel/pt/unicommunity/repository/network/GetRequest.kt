@@ -118,9 +118,6 @@ open class GetRequest<T>(
         this.setShouldCache(false) //todo development only take this out of here
     }
 
-
-    val TAG = "GetRequest"
-
     override fun deliverResponse(response: T?) {
         if(response!=null)
             onSuccessListener.onResponse(response) //todo seems weird
@@ -140,53 +137,7 @@ open class GetRequest<T>(
     }
 }
 
-class ErrorResponse(val networkResponse: NetworkResponse){
-
-    fun getParsedError() = parseNetworkResponseContentGson(Error::class.java, networkResponse)
-
-}
-
-class Error(val tile:String, val detail:String, val status: Int)
 
 
-class GsonSingleton{
-    private var gson : Gson? = null
-    fun getInstance(): Gson {
-        if(gson!=null)
-            return gson!!
-
-        val gsonBuilder = GsonBuilder()
 
 
-        gson = gsonBuilder.create()
-
-        return gson!!
-    }
-}
-private val gsonBuilder = GsonBuilder()
-
-private val gson = GsonSingleton()
-fun<T> parseNetworkResponseContentGson(clazz: Class<T>, response: NetworkResponse?): T {
-    val json = String(
-        response?.data ?: ByteArray(0),
-        Charset.forName(HttpHeaderParser.parseCharset(response?.headers)))
-
-    return gson.getInstance().fromJson(json, clazz)
-}
-
-
-val mapper = jacksonObjectMapper()
-    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-
-fun<T> parseNetworkResponseContentJackson(clazz: Class<T>, response: NetworkResponse?): T {
-
-    val json = String(
-        response?.data ?: ByteArray(0),
-        Charset.forName(HttpHeaderParser.parseCharset(response?.headers)))
-
-    return  mapper.readValue(json, clazz ) as T
-}
-
-//todo esta verificaçao é anti-hateoas
-
-fun checkUrl(href:String)= if(href.contains("http://")) href else "$BASEURL$href"

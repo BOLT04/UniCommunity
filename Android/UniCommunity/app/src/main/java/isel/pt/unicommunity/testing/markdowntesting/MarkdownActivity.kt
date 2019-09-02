@@ -100,7 +100,7 @@ class MarkdownActivity : AppCompatActivity() {
                 "\n" +
                 "Unordered\n" +
                 "\n" +
-                "+ Create a list by starting a line with `+`, `-`, or `*`\n" +
+                "+ Create allBoardsLd list by starting allBoardsLd line with `+`, `-`, or `*`\n" +
                 "+ Sub-lists are made by indenting 2 spaces:\n" +
                 "  - Marker character change forces new list start:\n" +
                 "    * Ac tristique libero volutpat at\n" +
@@ -183,11 +183,11 @@ class MarkdownActivity : AppCompatActivity() {
                 "![Minion](https://octodex.github.com/images/minion.png)\n" +
                 "![Stormtroopocat](https://octodex.github.com/images/stormtroopocat.jpg \"The Stormtroopocat\")\n" +
                 "\n" +
-                "Like links, Images also have a footnote style syntax\n" +
+                "Like links, Images also have allBoardsLd footnote style syntax\n" +
                 "\n" +
                 "![Alt text][id]\n" +
                 "\n" +
-                "With a reference later in the document defining the URL location:\n" +
+                "With allBoardsLd reference later in the document defining the URL location:\n" +
                 "\n" +
                 "[id]: https://octodex.github.com/images/dojocat.jpg  \"The Dojocat\"\n" +
                 "\n" +

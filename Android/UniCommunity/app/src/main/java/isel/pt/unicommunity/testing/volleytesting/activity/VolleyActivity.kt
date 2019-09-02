@@ -10,7 +10,6 @@ import isel.pt.unicommunity.R
 import isel.pt.unicommunity.kotlinx.getUniCommunityApp
 import isel.pt.unicommunity.kotlinx.getViewModel
 import isel.pt.unicommunity.repository.network.BasicAuthenticationGetRequest
-import isel.pt.unicommunity.repository.network.ErrorResponse
 import kotlinx.android.synthetic.main.__testing__volleytesting.*
 
 
@@ -22,7 +21,7 @@ class VolleyActivity : AppCompatActivity() {
         setContentView(R.layout.__testing__volleytesting)
 
         val queue = getUniCommunityApp().queue
-        val vm = getViewModel("a"){
+        val vm = getViewModel("allBoardsLd"){
             VolleyVM(queue)
         }
 
@@ -40,7 +39,7 @@ class VolleyActivity : AppCompatActivity() {
                 AllBoardsDto::class.java,
                 "$BASEURL/boards",
                 Response.Listener {
-                    val a = it
+                    val allBoardsLd = it
                     //val mapped = AllBoardsMapper().toModel(it)
                     val b =1
                 },
@@ -54,7 +53,7 @@ class VolleyActivity : AppCompatActivity() {
             queue.add(BasicAuthenticationGetRequest(
                 BoardDto::class.java,
                 "$baseurl/boards/1",
-                Response.Listener { val a = it },
+                Response.Listener { val allBoardsLd = it },
                 Response.ErrorListener {Toast.makeText(this, ErrorResponse(it.networkResponse).getParsedError().detail, Toast.LENGTH_SHORT).show()},
                 "admin@gmail.com",
                 "admin"
@@ -66,7 +65,7 @@ class VolleyActivity : AppCompatActivity() {
                 AllBlackBoardsDto::class.java,
                 "$BASEURL/boards/1/blackboards",
                 Response.Listener {
-                    val a = it
+                    val allBoardsLd = it
                     //val mapped = AllBlackBoardsMapper().toModel(it)
                     val b =1
                 },
@@ -80,7 +79,7 @@ class VolleyActivity : AppCompatActivity() {
             queue.add(BasicAuthenticationGetRequest(
                 BlackBoardDto::class.java,
                 "$baseurl/boards",
-                Response.Listener { val a = it },
+                Response.Listener { val allBoardsLd = it },
                 Response.ErrorListener {Toast.makeText(this, ErrorResponse(it.networkResponse).getParsedError().detail, Toast.LENGTH_SHORT).show()},
                 "admin@gmail.com",
                 "admin"
@@ -108,7 +107,7 @@ Response.ErrorListener {
 
         /*
             vm.loginRequest(
-                Response.Listener { val a= it },
+                Response.Listener { val allBoardsLd= it },
                 Response.ErrorListener {Toast.makeText(this, ErrorResponse(it.networkResponse).getParsedError().detail, Toast.LENGTH_SHORT).show()}
             )
 */
@@ -119,7 +118,7 @@ Response.ErrorListener {
             else {
 
                 if(value.navigator!=null) {
-                    val navVm = getViewModel("") {
+                    val navVm = getBackstackVM("") {
                         NavVM(queue, value.navigator)
                     }
 

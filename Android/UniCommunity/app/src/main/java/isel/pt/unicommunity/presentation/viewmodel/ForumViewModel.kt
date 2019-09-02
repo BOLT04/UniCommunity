@@ -9,24 +9,24 @@ import isel.pt.unicommunity.model.inputdto.ForumInputDto
 import isel.pt.unicommunity.model.links.GetMultipleForumItemsLink
 import isel.pt.unicommunity.model.links.GetSingleForumItemLink
 import isel.pt.unicommunity.model.links.GetSingleForumLink
+import isel.pt.unicommunity.presentation.adapter.PartialForumItemView
 import isel.pt.unicommunity.repository.network.NavLinkRequest
 
 class ForumViewModel(val app: UniCommunityApp, val getSingleForumLink: GetSingleForumLink) : ViewModel(){
 
 
-    val forum = MutableLiveData<ForumInputDto>()
+    val forum = ErrorHandlingMLD<ForumInputDto, String>()
 
-    val forumItems = MutableLiveData<List<PartialForumItemView>>()
+    val forumItems = ErrorHandlingMLD<List<PartialForumItemView>, String>()
 
     fun getForum(){
         val getBlackBoardRequest = NavLinkRequest(
             getSingleForumLink,
             Response.Listener {
-                forum.value = it
+                forum.success(it)
             },
             Response.ErrorListener {
-                val a = 1
-                //todo
+                forum.error(it.message ?: it.localizedMessage )
             },
             app.email,
             app.password
@@ -58,7 +58,7 @@ class ForumViewModel(val app: UniCommunityApp, val getSingleForumLink: GetSingle
 
 
         if(forumItemsViews != null)
-            forumItems.value = forumItemsViews
+            forumItems.success(forumItemsViews)
         else
             getForumItems(multipleForumItemsLink)
     }
@@ -68,17 +68,18 @@ class ForumViewModel(val app: UniCommunityApp, val getSingleForumLink: GetSingle
         val getMultipleForumItemsRequest = NavLinkRequest(
             getMultipleForumItemsLink,
             Response.Listener { collectionJson ->
-                forumItems.value = collectionJson.toForumItemCollection().forumItems.map {
-                    PartialForumItemView(
-                        it.name,
-                        it.authorName,
-                        it.self
-                    )
-                }
+                forumItems.success(
+                    collectionJson.toForumItemCollection().forumItems.map {
+                        PartialForumItemView(
+                            it.name,
+                            it.authorName,
+                            it.self
+                        )
+                    }
+                )
             },
             Response.ErrorListener {
-                val a = 1
-                //todo
+                forumItems.error(it.message ?: it.localizedMessage)
             },
             app.email,
             app.password
@@ -88,11 +89,7 @@ class ForumViewModel(val app: UniCommunityApp, val getSingleForumLink: GetSingle
     }
 
 
-    class PartialForumItemView(
-        val name: String,
-        val author : String?,
-        val getSingleForumItemLink: GetSingleForumItemLink
-    )
+
 
 
 

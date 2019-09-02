@@ -1,5 +1,5 @@
-package isel.pt.unicommunity.presentation.adapter
-
+package isel.pt.unicommunity.presentation.adapter.old
+/*
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
@@ -20,7 +20,10 @@ class ForumAdapter(
             .from(parent.context)
             .inflate(R.layout.item_forum_item, parent, false) as ViewGroup
 
-        return ForumItemViewHolder(view, onForumItemClickListener)
+        return ForumItemViewHolder(
+            view,
+            onForumItemClickListener
+        )
     }
 
     override fun getItemCount(): Int =
@@ -51,4 +54,4 @@ class ForumItemViewHolder(
         layout.setOnClickListener{onForumItemClickListener.onClickListener(partialForumItemView)}
     }
 
-}
+}*/

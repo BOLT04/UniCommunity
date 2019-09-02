@@ -1,4 +1,4 @@
-package isel.pt.unicommunity.presentation.fragment.modules.forum
+package isel.pt.unicommunity.presentation.fragment.modules.comment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,11 +19,11 @@ class CommentFragment(val getSingleCommentLink: GetSingleCommentLink) : Fragment
 
     override fun onStart() {
         super.onStart()
-
+/*
         val viewModel = (activity as AppCompatActivity).getViewModel("blackBoard"){
-            CommentViewModel()
+            CommentViewModel(app, getMultipleCommentsLink)
         }
-
+*/
 
 
 

@@ -1,6 +1,5 @@
 package isel.pt.unicommunity.presentation.viewmodel
 
-import android.os.Handler
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.android.volley.Response
@@ -11,6 +10,7 @@ import isel.pt.unicommunity.model.links.GetMultipleBoardsLink
 import isel.pt.unicommunity.model.links.GetSingleBlackBoardLink
 import isel.pt.unicommunity.model.links.GetSingleBoardLink
 import isel.pt.unicommunity.model.links.GetSingleForumLink
+import isel.pt.unicommunity.presentation.adapter.old.MenuView
 import isel.pt.unicommunity.repository.network.NavLinkRequest
 
 class BoardViewModel(val app: UniCommunityApp, val getSingleBoardLink: GetSingleBoardLink) : ViewModel(){
@@ -18,17 +18,19 @@ class BoardViewModel(val app: UniCommunityApp, val getSingleBoardLink: GetSingle
     val board = MutableLiveData<BoardInputDto>()
     val menu = MutableLiveData<MenuView>()
 
+    val boardLd = ErrorHandlingMLD<BoardInputDto, String>()
+    val menuLd = ErrorHandlingMLD<MenuView, String>()
+
 
     fun fetchBoard(){
 
         val navLinkRequest = NavLinkRequest(
             getSingleBoardLink,
             Response.Listener {
-                board.value = it
+                boardLd.success(it)
             },
             Response.ErrorListener {
-                val a = 1
-                /*TODO something here*/
+                boardLd.error(it.message ?: it.localizedMessage)
             },
             app.email,
             app.password
@@ -36,12 +38,9 @@ class BoardViewModel(val app: UniCommunityApp, val getSingleBoardLink: GetSingle
         app.queue.add(navLinkRequest)
     }
 
-    class MenuView(
-        val blackBoards : List<EvenSmallerBlackBoard>,
-        val forum : GetSingleForumLink?
-    )
 
-    class EvenSmallerBlackBoard(
+
+    class PartialBlackBoardView(
         val name: String,
         val link: GetSingleBlackBoardLink
     )
@@ -57,24 +56,49 @@ class BoardViewModel(val app: UniCommunityApp, val getSingleBoardLink: GetSingle
                 multipleBlackBoardsLink,
                 Response.Listener { collectionJson ->
                     val blackBoards = collectionJson.toBlackBoardCollection()
-                    menu.value = MenuView(
-                        blackBoards.blackBoards.map {
-                            EvenSmallerBlackBoard(it.name, it.self)
-                        },
-                        singleForumLink
+                    menuLd.success(
+                        MenuView(
+                            blackBoards.blackBoards.map {
+                                PartialBlackBoardView(it.name, it.self)
+                            },
+                            singleForumLink
+                        )
                     )
-
                 },
-                Response.ErrorListener { },
+                Response.ErrorListener {
+                    menuLd.error( it.message ?: it.localizedMessage)
+                },
                 app.email,
                 app.password
             )
 
             app.queue.add(getBlackBoards)
         }
+    }
 
+    fun fillModules(
+        smallBlackBoards: Array<BoardInputDto.EmbeddedStruct.PartialBlackBoardInputDto>,
+        board: BoardInputDto
+    ) {
 
+        val menuView = MenuView(
 
+            smallBlackBoards.map {
+                val name = it.name
+                val link = it._links.self
+
+                if (name == null || link == null) {
+                    fetchModules(board._links.getMultipleBlackBoardsLink, board._links.getSingleForumLink)
+                    return
+                }
+
+                PartialBlackBoardView(name, link)
+
+            },
+            board._links.getSingleForumLink
+        )
+
+        menuLd.success(menuView)
 
     }
 

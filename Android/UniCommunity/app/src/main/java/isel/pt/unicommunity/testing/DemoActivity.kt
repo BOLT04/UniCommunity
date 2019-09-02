@@ -3,8 +3,13 @@ package isel.pt.unicommunity.testing
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity;
+import com.android.volley.Response
 import isel.pt.unicommunity.presentation.activity.MainActivity
 import isel.pt.unicommunity.R
+import isel.pt.unicommunity.kotlinx.getUniCommunityApp
+import isel.pt.unicommunity.model.links.CreateForumItemLink
+import isel.pt.unicommunity.model.outputdto.ForumItemOutputDto
+import isel.pt.unicommunity.repository.network.BasicAuthNavLinkPostRequest
 import isel.pt.unicommunity.testing.fragmentTesting.TestingActivity
 import isel.pt.unicommunity.testing.markdowntesting.ExternalLibActivity
 import isel.pt.unicommunity.testing.viewmodeltesting.ZActivity1
@@ -18,12 +23,29 @@ class DemoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.__testing__demo)
 
+        val app = getUniCommunityApp()
+
         button.setOnClickListener {
-            this.startActivity(Intent(this, TestingActivity::class.java))
+
+            val req = BasicAuthNavLinkPostRequest(
+                CreateForumItemLink("/boards/1/forum/posts"),
+                ForumItemOutputDto("name", "content", false),
+                Response.Listener {
+                    val a = it
+                },
+                Response.ErrorListener {
+                    val b = it
+                },
+                "admin@gmail.com",
+                "admin"
+            )
+
+            app.queue.add(req)
+
         }
 
-        button8.setOnClickListener {
-            this.startActivity(Intent(this, ZActivity1::class.java))
+        /*button8.setOnClickListener {
+
         }
 
         button9.setOnClickListener {
@@ -36,7 +58,7 @@ class DemoActivity : AppCompatActivity() {
 
         button10.setOnClickListener {
             this.startActivity(Intent(this, VolleyActivity::class.java))
-        }
+        }*/
 
     }
 

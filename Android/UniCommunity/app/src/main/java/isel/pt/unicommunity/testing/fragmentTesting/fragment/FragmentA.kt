@@ -35,15 +35,15 @@ class FragmentA : Fragment() {
         //val test = Test(User::class.java)
 
 
-        //nav_header_email.text = test.a.simpleName
+        //nav_header_email.text = test.allBoardsLd.simpleName
 
 
 
-        /*val viewModel = act.getViewModel("test"){
+        /*val backstackVM = act.getBackstackVM("test"){
            // TestingModel(app.navSupplier)
         }
 */
-       /* viewModel.user.observe(act, Observer {
+       /* backstackVM.user.observe(act, Observer {
 
             nav_header_email.text= it.name
 
@@ -66,7 +66,7 @@ class FragmentA : Fragment() {
             Log.v(TAG, "button clicked")
             //textView.text= "macarena"
 
-            viewModel.user.value?.nav?.get(
+            backstackVM.user.value?.nav?.get(
                 Response.Listener { Toast.makeText(act,"success", Toast.LENGTH_LONG).show() },
                 Response.ErrorListener { Toast.makeText(act,"failure", Toast.LENGTH_LONG).show() }
             )

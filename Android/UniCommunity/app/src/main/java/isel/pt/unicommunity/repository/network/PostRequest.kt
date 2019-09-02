@@ -8,10 +8,10 @@ import com.google.gson.Gson
 import isel.pt.unicommunity.model.BodyNavLink
 import java.nio.charset.Charset
 
-private val gson = Gson()
 
 
-class NavLinkPostRequest<O,I>(
+
+class BasicAuthNavLinkPostRequest<O,I>(
     bodyNavLink: BodyNavLink<O, I>,
     body: O?,
     onSuccessListener: Response.Listener<I>,
@@ -19,13 +19,27 @@ class NavLinkPostRequest<O,I>(
     email: String,
     password: String,
     headers: MutableMap<String, String>? = null,
-    logger: (() -> Unit)? = null
+    logger: ((String) -> Unit)? = null
 ):BasicAuthenticationPostRequest<O,I>(
     bodyNavLink.responseClass,
     bodyNavLink.href,
     body,
     onSuccessListener, onErrorListener, email, password, headers, logger
 
+)
+
+class LinkPostRequest<O,I>(
+    bodyNavLink: BodyNavLink<O, I>,
+    body: O?,
+    onSuccessListener: Response.Listener<I>,
+    onErrorListener: Response.ErrorListener,
+    headers: MutableMap<String, String>? = null,
+    logger: ((String) -> Unit)? = null
+):PostRequest <O,I>(
+    bodyNavLink.responseClass,
+    checkUrl(bodyNavLink.href),
+    body,
+    onSuccessListener, onErrorListener, headers, logger
 )
 
 open class BasicAuthenticationPostRequest<O,I>(
@@ -37,7 +51,7 @@ open class BasicAuthenticationPostRequest<O,I>(
     email: String,
     password: String,
     headers: MutableMap<String, String>?,
-    logger: (() -> Unit)?
+    logger: ((String) -> Unit)?
 
 ): PostRequest<O,I>(
     iClazz, checkUrl(url), body, onSuccessListener, onErrorListener, basicAuthenticationMiddleware(headers, email, password), logger
@@ -50,13 +64,11 @@ open class PostRequest<O,I>(
     private val onSuccessListener: Response.Listener<I>,
     onErrorListener: Response.ErrorListener,
     private val headers: MutableMap<String, String>? = null,
-    private val logger: (() -> Unit)? = null) : Request<I>(Method.POST, checkUrl(url), onErrorListener) {
+    private val logger: ((String) -> Unit)? = null) : Request<I>(Method.POST, checkUrl(url), onErrorListener) {
 
     init {
         this.setShouldCache(false) //todo development only take this out of here
     }
-
-    val TAG = "GetRequest"
 
     override fun deliverResponse(response: I?) {
         if(response!=null)
@@ -65,9 +77,11 @@ open class PostRequest<O,I>(
 
     override fun parseNetworkResponse(response: NetworkResponse?): Response<I> {
 
+        response?.data?.let { logger?.invoke(String(it)) }
+
         val parsedNetworkResponseContent = parseNetworkResponseContentJackson(iClazz, response)
 
-        logger?.invoke()
+        logger?.invoke(parsedNetworkResponseContent.toString())
 
         return Response.success(parsedNetworkResponseContent, HttpHeaderParser.parseCacheHeaders(response))
     }
@@ -79,7 +93,7 @@ open class PostRequest<O,I>(
     override fun getBody(): ByteArray {
         if(body==null)
             return super.getBody()
-        return gson.toJson(body).toByteArray(Charset.forName("UTF-8"))
+        return mapper.writeValueAsString(body).toByteArray(Charset.forName("UTF-8"))
     }
 
     override fun getBodyContentType(): String {

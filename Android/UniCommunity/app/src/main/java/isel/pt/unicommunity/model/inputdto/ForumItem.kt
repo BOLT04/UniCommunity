@@ -8,12 +8,13 @@ class ForumItemInputDto(
     val name : String,
     val content : String,
     val createdAt : String,
+    val anonymusPost : Boolean,
     val _links : ForumItemInputDtoLinkStruct,
     val _embedded : ForumItemInputDtoEmbeddedStruct?
 )
 
 class ForumItemInputDtoEmbeddedStruct {
-
+//todo
 }
 
 class ForumItemInputDtoLinkStruct (

@@ -1,20 +1,34 @@
 package isel.pt.unicommunity.presentation.activity
 
 import android.app.ProgressDialog
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
-import com.android.volley.Response
 import isel.pt.unicommunity.BASEURL
 import isel.pt.unicommunity.R
+import isel.pt.unicommunity.common.OptionalProgressBar
+import isel.pt.unicommunity.common.ProgressBarActivity
+import isel.pt.unicommunity.common.ProgressObs
 import isel.pt.unicommunity.kotlinx.getUniCommunityApp
 import isel.pt.unicommunity.kotlinx.getViewModel
+import isel.pt.unicommunity.model.links.LoginLink
 import isel.pt.unicommunity.presentation.viewmodel.LoginViewModel
 import kotlinx.android.synthetic.main.activity_login.*
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity(), ProgressBarActivity {
+    lateinit var progress : ProgressDialog
+
+    override fun startProgressBar() {
+        progress.setTitle("Loading");
+        progress.setMessage("Wait while loading...");
+        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog*/
+    }
+
+    override fun stopProgressBar() {
+        progress.dismiss()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,88 +36,87 @@ class LoginActivity : AppCompatActivity() {
 
         val app = getUniCommunityApp()
         val viewModel = getViewModel("Login"){
-            LoginViewModel(app)
+
+            LoginViewModel(app, LoginLink("$BASEURL/signin")) //todo tirar isto
+
         }
 
-        //val sharedPref = getSharedPreferences(app.SharedPreferences_FileName, Context.MODE_PRIVATE)
+        progress =  ProgressDialog(this)
 
-        /*ProgressDialog progress = new ProgressDialog(this);
-        progress.setTitle("Loading");
-        progress.setMessage("Wait while loading...");
-        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog*/
+        loginBtn.isClickable=true
 
-        val progress = ProgressDialog(this)
-        progress.setTitle("Loading");
-        progress.setMessage("Wait while loading...");
-        progress.setCancelable(false); // disable dismiss by tapping outside of the dialog*/
+        val sharedPref = getSharedPreferences(app.SharedPreferences_FileName, Context.MODE_PRIVATE)
 
-        viewModel.loginIsOk.observe(this, androidx.lifecycle.Observer {
-            Toast.makeText(this, "FUCKING YEET", Toast.LENGTH_SHORT).show()
+        val savedEmail = sharedPref.getString("email", null)
+        val savedPw = sharedPref.getString("pw", null)
+
+        if(savedEmail != null && savedPw !=null){
+            email.setText(savedEmail)
+            password.setText(savedPw)
+            rememberMe.isChecked = true
+        }
 
 
-
-            if(it._links.nav!=null) {
-                val intent =Intent(this, MainActivity::class.java)
-                intent.putExtra("navHref", it._links.nav.href)
-                this.startActivity(intent)
-            }
-            else mock()//TODO tirar isto daqui é so para testar agora
-        })
 
         loginBtn.setOnClickListener {
-            val email = email.text.toString()
-            val password = password.text.toString()
+            app.email = email.text.toString()
+            app.password = password.text.toString()
 
             //deactivate button
             loginBtn.isClickable=false
             progress.show()
 
             viewModel.tryLogin(
-                "$BASEURL/signin",
-                email,
-                password,
-                Response.Listener {
-                    app.email = it.email
-                    app.username = it.name
-                    app.password = password
-                    viewModel.loginIsOk.value = it
-
-                    Log.v("LOGIN", "success")
-                    progress.dismiss()
-                    loginBtn.isClickable=true
-                },
-                Response.ErrorListener {
-                    Log.v("LOGIN", "failure $it")
-
-                    progress.dismiss()
-                    loginBtn.isClickable=true
-                    /*TODO do something here*/
-                }
+                app.email,
+                app.password
             )
         }
+
+        val progressBar = OptionalProgressBar(this)
+
+
+
+        viewModel.loginLd.observe(
+            this,
+            ProgressObs(progressBar) {
+
+                Toast.makeText(this, "FUCKING YEET", Toast.LENGTH_SHORT).show()
+                loginBtn.isClickable=true
+
+
+                if(rememberMe.isChecked){
+                    val edit =
+                        getSharedPreferences(app.SharedPreferences_FileName, Context.MODE_PRIVATE).edit()
+
+                    edit.putString("email", app.email)
+                    edit.putString("pw", app.password)
+                    edit.apply()
+                }
+
+
+
+
+                if(it._links.nav!=null) {
+                    val intent =Intent(this, MainActivity::class.java)
+                    intent.putExtra("navHref", it._links.nav.href)
+                    this.startActivity(intent)
+                }
+                else if(it._links.getMultipleBoardsLink != null){
+                    val intent =Intent(this, SimpleActivity::class.java)
+                    intent.putExtra("boardsHref", it._links.getMultipleBoardsLink.href)
+                    this.startActivity(intent)
+                }
+
+            },
+            ProgressObs(progressBar) {
+
+                Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
+                loginBtn.isClickable=true
+            }
+        )
     }
 
-    private fun mock() {
-        val intent =Intent(this, MainActivity::class.java)
-        intent.putExtra("navUrl", "$BASEURL/navigation")
-        this.startActivity(intent)
-    }
 
-    /*private fun restoreUserInputTexts(model: LoginViewModel, sharedPref: SharedPreferences) {
-
-       sharedPref.getString("email",null)
-       sharedPref.getString("password",null)
-
-        if (model.textOrganization == "")
-            model.textOrganization = sharedPref.getString(getString(R.string.organizationId), "")
-
-        if (model.textToken == "")
-            model.textToken = sharedPref.getString(getString(R.string.userToken), "")
-
-        login_userID.text = Editable.Factory().newEditable(model.textUser)
-        login_orgID.text = Editable.Factory().newEditable(model.textOrganization)
-        login_personalToken.text = Editable.Factory().newEditable(model.textToken)
-    }*/
 
 
 

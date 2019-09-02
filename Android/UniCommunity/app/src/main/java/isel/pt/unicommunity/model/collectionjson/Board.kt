@@ -2,11 +2,7 @@ package isel.pt.unicommunity.model.collectionjson
 
 import isel.pt.unicommunity.model.CollectionJson
 import isel.pt.unicommunity.model.Rels
-
-import isel.pt.unicommunity.model.links.DeleteBoardLink
-import isel.pt.unicommunity.model.links.EditBoardLink
-import isel.pt.unicommunity.model.links.GetMultipleBoardsLink
-import isel.pt.unicommunity.model.links.GetSingleBoardLink
+import isel.pt.unicommunity.model.links.*
 
 fun CollectionJson.toBoardCollection() : BoardCollection {
 
@@ -22,7 +18,9 @@ fun CollectionJson.toBoardCollection() : BoardCollection {
                         getOptionalValue("description"),
                         getLink(Rels.EDIT_BOARD, ::EditBoardLink),
                         getLink(Rels.DELETE_BOARD, ::DeleteBoardLink),
-                        getLink(Rels.GET_MULTIPLE_BOARDS, ::GetMultipleBoardsLink)
+                        getLink(Rels.GET_MULTIPLE_BOARDS, ::GetMultipleBoardsLink),
+                        getLink(Rels.SUBSCRIBE, ::SubscribeLink)
+                        //todo getLink(Rels.UNSUBSCRIBE, )
                     )
                 }
             }
@@ -45,7 +43,8 @@ class BoardCollection(
 
         val editBoardLink: EditBoardLink?,
         val deleteBoardLink: DeleteBoardLink?,
-        val getMultipleBoardsLink: GetMultipleBoardsLink?
+        val getMultipleBoardsLink: GetMultipleBoardsLink?,
+        val subscribeLink: SubscribeLink?
         // add member
         // remove member
     )

@@ -23,11 +23,11 @@ class ZActivity1 : AppCompatActivity() {
 
         val vmA = app.commonVm["A"] as A?
 
-        val vmB = getViewModel("B"){
+        val vmB = getBackstackVM("B"){
             B("1")
         }
 
-        val vmC = getViewModel("C"){
+        val vmC = getBackstackVM("C"){
             C("1")
         }
 

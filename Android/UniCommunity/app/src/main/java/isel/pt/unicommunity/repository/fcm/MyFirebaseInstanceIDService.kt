@@ -1,4 +1,4 @@
-package isel.pt.unicommunity.fcm
+package isel.pt.unicommunity.repository.fcm
 
 import android.app.NotificationManager
 import android.app.PendingIntent

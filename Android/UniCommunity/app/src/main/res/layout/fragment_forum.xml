@@ -7,11 +7,11 @@
             android:layout_height="582dp"
             app:layout_constraintStart_toStartOf="parent" android:layout_marginStart="8dp"
             app:layout_constraintEnd_toEndOf="parent" android:layout_marginEnd="8dp"
-            android:id="@+id/recyclerView2"
+            android:id="@+id/recyclerView_forum"
             app:layout_constraintHorizontal_bias="1.0" app:layout_constraintTop_toBottomOf="@+id/forum_title"
             android:layout_marginTop="28dp"/>
     <Button
-            android:text="Post"
+            android:text="@string/post"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/forum_additem"
@@ -19,7 +19,7 @@
             app:layout_constraintTop_toTopOf="@+id/forum_title" app:layout_constraintStart_toEndOf="@+id/forum_title"
             android:layout_marginStart="140dp" app:layout_constraintVertical_bias="0.606"/>
     <TextView
-            android:text="Forum"
+            android:text="@string/forum"
             android:layout_width="43dp"
             android:layout_height="wrap_content"
             android:id="@+id/forum_title" app:layout_constraintStart_toStartOf="parent"

@@ -92,7 +92,7 @@ class UniCommunityApp : Application(){
     }
 
     private fun createNotificationChannels() {
-        // Create notification channel if we are running on a O+ device
+        // Create notification channel if we are running on allBoardsLd O+ device
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 TEAM_NOTIFICATION_CHANNEL_ID,

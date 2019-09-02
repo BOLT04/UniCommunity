@@ -1,5 +1,5 @@
-package isel.pt.unicommunity.presentation.adapter
-
+package isel.pt.unicommunity.presentation.adapter.old
+/*
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
@@ -10,8 +10,8 @@ import isel.pt.unicommunity.presentation.viewmodel.BlackBoardViewModel
 
 
 class BlackBoardAdapter(
-    val blackBoardItems: List<BlackBoardViewModel.BlackBoardItemRepr>,
-    val onBlackBoardItemReprClickListener : OnBlackBoardItemReprClickListener
+    val blackBoardItems: List<BlackBoardViewModel.BlackBoardItemView>,
+    val onBlackBoardItemViewClickListener : OnBlackBoardItemViewClickListener
 ) : RecyclerView.Adapter<BlackBoardItemReprViewHolder>(){
 
 
@@ -20,7 +20,7 @@ class BlackBoardAdapter(
             .from(parent.context)
             .inflate(R.layout.item_blackboard, parent, false) as ViewGroup
 
-        return BlackBoardItemReprViewHolder(view, onBlackBoardItemReprClickListener)
+        return BlackBoardItemReprViewHolder(view, onBlackBoardItemViewClickListener)
     }
 
 
@@ -35,13 +35,13 @@ class BlackBoardAdapter(
 
 }
 
-interface OnBlackBoardItemReprClickListener {
-    fun onClick(item : BlackBoardViewModel.BlackBoardItemRepr)
+interface OnBlackBoardItemViewClickListener {
+    fun onClick(item : BlackBoardViewModel.BlackBoardItemView)
 }
 
 class BlackBoardItemReprViewHolder(
     view :ViewGroup,
-    val onBlackBoardItemReprClickListener: OnBlackBoardItemReprClickListener
+    val onBlackBoardItemViewClickListener: OnBlackBoardItemViewClickListener
 ) : RecyclerView.ViewHolder(view) {
 
     val title : TextView = view.findViewById(R.id.title)
@@ -51,18 +51,16 @@ class BlackBoardItemReprViewHolder(
 
     val layout :  ConstraintLayout = view.findViewById(R.id.blackboardItem_layout)
 
-    fun bindToView(blackBoardItemRepr: BlackBoardViewModel.BlackBoardItemRepr){
+    fun bindToView(blackBoardItemRepr: BlackBoardViewModel.BlackBoardItemView){
         title.text= blackBoardItemRepr.title
         autor.text=blackBoardItemRepr.author
         date.text = blackBoardItemRepr.date
-        /*autor.text= blackBoardItemRepr?.author ?: "empty"
-        date.text= blackBoardItemRepr?.date?.toString() ?: "empty"
-        smallDesc.text= blackBoardItemRepr?.desc ?: "empty" todo */
 
         layout.setOnClickListener{
-            onBlackBoardItemReprClickListener.onClick(blackBoardItemRepr)
+            onBlackBoardItemViewClickListener.onClick(blackBoardItemRepr)
         }
 
     }
 
 }
+*/

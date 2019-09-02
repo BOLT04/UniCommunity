@@ -8,7 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.android.volley.Response
+import androidx.lifecycle.Observer
 import isel.pt.unicommunity.presentation.activity.MainActivity
 import isel.pt.unicommunity.R
 import isel.pt.unicommunity.kotlinx.getUniCommunityApp
@@ -26,14 +26,14 @@ class CreateBlackBoardItemFragment(val link : CreateBlackBoardItemLink) : Fragme
 
     override fun onStart() {
         super.onStart()
-        val activity =  activity as MainActivity
+        val activity =  activity as AppCompatActivity
         val app = activity.getUniCommunityApp()
 
-        val viewModel = (activity as AppCompatActivity).getViewModel("blackBoard${link.href}"){
+        val viewModel = activity.getViewModel("blackBoard${link.href}"){
             CreateBlackBoardItemViewModel(app, link)
         }
 
-        button14.setOnClickListener {
+        create_forum_item_button.setOnClickListener {
 
             val title = checkInput(title, false)
 
@@ -46,19 +46,19 @@ class CreateBlackBoardItemFragment(val link : CreateBlackBoardItemLink) : Fragme
 
             viewModel.postItem(
                 title,
-                content,
-                Response.Listener {
-                    Toast.makeText(activity, "Posted with success", Toast.LENGTH_SHORT).show()
-                },
-                Response.ErrorListener {
-                    Toast.makeText(activity, "ERROR", Toast.LENGTH_SHORT).show()
-                }
+                content
             )
 
+            viewModel.createItemLd.observe(
+                activity,
+                Observer {
+                    Toast.makeText(activity, "Posted with success", Toast.LENGTH_SHORT).show()
+                },
+                Observer {
+                    Toast.makeText(activity, it, Toast.LENGTH_SHORT).show()
+                }
+            )
         }
-
-
-
 
     }
 

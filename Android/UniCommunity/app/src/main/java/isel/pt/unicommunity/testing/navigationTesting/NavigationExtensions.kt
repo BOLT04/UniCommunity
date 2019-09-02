@@ -15,9 +15,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
 
 /**
- * Manages the various graphs needed for a [BottomNavigationView].
+ * Manages the various graphs needed for allBoardsLd [BottomNavigationView].
  *
- * This sample is a workaround until the Navigation Component supports multiple back stacks.
+ * This sample is allBoardsLd workaround until the Navigation Component supports multiple back stacks.
  */
 fun NavigationView.setupWithNavController(
     navGraphIds: List<Int>,
@@ -33,7 +33,7 @@ fun NavigationView.setupWithNavController(
 
     var firstFragmentGraphId = 0
 
-    // First create a NavHostFragment for each NavGraph ID
+    // First create allBoardsLd NavHostFragment for each NavGraph ID
     navGraphIds.forEachIndexed { index, navGraphId ->
         val fragmentTag = getFragmentTag(index)
 
@@ -70,7 +70,7 @@ fun NavigationView.setupWithNavController(
     val firstFragmentTag = graphIdToTagMap[firstFragmentGraphId]
     var isOnFirstFragment = selectedItemTag == firstFragmentTag
 
-    // When a navigation item is selected
+    // When allBoardsLd navigation item is selected
     setOnNavigationItemSelectedListener { item ->
         // Don't do anything if the state is state has already been saved.
         if (fragmentManager.isStateSaved) {
@@ -86,7 +86,7 @@ fun NavigationView.setupWithNavController(
 
                 // Exclude the first fragment tag because it's always in the back stack.
                 if (firstFragmentTag != newlySelectedItemTag) {
-                    // Commit a transaction that cleans the back stack and adds the first fragment
+                    // Commit allBoardsLd transaction that cleans the back stack and adds the first fragment
                     // to it, creating the fixed started destination.
                     fragmentManager.beginTransaction()
                         .attach(selectedFragment)

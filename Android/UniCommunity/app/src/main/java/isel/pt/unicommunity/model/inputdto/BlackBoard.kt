@@ -23,6 +23,27 @@ class BlackBoardInputDto(
     )
 
     class EmbeddedStruct(
+        @JsonProperty(Rels.GET_SINGLE_BOARD) val board : PartialBoard?,
+        @JsonProperty(Rels.GET_MULTIPLE_BLACKBOARDITEMS) val blackboardItems: Array<PartialBlackBoardItem>?
+    ){
+        class PartialBoard(
+            val name : String?,
+            val _links: PartialBoardLinkStruct
+        ){
+            class PartialBoardLinkStruct(
+                val self : GetSingleBoardLink
+            )
+        }
 
-    )
+        class PartialBlackBoardItem(
+            val name : String?,
+            val author : String?,
+            val date : String?,
+            val _links : PartialBlackBoardItemLinkStruct
+        ){
+            class PartialBlackBoardItemLinkStruct(
+                val self: GetSingleBlackBoardItemLink
+            )
+        }
+    }
 }

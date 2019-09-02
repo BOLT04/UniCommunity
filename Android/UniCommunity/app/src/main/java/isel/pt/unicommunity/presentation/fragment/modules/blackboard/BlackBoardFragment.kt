@@ -7,15 +7,17 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import isel.pt.unicommunity.presentation.activity.MainActivity
 import isel.pt.unicommunity.R
+import isel.pt.unicommunity.common.ProgressObs
 import isel.pt.unicommunity.kotlinx.getUniCommunityApp
-import isel.pt.unicommunity.presentation.adapter.BlackBoardAdapter
 import isel.pt.unicommunity.kotlinx.getViewModel
 import isel.pt.unicommunity.model.links.GetSingleBlackBoardLink
-import isel.pt.unicommunity.presentation.adapter.OnBlackBoardItemReprClickListener
+import isel.pt.unicommunity.presentation.activity.BackStackManagingActivity
+import isel.pt.unicommunity.common.OptionalProgressBar
+import isel.pt.unicommunity.presentation.adapter.BlackBoardItemView
+import isel.pt.unicommunity.presentation.adapter.GenericBlackBoardsAdapter
+import isel.pt.unicommunity.presentation.adapter.OnClickListener
 import isel.pt.unicommunity.presentation.viewmodel.BlackBoardViewModel
 import kotlinx.android.synthetic.main.fragment_blackboard.*
 
@@ -31,8 +33,8 @@ class BlackBoardFragment(val blackBoardLink: GetSingleBlackBoardLink) : Fragment
     override fun onStart() {
         super.onStart()
 
-        val activity =  activity as MainActivity
-        val app = activity.getUniCommunityApp()
+        val activity =  activity as BackStackManagingActivity
+        val app = (activity as AppCompatActivity).getUniCommunityApp()
         val viewModel = (activity as AppCompatActivity).getViewModel("blackBoard${blackBoardLink.href}"){
             BlackBoardViewModel(app, blackBoardLink)
         }
@@ -40,50 +42,61 @@ class BlackBoardFragment(val blackBoardLink: GetSingleBlackBoardLink) : Fragment
         blackboard_recylcerview.layoutManager = LinearLayoutManager(activity)
 
 
+        val progress = OptionalProgressBar(activity) {
+            viewModel.getBlackBoard()
+        }
 
-        viewModel.getBlackBoard()
+        viewModel.blackBoardLd.observe(
+            this,
+            ProgressObs(progress) {
 
-        viewModel.blackBoard.observe(this, Observer {
-
-            val link = it._links.createBlackBoardItemLink
-            if(link!=null) {
-                button15.setOnClickListener {
-                    activity.navigateTo(CreateBlackBoardItemFragment(link))
+                val link = it._links.createBlackBoardItemLink
+                if(link!=null) {
+                    button15.setOnClickListener {
+                        activity.navigateTo(CreateBlackBoardItemFragment(link))
+                    }
                 }
+
+                val smallBlackBoardItems = it._embedded?.blackboardItems
+                val multipleBlackBoardItemsLink = it._links.getMultipleBlackBoardItemsLink
+
+                if(smallBlackBoardItems == null)
+                    viewModel.getBlackBoardItems(multipleBlackBoardItemsLink)
+                else
+                    viewModel.fillWithEmbedded(smallBlackBoardItems, multipleBlackBoardItemsLink)
+
+            },
+            ProgressObs(progress) {
+                Toast.makeText(activity, it, Toast.LENGTH_SHORT).show()
             }
-
-            //todo verificaçao se vem no embedded e se nao fazer o novo pedido
-            val multipleBlackBoardItemsLink = it._links.getMultipleBlackBoardItemsLink
-            if(multipleBlackBoardItemsLink != null)
-                viewModel.getBlackBoardItems(multipleBlackBoardItemsLink)
-        })
+        )
 
 
-        val onBlackBoardItemReprClickListener = object : OnBlackBoardItemReprClickListener{
-            override fun onClick(item: BlackBoardViewModel.BlackBoardItemRepr) {
-                Toast.makeText(activity, item.getSingleBlackBoardItemLink.href , Toast.LENGTH_LONG).show()
+
+
+        val onBlackBoardItemViewClickListener = object : OnClickListener<BlackBoardItemView>{
+            override fun onClick(value: BlackBoardItemView) {
+                Toast.makeText(activity, value.getSingleBlackBoardItemLink.href , Toast.LENGTH_LONG).show()
                 activity.navigateTo(
                     BlackBoardItemFragment(
-                        item.getSingleBlackBoardItemLink
+                        value.getSingleBlackBoardItemLink
                     )
                 )
             }
         }
 
-        viewModel.blackBoardItems.observe(this, Observer {
 
-            blackboard_recylcerview.adapter = BlackBoardAdapter(it, onBlackBoardItemReprClickListener)
-
-        })
-
-        /*val onBoardClickListener = object : BoardClickListener {
-            override fun onClickListener(smallBoardItem: SmallBoardItem?) {
-
-                (activity as MainActivity).navigateTo(BoardMenuFragment())
-
-                Toast.makeText(activity, smallBoardItem?.APP_NAME ?: "nullsmall board item", Toast.LENGTH_LONG).show()
+        viewModel.blackBoardItemsLd.observe(
+            this,
+            ProgressObs(progress) {
+                blackboard_recylcerview.adapter = GenericBlackBoardsAdapter(it, onBlackBoardItemViewClickListener)
+            },
+            ProgressObs(progress) {
+                Toast.makeText(activity, it, Toast.LENGTH_SHORT).show()
             }
-        }*/
+        )
+
+
 
 
     }
@@ -91,3 +104,4 @@ class BlackBoardFragment(val blackBoardLink: GetSingleBlackBoardLink) : Fragment
 
 
 }
+

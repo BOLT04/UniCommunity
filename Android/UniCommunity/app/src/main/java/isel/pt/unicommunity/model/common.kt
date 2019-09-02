@@ -1,7 +1,5 @@
 package isel.pt.unicommunity.model
 
-import com.fasterxml.jackson.annotation.JsonIgnore
-
 class CollectionJson(val collection: CollectionContainer)
 
 class CollectionContainer(
@@ -28,12 +26,6 @@ class Link(
     val rel : String,
     val href: String,
     val prompt: String? = null
-)
-
-open class NavLink<T>(
-    @JsonIgnore val rel :String,
-    val href: String,
-    @JsonIgnore val responseClass : Class<T>
 )
 
 
