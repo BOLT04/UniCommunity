@@ -10,6 +10,7 @@ import pt.isel.g20.unicommunity.user.model.User
 fun ForumItem.toItemRepr(user: User): Item {
         val boardId = this.forum.board.id
         val forumId = this.forum.id
+        val authorId = this.author.id
         val links = mutableListOf(
                 CollectionLink(
                         rel = "self",
@@ -37,7 +38,7 @@ fun ForumItem.toItemRepr(user: User): Item {
                 )
         )
         
-        if(this.author.id == user.id)
+        if(authorId == user.id)
                 links.addAll(sequenceOf(
                         CollectionLink(
                                 rel = Rels.EDIT_FORUMITEM,
@@ -48,6 +49,14 @@ fun ForumItem.toItemRepr(user: User): Item {
                                 href = Uri.forSingleForumItemText(forumId, this.id)
                         )
                 ))
+
+        if(!this.anonymousPost)
+                links.add(
+                        CollectionLink(
+                                rel = Rels.GET_SINGLE_USER,
+                                href = Uri.forSingleUserText(authorId)
+                        )
+                )
         
         return Item(
                 href = Uri.forSingleForumItemText(forumId, this.id),
