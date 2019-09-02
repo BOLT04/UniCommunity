@@ -6,7 +6,10 @@ import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.common.Uri.FORUMITEMS_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_FORUMITEM_ROUTE
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
-import pt.isel.g20.unicommunity.forumItem.model.*
+import pt.isel.g20.unicommunity.forumItem.model.ForumItemDto
+import pt.isel.g20.unicommunity.forumItem.model.MultipleForumItemsResponse
+import pt.isel.g20.unicommunity.forumItem.model.SingleForumItemResponse
+import pt.isel.g20.unicommunity.forumItem.model.toItemRepr
 import pt.isel.g20.unicommunity.forumItem.service.IForumItemService
 import pt.isel.g20.unicommunity.hateoas.CollectionObject
 import pt.isel.g20.unicommunity.user.model.User
@@ -17,14 +20,17 @@ class ForumItemController(private val service: IForumItemService) {
 
     @AuthorizationRequired
     @GetMapping(path = [FORUMITEMS_ROUTE], produces = [APPLICATION_COLLECTION_JSON])
-    fun getAllForumItems(@PathVariable boardId: Long)  =
+    fun getAllForumItems(
+            @PathVariable boardId: Long,
+            @SessionAttribute("user") user: User
+    )  =
             cacheOkResponse(
                     CollectionObject(
                             MultipleForumItemsResponse(
                                     boardId,
                                     service
                                             .getAllForumItems(boardId)
-                                            .map(ForumItem::toItemRepr)
+                                            .map{it.toItemRepr(user)}
                             )
                     )
             )

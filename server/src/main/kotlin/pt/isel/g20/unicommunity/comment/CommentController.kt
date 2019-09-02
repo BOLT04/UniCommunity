@@ -2,7 +2,10 @@ package pt.isel.g20.unicommunity.comment
 
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
-import pt.isel.g20.unicommunity.comment.model.*
+import pt.isel.g20.unicommunity.comment.model.CommentDto
+import pt.isel.g20.unicommunity.comment.model.MultipleCommentsResponse
+import pt.isel.g20.unicommunity.comment.model.SingleCommentResponse
+import pt.isel.g20.unicommunity.comment.model.toItemRepr
 import pt.isel.g20.unicommunity.comment.service.ICommentService
 import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.common.Uri.COMMENTS_ROUTE
@@ -19,7 +22,8 @@ class CommentController(private val service: ICommentService) {
     @GetMapping(path = [COMMENTS_ROUTE], produces = [APPLICATION_COLLECTION_JSON])
     fun getAllComments(
             @PathVariable boardId: Long,
-            @PathVariable forumItemId: Long
+            @PathVariable forumItemId: Long,
+            @SessionAttribute("user") user: User
     ) =
             cacheOkResponse(
                     CollectionObject(
@@ -28,7 +32,7 @@ class CommentController(private val service: ICommentService) {
                                     forumItemId,
                                     service
                                             .getAllComments(boardId, forumItemId)
-                                            .map(Comment::toItemRepr)
+                                            .map{it.toItemRepr(user)}
                             )
                     )
             )

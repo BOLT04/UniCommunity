@@ -2,7 +2,10 @@ package pt.isel.g20.unicommunity.blackboard
 
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
-import pt.isel.g20.unicommunity.blackboard.model.*
+import pt.isel.g20.unicommunity.blackboard.model.BlackboardDto
+import pt.isel.g20.unicommunity.blackboard.model.MultipleBlackboardsResponse
+import pt.isel.g20.unicommunity.blackboard.model.SingleBlackboardResponse
+import pt.isel.g20.unicommunity.blackboard.model.toItemRepr
 import pt.isel.g20.unicommunity.blackboard.service.IBlackboardService
 import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.common.Uri.BLACKBOARDS_ROUTE
@@ -16,14 +19,17 @@ import pt.isel.g20.unicommunity.user.model.User
 class BlackboardController(private val service: IBlackboardService) {
     @AuthorizationRequired
     @GetMapping(path = [BLACKBOARDS_ROUTE], produces = [APPLICATION_COLLECTION_JSON])
-    fun getAllBlackboards(@PathVariable boardId: Long) =
+    fun getAllBlackboards(
+            @PathVariable boardId: Long,
+            @SessionAttribute("user") user: User
+    ) =
             cacheOkResponse(
                     CollectionObject(
                             MultipleBlackboardsResponse(
                                     boardId,
                                     service
                                             .getAllBlackboards(boardId)
-                                            .map(Blackboard::toItemRepr)
+                                            .map{ it.toItemRepr(user)}
                             )
                     )
             )
