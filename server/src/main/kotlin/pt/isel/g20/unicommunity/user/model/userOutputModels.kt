@@ -1,15 +1,12 @@
 package pt.isel.g20.unicommunity.user.model
 
-import pt.isel.g20.unicommunity.blackboardItem.model.PartialBlackboardItemObject
 import pt.isel.g20.unicommunity.board.model.PartialBoardObject
-import pt.isel.g20.unicommunity.comment.model.PartialCommentObject
 import pt.isel.g20.unicommunity.common.Rels
 import pt.isel.g20.unicommunity.common.Uri
-import pt.isel.g20.unicommunity.forumItem.model.PartialForumItemObject
 import pt.isel.g20.unicommunity.hateoas.*
 import pt.isel.g20.unicommunity.usersBlackboards.PartialUsersBlackboardsObject
 
-class SingleUserResponse(user: User) : HalObject(mutableMapOf(), mutableMapOf()){
+class SingleUserResponse(sessionUser: User, user: User) : HalObject(mutableMapOf(), mutableMapOf()){
     val id = user.id
     val name = user.name
     val email = user.email
@@ -17,6 +14,7 @@ class SingleUserResponse(user: User) : HalObject(mutableMapOf(), mutableMapOf())
     val githubId = user.githubId
 
     init {
+        val userIsAuthor = user.id == sessionUser.id
         if(user.usersBoards.size != 0)
             super._embedded?.putAll(sequenceOf(
                     Rels.GET_MULTIPLE_BOARDS to MultipleHalObj(user.getBoards().map {
@@ -27,7 +25,7 @@ class SingleUserResponse(user: User) : HalObject(mutableMapOf(), mutableMapOf())
                     })
             ))
 
-        if(user.bbItems.size != 0)
+        /*if(user.bbItems.size != 0)
             super._embedded?.putAll(sequenceOf(
                     Rels.GET_MULTIPLE_BLACKBOARDITEMS to MultipleHalObj(user.bbItems.map {
                         PartialBlackboardItemObject(
@@ -46,33 +44,37 @@ class SingleUserResponse(user: User) : HalObject(mutableMapOf(), mutableMapOf())
         if(user.forumItems.size != 0)
             super._embedded?.putAll(sequenceOf(
                     Rels.GET_MULTIPLE_FORUMITEMS to MultipleHalObj(user.forumItems.map {
-                        PartialForumItemObject(
-                                it.name,
-                                it.author.name,
-                                it.createdAt.toString(),
-                                mapOf("self" to Link(Uri.forSingleForumItemText(
-                                        it.forum.board.id,
-                                        it.id
-                                )))
-                        )
+                        if(userIsAuthor || !it.anonymousPost){
+                             PartialForumItemObject(
+                                    it.name,
+                                    it.author.name,
+                                    it.createdAt.toString(),
+                                    mapOf("self" to Link(Uri.forSingleForumItemText(
+                                            it.forum.board.id,
+                                            it.id
+                                    )))
+                             )
+                        }
                     })
             ))
 
         if(user.comments.size != 0)
             super._embedded?.putAll(sequenceOf(
                     Rels.GET_MULTIPLE_COMMENTS to MultipleHalObj(user.comments.map {
-                        PartialCommentObject(
-                                it.content,
-                                it.author.name,
-                                it.createdAt.toString(),
-                                mapOf("self" to Link(Uri.forSingleCommentText(
-                                        it.forumItem.forum.board.id,
-                                        it.forumItem.id,
-                                        it.id
-                                )))
-                        )
+                        if(userIsAuthor || !it.anonymousComment){
+                            PartialCommentObject(
+                                    it.content,
+                                    it.author.name,
+                                    it.createdAt.toString(),
+                                    mapOf("self" to Link(Uri.forSingleCommentText(
+                                            it.forumItem.forum.board.id,
+                                            it.forumItem.id,
+                                            it.id
+                                    )))
+                            )
+                        }
                     })
-            ))
+            ))*/
 
         if(user.blackboardsSettings.size != 0)
             super._embedded?.putAll(sequenceOf(
@@ -91,9 +93,13 @@ class SingleUserResponse(user: User) : HalObject(mutableMapOf(), mutableMapOf())
             ))
 
         super._links?.putAll(sequenceOf(
-                "self" to Link(Uri.forSingleUserText(id)),
-                Rels.EDIT_USER to Link(Uri.forSingleUserText(id))
+                "self" to Link(Uri.forSingleUserText(id))
         ))
+
+        if(userIsAuthor)
+            super._links?.putAll(sequenceOf(
+                    Rels.EDIT_USER to Link(Uri.forSingleUserText(id))
+            ))
     }
 }
 
