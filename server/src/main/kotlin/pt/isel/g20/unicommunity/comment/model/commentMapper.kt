@@ -8,30 +8,32 @@ import pt.isel.g20.unicommunity.hateoas.Item
 import pt.isel.g20.unicommunity.user.model.User
 
 fun Comment.toItemRepr(user: User): Item {
+    val forumItemId = this.forumItem.id
+    val boardId = this.forumItem.forum.board.id
     val links = mutableListOf(
             CollectionLink(
                     rel = "self",
-                    href = Uri.forSingleCommentText(this.forumItem.forum.id, this.forumItem.id, this.id)
+                    href = Uri.forSingleCommentText(boardId, forumItemId, this.id)
             ),
             CollectionLink(
                 rel = Rels.GET_SINGLE_FORUMITEM,
-                href = Uri.forSingleForumItemText(this.forumItem.forum.id, this.forumItem.id)
+                href = Uri.forSingleForumItemText(boardId, forumItemId)
             ),
             CollectionLink(
                     rel = Rels.GET_SINGLE_FORUM,
-                    href = Uri.forSingleForumText(this.forumItem.forum.id)
+                    href = Uri.forSingleForumText(boardId)
             ),
             CollectionLink(
                     rel = Rels.GET_SINGLE_BOARD,
-                    href = Uri.forSingleBoardText(this.forumItem.forum.board.id)
+                    href = Uri.forSingleBoardText(boardId)
             ),
             CollectionLink(
                     rel = Rels.GET_MULTIPLE_COMMENTS,
-                    href = Uri.forAllComments(this.forumItem.forum.id, this.forumItem.id)
+                    href = Uri.forAllComments(boardId, forumItemId)
             ),
             CollectionLink(
                     rel = Rels.GET_MULTIPLE_FORUMITEMS,
-                    href = Uri.forAllForumItems(this.forumItem.id)
+                    href = Uri.forAllForumItems(forumItemId)
             ),
             CollectionLink(
                     rel = Rels.GET_MULTIPLE_BOARDS,
@@ -43,16 +45,16 @@ fun Comment.toItemRepr(user: User): Item {
         links.addAll(sequenceOf(
                 CollectionLink(
                         rel = Rels.EDIT_COMMENT,
-                        href = Uri.forSingleCommentText(this.forumItem.forum.id, this.forumItem.id, this.id)
+                        href = Uri.forSingleCommentText(boardId, forumItemId, this.id)
                 ),
                 CollectionLink(
                         rel = Rels.DELETE_COMMENT,
-                        href = Uri.forSingleCommentText(this.forumItem.forum.id, this.forumItem.id, this.id)
+                        href = Uri.forSingleCommentText(boardId, forumItemId, this.id)
                 )
         ))
 
     return Item(
-            href = Uri.forSingleCommentText(this.forumItem.forum.id, this.forumItem.id, this.id),
+            href = Uri.forSingleCommentText(boardId, forumItemId, this.id),
             data = listOf(
                     Data(name = "id", value = this.id.toString()),
                     Data(name = "content", value = this.content),
