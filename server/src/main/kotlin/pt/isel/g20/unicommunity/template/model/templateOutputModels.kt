@@ -1,8 +1,9 @@
 package pt.isel.g20.unicommunity.template.model
 
-import pt.isel.g20.unicommunity.common.Rels
 import pt.isel.g20.unicommunity.common.Uri
-import pt.isel.g20.unicommunity.hateoas.*
+import pt.isel.g20.unicommunity.hateoas.CollectionLink
+import pt.isel.g20.unicommunity.hateoas.Item
+import pt.isel.g20.unicommunity.hateoas.JsonCollection
 
 class SingleTemplateResponse(template: Template) {
     val name : String = template.name
@@ -22,8 +23,3 @@ class MultipleTemplatesResponse(
         items = templates
 )
 
-class PartialTemplateObject(
-        val name: String,
-        val hasForum: Boolean,
-        val _links: Map<String, Link>
-) : IHalObj

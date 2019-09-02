@@ -20,7 +20,7 @@ class SingleBlackboardItemResponse(user: User, bbItem: BlackboardItem) : HalObje
         val author = bbItem.author
         val boardId = board.id
         val bbId = blackboard.id
-        val isCreator = user.id == board.creator!!.id
+        val isCreator = user.id == board.creator.id
 
         val partialBoard = PartialBoardObject(
                 board.name,

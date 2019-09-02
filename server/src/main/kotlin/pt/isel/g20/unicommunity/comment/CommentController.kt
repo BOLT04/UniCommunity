@@ -91,6 +91,7 @@ class CommentController(private val service: ICommentService) {
                     SingleCommentResponse(
                             user,
                             service.editComment(
+                                    user,
                                     boardId,
                                     forumItemId,
                                     commentId,
@@ -110,7 +111,7 @@ class CommentController(private val service: ICommentService) {
             cacheOkResponse(
                     SingleCommentResponse(
                             user,
-                            service.deleteComment(boardId, forumItemId, commentId)
+                            service.deleteComment(user, boardId, forumItemId, commentId)
                     )
             )
 }

@@ -13,6 +13,7 @@ import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.fcm.FcmServiceFactory
 import pt.isel.g20.unicommunity.forum.service.IForumService
 import pt.isel.g20.unicommunity.repository.*
+import pt.isel.g20.unicommunity.user.model.User
 import pt.isel.g20.unicommunity.usersBlackboards.UsersBlackboards
 import pt.isel.g20.unicommunity.usersBoards.UsersBoards
 
@@ -28,12 +29,20 @@ class BoardService(
         val forumService: IForumService
 ) : IBoardService {
 
-    override fun getAllBoards(): Iterable<Board> = boardsRepo.findAll()
+    override fun getActiveBoards(page: Int, pageSize: Int): Page<Board> =
+            boardsRepo.findByActiveIsTrue(PageRequest.of(page, pageSize))
 
     override fun getAllBoards(page: Int, pageSize: Int): Page<Board> =
-        boardsRepo.findAll(PageRequest.of(page, pageSize))
+            boardsRepo.findAll(PageRequest.of(page, pageSize))
 
-    override fun getBoardById(boardId: Long) = boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
+    override fun getMyBoards(userId: Long, page: Int, pageSize: Int): Page<Board> {
+        usersRepo.findByIdOrNull(userId) ?: throw NotFoundUserException()
+        val userBoards = usersBoardsRepo.findByUserId(userId)
+        return boardsRepo.findByUsersBoardsIn(userBoards, PageRequest.of(page, pageSize))
+    }
+
+    override fun getBoardById(boardId: Long) =
+            boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
 
     private fun createBoardWithTemplate(
             creatorId: Long,
@@ -70,6 +79,8 @@ class BoardService(
             description: String?
     ): Board {
         val creator = usersRepo.findByIdOrNull(creatorId) ?: throw NotFoundUserException()
+        if(creator.role != ADMIN && creator.role != TEACHER) throw UnauthorizedException()
+
         var board = Board(creator, name, description)
         boardsRepo.save(board)
 
@@ -179,7 +190,6 @@ class BoardService(
             blackboardNames: List<String>?,
             hasForum: Boolean?
     ): Board {
-
         val board: Board = if(templateId != null)
             createBoardWithTemplate(creatorId, name,  description, templateId)
         else
@@ -188,20 +198,25 @@ class BoardService(
         return boardsRepo.save(board)
     }
 
-    override fun editBoard(boardId: Long, name: String?, description: String?): Board {
+    override fun editBoard(user: User, boardId: Long, name: String, isActive: Boolean, description: String?): Board {
         val board = getBoardById(boardId)
+        val allowedToChangeState = (user.id == board.creator.id || user.role == ADMIN)
+        if (!allowedToChangeState)
+            throw UnauthorizedException()
 
-        if(name != null)
-            board.name = name
-
+        board.name = name
+        board.active = isActive
         if(description != null)
             board.description = description
 
         return boardsRepo.save(board)
     }
 
-    override fun deleteBoard(boardId: Long): Board {
+    override fun deleteBoard(user: User, boardId: Long): Board {
         var board = getBoardById(boardId)
+        val allowedToChangeState = (user.id == board.creator.id || user.role == ADMIN)
+        if (!allowedToChangeState)
+            throw UnauthorizedException()
 
         Hibernate.initialize(board.blackBoards)
         Hibernate.initialize(board.forum)

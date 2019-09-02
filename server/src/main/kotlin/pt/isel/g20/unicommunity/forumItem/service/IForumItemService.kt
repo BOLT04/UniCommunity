@@ -5,6 +5,7 @@ import pt.isel.g20.unicommunity.common.NotFoundForumException
 import pt.isel.g20.unicommunity.common.NotFoundForumItemException
 import pt.isel.g20.unicommunity.common.NotFoundUserException
 import pt.isel.g20.unicommunity.forumItem.model.ForumItem
+import pt.isel.g20.unicommunity.user.model.User
 
 
 interface IForumItemService {
@@ -18,8 +19,8 @@ interface IForumItemService {
     fun createForumItem(boardId: Long, authorId: Long, name: String, content: String, anonymousPost: Boolean): ForumItem
 
     @Throws(NotFoundForumItemException::class, NotFoundBoardException::class)
-    fun editForumItem(boardId: Long, forumItemId: Long, name: String?, content: String?): ForumItem
+    fun editForumItem(user: User, boardId: Long, forumItemId: Long, name: String?, content: String?): ForumItem
 
     @Throws(NotFoundForumItemException::class, NotFoundBoardException::class)
-    fun deleteForumItem(boardId: Long, forumItemId: Long): ForumItem
+    fun deleteForumItem(user: User, boardId: Long, forumItemId: Long): ForumItem
 }

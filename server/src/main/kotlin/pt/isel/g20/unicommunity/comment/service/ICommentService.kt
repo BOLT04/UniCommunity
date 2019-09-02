@@ -2,6 +2,7 @@ package pt.isel.g20.unicommunity.comment.service
 
 import pt.isel.g20.unicommunity.comment.model.Comment
 import pt.isel.g20.unicommunity.common.*
+import pt.isel.g20.unicommunity.user.model.User
 
 
 interface ICommentService {
@@ -30,7 +31,7 @@ interface ICommentService {
             NotFoundForumItemException::class,
             NotFoundForumException::class
     )
-    fun editComment(boardId: Long, forumItemId: Long, commentId: Long, content: String?): Comment
+    fun editComment(user: User, boardId: Long, forumItemId: Long, commentId: Long, content: String?): Comment
 
     @Throws(
             NotFoundCommentException::class,
@@ -38,5 +39,5 @@ interface ICommentService {
             NotFoundForumItemException::class,
             NotFoundForumException::class
     )
-    fun deleteComment(boardId: Long, forumItemId: Long, commentId: Long): Comment
+    fun deleteComment(user: User, boardId: Long, forumItemId: Long, commentId: Long): Comment
 }

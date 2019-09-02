@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service
 import pt.isel.g20.unicommunity.comment.model.Comment
 import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.repository.*
+import pt.isel.g20.unicommunity.user.model.User
 
 @Service
 class CommentService(
@@ -45,17 +46,19 @@ class CommentService(
         return newComment
     }
 
-    override fun editComment(boardId: Long, forumItemId: Long, commentId: Long, content: String?): Comment {
+    override fun editComment(user: User, boardId: Long, forumItemId: Long, commentId: Long, content: String?): Comment {
         val comment = getCommentById(boardId, forumItemId, commentId)
-
+        if(user.id != comment.author.id && user.role != ADMIN) throw UnauthorizedException()
         if(content != null)
             comment.content = content
 
         return commentsRepo.save(comment)
     }
 
-    override fun deleteComment(boardId: Long, forumItemId: Long, commentId: Long): Comment {
+    override fun deleteComment(user: User, boardId: Long, forumItemId: Long, commentId: Long): Comment {
         val comment = getCommentById(boardId, forumItemId, commentId)
+        if(user.id != comment.author.id && user.role != ADMIN) throw UnauthorizedException()
+
         commentsRepo.delete(comment)
         return comment
     }

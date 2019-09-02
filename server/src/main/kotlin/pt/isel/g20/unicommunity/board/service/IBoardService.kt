@@ -3,10 +3,14 @@ package pt.isel.g20.unicommunity.board.service
 import org.springframework.data.domain.Page
 import pt.isel.g20.unicommunity.board.model.Board
 import pt.isel.g20.unicommunity.common.*
+import pt.isel.g20.unicommunity.user.model.User
 
 interface IBoardService {
-    fun getAllBoards() : Iterable<Board>
+    fun getActiveBoards(page: Int, pageSize: Int = 1000) : Page<Board>
+
     fun getAllBoards(page: Int, pageSize: Int = 1000) : Page<Board> // TODO: 1000 boards per page temporarily
+
+    fun getMyBoards(userId: Long, page: Int, pageSize: Int = 1000) : Iterable<Board>
 
     @Throws(NotFoundBoardException::class)
     fun getBoardById(boardId: Long): Board
@@ -36,8 +40,8 @@ interface IBoardService {
     fun unsubscribe(boardId: Long, userId: Long): Board
 
     @Throws(NotFoundBoardException::class)
-    fun editBoard(boardId: Long, name: String?, description: String?): Board
+    fun editBoard(user: User, boardId: Long, name: String, isActive: Boolean, description: String?): Board
 
     @Throws(NotFoundBoardException::class)
-    fun deleteBoard(boardId: Long):Board
+    fun deleteBoard(user: User, boardId: Long):Board
 }

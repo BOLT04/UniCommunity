@@ -3,11 +3,14 @@ package pt.isel.g20.unicommunity.forum.service
 import org.hibernate.Hibernate
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import pt.isel.g20.unicommunity.common.ADMIN
 import pt.isel.g20.unicommunity.common.NotFoundBoardException
 import pt.isel.g20.unicommunity.common.NotFoundForumException
+import pt.isel.g20.unicommunity.common.UnauthorizedException
 import pt.isel.g20.unicommunity.forum.model.Forum
 import pt.isel.g20.unicommunity.repository.BoardRepository
 import pt.isel.g20.unicommunity.repository.ForumRepository
+import pt.isel.g20.unicommunity.user.model.User
 
 @Service
 class ForumService(
@@ -33,14 +36,16 @@ class ForumService(
         return newForum
     }
 
-    override fun editForum(boardId: Long): Forum {
+    override fun editForum(user: User, boardId: Long): Forum {
         val forum = getForumById(boardId)
+        if(user.id != forum.board.creator.id && user.role != ADMIN) throw UnauthorizedException()
 
         return forumsRepo.save(forum)
     }
 
-    override fun deleteForum(boardId: Long): Forum {
+    override fun deleteForum(user: User, boardId: Long): Forum {
         val forum = getForumById(boardId)
+        if(user.id != forum.board.creator.id && user.role != ADMIN) throw UnauthorizedException()
 
         Hibernate.initialize(forum.items)
 

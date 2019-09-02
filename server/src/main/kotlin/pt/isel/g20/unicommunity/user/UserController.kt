@@ -26,6 +26,10 @@ class UserController(private val service: IUserService) {
     fun getUserById(@PathVariable userId: Long, @SessionAttribute("user")user: User) =
             cacheOkResponse(SingleUserResponse(user, service.getUserById(userId)))
 
+    @GetMapping(path = [BOARD_MEMBERS], produces = [APPLICATION_COLLECTION_JSON])
+    fun getBoardMembers(@PathVariable boardId: Long) =
+            cacheOkResponse(CollectionObject(MultipleUsersResponse(service.getBoardMembers(boardId))))
+
     @AuthorizationRequired
     @PostMapping(path = [USERS_ROUTE], produces = [APPLICATION_HAL_JSON])
     @ResponseStatus(HttpStatus.CREATED)
@@ -54,7 +58,7 @@ class UserController(private val service: IUserService) {
                     SingleUserResponse(
                             user,
                             service.editUser(
-                                    user.id,
+                                    user,
                                     userId,
                                     userDto.name,
                                     userDto.email,
@@ -65,13 +69,9 @@ class UserController(private val service: IUserService) {
                     )
             )
 
+
     @AuthorizationRequired
     @DeleteMapping(path = [SINGLE_USER_ROUTE], produces = [APPLICATION_HAL_JSON])
     fun deleteUser(@PathVariable userId: Long, @SessionAttribute("user")user: User) =
-            cacheOkResponse(SingleUserResponse(user, service.deleteUser(userId)))
-
-
-    @GetMapping(path = [BOARD_MEMBERS], produces = [APPLICATION_COLLECTION_JSON])
-    fun getBoardMembers(@PathVariable boardId: Long) =
-            cacheOkResponse(CollectionObject(MultipleUsersResponse(service.getBoardMembers(boardId))))
+            cacheOkResponse(SingleUserResponse(user, service.deleteUser(user, userId)))
 }

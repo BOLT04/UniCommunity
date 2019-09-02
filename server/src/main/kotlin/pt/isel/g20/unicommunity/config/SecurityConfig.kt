@@ -10,7 +10,7 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
     override fun configure(http: HttpSecurity) {
         http.authorizeRequests().anyRequest().permitAll()
 
-        http.csrf().disable();
+        http.csrf().disable()
     }
 
     /* TODO: CAUSES CIRCULAR DEPENDENCY

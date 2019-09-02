@@ -4,13 +4,12 @@ import org.hibernate.Hibernate
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import pt.isel.g20.unicommunity.blackboard.model.Blackboard
-import pt.isel.g20.unicommunity.common.NotFoundBlackboardException
-import pt.isel.g20.unicommunity.common.NotFoundBoardException
-import pt.isel.g20.unicommunity.common.NotFoundUserException
+import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.repository.BlackboardRepository
 import pt.isel.g20.unicommunity.repository.BoardRepository
 import pt.isel.g20.unicommunity.repository.UserRepository
 import pt.isel.g20.unicommunity.repository.UsersBlackboardsRepository
+import pt.isel.g20.unicommunity.user.model.User
 import pt.isel.g20.unicommunity.usersBlackboards.UsersBlackboards
 
 @Service
@@ -39,6 +38,7 @@ class BlackboardService(
     ): Blackboard {
         val board = boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
         val user = usersRepo.findByIdOrNull(userId) ?: throw NotFoundUserException()
+        if(user.role != ADMIN && user.role != TEACHER) throw UnauthorizedException()
 
         var blackboard = Blackboard(name, notificationLevel, description, board)
         blackboard = blackboardsRepo.save(blackboard)
@@ -61,6 +61,7 @@ class BlackboardService(
     }
 
     override fun editBlackboard(
+            user: User,
             boardId: Long,
             bbId: Long,
             name: String?,
@@ -68,6 +69,7 @@ class BlackboardService(
             description: String?
     ): Blackboard {
         val blackboard = getBlackboardById(boardId, bbId)
+        if(user.id != blackboard.board.creator.id && user.role != ADMIN) throw UnauthorizedException()
 
         if(name != null)
             blackboard.name = name
@@ -81,8 +83,9 @@ class BlackboardService(
         return blackboardsRepo.save(blackboard)
     }
 
-    override fun deleteBlackboard(boardId: Long, bbId: Long): Blackboard {
+    override fun deleteBlackboard(user: User, boardId: Long, bbId: Long): Blackboard {
         val blackboard = getBlackboardById(boardId, bbId)
+        if(user.id != blackboard.board.creator.id && user.role != ADMIN) throw UnauthorizedException()
 
         Hibernate.initialize(blackboard.items)
         Hibernate.initialize(blackboard.usersSettings)

@@ -3,15 +3,13 @@ package pt.isel.g20.unicommunity.forumItem.service
 import org.hibernate.Hibernate
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import pt.isel.g20.unicommunity.common.NotFoundBoardException
-import pt.isel.g20.unicommunity.common.NotFoundForumException
-import pt.isel.g20.unicommunity.common.NotFoundForumItemException
-import pt.isel.g20.unicommunity.common.NotFoundUserException
+import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.forumItem.model.ForumItem
 import pt.isel.g20.unicommunity.repository.BoardRepository
 import pt.isel.g20.unicommunity.repository.ForumItemRepository
 import pt.isel.g20.unicommunity.repository.ForumRepository
 import pt.isel.g20.unicommunity.repository.UserRepository
+import pt.isel.g20.unicommunity.user.model.User
 
 @Service
 class ForumItemService(
@@ -55,12 +53,14 @@ class ForumItemService(
     }
 
     override fun editForumItem(
+            user: User,
             boardId: Long,
             forumItemId: Long,
             name: String?,
             content: String?
     ): ForumItem {
         val forumItem = getForumItemById(boardId, forumItemId)
+        if(user.id != forumItem.author.id && user.role != ADMIN) throw UnauthorizedException()
 
         if(name != null)
             forumItem.name = name
@@ -71,8 +71,9 @@ class ForumItemService(
         return forumItemsRepo.save(forumItem)
     }
 
-    override fun deleteForumItem(boardId: Long, forumItemId: Long): ForumItem {
+    override fun deleteForumItem(user: User, boardId: Long, forumItemId: Long): ForumItem {
         val forumItem = getForumItemById(boardId, forumItemId)
+        if(user.id != forumItem.author.id && user.role != ADMIN) throw UnauthorizedException()
 
         Hibernate.initialize(forumItem.comments)
 

@@ -25,6 +25,11 @@ class UserService(
     override fun getUserByName(name: String) =
             usersRepo.findByName(name) ?: throw NotFoundUserException()
 
+    override fun getBoardMembers(boardId: Long): Iterable<User>{
+        boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
+        return usersBoardsRepo.findByBoardId(boardId).map { it.user }
+    }
+
     override fun createUser(sessionUserId:Long, name: String, email: String, password: String, role: String, githubId: String?): User {
         val sessionUser = usersRepo.findByIdOrNull(sessionUserId) ?: throw UnauthorizedException()
         if(sessionUser.role != ADMIN) throw UnauthorizedException()
@@ -42,10 +47,18 @@ class UserService(
         return usersRepo.save(user)
     }
 
-    override fun editUser(sessionUserId: Long, userId: Long, name: String, email: String, password: String, role: String, githubId: String?): User {
-        val sessionUser = usersRepo.findByIdOrNull(sessionUserId) ?: throw UnauthorizedException()
-
+    override fun editUser(
+            sessionUser: User,
+            userId: Long,
+            name: String,
+            email: String,
+            password: String,
+            role: String,
+            githubId: String?
+    ): User {
         val user = getUserById(userId)
+        if(user.id != sessionUser.id || sessionUser.role != ADMIN) throw UnauthorizedException()
+
         if(sessionUser.role != ADMIN && user.role != role)
             throw UnauthorizedException()
 
@@ -60,8 +73,9 @@ class UserService(
         return usersRepo.save(user)
     }
 
-    override fun deleteUser(userId: Long): User {
+    override fun deleteUser(sessionUser: User, userId: Long): User {
         val user = getUserById(userId)
+        if(user.id != sessionUser.id || sessionUser.role != ADMIN) throw UnauthorizedException()
 
         Hibernate.initialize(user.bbItems)
         Hibernate.initialize(user.usersBoards)
@@ -71,11 +85,6 @@ class UserService(
 
         usersRepo.delete(user)
         return user
-    }
-
-    override fun getBoardMembers(boardId: Long): Iterable<User>{
-        val board = boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
-        return usersBoardsRepo.findByBoardId(boardId).map { it.user }
     }
 
 }

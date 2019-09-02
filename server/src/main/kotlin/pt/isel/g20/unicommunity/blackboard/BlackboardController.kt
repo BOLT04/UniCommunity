@@ -80,6 +80,7 @@ class BlackboardController(private val service: IBlackboardService) {
                     SingleBlackboardResponse(
                             user,
                             service.editBlackboard(
+                                    user,
                                     boardId,
                                     bbId,
                                     blackboardDto.name,
@@ -99,7 +100,7 @@ class BlackboardController(private val service: IBlackboardService) {
             cacheOkResponse(
                     SingleBlackboardResponse(
                             user,
-                            service.deleteBlackboard(boardId, bbId)
+                            service.deleteBlackboard(user, boardId, bbId)
                     )
             )
 }

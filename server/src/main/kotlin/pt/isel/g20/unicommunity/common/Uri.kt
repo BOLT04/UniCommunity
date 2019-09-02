@@ -4,9 +4,8 @@ import org.springframework.web.util.UriTemplate
 import java.net.URI
 
 object Uri {
-    const val LINK_RELATIONS_ROUTE = "/rels"
 
-// Navigation
+    // Navigation
     const val NAVIGATION_ROUTE = "/navigation"
     const val HOME_ROUTE = "/home"
     const val MY_BOARDS = "/myBoards"
@@ -38,6 +37,7 @@ object Uri {
 
     //Paths
     const val BOARDS_ROUTE = "/boards"
+    const val ALL_BOARDS_ROUTE = "/allBoards"
     const val SINGLE_BOARD_ROUTE = "$BOARDS_ROUTE/{boardId}"
     const val BOARD_MEMBERS = "$SINGLE_BOARD_ROUTE/members"
 

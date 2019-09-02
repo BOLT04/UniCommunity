@@ -12,6 +12,9 @@ interface IUserService {
     @Throws(NotFoundUserException::class)
     fun getUserByName(name: String): User
 
+    @Throws(NotFoundBoardException::class)
+    fun getBoardMembers(boardId: Long) : Iterable<User>
+
     @Throws(
             InvalidUserEmailException::class,
             UnauthorizedException::class,
@@ -32,7 +35,7 @@ interface IUserService {
             InvalidUserEmailException::class
     )
     fun editUser(
-            sessionUserId: Long,
+            sessionUser: User,
             userId: Long,
             name: String,
             email: String,
@@ -42,8 +45,5 @@ interface IUserService {
     ): User
 
     @Throws(NotFoundUserException::class)
-    fun deleteUser(userId: Long): User
-
-    @Throws(NotFoundBoardException::class)
-    fun getBoardMembers(boardId: Long) : Iterable<User>
+    fun deleteUser(sessionUser: User, userId: Long): User
 }

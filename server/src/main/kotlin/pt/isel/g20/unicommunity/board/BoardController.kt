@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*
 import pt.isel.g20.unicommunity.board.model.*
 import pt.isel.g20.unicommunity.board.service.IBoardService
 import pt.isel.g20.unicommunity.common.*
+import pt.isel.g20.unicommunity.common.Uri.ALL_BOARDS_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.BOARDS_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.BOARD_MEMBERS
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_BOARD_ROUTE
@@ -69,6 +70,21 @@ class BoardController(private val service: IBoardService) {
 
     @AuthorizationRequired
     @GetMapping(path = [BOARDS_ROUTE], produces = [APPLICATION_COLLECTION_JSON])
+    fun getActiveBoards(
+            @SessionAttribute("user") user: User,
+            @RequestParam(value = "page", required = false, defaultValue = "0") page: Int
+    ) =
+            cacheOkResponse(
+                    CollectionObject(
+                            MultipleBoardsResponse(
+                                    service
+                                            .getActiveBoards(page)
+                                            .map{it.toItemRepr(user)}, page)
+                    )
+            )
+
+    @AuthorizationRequired
+    @GetMapping(path = [ALL_BOARDS_ROUTE], produces = [APPLICATION_COLLECTION_JSON])
     fun getAllBoards(
             @SessionAttribute("user") user: User,
             @RequestParam(value = "page", required = false, defaultValue = "0") page: Int
@@ -79,6 +95,20 @@ class BoardController(private val service: IBoardService) {
                                     service
                                             .getAllBoards(page)
                                             .map{it.toItemRepr(user)}, page)
+                    )
+            )
+
+    @GetMapping(path = [Uri.MY_BOARDS], produces = [APPLICATION_COLLECTION_JSON])
+    @AuthorizationRequired
+    fun getMyBoards(
+            @SessionAttribute("user") user: User,
+            @RequestParam(value = "page", required = false, defaultValue = "0") page: Int
+    ) =
+            cacheOkResponse(
+                    CollectionObject(
+                            MultipleBoardsResponseWithoutPagination(
+                                    service.getMyBoards(user.id, page).map{it.toItemRepr(user)}
+                            )
                     )
             )
 
@@ -94,7 +124,7 @@ class BoardController(private val service: IBoardService) {
     @PostMapping(path = [BOARDS_ROUTE], produces = [APPLICATION_HAL_JSON])
     @ResponseStatus(HttpStatus.CREATED)
     fun createBoard(
-            @RequestBody boardDto: BoardDto,
+            @RequestBody boardDto: CreateBoardDto,
             @SessionAttribute("user")user: User
     ) =
             service.createBoard(
@@ -148,8 +178,10 @@ class BoardController(private val service: IBoardService) {
                     SingleBoardResponse(
                             user,
                             service.editBoard(
+                                    user,
                                     boardId,
                                     boardDto.name,
+                                    boardDto.isActive,
                                     boardDto.description
                             )
                     )
@@ -161,5 +193,5 @@ class BoardController(private val service: IBoardService) {
             @PathVariable boardId: Long,
             @SessionAttribute("user") user: User
     ) =
-            cacheOkResponse(SingleBoardResponse(user, service.deleteBoard(boardId)))
+            cacheOkResponse(SingleBoardResponse(user, service.deleteBoard(user, boardId)))
 }

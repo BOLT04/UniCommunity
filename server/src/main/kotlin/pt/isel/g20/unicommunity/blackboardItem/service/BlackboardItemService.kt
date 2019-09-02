@@ -3,14 +3,12 @@ package pt.isel.g20.unicommunity.blackboardItem.service
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import pt.isel.g20.unicommunity.blackboardItem.model.BlackboardItem
-import pt.isel.g20.unicommunity.common.NotFoundBlackboardException
-import pt.isel.g20.unicommunity.common.NotFoundBlackboardItemException
-import pt.isel.g20.unicommunity.common.NotFoundBoardException
-import pt.isel.g20.unicommunity.common.NotFoundUserException
+import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.repository.BlackboardItemRepository
 import pt.isel.g20.unicommunity.repository.BlackboardRepository
 import pt.isel.g20.unicommunity.repository.BoardRepository
 import pt.isel.g20.unicommunity.repository.UserRepository
+import pt.isel.g20.unicommunity.user.model.User
 
 @Service
 class BlackboardItemService(
@@ -54,6 +52,7 @@ class BlackboardItemService(
     }
 
     override fun editBlackboardItem(
+            user: User,
             boardId: Long,
             bbId: Long,
             itemId: Long,
@@ -61,6 +60,7 @@ class BlackboardItemService(
             content: String?
     ): BlackboardItem {
         val blackboardItem = getBlackboardItemById(boardId, bbId, itemId)
+        if(user.id != blackboardItem.blackboard.board.creator.id && user.role != ADMIN) throw UnauthorizedException()
 
         if(name != null)
             blackboardItem.name = name
@@ -71,8 +71,10 @@ class BlackboardItemService(
         return blackboardItemsRepo.save(blackboardItem)
     }
 
-    override fun deleteBlackboardItem(boardId: Long, bbId: Long, itemId: Long): BlackboardItem {
+    override fun deleteBlackboardItem(user: User, boardId: Long, bbId: Long, itemId: Long): BlackboardItem {
         val blackboardItem = getBlackboardItemById(boardId, bbId, itemId)
+        if(user.id != blackboardItem.blackboard.board.creator.id && user.role != ADMIN) throw UnauthorizedException()
+
         blackboardItemsRepo.delete(blackboardItem)
         return blackboardItem
     }

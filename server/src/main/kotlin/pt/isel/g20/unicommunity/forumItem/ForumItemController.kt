@@ -81,6 +81,7 @@ class ForumItemController(private val service: IForumItemService) {
                     SingleForumItemResponse(
                             user,
                             service.editForumItem(
+                                    user,
                                     boardId,
                                     forumItemId,
                                     forumItemDto.name,
@@ -96,5 +97,5 @@ class ForumItemController(private val service: IForumItemService) {
             @PathVariable forumItemId: Long,
             @SessionAttribute("user") user: User
     ) =
-            cacheOkResponse(SingleForumItemResponse(user, service.deleteForumItem(boardId, forumItemId)))
+            cacheOkResponse(SingleForumItemResponse(user, service.deleteForumItem(user, boardId, forumItemId)))
 }

@@ -90,6 +90,7 @@ class BlackboardItemController(private val service: IBlackboardItemService) {
                     SingleBlackboardItemResponse(
                             user,
                             service.editBlackboardItem(
+                                    user,
                                     boardId,
                                     bbId,
                                     itemId,
@@ -110,7 +111,7 @@ class BlackboardItemController(private val service: IBlackboardItemService) {
             cacheOkResponse(
                     SingleBlackboardItemResponse(
                             user,
-                            service.deleteBlackboardItem(boardId, bbId, itemId)
+                            service.deleteBlackboardItem(user, boardId, bbId, itemId)
                     )
             )
 }

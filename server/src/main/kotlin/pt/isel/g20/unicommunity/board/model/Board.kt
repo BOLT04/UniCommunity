@@ -11,7 +11,8 @@ import javax.persistence.*
 class Board(
         @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name="creatorId") var creator: User,
         @Column(nullable = false) var name: String,
-        @Column var description: String? = null
+        @Column var description: String? = null,
+        @Column(nullable = false) var active: Boolean = true
 ) {
 
     @Id
