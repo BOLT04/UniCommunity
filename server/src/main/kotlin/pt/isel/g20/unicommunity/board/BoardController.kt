@@ -78,7 +78,7 @@ class BoardController(private val service: IBoardService) {
                             MultipleBoardsResponse(
                                     service
                                             .getAllBoards(page)
-                                            .map(Board::toItemRepr), page)
+                                            .map{it.toItemRepr(user)}, page)
                     )
             )
 

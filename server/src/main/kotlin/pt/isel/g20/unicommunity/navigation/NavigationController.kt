@@ -2,11 +2,11 @@ package pt.isel.g20.unicommunity.navigation
 
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import pt.isel.g20.unicommunity.board.model.Board
 import pt.isel.g20.unicommunity.board.model.MultipleBoardsResponseWithoutPagination
 import pt.isel.g20.unicommunity.board.model.toItemRepr
 import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationOptional
+import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
 import pt.isel.g20.unicommunity.hateoas.CollectionObject
 import pt.isel.g20.unicommunity.navigation.model.HomeResponse
 import pt.isel.g20.unicommunity.navigation.model.NavigationResponse
@@ -37,15 +37,15 @@ class NavigationController(private val service: INavigationService) {
                     .body(HomeResponse())
 
     @GetMapping(path = [Uri.MY_BOARDS], produces = [APPLICATION_COLLECTION_JSON])
-    @AuthorizationOptional
+    @AuthorizationRequired
     fun getMyBoards(
-            @SessionAttribute("user") user: User?,
+            @SessionAttribute("user") user: User,
             @RequestParam(value = "page", required = false, defaultValue = "0") page: Int
     ) =
             cacheOkResponse(
                     CollectionObject(
                             MultipleBoardsResponseWithoutPagination(
-                                    service.getMyBoards(user!!.id).map(Board::toItemRepr)
+                                    service.getMyBoards(user.id).map{it.toItemRepr(user)}
                             )
                     )
             )
