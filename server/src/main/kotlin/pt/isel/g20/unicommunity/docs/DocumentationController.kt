@@ -65,6 +65,9 @@ class DocumentationController {
     val getMyBoards = GetMyBoardsHalFormsResponse()
     val getHome = GetHomeHalFormsResponse()
     val getNavigation = GetNavigationHalFormsResponse()
+    val listReportsRsp = ListReportsHalFormsResponse()
+    val createReportRsp = CreateReportHalFormsResponse()
+    val getReportRsp = GetReportHalFormsResponse()
 
     @GetMapping(path = [Rels.GET_MULTIPLE_BOARDS])
     fun getBoards() = listBoardsRsp
@@ -219,4 +222,13 @@ class DocumentationController {
 
     @GetMapping(path = [Rels.NAVIGATION])
     fun getNavigation() = getNavigation
+
+    @GetMapping(path = [Rels.GET_MULTIPLE_REPORTS])
+    fun getReports() = listReportsRsp
+
+    @GetMapping(path = [Rels.CREATE_REPORT])
+    fun createReport() = createReportRsp
+
+    @GetMapping(path = [Rels.GET_SINGLE_REPORT])
+    fun getReport() = getReportRsp
 }

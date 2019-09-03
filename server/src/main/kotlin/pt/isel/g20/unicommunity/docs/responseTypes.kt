@@ -822,3 +822,57 @@ class GetNavigationHalFormsResponse : HalFormsObject(
                 )
         )
 )
+
+class ListReportsHalFormsResponse : HalFormsObject(
+        mapOf(
+                "self" to Link(Rels.GET_MULTIPLE_REPORTS)
+        ),
+        HalFormsTemplateObject(
+                HalFormsTemplate(
+                        title = "List of all the reports",
+                        method = "get"
+                )
+        )
+)
+
+class CreateReportHalFormsResponse : HalFormsObject(
+        mapOf(
+                "self" to Link(Rels.CREATE_REPORT)
+        ),
+        HalFormsTemplateObject(
+                HalFormsTemplate(
+                        title = "Create a report",
+                        method = "post",
+                        contentType = APPLICATION_JSON,
+                        properties = listOf(
+                                Property(
+                                        name = "userId",
+                                        prompt = "The id of the author of the forumItem/comment",
+                                        required = true
+                                ),
+                                Property(
+                                        name = "forumItemId",
+                                        prompt = "The id of the forumItem being reported. If this property has a value - commentId should be null",
+                                        required = false
+                                ),
+                                Property(
+                                        name = "commentId",
+                                        prompt = "The id of the comment being reported. . If this property has a value - forumItemId should be null",
+                                        required = false
+                                )
+                        )
+                )
+        )
+)
+
+class GetReportHalFormsResponse : HalFormsObject(
+        mapOf(
+                "self" to Link(Rels.GET_SINGLE_REPORT)
+        ),
+        HalFormsTemplateObject(
+                HalFormsTemplate(
+                        title = "Get a specific report",
+                        method = "get"
+                )
+        )
+)
