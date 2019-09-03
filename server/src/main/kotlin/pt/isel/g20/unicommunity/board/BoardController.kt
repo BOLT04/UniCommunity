@@ -14,6 +14,7 @@ import pt.isel.g20.unicommunity.common.Uri.BOARDS_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.BOARD_MEMBERS
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_BOARD_ROUTE
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
+import pt.isel.g20.unicommunity.common.presentation.TeacherRoleRequired
 import pt.isel.g20.unicommunity.hateoas.CollectionObject
 import pt.isel.g20.unicommunity.user.model.User
 
@@ -126,6 +127,7 @@ class BoardController(private val service: IBoardService) {
             cacheOkResponse(SingleBoardResponse(user, service.getBoardById(boardId)))
 
     @AuthorizationRequired
+    @TeacherRoleRequired
     @PostMapping(path = [BOARDS_ROUTE], produces = [APPLICATION_HAL_JSON])
     @ResponseStatus(HttpStatus.CREATED)
     fun createBoard(

@@ -10,19 +10,22 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.servlet.config.annotation.EnableWebMvc
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
+import pt.isel.g20.unicommunity.auth.TeacherRoleInterceptor
 import pt.isel.g20.unicommunity.auth.service.IAuthService
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationException
 import pt.isel.g20.unicommunity.common.presentation.authorizationProblemJson
+import pt.isel.g20.unicommunity.common.presentation.forbiddenProblemJson
 import pt.isel.g20.unicommunity.hateoas.ProblemJson
 import pt.isel.g20.unicommunity.user.service.IUserService
 
 @Configuration
 @ControllerAdvice
 @EnableWebMvc
-class InterceptorConfig(val authService: IAuthService, val userService: IUserService) : WebMvcConfigurer {
+open class InterceptorConfig(val authService: IAuthService, val userService: IUserService) : WebMvcConfigurer {
 
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(AuthorizationInterceptor(authService, userService))
+        registry.addInterceptor(TeacherRoleInterceptor())
     }
 //TODO: set the default page start count to be '1' instead of '0'
     override fun addArgumentResolvers(resolvers: MutableList<HandlerMethodArgumentResolver>) {
@@ -39,4 +42,10 @@ class InterceptorConfig(val authService: IAuthService, val userService: IUserSer
         ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(authorizationProblemJson())
+
+    @ExceptionHandler
+    fun handleInvalidAuthorization(e: TeacherRoleInterceptor): ResponseEntity<ProblemJson> =
+        ResponseEntity
+                .status(HttpStatus.FORBIDDEN)
+                .body(forbiddenProblemJson("Teacher role required"))
 }
