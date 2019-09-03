@@ -22,7 +22,7 @@ class HomeResponse : HalObject(
     _links=  mutableMapOf(
             "self" to Link(Uri.HOME_ROUTE),
             Rels.NAVIGATION to Link(Uri.NAVIGATION_ROUTE),
-            Rels.LOGIN to HalObject(_links= mutableMapOf("self" to Link(Uri.LOGIN_ROUTE)))
+            Rels.LOGIN to Link(Uri.LOGIN_ROUTE)
     ),
     _embedded = mutableMapOf(
             Rels.GET_MULTIPLE_BOARDS to
