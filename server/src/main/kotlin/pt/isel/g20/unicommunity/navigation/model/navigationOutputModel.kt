@@ -20,12 +20,11 @@ class NavigationResponse(userId: Long)
 
 class HomeResponse : HalObject(
     _links=  mutableMapOf(
-        "self" to Link(Uri.HOME_ROUTE),
-        Rels.NAVIGATION to Link(Uri.NAVIGATION_ROUTE)
+            "self" to Link(Uri.HOME_ROUTE),
+            Rels.NAVIGATION to Link(Uri.NAVIGATION_ROUTE),
+            Rels.LOGIN to HalObject(_links= mutableMapOf("self" to Link(Uri.LOGIN_ROUTE)))
     ),
     _embedded = mutableMapOf(
-            Rels.LOGIN to
-                    HalObject(_links= mutableMapOf("self" to Link(Uri.LOGIN_ROUTE))),
             Rels.GET_MULTIPLE_BOARDS to
                     HalObject(_links= mutableMapOf("self" to Link(Uri.BOARDS_ROUTE))),
             Rels.GET_MULTIPLE_BLACKBOARDS to
