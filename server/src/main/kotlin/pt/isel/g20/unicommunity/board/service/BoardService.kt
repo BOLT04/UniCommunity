@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service
 import pt.isel.g20.unicommunity.blackboard.service.IBlackboardService
 import pt.isel.g20.unicommunity.board.model.Board
 import pt.isel.g20.unicommunity.common.*
-import pt.isel.g20.unicommunity.fcm.FcmServiceFactory
+import pt.isel.g20.unicommunity.fcm.GoogleServiceFactory
 import pt.isel.g20.unicommunity.forum.service.IForumService
 import pt.isel.g20.unicommunity.repository.*
 import pt.isel.g20.unicommunity.user.model.User
@@ -105,7 +105,7 @@ class BoardService(
         return boardsRepo.save(board)
     }
 
-    val fcmService = FcmServiceFactory.makeFcmServiceService()
+    val iidService = GoogleServiceFactory.makeIidService()
 
     override fun subscribe(boardId: Long, userId: Long, token: String): Board {
         var board = getBoardById(boardId)
@@ -135,18 +135,18 @@ class BoardService(
         } }
 
         return runBlocking {
-            val promisses = board.blackBoards.map {
+            val promises = board.blackBoards.map {
                 async {
                     //TODO: This topic name has a problem. Since we are separating the ids by the char '-', then
                     //TODO: the blackboard name can't contain that character.
                     //TODO: Also, I'm only using the blackboard name so that the topic name is more readable (not just ids)
                     val topicName = "${board.id}-${it.id}-${it.name}"
 
-                    fcmService.subscribeAppToTopic(token, topicName)
+                    iidService.subscribeAppToTopic(token, topicName)
                 }
             }
 
-            promisses.forEach {
+            promises.forEach {
                 val rsp = it.await()
                 println("in addUserToBoard: ${rsp.code()}")
                 if (!rsp.isSuccessful) throw SubscribeToTopicException()

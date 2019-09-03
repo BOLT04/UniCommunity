@@ -9,7 +9,7 @@ import javax.persistence.*
 @Entity
 class Blackboard(
         @Column(nullable = false) var name: String,
-        @Column var notificationLevel: String,
+        @Column var notificationLevel: String, // Default notification level for all users.
         @Column var description: String? = null,
         @JsonIgnore @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name="boardId") var board: Board
 ) {
