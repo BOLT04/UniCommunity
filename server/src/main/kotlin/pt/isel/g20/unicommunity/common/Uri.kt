@@ -7,7 +7,7 @@ object Uri {
 
     // Navigation
     const val NAVIGATION_ROUTE = "/navigation"
-    const val HOME_ROUTE = "/home"
+    const val HOME_ROUTE = "/"
     const val MY_BOARDS = "/myBoards"
 
     const val REPORTS_ROUTE = "/reports"
