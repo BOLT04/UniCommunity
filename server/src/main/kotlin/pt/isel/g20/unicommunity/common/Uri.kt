@@ -10,6 +10,23 @@ object Uri {
     const val HOME_ROUTE = "/home"
     const val MY_BOARDS = "/myBoards"
 
+    const val REPORTS_ROUTE = "/reports"
+    const val SINGLE_REPORT_ROUTE = "$REPORTS_ROUTE/{reportId}"
+
+    //Templates
+    private val singleReportTemplate = UriTemplate(SINGLE_REPORT_ROUTE)
+
+    //Getters
+    fun forAllReports() =
+            URI(REPORTS_ROUTE).toString()
+
+    fun forSingleReportUri(reportId: Long) =
+            singleReportTemplate.expand(reportId)
+
+    fun forSingleReportText(reportId: Long) =
+            Uri.forSingleReportUri(reportId).toString()
+
+
 // Auth
     const val LOGIN_ROUTE = "/signin"
 

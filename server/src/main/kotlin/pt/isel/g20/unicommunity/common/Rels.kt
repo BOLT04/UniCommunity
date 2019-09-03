@@ -62,4 +62,8 @@ object Rels {
     const val DELETE_TEMPLATE = "$RELS_PREFIX/deleteTemplate"
 
     const val GET_USER_BLACKBOARDS_SETTINGS = "$RELS_PREFIX/blackboardsSettings"
+
+    const val CREATE_REPORT = "$RELS_PREFIX/createReport"
+    const val GET_SINGLE_REPORT = "$RELS_PREFIX/getReport"
+    const val GET_MULTIPLE_REPORTS = "$RELS_PREFIX/getReports"
 }

@@ -31,3 +31,7 @@ class UnauthorizedException : Exception()
 class AlreadyAMemberException : Exception()
 
 class NotAMemberException : Exception()
+
+class NotFoundReportException : Exception()
+
+class InvalidReportTypeException: Exception()

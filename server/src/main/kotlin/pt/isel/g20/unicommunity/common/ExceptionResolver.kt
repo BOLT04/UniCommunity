@@ -148,6 +148,23 @@ class ExceptionResolver : ResponseEntityExceptionHandler() {
                 .body(error)
     }
 
+    @ExceptionHandler(NotFoundReportException::class)
+    fun handleNotFoundReport(
+            ex: NotFoundReportException,
+            request: WebRequest
+    ): ResponseEntity<ProblemJson> {
+        val error = ProblemJson(
+                title = "Report was not found",
+                detail = "The specified report was not found",
+                status = HttpStatus.NOT_FOUND.value()
+        )
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .contentType(MediaType.APPLICATION_PROBLEM_JSON)
+                .body(error)
+    }
+
     @ExceptionHandler(BadAuthenticationException::class)
     fun handleBadAuthentication(
             ex: BadAuthenticationException,
@@ -190,6 +207,23 @@ class ExceptionResolver : ResponseEntityExceptionHandler() {
         val error = ProblemJson(
                 title = "Invalid user role",
                 detail = "An error occurred because the specified role for the user doesnt exist",
+                status = HttpStatus.BAD_REQUEST.value()
+        )
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_PROBLEM_JSON)
+                .body(error)
+    }
+
+    @ExceptionHandler(InvalidReportTypeException::class)
+    fun handleReportType(
+            ex: InvalidReportTypeException,
+            request: WebRequest
+    ): ResponseEntity<ProblemJson> {
+        val error = ProblemJson(
+                title = "Invalid request type",
+                detail = "An error occurred because the specified request type is invalid",
                 status = HttpStatus.BAD_REQUEST.value()
         )
 

@@ -10,7 +10,7 @@ interface IBoardService {
 
     fun getAllBoards(page: Int, pageSize: Int = 1000) : Page<Board> // TODO: 1000 boards per page temporarily
 
-    fun getMyBoards(userId: Long, page: Int, pageSize: Int = 1000) : Iterable<Board>
+    fun getMyBoards(userId: Long, page: Int, pageSize: Int = 1000) : Page<Board>
 
     @Throws(NotFoundBoardException::class)
     fun getBoardById(boardId: Long): Board

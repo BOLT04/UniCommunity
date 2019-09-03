@@ -79,7 +79,9 @@ class BoardController(private val service: IBoardService) {
                             MultipleBoardsResponse(
                                     service
                                             .getActiveBoards(page)
-                                            .map{it.toItemRepr(user)}, page)
+                                            .map{it.toItemRepr(user)},
+                                    page
+                            )
                     )
             )
 
@@ -94,7 +96,9 @@ class BoardController(private val service: IBoardService) {
                             MultipleBoardsResponse(
                                     service
                                             .getAllBoards(page)
-                                            .map{it.toItemRepr(user)}, page)
+                                            .map{it.toItemRepr(user)},
+                                    page
+                            )
                     )
             )
 
@@ -106,8 +110,9 @@ class BoardController(private val service: IBoardService) {
     ) =
             cacheOkResponse(
                     CollectionObject(
-                            MultipleBoardsResponseWithoutPagination(
-                                    service.getMyBoards(user.id, page).map{it.toItemRepr(user)}
+                            MultipleBoardsResponse(
+                                    service.getMyBoards(user.id, page).map{it.toItemRepr(user)},
+                                    page
                             )
                     )
             )

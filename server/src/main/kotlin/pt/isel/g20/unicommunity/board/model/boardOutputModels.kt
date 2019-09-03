@@ -2,9 +2,7 @@ package pt.isel.g20.unicommunity.board.model
 
 import org.springframework.data.domain.Page
 import pt.isel.g20.unicommunity.blackboard.model.PartialBlackboardObject
-import pt.isel.g20.unicommunity.common.Rels
-import pt.isel.g20.unicommunity.common.Uri
-import pt.isel.g20.unicommunity.common.getFirstPageable
+import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.hateoas.*
 import pt.isel.g20.unicommunity.user.model.PartialUserObject
 import pt.isel.g20.unicommunity.user.model.User
@@ -68,7 +66,10 @@ class SingleBoardResponse(user: User, board: Board) : HalObject(mutableMapOf(), 
         else
             super._links?.putAll(sequenceOf(Rels.SUBSCRIBE to Link(Uri.forBoardMembers(id))))
 
-
+        if(user.role == TEACHER || user.role == ADMIN)
+            super._links?.putAll(sequenceOf(
+                    Rels.CREATE_BOARD to Link(Uri.forAllBoards())
+            ))
 
         if (board.forum != null) {
             super._links?.putAll(sequenceOf(
@@ -114,24 +115,6 @@ class MultipleBoardsResponse(
         }
     }
 }
-
-class MultipleBoardsResponseWithoutPagination(
-        boards : List<Item>
-): JsonCollection(
-        version = "1.0",
-        href = Uri.forAllBoards(),
-        links = mutableListOf(
-                CollectionLink("self", Uri.forAllBoards())
-        ),
-        items = boards,
-        queries = listOf(
-                Query(
-                        href= Uri.forAllBoards(),
-                        rel= "self" /*TODO: what rel should we use here?*/,
-                        data= listOf()
-                )
-        )
-)
 
 class PartialBoardObject(
         val name: String,

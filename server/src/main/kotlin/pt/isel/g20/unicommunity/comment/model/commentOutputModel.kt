@@ -30,15 +30,18 @@ class SingleCommentResponse(user: User, comment: Comment) : HalObject(mutableMap
                 Rels.GET_SINGLE_BOARD to partialBoard
         ))
 
-        val partialForumItem = PartialForumItemObject(
-                forumItem.name,
-                if(comment.anonymousComment) null else forumItem.author.name,
-                forumItem.createdAt.toString(),
-                mapOf("self" to Link(Uri.forSingleForumItemText(boardId, forumItemId)))
-        )
-        super._embedded?.putAll(sequenceOf(
-                Rels.GET_SINGLE_FORUMITEM to partialForumItem
-        ))
+        if(!comment.anonymousComment){
+            val partialForumItem = PartialForumItemObject(
+                    forumItem.name,
+                    forumItem.content,
+                    forumItem.author.name,
+                    forumItem.createdAt.toString(),
+                    mapOf("self" to Link(Uri.forSingleForumItemText(boardId, forumItemId)))
+            )
+            super._embedded?.putAll(sequenceOf(
+                    Rels.GET_SINGLE_FORUMITEM to partialForumItem
+            ))
+        }
 
         if(!anonymousComment){
             val partialUser = PartialUserObject(

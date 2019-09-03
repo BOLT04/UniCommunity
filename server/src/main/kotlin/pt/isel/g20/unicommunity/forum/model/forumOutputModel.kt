@@ -4,7 +4,10 @@ import pt.isel.g20.unicommunity.board.model.PartialBoardObject
 import pt.isel.g20.unicommunity.common.Rels
 import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.forumItem.model.PartialForumItemObject
-import pt.isel.g20.unicommunity.hateoas.*
+import pt.isel.g20.unicommunity.hateoas.HalObject
+import pt.isel.g20.unicommunity.hateoas.IHalObj
+import pt.isel.g20.unicommunity.hateoas.Link
+import pt.isel.g20.unicommunity.hateoas.MultipleHalObj
 
 class SingleForumResponse(forum: Forum) : HalObject(mutableMapOf(), mutableMapOf()){
     val id = forum.id
@@ -24,12 +27,15 @@ class SingleForumResponse(forum: Forum) : HalObject(mutableMapOf(), mutableMapOf
         if(forum.items.size !=0)
             super._embedded?.putAll(sequenceOf(
                     Rels.GET_MULTIPLE_FORUMITEMS to MultipleHalObj(forum.items.map {
-                        PartialForumItemObject(
-                                it.name,
-                                if(it.anonymousPost) null else it.author.name,
-                                it.createdAt.toString(),
-                                mapOf("self" to Link(Uri.forSingleForumItemText(boardId, it.id)))
-                        )
+                        if(!it.anonymousPost){
+                            PartialForumItemObject(
+                                    it.name,
+                                    it.content,
+                                    it.author.name,
+                                    it.createdAt.toString(),
+                                    mapOf("self" to Link(Uri.forSingleForumItemText(boardId, it.id)))
+                            )
+                        }
                     })
             ))
         

@@ -1,6 +1,8 @@
 package pt.isel.g20.unicommunity.board.model
 
+import pt.isel.g20.unicommunity.common.ADMIN
 import pt.isel.g20.unicommunity.common.Rels
+import pt.isel.g20.unicommunity.common.TEACHER
 import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.hateoas.CollectionLink
 import pt.isel.g20.unicommunity.hateoas.Data
@@ -45,6 +47,14 @@ fun Board.toItemRepr(user: User): Item {
                 CollectionLink(
                         rel= Rels.DELETE_BOARD,
                         href= Uri.forSingleBoardText(this.id)
+                )
+        ))
+
+    if(user.role == TEACHER || user.role == ADMIN)
+        links.addAll(sequenceOf(
+                CollectionLink(
+                        rel= Rels.CREATE_BOARD,
+                        href= Uri.forAllBoards()
                 )
         ))
 
