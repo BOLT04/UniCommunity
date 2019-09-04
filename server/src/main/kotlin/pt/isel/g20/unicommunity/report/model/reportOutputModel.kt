@@ -9,6 +9,7 @@ import pt.isel.g20.unicommunity.user.model.PartialUserObject
 
 class SingleReportResponse(report: Report) : HalObject(mutableMapOf(), mutableMapOf()) {
     val id : Long = report.id
+    val userId: Long = report.user.id
     val forumItemId: Long? = report.forumItem?.id
     val commentId: Long? = report.comment?.id
     val numberOfReports = report.numberOfReports
@@ -31,6 +32,14 @@ class SingleReportResponse(report: Report) : HalObject(mutableMapOf(), mutableMa
             super._embedded?.putAll(sequenceOf(
                     Rels.GET_SINGLE_COMMENT to partialComment
             ))
+
+            super._links?.putAll(sequenceOf(
+                    Rels.GET_SINGLE_COMMENT to Link(Uri.forSingleCommentText(
+                            comment.forumItem.forum.id,
+                            comment.forumItem.id,
+                            comment.id
+                    ))
+            ))
         }
         else if(forumItem != null){
             val partialForumItem = PartialForumItemObject(
@@ -46,12 +55,19 @@ class SingleReportResponse(report: Report) : HalObject(mutableMapOf(), mutableMa
             super._embedded?.putAll(sequenceOf(
                     Rels.GET_SINGLE_FORUMITEM to partialForumItem
             ))
+
+            super._links?.putAll(sequenceOf(
+                    Rels.GET_SINGLE_FORUMITEM to Link(Uri.forSingleForumItemText(
+                            forumItem.forum.id,
+                            forumItem.id
+                    ))
+            ))
         }
 
         val partialUser = PartialUserObject(
                 report.user.name,
                 report.user.email,
-                mapOf("self" to Link(Uri.forSingleUserText(report.user.id)))
+                mapOf("self" to Link(Uri.forSingleUserText(userId)))
         )
         super._embedded?.putAll(sequenceOf(
                 Rels.GET_SINGLE_USER to partialUser
@@ -59,7 +75,8 @@ class SingleReportResponse(report: Report) : HalObject(mutableMapOf(), mutableMa
 
         super._links?.putAll(sequenceOf(
                 "self" to Link(Uri.forSingleReportText(id)),
-                Rels.GET_MULTIPLE_REPORTS to Link(Uri.forAllReports())
+                Rels.GET_MULTIPLE_REPORTS to Link(Uri.forAllReports()),
+                Rels.GET_SINGLE_USER to Link(Uri.forSingleUserText(userId))
         ))
     }
 }

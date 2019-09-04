@@ -22,6 +22,7 @@ class UserService(
 
     override fun getUserById(userId: Long) =
             usersRepo.findByIdOrNull(userId) ?: throw NotFoundUserException()
+
     override fun getUserByName(name: String) =
             usersRepo.findByName(name) ?: throw NotFoundUserException()
 

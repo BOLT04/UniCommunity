@@ -46,13 +46,14 @@ class SingleUserResponse(sessionUser: User, user: User) : HalObject(mutableMapOf
                     Rels.GET_MULTIPLE_FORUMITEMS to MultipleHalObj(user.forumItems.map {
                         if(userIsAuthor || !it.anonymousPost){
                              PartialForumItemObject(
-                                    it.name,
-                                    it.author.name,
-                                    it.createdAt.toString(),
-                                    mapOf("self" to Link(Uri.forSingleForumItemText(
+                                     it.name,
+                                     it.content,
+                                     it.author.name,
+                                     it.createdAt.toString(),
+                                     mapOf("self" to Link(Uri.forSingleForumItemText(
                                             it.forum.board.id,
                                             it.id
-                                    )))
+                                     )))
                              )
                         }
                     })
