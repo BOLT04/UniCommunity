@@ -29,7 +29,7 @@ class NavigationController {
         else
             ResponseEntity
                     .ok()
-                    .body(NavigationResponse(user.id))
+                    .body(NavigationResponse(user))
 
     @GetMapping(path = [Uri.HOME_ROUTE], produces = [APPLICATION_HAL_JSON])
     fun getHome() =

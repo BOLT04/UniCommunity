@@ -71,7 +71,8 @@ class SingleCommentResponse(user: User, comment: Comment) : HalObject(mutableMap
                 Rels.GET_MULTIPLE_COMMENTS to Link(Uri.forAllComments(
                         boardId,
                         forumItemId
-                ))
+                )),
+                Rels.CREATE_REPORT to Link(Uri.forAllReports())
         ))
 
         if(isAuthor){

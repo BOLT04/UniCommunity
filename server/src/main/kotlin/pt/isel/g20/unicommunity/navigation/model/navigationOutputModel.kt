@@ -1,22 +1,31 @@
 package pt.isel.g20.unicommunity.navigation.model
 
+import pt.isel.g20.unicommunity.common.ADMIN
 import pt.isel.g20.unicommunity.common.Rels
 import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.hateoas.HalObject
 import pt.isel.g20.unicommunity.hateoas.Link
+import pt.isel.g20.unicommunity.user.model.User
 
-class NavigationResponse(userId: Long)
-    : HalObject(
-        mutableMapOf(
+class NavigationResponse(user: User): HalObject(_links = mutableMapOf()) {
+    init {
+        _links!!.putAll(sequenceOf(
                 "self" to Link(Uri.NAVIGATION_ROUTE),
                 Rels.HOME to Link(Uri.HOME_ROUTE),
                 Rels.LOGOUT to Link("/logout"),
-                Rels.USER_PROFILE to Link(Uri.forSingleUserText(userId)),
+                Rels.USER_PROFILE to Link(Uri.forSingleUserText(user.id)),
                 Rels.MY_BOARDS to Link("/myBoards"),
                 Rels.GET_MULTIPLE_BOARDS to Link(Uri.forAllBoards()),
                 Rels.CREATE_BOARD to Link(Uri.forAllBoards())
-        )
-)
+        ))
+
+        if(user.role == ADMIN)
+            _links!!.putAll(sequenceOf(
+                    Rels.GET_MULTIPLE_REPORTS to Link(Uri.forAllReports())
+            ))
+
+    }
+}
 
 class HomeResponse : HalObject(
     _links=  mutableMapOf(

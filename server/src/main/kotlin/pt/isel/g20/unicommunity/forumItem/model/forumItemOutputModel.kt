@@ -66,7 +66,8 @@ class SingleForumItemResponse(user: User, forumItem: ForumItem) : HalObject(muta
                 Rels.CREATE_FORUMITEM to Link(Uri.forAllForumItems(boardId)),
                 Rels.GET_MULTIPLE_FORUMITEMS to Link(Uri.forAllForumItems(boardId)),
                 Rels.GET_MULTIPLE_COMMENTS to Link(Uri.forAllComments(boardId, id)),
-                Rels.CREATE_COMMENT to Link(Uri.forAllComments(boardId, id))
+                Rels.CREATE_COMMENT to Link(Uri.forAllComments(boardId, id)),
+                Rels.CREATE_REPORT to Link(Uri.forAllReports())
         ))
 
         if(isAuthor){
