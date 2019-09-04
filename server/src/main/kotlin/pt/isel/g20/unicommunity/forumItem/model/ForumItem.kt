@@ -30,7 +30,7 @@ class ForumItem(
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "forumItem", cascade = [CascadeType.REMOVE])
     val reports: MutableList<Report> = mutableListOf()
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm:ss.SSSZ", locale = "en_GB")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm:ss", locale = "en_GB")
     @Column
     @CreationTimestamp
     var createdAt: Date? = null
