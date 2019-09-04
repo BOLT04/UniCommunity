@@ -1,6 +1,7 @@
 package pt.isel.g20.unicommunity.forumItem.model
 
 import pt.isel.g20.unicommunity.board.model.PartialBoardObject
+import pt.isel.g20.unicommunity.comment.model.PartialAnonCommentObject
 import pt.isel.g20.unicommunity.comment.model.PartialCommentObject
 import pt.isel.g20.unicommunity.common.Rels
 import pt.isel.g20.unicommunity.common.Uri
@@ -47,17 +48,27 @@ class SingleForumItemResponse(user: User, forumItem: ForumItem) : HalObject(muta
             super._embedded?.putAll(sequenceOf(
                     Rels.GET_SINGLE_USER to partialUser
             ))
+            super._links?.putAll(sequenceOf(
+                    Rels.GET_SINGLE_USER to Link(Uri.forSingleUserText(author.id))
+            ))
         }
 
         if(forumItem.comments.size != 0)
             super._embedded?.putAll(sequenceOf(
                     Rels.GET_MULTIPLE_COMMENTS to MultipleHalObj(forumItem.comments.map {
-                        PartialCommentObject(
-                                it.content,
-                                if(it.anonymousComment) null else it.author.name,
-                                it.createdAt.toString(),
-                                mapOf("self" to Link(Uri.forSingleCommentText(boardId, id, it.id)))
-                        )
+                        if(!it.anonymousComment)
+                            PartialCommentObject(
+                                    it.content,
+                                    it.author.name,
+                                    it.createdAt.toString(),
+                                    mapOf("self" to Link(Uri.forSingleCommentText(boardId, id, it.id)))
+                            )
+                        else
+                            PartialAnonCommentObject(
+                                    it.content,
+                                    it.createdAt.toString(),
+                                    mapOf("self" to Link(Uri.forSingleCommentText(boardId, id, it.id)))
+                            )
                     })
             ))
         
@@ -67,7 +78,9 @@ class SingleForumItemResponse(user: User, forumItem: ForumItem) : HalObject(muta
                 Rels.GET_MULTIPLE_FORUMITEMS to Link(Uri.forAllForumItems(boardId)),
                 Rels.GET_MULTIPLE_COMMENTS to Link(Uri.forAllComments(boardId, id)),
                 Rels.CREATE_COMMENT to Link(Uri.forAllComments(boardId, id)),
-                Rels.CREATE_REPORT to Link(Uri.forAllReports())
+                Rels.CREATE_REPORT to Link(Uri.forAllReports()),
+                Rels.GET_SINGLE_FORUM to Link(Uri.forSingleForumText(forum.id)),
+                Rels.GET_SINGLE_BOARD to Link(Uri.forSingleBoardText(boardId))
         ))
 
         if(isAuthor){
@@ -97,6 +110,13 @@ class PartialForumItemObject(
         val name: String,
         val content: String,
         val author: String?,
+        val createdAt: String,
+        val _links: Map<String, Link>
+) : IHalObj
+
+class PartialAnonForumItemObject(
+        val name: String,
+        val content: String,
         val createdAt: String,
         val _links: Map<String, Link>
 ) : IHalObj

@@ -51,7 +51,8 @@ class SingleBoardResponse(user: User, board: Board) : HalObject(mutableMapOf(), 
                 Rels.GET_MULTIPLE_BOARDS to Link(Uri.forAllBoards()),
 
                 Rels.GET_BOARD_MEMBERS to Link(Uri.forBoardMembers(id)),
-                Rels.GET_MULTIPLE_BLACKBOARDS to Link(Uri.forAllBlackboards(id))
+                Rels.GET_MULTIPLE_BLACKBOARDS to Link(Uri.forAllBlackboards(id)),
+                Rels.GET_SINGLE_USER to Link(Uri.forSingleUserText(board.creator.id))
         ))
 
         if(isCreator){

@@ -49,7 +49,10 @@ class SingleBlackboardItemResponse(user: User, bbItem: BlackboardItem) : HalObje
 
         super._links?.putAll(sequenceOf(
                 "self" to Link(Uri.forSingleBlackboardItemText(boardId, bbId, id )),
-                Rels.GET_MULTIPLE_BLACKBOARDITEMS to Link(Uri.forAllBlackboardItems(boardId, bbId))
+                Rels.GET_MULTIPLE_BLACKBOARDITEMS to Link(Uri.forAllBlackboardItems(boardId, bbId)),
+                Rels.GET_SINGLE_USER to Link(Uri.forSingleUserText(author.id)),
+                Rels.GET_SINGLE_BLACKBOARD to Link(Uri.forSingleBlackboardText(boardId, bbId)),
+                Rels.GET_SINGLE_BOARD to Link(Uri.forSingleBoardText(boardId))
         ))
 
         if(isCreator){

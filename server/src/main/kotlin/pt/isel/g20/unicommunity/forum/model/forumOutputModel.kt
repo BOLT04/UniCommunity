@@ -3,6 +3,7 @@ package pt.isel.g20.unicommunity.forum.model
 import pt.isel.g20.unicommunity.board.model.PartialBoardObject
 import pt.isel.g20.unicommunity.common.Rels
 import pt.isel.g20.unicommunity.common.Uri
+import pt.isel.g20.unicommunity.forumItem.model.PartialAnonForumItemObject
 import pt.isel.g20.unicommunity.forumItem.model.PartialForumItemObject
 import pt.isel.g20.unicommunity.hateoas.HalObject
 import pt.isel.g20.unicommunity.hateoas.IHalObj
@@ -27,7 +28,7 @@ class SingleForumResponse(forum: Forum) : HalObject(mutableMapOf(), mutableMapOf
         if(forum.items.size !=0)
             super._embedded?.putAll(sequenceOf(
                     Rels.GET_MULTIPLE_FORUMITEMS to MultipleHalObj(forum.items.map {
-                        if(!it.anonymousPost){
+                        if(!it.anonymousPost)
                             PartialForumItemObject(
                                     it.name,
                                     it.content,
@@ -35,7 +36,13 @@ class SingleForumResponse(forum: Forum) : HalObject(mutableMapOf(), mutableMapOf
                                     it.createdAt.toString(),
                                     mapOf("self" to Link(Uri.forSingleForumItemText(boardId, it.id)))
                             )
-                        }
+                        else
+                            PartialAnonForumItemObject(
+                                    it.name,
+                                    it.content,
+                                    it.createdAt.toString(),
+                                    mapOf("self" to Link(Uri.forSingleForumItemText(boardId, it.id)))
+                            )
                     })
             ))
         
@@ -43,7 +50,8 @@ class SingleForumResponse(forum: Forum) : HalObject(mutableMapOf(), mutableMapOf
                 "self" to Link(Uri.forSingleForumText(boardId)),
 
                 Rels.GET_MULTIPLE_FORUMITEMS to Link(Uri.forAllForumItems(boardId)),
-                Rels.CREATE_FORUMITEM to Link(Uri.forAllForumItems(boardId))
+                Rels.CREATE_FORUMITEM to Link(Uri.forAllForumItems(boardId)),
+                Rels.GET_SINGLE_BOARD to Link(Uri.forSingleBoardText(boardId))
         ))
     }
 }

@@ -41,6 +41,9 @@ class SingleCommentResponse(user: User, comment: Comment) : HalObject(mutableMap
             super._embedded?.putAll(sequenceOf(
                     Rels.GET_SINGLE_FORUMITEM to partialForumItem
             ))
+            super._links?.putAll(sequenceOf(
+                    Rels.GET_SINGLE_FORUMITEM to Link(Uri.forSingleForumItemText(boardId, forumItemId))
+            ))
         }
 
         if(!anonymousComment){
@@ -51,6 +54,9 @@ class SingleCommentResponse(user: User, comment: Comment) : HalObject(mutableMap
             )
             super._embedded?.putAll(sequenceOf(
                     Rels.GET_SINGLE_USER to partialUser
+            ))
+            super._links?.putAll(sequenceOf(
+                    Rels.GET_SINGLE_USER to Link(Uri.forSingleUserText(author.id))
             ))
         }
 
@@ -72,7 +78,8 @@ class SingleCommentResponse(user: User, comment: Comment) : HalObject(mutableMap
                         boardId,
                         forumItemId
                 )),
-                Rels.CREATE_REPORT to Link(Uri.forAllReports())
+                Rels.CREATE_REPORT to Link(Uri.forAllReports()),
+                Rels.GET_SINGLE_BOARD to Link(Uri.forSingleBoardText(boardId))
         ))
 
         if(isAuthor){
@@ -110,6 +117,12 @@ class MultipleCommentsResponse(
 class PartialCommentObject(
         val content: String,
         val author: String?,
+        val createdAt: String,
+        val _links: Map<String, Link>
+) : IHalObj
+
+class PartialAnonCommentObject(
+        val content: String,
         val createdAt: String,
         val _links: Map<String, Link>
 ) : IHalObj

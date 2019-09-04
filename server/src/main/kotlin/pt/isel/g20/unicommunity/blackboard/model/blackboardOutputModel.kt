@@ -41,7 +41,8 @@ class SingleBlackboardResponse(user: User, blackboard: Blackboard) : HalObject(m
         super._links?.putAll(sequenceOf(
                 "self" to Link(Uri.forSingleBlackboardText(boardId, id)),
                 Rels.GET_MULTIPLE_BLACKBOARDS to Link(Uri.forAllBlackboards(boardId)),
-                Rels.GET_MULTIPLE_BLACKBOARDITEMS to Link(Uri.forAllBlackboardItems(boardId, id))
+                Rels.GET_MULTIPLE_BLACKBOARDITEMS to Link(Uri.forAllBlackboardItems(boardId, id)),
+                Rels.GET_SINGLE_BOARD to Link(Uri.forSingleBoardText(boardId))
         ))
 
         if(isCreator){
