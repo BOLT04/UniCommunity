@@ -6,6 +6,7 @@ import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.common.Uri.BOARD_MEMBERS
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_USER_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.USERS_ROUTE
+import pt.isel.g20.unicommunity.common.presentation.AuthorizationOptional
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
 import pt.isel.g20.unicommunity.hateoas.CollectionObject
 import pt.isel.g20.unicommunity.user.model.MultipleUsersResponse
@@ -18,14 +19,17 @@ import pt.isel.g20.unicommunity.user.service.IUserService
 @RequestMapping(produces = [APPLICATION_HAL_JSON, APPLICATION_JSON, APPLICATION_COLLECTION_JSON])
 class UserController(private val service: IUserService) {
 
+    @AuthorizationOptional
     @GetMapping(path = [USERS_ROUTE], produces = [APPLICATION_COLLECTION_JSON])
     fun getAllUsers() =
             cacheOkResponse(CollectionObject(MultipleUsersResponse(service.getAllUsers())))
 
+    @AuthorizationRequired
     @GetMapping(path = [SINGLE_USER_ROUTE], produces = [APPLICATION_HAL_JSON])
     fun getUserById(@PathVariable userId: Long, @SessionAttribute("user") user: User) =
             cacheOkResponse(SingleUserResponse(user, service.getUserById(userId)))
 
+    @AuthorizationRequired
     @GetMapping(path = [BOARD_MEMBERS], produces = [APPLICATION_COLLECTION_JSON])
     fun getBoardMembers(@PathVariable boardId: Long) =
             cacheOkResponse(CollectionObject(MultipleUsersResponse(service.getBoardMembers(boardId))))
