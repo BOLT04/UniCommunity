@@ -6,7 +6,7 @@ import pt.isel.g20.unicommunity.blackboardItem.model.BlackboardItemDto
 import pt.isel.g20.unicommunity.blackboardItem.model.MultipleBlackboardItemsResponse
 import pt.isel.g20.unicommunity.blackboardItem.model.SingleBlackboardItemResponse
 import pt.isel.g20.unicommunity.blackboardItem.model.toItemRepr
-import pt.isel.g20.unicommunity.blackboardItem.service.IBlackboardItemService
+import pt.isel.g20.unicommunity.blackboardItem.service.BlackboardItemService
 import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.common.Uri.BLACKBOARDITEMS_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_BLACKBOARDITEM_ROUTE
@@ -16,7 +16,7 @@ import pt.isel.g20.unicommunity.user.model.User
 
 @RestController
 @RequestMapping(produces = [APPLICATION_HAL_JSON, APPLICATION_JSON, APPLICATION_COLLECTION_JSON])
-class BlackboardItemController(private val service: IBlackboardItemService) {
+class BlackboardItemController(private val service: BlackboardItemService) {
 
     @AuthorizationRequired
     @GetMapping(path = [BLACKBOARDITEMS_ROUTE], produces = [APPLICATION_COLLECTION_JSON])

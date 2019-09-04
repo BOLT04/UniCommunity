@@ -6,12 +6,12 @@ import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.common.Uri.FORUM_ROUTE
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
 import pt.isel.g20.unicommunity.forum.model.SingleForumResponse
-import pt.isel.g20.unicommunity.forum.service.IForumService
+import pt.isel.g20.unicommunity.forum.service.ForumService
 import pt.isel.g20.unicommunity.user.model.User
 
 @RestController
 @RequestMapping(produces = [APPLICATION_HAL_JSON, APPLICATION_JSON, APPLICATION_COLLECTION_JSON])
-class ForumController(private val service: IForumService) {
+class ForumController(private val service: ForumService) {
 
     @AuthorizationRequired
     @GetMapping(path = [FORUM_ROUTE], produces = [APPLICATION_HAL_JSON])

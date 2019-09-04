@@ -7,20 +7,20 @@ import pt.isel.g20.unicommunity.repository.TemplateRepository
 import pt.isel.g20.unicommunity.template.model.Template
 
 @Service
-class TemplateService(val templatesRepo: TemplateRepository) : ITemplateService {
-    override fun getAllTemplates(): Iterable<Template> = templatesRepo.findAll()
+class TemplateService(val templatesRepo: TemplateRepository) {
+    fun getAllTemplates(): Iterable<Template> = templatesRepo.findAll()
 
-    override fun getTemplateById(templateId: Long)
+    fun getTemplateById(templateId: Long)
             = templatesRepo.findByIdOrNull(templateId) ?: throw NotFoundTemplateException()
 
-    override fun createTemplate(name: String, hasForum: Boolean, blackboardNames: String): Template {
+    fun createTemplate(name: String, hasForum: Boolean, blackboardNames: String): Template {
 
         val template = Template(name, hasForum, blackboardNames)
 
         return templatesRepo.save(template)
     }
 
-    override fun editTemplate(templateId: Long, name: String, hasForum: Boolean?, blackboardNames: String?): Template {
+    fun editTemplate(templateId: Long, name: String, hasForum: Boolean?, blackboardNames: String?): Template {
         val template = getTemplateById(templateId)
 
         template.name = name
@@ -34,7 +34,7 @@ class TemplateService(val templatesRepo: TemplateRepository) : ITemplateService 
         return templatesRepo.save(template)
     }
 
-    override fun deleteTemplate(templateId: Long): Template {
+    fun deleteTemplate(templateId: Long): Template {
         val template = getTemplateById(templateId)
 
         templatesRepo.delete(template)

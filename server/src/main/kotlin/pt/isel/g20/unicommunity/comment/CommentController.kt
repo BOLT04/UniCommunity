@@ -6,7 +6,7 @@ import pt.isel.g20.unicommunity.comment.model.CommentDto
 import pt.isel.g20.unicommunity.comment.model.MultipleCommentsResponse
 import pt.isel.g20.unicommunity.comment.model.SingleCommentResponse
 import pt.isel.g20.unicommunity.comment.model.toItemRepr
-import pt.isel.g20.unicommunity.comment.service.ICommentService
+import pt.isel.g20.unicommunity.comment.service.CommentService
 import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.common.Uri.COMMENTS_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_COMMENT_ROUTE
@@ -16,7 +16,7 @@ import pt.isel.g20.unicommunity.user.model.User
 
 @RestController
 @RequestMapping(produces = [APPLICATION_HAL_JSON, APPLICATION_JSON, APPLICATION_COLLECTION_JSON])
-class CommentController(private val service: ICommentService) {
+class CommentController(private val service: CommentService) {
 
     @AuthorizationRequired
     @GetMapping(path = [COMMENTS_ROUTE], produces = [APPLICATION_COLLECTION_JSON])

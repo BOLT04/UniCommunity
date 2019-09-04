@@ -13,11 +13,11 @@ import pt.isel.g20.unicommunity.user.model.MultipleUsersResponse
 import pt.isel.g20.unicommunity.user.model.SingleUserResponse
 import pt.isel.g20.unicommunity.user.model.User
 import pt.isel.g20.unicommunity.user.model.UserDto
-import pt.isel.g20.unicommunity.user.service.IUserService
+import pt.isel.g20.unicommunity.user.service.UserService
 
 @RestController
 @RequestMapping(produces = [APPLICATION_HAL_JSON, APPLICATION_JSON, APPLICATION_COLLECTION_JSON])
-class UserController(private val service: IUserService) {
+class UserController(private val service: UserService) {
 
     @AuthorizationOptional
     @GetMapping(path = [USERS_ROUTE], produces = [APPLICATION_COLLECTION_JSON])

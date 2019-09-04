@@ -15,11 +15,11 @@ import pt.isel.g20.unicommunity.user.model.User
 class ForumService(
         val forumsRepo: ForumRepository,
         val boardsRepo: BoardRepository
-) : IForumService {
-    override fun getForumById(boardId: Long) =
+) {
+    fun getForumById(boardId: Long) =
             forumsRepo.findByIdOrNull(boardId) ?: throw NotFoundForumException()
 
-    override fun createForum(
+    fun createForum(
             boardId: Long
 
     ): Forum {
@@ -35,14 +35,14 @@ class ForumService(
         return newForum
     }
 
-    override fun editForum(user: User, boardId: Long): Forum {
+    fun editForum(user: User, boardId: Long): Forum {
         val forum = getForumById(boardId)
         if(user.id != forum.board.creator.id && user.role != ADMIN) throw UnauthorizedException()
 
         return forumsRepo.save(forum)
     }
 
-    override fun deleteForum(user: User, boardId: Long): Forum {
+    fun deleteForum(user: User, boardId: Long): Forum {
         val forum = getForumById(boardId)
         if(user.id != forum.board.creator.id && user.role != ADMIN) throw UnauthorizedException()
 

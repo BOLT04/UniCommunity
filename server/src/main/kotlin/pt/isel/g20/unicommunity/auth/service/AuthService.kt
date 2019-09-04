@@ -11,9 +11,9 @@ import pt.isel.g20.unicommunity.user.model.User
 class AuthService(
         val userRepo: UserRepository
         //val passwordEncoder: PasswordEncoder
-) : IAuthService {
+) {
 
-    override fun authenticate(email: String, password: String): User {
+    fun authenticate(email: String, password: String): User {
         val user = userRepo.findByEmail(email)?: throw NotFoundUserException()
 
         if (BCryptPasswordEncoder().matches(password, user.pw)) //passwordEncoder.matches(password, user.pw)

@@ -16,18 +16,18 @@ class ReportService(
         val usersRepo: UserRepository,
         val forumItemsRepo: ForumItemRepository,
         val commentsRepo: CommentRepository
-) : IReportService {
-    override fun getAllReports(user: User): Iterable<Report> {
+) {
+    fun getAllReports(user: User): Iterable<Report> {
         if(user.role != ADMIN) throw UnauthorizedException()
         return reportsRepo.findAll()
     }
 
-    override fun getReportById(user: User, reportId: Long): Report {
+    fun getReportById(user: User, reportId: Long): Report {
         if(user.role != ADMIN) throw UnauthorizedException()
         return reportsRepo.findByIdOrNull(reportId) ?: throw NotFoundReportException()
     }
 
-    override fun createReport(userId: Long, forumItemId: Long?, commentId: Long?): Report {
+    fun createReport(userId: Long, forumItemId: Long?, commentId: Long?): Report {
         if(forumItemId == null && commentId == null) throw InvalidReportTypeException()
         if(forumItemId != null && commentId != null) throw InvalidReportTypeException()
         val user = usersRepo.findByIdOrNull(userId) ?: throw NotFoundUserException()

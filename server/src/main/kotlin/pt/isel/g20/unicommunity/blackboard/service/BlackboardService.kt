@@ -17,18 +17,18 @@ class BlackboardService(
         val boardsRepo: BoardRepository,
         val usersRepo: UserRepository,
         val usersBlackboardsRepository: UsersBlackboardsRepository
-) : IBlackboardService {
-    override fun getAllBlackboards(boardId: Long): Iterable<Blackboard> {
+) {
+    fun getAllBlackboards(boardId: Long): Iterable<Blackboard> {
         boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
         return blackboardsRepo.findByBoardId(boardId).asIterable()
     }
 
-    override fun getBlackboardById(boardId: Long, bbId: Long): Blackboard{
+    fun getBlackboardById(boardId: Long, bbId: Long): Blackboard{
         boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
         return blackboardsRepo.findByBoardIdAndId(boardId, bbId) ?: throw NotFoundBlackboardException()
     }
 
-    override fun createBlackboard(
+    fun createBlackboard(
             userId: Long,
             boardId: Long,
             name: String,
@@ -59,7 +59,7 @@ class BlackboardService(
         return newBlackboard
     }
 
-    override fun editBlackboard(
+    fun editBlackboard(
             user: User,
             boardId: Long,
             bbId: Long,
@@ -82,7 +82,7 @@ class BlackboardService(
         return blackboardsRepo.save(blackboard)
     }
 
-    override fun deleteBlackboard(user: User, boardId: Long, bbId: Long): Blackboard {
+    fun deleteBlackboard(user: User, boardId: Long, bbId: Long): Blackboard {
         val blackboard = getBlackboardById(boardId, bbId)
         if(user.id != blackboard.board.creator.id && user.role != ADMIN) throw UnauthorizedException()
 

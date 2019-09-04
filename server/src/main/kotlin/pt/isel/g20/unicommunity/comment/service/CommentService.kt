@@ -14,22 +14,22 @@ class CommentService(
         val forumsRepo: ForumRepository,
         val boardsRepo: BoardRepository,
         val usersRepo: UserRepository
-) : ICommentService{
-    override fun getAllComments(boardId: Long, forumItemId: Long): Iterable<Comment> {
+) {
+    fun getAllComments(boardId: Long, forumItemId: Long): Iterable<Comment> {
         boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
         forumsRepo.findByIdOrNull(boardId) ?: throw NotFoundForumException()
         forumItemsRepo.findByIdOrNull(forumItemId) ?: throw NotFoundForumItemException()
         return commentsRepo.findByForumItemIdOrderByCreatedAtDesc(forumItemId).asIterable()
     }
 
-    override fun getCommentById(boardId: Long, forumItemId: Long, commentId: Long): Comment {
+    fun getCommentById(boardId: Long, forumItemId: Long, commentId: Long): Comment {
         boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
         forumsRepo.findByIdOrNull(boardId) ?: throw NotFoundForumException()
         forumItemsRepo.findByIdOrNull(forumItemId) ?: throw NotFoundForumItemException()
         return commentsRepo.findByForumItemIdAndId(forumItemId, commentId) ?: throw NotFoundCommentException()
     }
 
-    override fun createComment(boardId: Long, forumItemId: Long, authorId: Long, content: String, anonymous: Boolean): Comment {
+    fun createComment(boardId: Long, forumItemId: Long, authorId: Long, content: String, anonymous: Boolean): Comment {
         boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
         forumsRepo.findByIdOrNull(boardId) ?: throw NotFoundForumException()
         val forumItem = forumItemsRepo.findByIdOrNull(forumItemId) ?: throw NotFoundForumItemException()
@@ -46,7 +46,7 @@ class CommentService(
         return newComment
     }
 
-    override fun editComment(user: User, boardId: Long, forumItemId: Long, commentId: Long, content: String?): Comment {
+    fun editComment(user: User, boardId: Long, forumItemId: Long, commentId: Long, content: String?): Comment {
         val comment = getCommentById(boardId, forumItemId, commentId)
         if(user.id != comment.author.id && user.role != ADMIN) throw UnauthorizedException()
         if(content != null)
@@ -55,7 +55,7 @@ class CommentService(
         return commentsRepo.save(comment)
     }
 
-    override fun deleteComment(user: User, boardId: Long, forumItemId: Long, commentId: Long): Comment {
+    fun deleteComment(user: User, boardId: Long, forumItemId: Long, commentId: Long): Comment {
         val comment = getCommentById(boardId, forumItemId, commentId)
         if(user.id != comment.author.id && user.role != ADMIN) throw UnauthorizedException()
 

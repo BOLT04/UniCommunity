@@ -15,22 +15,22 @@ class UserService(
         val boardsRepo: BoardRepository,
         val usersBoardsRepo: UsersBoardsRepository
         //val passwordEncoder: PasswordEncoder
-) : IUserService {
+) {
 
-    override fun getAllUsers(): Iterable<User> = usersRepo.findAll()
+    fun getAllUsers(): Iterable<User> = usersRepo.findAll()
 
-    override fun getUserById(userId: Long) =
+    fun getUserById(userId: Long) =
             usersRepo.findByIdOrNull(userId) ?: throw NotFoundUserException()
 
-    override fun getUserByName(name: String) =
+    fun getUserByName(name: String) =
             usersRepo.findByName(name) ?: throw NotFoundUserException()
 
-    override fun getBoardMembers(boardId: Long): Iterable<User>{
+    fun getBoardMembers(boardId: Long): Iterable<User>{
         boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
         return usersBoardsRepo.findByBoardId(boardId).map { it.user }
     }
 
-    override fun createUser(sessionUserId:Long, name: String, email: String, password: String, role: String, githubId: String?): User {
+    fun createUser(sessionUserId:Long, name: String, email: String, password: String, role: String, githubId: String?): User {
         val sessionUser = usersRepo.findByIdOrNull(sessionUserId) ?: throw UnauthorizedException()
         if(sessionUser.role != ADMIN) throw UnauthorizedException()
 
@@ -47,7 +47,7 @@ class UserService(
         return usersRepo.save(user)
     }
 
-    override fun editUser(
+    fun editUser(
             sessionUser: User,
             userId: Long,
             name: String,
@@ -73,7 +73,7 @@ class UserService(
         return usersRepo.save(user)
     }
 
-    override fun deleteUser(sessionUser: User, userId: Long): User {
+    fun deleteUser(sessionUser: User, userId: Long): User {
         val user = getUserById(userId)
         if(user.id != sessionUser.id && sessionUser.role != ADMIN) throw UnauthorizedException()
 

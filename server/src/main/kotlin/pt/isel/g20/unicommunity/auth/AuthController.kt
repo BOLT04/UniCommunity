@@ -5,13 +5,13 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import pt.isel.g20.unicommunity.auth.model.LoginDto
 import pt.isel.g20.unicommunity.auth.model.LoginResponse
-import pt.isel.g20.unicommunity.auth.service.IAuthService
+import pt.isel.g20.unicommunity.auth.service.AuthService
 import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.common.presentation.authorizationProblemJson
 
 @RestController
 @RequestMapping(produces = [APPLICATION_HAL_JSON, APPLICATION_JSON])
-class AuthenticationController(private val service: IAuthService) {
+class AuthenticationController(private val service: AuthService) {
     @PostMapping(Uri.LOGIN_ROUTE)
     fun login(@RequestBody loginDto: LoginDto) =
             cacheOkResponse(

@@ -16,20 +16,20 @@ class BlackboardItemService(
         val blackboardsRepo: BlackboardRepository,
         val blackboardItemsRepo: BlackboardItemRepository,
         val usersRepo: UserRepository
-) : IBlackboardItemService {
-    override fun getAllBlackboardItems(boardId: Long, bbId: Long): Iterable<BlackboardItem> {
+) {
+    fun getAllBlackboardItems(boardId: Long, bbId: Long): Iterable<BlackboardItem> {
         boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
         blackboardsRepo.findByIdOrNull(bbId) ?: throw NotFoundBlackboardException()
         return blackboardItemsRepo.findByBlackboardIdOrderByCreatedAtDesc(bbId).asIterable()
     }
 
-    override fun getBlackboardItemById(boardId: Long, bbId: Long, itemId: Long) : BlackboardItem {
+    fun getBlackboardItemById(boardId: Long, bbId: Long, itemId: Long) : BlackboardItem {
         boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
         blackboardsRepo.findByIdOrNull(bbId) ?: throw NotFoundBlackboardException()
         return blackboardItemsRepo.findByBlackboardIdAndId(bbId, itemId) ?: throw NotFoundBlackboardItemException()
     }
 
-    override fun createBlackboardItem(
+    fun createBlackboardItem(
             boardId: Long,
             bbId: Long,
             userId: Long,
@@ -51,7 +51,7 @@ class BlackboardItemService(
         return newBlackboardItem
     }
 
-    override fun editBlackboardItem(
+    fun editBlackboardItem(
             user: User,
             boardId: Long,
             bbId: Long,
@@ -71,7 +71,7 @@ class BlackboardItemService(
         return blackboardItemsRepo.save(blackboardItem)
     }
 
-    override fun deleteBlackboardItem(user: User, boardId: Long, bbId: Long, itemId: Long): BlackboardItem {
+    fun deleteBlackboardItem(user: User, boardId: Long, bbId: Long, itemId: Long): BlackboardItem {
         val blackboardItem = getBlackboardItemById(boardId, bbId, itemId)
         if(user.id != blackboardItem.blackboard.board.creator.id && user.role != ADMIN) throw UnauthorizedException()
 

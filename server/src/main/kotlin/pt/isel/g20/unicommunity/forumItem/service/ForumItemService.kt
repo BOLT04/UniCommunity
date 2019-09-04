@@ -16,20 +16,20 @@ class ForumItemService(
         val forumsRepo: ForumRepository,
         val boardsRepo: BoardRepository,
         val usersRepo: UserRepository
-) : IForumItemService {
-    override fun getAllForumItems(boardId: Long): Iterable<ForumItem>{
+) {
+    fun getAllForumItems(boardId: Long): Iterable<ForumItem>{
         boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
         forumsRepo.findByIdOrNull(boardId) ?: throw NotFoundForumException()
         return forumItemsRepo.findByForumIdOrderByCreatedAtDesc(boardId).asIterable()
     }
 
-    override fun getForumItemById(boardId: Long, forumItemId: Long): ForumItem {
+    fun getForumItemById(boardId: Long, forumItemId: Long): ForumItem {
         boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
         forumsRepo.findByIdOrNull(boardId) ?: throw NotFoundForumException()
         return forumItemsRepo.findByForumIdAndId(boardId, forumItemId) ?: throw NotFoundForumItemException()
     }
 
-    override fun createForumItem(
+    fun createForumItem(
             boardId: Long,
             authorId: Long,
             name: String,
@@ -51,7 +51,7 @@ class ForumItemService(
         return newForumItem
     }
 
-    override fun editForumItem(
+    fun editForumItem(
             user: User,
             boardId: Long,
             forumItemId: Long,
@@ -70,7 +70,7 @@ class ForumItemService(
         return forumItemsRepo.save(forumItem)
     }
 
-    override fun deleteForumItem(user: User, boardId: Long, forumItemId: Long): ForumItem {
+    fun deleteForumItem(user: User, boardId: Long, forumItemId: Long): ForumItem {
         val forumItem = getForumItemById(boardId, forumItemId)
         if(user.id != forumItem.author.id && user.role != ADMIN) throw UnauthorizedException()
 

@@ -8,11 +8,11 @@ import pt.isel.g20.unicommunity.common.Uri.TEMPLATES_ROUTE
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
 import pt.isel.g20.unicommunity.hateoas.CollectionObject
 import pt.isel.g20.unicommunity.template.model.*
-import pt.isel.g20.unicommunity.template.service.ITemplateService
+import pt.isel.g20.unicommunity.template.service.TemplateService
 
 @RestController
 @RequestMapping(produces = [APPLICATION_HAL_JSON, APPLICATION_JSON, APPLICATION_COLLECTION_JSON])
-class TemplateController(private val service: ITemplateService) {
+class TemplateController(private val service: TemplateService) {
 
     @GetMapping(path = [TEMPLATES_ROUTE], produces = [APPLICATION_COLLECTION_JSON])
     fun getAllTemplates() =

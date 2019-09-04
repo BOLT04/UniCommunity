@@ -10,13 +10,13 @@ import pt.isel.g20.unicommunity.forumItem.model.ForumItemDto
 import pt.isel.g20.unicommunity.forumItem.model.MultipleForumItemsResponse
 import pt.isel.g20.unicommunity.forumItem.model.SingleForumItemResponse
 import pt.isel.g20.unicommunity.forumItem.model.toItemRepr
-import pt.isel.g20.unicommunity.forumItem.service.IForumItemService
+import pt.isel.g20.unicommunity.forumItem.service.ForumItemService
 import pt.isel.g20.unicommunity.hateoas.CollectionObject
 import pt.isel.g20.unicommunity.user.model.User
 
 @RestController
 @RequestMapping(produces = [APPLICATION_HAL_JSON, APPLICATION_JSON, APPLICATION_COLLECTION_JSON])
-class ForumItemController(private val service: IForumItemService) {
+class ForumItemController(private val service: ForumItemService) {
 
     @AuthorizationRequired
     @GetMapping(path = [FORUMITEMS_ROUTE], produces = [APPLICATION_COLLECTION_JSON])

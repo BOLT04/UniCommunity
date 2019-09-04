@@ -6,11 +6,11 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import pt.isel.g20.unicommunity.blackboard.service.IBlackboardService
+import pt.isel.g20.unicommunity.blackboard.service.BlackboardService
 import pt.isel.g20.unicommunity.board.model.Board
 import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.fcm.FcmServiceFactory
-import pt.isel.g20.unicommunity.forum.service.IForumService
+import pt.isel.g20.unicommunity.forum.service.ForumService
 import pt.isel.g20.unicommunity.repository.*
 import pt.isel.g20.unicommunity.user.model.User
 import pt.isel.g20.unicommunity.usersBlackboards.UsersBlackboards
@@ -20,27 +20,27 @@ import pt.isel.g20.unicommunity.usersBoards.UsersBoards
 class BoardService(
         val boardsRepo: BoardRepository,
         val templatesRepo: TemplateRepository,
-        val blackboardService: IBlackboardService,
+        val blackboardService: BlackboardService,
         val usersBlackboardsRepo: UsersBlackboardsRepository,
         val usersBoardsRepo: UsersBoardsRepository,
         val usersRepo: UserRepository,
         val blackboardsRepo: BlackboardRepository,
-        val forumService: IForumService
-) : IBoardService {
+        val forumService: ForumService
+) {
 
-    override fun getActiveBoards(page: Int, pageSize: Int): Page<Board> =
+    fun getActiveBoards(page: Int, pageSize: Int): Page<Board> =
             boardsRepo.findByActiveTrue(PageRequest.of(page, pageSize))
 
-    override fun getAllBoards(page: Int, pageSize: Int): Page<Board> =
+    fun getAllBoards(page: Int, pageSize: Int): Page<Board> =
             boardsRepo.findAll(PageRequest.of(page, pageSize))
 
-    override fun getMyBoards(userId: Long, page: Int, pageSize: Int): Page<Board> {
+    fun getMyBoards(userId: Long, page: Int, pageSize: Int): Page<Board> {
         usersRepo.findByIdOrNull(userId) ?: throw NotFoundUserException()
         val userBoards = usersBoardsRepo.findByUserId(userId)
         return boardsRepo.findByUsersBoardsIn(userBoards, PageRequest.of(page, pageSize))
     }
 
-    override fun getBoardById(boardId: Long) =
+    fun getBoardById(boardId: Long) =
             boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
 
     private fun createBoardWithTemplate(
@@ -106,7 +106,7 @@ class BoardService(
 
     val fcmService = FcmServiceFactory.makeFcmServiceService()
 
-    override fun subscribe(boardId: Long, userId: Long, token: String): Board {
+    fun subscribe(boardId: Long, userId: Long, token: String): Board {
         var board = getBoardById(boardId)
         val user = usersRepo.findByIdOrNull(userId) ?: throw NotFoundUserException()
 
@@ -156,7 +156,7 @@ class BoardService(
         }
     }
 
-    override fun unsubscribe(boardId: Long, userId: Long):Board {
+    fun unsubscribe(boardId: Long, userId: Long):Board {
         var board = getBoardById(boardId)
         val user = usersRepo.findByIdOrNull(userId) ?: throw NotFoundUserException()
         val userBoard = usersBoardsRepo.findByUserIdAndBoardId(userId, boardId) ?: throw NotAMemberException()
@@ -181,7 +181,7 @@ class BoardService(
         return board
     }
 
-    override fun createBoard(
+    fun createBoard(
             creatorId: Long,
             name: String,
             templateId: Long?,
@@ -197,7 +197,7 @@ class BoardService(
         return boardsRepo.save(board)
     }
 
-    override fun editBoard(user: User, boardId: Long, name: String, isActive: Boolean, description: String?): Board {
+    fun editBoard(user: User, boardId: Long, name: String, isActive: Boolean, description: String?): Board {
         val board = getBoardById(boardId)
         val allowedToChangeState = (user.id == board.creator.id || user.role == ADMIN)
         if (!allowedToChangeState)
@@ -211,7 +211,7 @@ class BoardService(
         return boardsRepo.save(board)
     }
 
-    override fun deleteBoard(user: User, boardId: Long): Board {
+    fun deleteBoard(user: User, boardId: Long): Board {
         var board = getBoardById(boardId)
         val allowedToChangeState = (user.id == board.creator.id || user.role == ADMIN)
         if (!allowedToChangeState)

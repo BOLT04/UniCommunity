@@ -4,12 +4,12 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.web.method.HandlerMethod
 import org.springframework.web.servlet.HandlerInterceptor
-import pt.isel.g20.unicommunity.auth.service.IAuthService
+import pt.isel.g20.unicommunity.auth.service.AuthService
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationException
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationOptional
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
 import pt.isel.g20.unicommunity.user.model.User
-import pt.isel.g20.unicommunity.user.service.IUserService
+import pt.isel.g20.unicommunity.user.service.UserService
 import java.io.UnsupportedEncodingException
 import java.net.HttpURLConnection
 import java.net.URL
@@ -23,8 +23,8 @@ import javax.servlet.http.HttpSession
  * Request handling interceptor used to check whether the authorization requirements are met.
  */
 class AuthorizationInterceptor(
-        private val authService: IAuthService,
-        private val userService: IUserService
+        private val authService: AuthService,
+        private val userService: UserService
 ) : HandlerInterceptor {
 
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {

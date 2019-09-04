@@ -7,7 +7,7 @@ import kotlinx.coroutines.withContext
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import pt.isel.g20.unicommunity.board.model.*
-import pt.isel.g20.unicommunity.board.service.IBoardService
+import pt.isel.g20.unicommunity.board.service.BoardService
 import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.common.Uri.ACTIVE_BOARDS_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.BOARDS_ROUTE
@@ -19,7 +19,7 @@ import pt.isel.g20.unicommunity.user.model.User
 
 @RestController
 @RequestMapping(produces = [APPLICATION_HAL_JSON, APPLICATION_JSON, APPLICATION_COLLECTION_JSON])
-class BoardController(private val service: IBoardService) {
+class BoardController(private val service: BoardService) {
 
     @GetMapping(path = ["/retrofit"])
     fun getRetrofit(): List<Post>? {
@@ -78,7 +78,7 @@ class BoardController(private val service: IBoardService) {
                     CollectionObject(
                             MultipleBoardsResponse(
                                     service
-                                            .getActiveBoards(page)
+                                            .getActiveBoards(page, 1000)
                                             .map{it.toItemRepr(user)},
                                     page
                             )
@@ -95,7 +95,7 @@ class BoardController(private val service: IBoardService) {
                     CollectionObject(
                             MultipleBoardsResponse(
                                     service
-                                            .getAllBoards(page)
+                                            .getAllBoards(page, 1000)
                                             .map{it.toItemRepr(user)},
                                     page
                             )
@@ -111,7 +111,7 @@ class BoardController(private val service: IBoardService) {
             cacheOkResponse(
                     CollectionObject(
                             MultipleBoardsResponse(
-                                    service.getMyBoards(user.id, page).map{it.toItemRepr(user)},
+                                    service.getMyBoards(user.id, page, 1000).map{it.toItemRepr(user)},
                                     page
                             )
                     )

@@ -6,7 +6,7 @@ import pt.isel.g20.unicommunity.blackboard.model.BlackboardDto
 import pt.isel.g20.unicommunity.blackboard.model.MultipleBlackboardsResponse
 import pt.isel.g20.unicommunity.blackboard.model.SingleBlackboardResponse
 import pt.isel.g20.unicommunity.blackboard.model.toItemRepr
-import pt.isel.g20.unicommunity.blackboard.service.IBlackboardService
+import pt.isel.g20.unicommunity.blackboard.service.BlackboardService
 import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.common.Uri.BLACKBOARDS_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_BLACKBOARD_ROUTE
@@ -16,7 +16,7 @@ import pt.isel.g20.unicommunity.user.model.User
 
 @RestController
 @RequestMapping(produces = [APPLICATION_HAL_JSON, APPLICATION_JSON, APPLICATION_COLLECTION_JSON])
-class BlackboardController(private val service: IBlackboardService) {
+class BlackboardController(private val service: BlackboardService) {
     @AuthorizationRequired
     @GetMapping(path = [BLACKBOARDS_ROUTE], produces = [APPLICATION_COLLECTION_JSON])
     fun getAllBlackboards(

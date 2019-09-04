@@ -8,12 +8,12 @@ import pt.isel.g20.unicommunity.common.Uri.SINGLE_REPORT_ROUTE
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
 import pt.isel.g20.unicommunity.hateoas.CollectionObject
 import pt.isel.g20.unicommunity.report.model.*
-import pt.isel.g20.unicommunity.report.service.IReportService
+import pt.isel.g20.unicommunity.report.service.ReportService
 import pt.isel.g20.unicommunity.user.model.User
 
 @RestController
 @RequestMapping(produces = [APPLICATION_HAL_JSON, APPLICATION_JSON, APPLICATION_COLLECTION_JSON])
-class ReportController(private val service: IReportService) {
+class ReportController(private val service: ReportService) {
 
     @GetMapping(path = [REPORTS_ROUTE], produces = [APPLICATION_COLLECTION_JSON])
     @AuthorizationRequired
