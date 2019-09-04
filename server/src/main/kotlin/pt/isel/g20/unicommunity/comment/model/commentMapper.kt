@@ -11,6 +11,11 @@ fun Comment.toItemRepr(user: User): Item {
     val forumItemId = this.forumItem.id
     val boardId = this.forumItem.forum.board.id
     val authorId = this.author.id
+    val data = mutableListOf(
+            Data(name = "id", value = this.id.toString()),
+            Data(name = "content", value = this.content),
+            Data(name = "createdAt", value = this.createdAt.toString())
+    )
     val links = mutableListOf(
             CollectionLink(
                     rel = "self",
@@ -58,22 +63,19 @@ fun Comment.toItemRepr(user: User): Item {
                 )
         ))
 
-    if(!this.anonymousComment)
+    if(!this.anonymousComment){
         links.add(
                 CollectionLink(
                         rel = Rels.GET_SINGLE_USER,
                         href = Uri.forSingleUserText(authorId)
                 )
         )
+        data.add(Data(name = "authorName", value = this.author.name))
+    }
 
     return Item(
             href = Uri.forSingleCommentText(boardId, forumItemId, this.id),
-            data = listOf(
-                    Data(name = "id", value = this.id.toString()),
-                    Data(name = "content", value = this.content),
-                    Data(name = "authorName", value = if (this.anonymousComment) null else this.author.name),
-                    Data(name = "createdAt", value = this.createdAt.toString())
-            ),
+            data = data,
             links = links
     )
 }

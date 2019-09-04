@@ -11,6 +11,12 @@ fun ForumItem.toItemRepr(user: User): Item {
         val boardId = this.forum.board.id
         val forumId = this.forum.id
         val authorId = this.author.id
+        val data = mutableListOf(
+                Data(name = "name", value = this.name),
+                Data(name = "id", value = this.id.toString()),
+                Data(name = "content", value = this.content),
+                Data(name = "createdAt", value = this.createdAt.toString())
+        )
         val links = mutableListOf(
                 CollectionLink(
                         rel = "self",
@@ -54,23 +60,19 @@ fun ForumItem.toItemRepr(user: User): Item {
                         )
                 ))
 
-        if(!this.anonymousPost)
+        if(!this.anonymousPost){
                 links.add(
                         CollectionLink(
                                 rel = Rels.GET_SINGLE_USER,
                                 href = Uri.forSingleUserText(authorId)
                         )
                 )
+                data.add(Data(name = "authorName", value = this.author.name))
+        }
         
         return Item(
                 href = Uri.forSingleForumItemText(forumId, this.id),
-                data = listOf(
-                        Data(name = "name", value = this.name),
-                        Data(name = "id", value = this.id.toString()),
-                        Data(name = "content", value = this.content),
-                        Data(name = "authorName", value = if (this.anonymousPost) null else this.author.name),
-                        Data(name = "createdAt", value = this.createdAt.toString())
-                ),
+                data = data,
                 links = links
         )
 }
