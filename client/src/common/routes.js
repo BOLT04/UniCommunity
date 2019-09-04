@@ -16,6 +16,12 @@ const routes = {
     getNewBlackboardItemUri(board, bb) {
         return `${board.id}/${bb.name}/blackboardItem/new`
     },
+    /**
+     * @param {string} userId
+     */
+    getUserProfileUri(userId) {
+        return `/user/${userId}`
+    },
 }
 
 export default routes

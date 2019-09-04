@@ -40,7 +40,6 @@ class NavBar extends Component {
   }
 
   async componentDidUpdate(prevProps) {
-    debugger
     if (this.props.toReRender !== prevProps.toReRender)
       await this.fetchData()
   }
@@ -49,16 +48,20 @@ class NavBar extends Component {
     const rsp = await this.props.utilsObj.asyncRelativeFetch(this.props.navMenuUrl, APPLICATION_HAL_JSON)
     const rspObj = await rsp.json()
     const navMenu = rspObj._links
-debugger
+
     this.setState({ navMenu })
   }
 
-  handleItemClick = (e, { name }, reg, serverHref) => {
+  /**
+   * @param {object} body - The response body that resulted from a necessary GET request to some resource, in
+   * order to build the client URL.
+   */
+  handleItemClick = (e, { name }, clientHref, serverHref, body) => {
     e.preventDefault()
     this.setState({ activeItem: name })
 
     // Redirect to the corresponding page
-    this.props.history.push(reg.clientHref, { serverHref })
+    this.props.history.push(clientHref, { serverHref, body })
   }
 
   handleDismiss = () => this.setState({ visible: false })
@@ -86,9 +89,7 @@ debugger
     auth.logout()
     // Redirect to home page
     await this.fetchData()
-console.log('aqui')
     this.props.history.push('/')
-console.log('aqui2')
 
   }
 
@@ -105,6 +106,7 @@ console.log('aqui2')
           reg={reg}
           serverHref={serverHref}
           activeItem={activeItem}
+          utilsObj={this.props.utilsObj}
         />
       )
     }
@@ -160,6 +162,7 @@ console.log('aqui2')
             reg={reg}
             serverHref={navMenu[prop].href}
             activeItem={activeItem}
+            utilsObj={this.props.utilsObj}
           />
         ))
         }
@@ -190,17 +193,59 @@ console.log('aqui2')
 }
 
 class NavBarLink extends Component {
+
+  constructor(props) {
+    super(props)
+
+    // Check if there needs to be further actions to get the built href value.
+    // For example with the user profile link, it is necessary to get an identifier of the user resource in order
+    // to build the client href (since the client URLs are not the same as the server URLs to prevent coupling)!
+    const { reg } = props
+    this.isFunction = typeof reg.clientHref === 'function'
+    const href = this.isFunction ? '' : reg.clientHref
+
+    this.state = { href }
+  }
+
   onClickHandler = (e, data) => {
     const { onClick, reg, serverHref } = this.props
-    onClick(e, data, reg, serverHref)
+    const { href } = this.state
+
+    onClick(e, data, href, serverHref, this.body)
+  }
+
+  async componentDidMount() {
+    if (!this.isFunction) return
+
+    const { reg, serverHref } = this.props
+    const href = await this.buildHref(reg.clientHref, serverHref)
+    this.setState({ href })
+  }
+
+  /**
+   * 
+   * @param {function} buildClientHref - Function that builds the client href. Descriptor (string) -> string.
+   * The function takes the id necesary to build the complete href.
+   * @param {*} serverHref - Server URL for the resource that we want to build a client URL. This resource needs
+   * to provide an "id" property on the response payload, representing the resource identifier.
+   */
+  async buildHref(buildClientHref, serverHref) {
+    const rsp = await this.props.utilsObj.asyncRelativeFetch(serverHref, APPLICATION_HAL_JSON)
+    const body = await rsp.json()
+    this.body = body // Save the response body to give to the component that will render a page for this resource
+
+    return buildClientHref(body.id)
   }
 
   render() {
     const { reg, activeItem, className } = this.props
+    const { href } = this.state
+    
+debugger
     return (
       <Menu.Item
         link
-        href={reg.clientHref}
+        href={href}
         className={className}
         key={reg.name}
         name={reg.name}

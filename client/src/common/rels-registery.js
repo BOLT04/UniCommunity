@@ -53,7 +53,7 @@ const relsRegistery = {
     [rels.getComments]: {
         propName: 'getComments'
     },
-    [rels.getBoards]: {//TODO: take out prefix localhost....
+    [rels.getBoards]: {
         clientHref: '/boards',
         name: 'All Boards'
     },
@@ -79,7 +79,9 @@ const relsRegistery = {
         propName: 'feedUrl'
     },
     [rels.userProfile]: {
-        clientHref: '/profile',
+        clientHref(userId) {
+            return routes.getUserProfileUri(userId)
+        },
         name: 'User Profile',
         toDisplayOnRight: true,
         render(props) {

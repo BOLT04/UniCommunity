@@ -4,7 +4,7 @@ import React, { Component } from 'react'
 import {
     Image,
     Grid,
-    Header as SemanticHeader 
+    Header
 } from 'semantic-ui-react'
 
 export default class UserProfile extends Component {
@@ -13,19 +13,9 @@ export default class UserProfile extends Component {
         loading: true
     }
 
-    async componentDidMount() {
-        /*const rsp = await this.props.asyncRelativeFetch(this.props.location.state.getPostUrl, APPLICATION_HAL_JSON)
-        const post = await rspToForumItemAsync(rsp)
-        console.log(post)
-debugger
-        this.setState({ post, loading: false })
-        */
-    }
-
-
     render() {
-        //TODO: use for progile
-        const { post, loading } = this.state
+        const { body: user } = this.props.location.state
+
         return (
             <>
                 <Image
@@ -34,19 +24,16 @@ debugger
                     floated='left'
                     circular />
 
-                 <SemanticHeader as='h2'>Jose dabe</SemanticHeader>
+                <Header as='h2'>{user.name}</Header>
                 <Grid>
                     <Grid.Row>
-                        <h3>Bio:</h3><br/><p>yoyoyoy</p>
+                        <strong>GitHub ID:</strong>{user.githubId}
                     </Grid.Row>
                     <Grid.Row>
-                        <h3>GitHub ID:</h3> <p>yoyoyoy</p>
+                        <strong>Email:</strong>{user.email}
                     </Grid.Row>
                     <Grid.Row>
-                        <h3>Email:</h3>yoyoyoy@a.com
-                    </Grid.Row>
-                    <Grid.Row>
-                        <h3>Roles:</h3>Professor
+                        <strong>Role:</strong>{user.role}
                     </Grid.Row>
                 </Grid>
             </>
