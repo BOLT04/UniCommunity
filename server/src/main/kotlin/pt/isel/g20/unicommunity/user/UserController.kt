@@ -23,7 +23,7 @@ class UserController(private val service: IUserService) {
             cacheOkResponse(CollectionObject(MultipleUsersResponse(service.getAllUsers())))
 
     @GetMapping(path = [SINGLE_USER_ROUTE], produces = [APPLICATION_HAL_JSON])
-    fun getUserById(@PathVariable userId: Long, @SessionAttribute("user")user: User) =
+    fun getUserById(@PathVariable userId: Long, @SessionAttribute("user") user: User) =
             cacheOkResponse(SingleUserResponse(user, service.getUserById(userId)))
 
     @GetMapping(path = [BOARD_MEMBERS], produces = [APPLICATION_COLLECTION_JSON])

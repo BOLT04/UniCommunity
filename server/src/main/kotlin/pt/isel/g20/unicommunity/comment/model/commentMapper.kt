@@ -39,6 +39,10 @@ fun Comment.toItemRepr(user: User): Item {
             CollectionLink(
                     rel = Rels.GET_MULTIPLE_BOARDS,
                     href = Uri.forAllBoards()
+            ),
+            CollectionLink(
+                    rel = Rels.CREATE_REPORT,
+                    href = Uri.forAllReports()
             )
     )
 
