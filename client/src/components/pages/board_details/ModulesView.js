@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import { Accordion, Icon, Transition, Header, Message } from 'semantic-ui-react'
 
-import ReactMarkdown from 'react-markdown'
+import Markdown from 'react-markdown'
 
 import Forum from './Forum'
 import { CreateModuleButton } from './CreateModuleButton'
@@ -61,6 +61,8 @@ class ModulesView extends Component {
                 return state
             })
        
+        const { board } = this.state
+
         return (
             <div key={index}>
                 <Accordion.Title active={isActive} index={index} onClick={this.handleClick}>
@@ -70,7 +72,7 @@ class ModulesView extends Component {
 
                 { blackboard.editLinkHref &&
                     <EditModuleButton
-                        board={this.state.board}
+                        board={board}
                         blackboard={blackboard}
                         updateBlackboard={updateBlackboard} />
                 }
@@ -78,7 +80,10 @@ class ModulesView extends Component {
                 { blackboard.createLink &&
                     <CreateModuleButton linkToObj={{
                         pathname: blackboard.createLink.clientHref,
-                        state: { createBlackboardItemUrl: blackboard.createLink.serverHref }
+                        state: { 
+                            createBlackboardItemUrl: blackboard.createLink.serverHref,
+                            boardId: board.id
+                        }
                     }} />
                 }
 
@@ -88,7 +93,7 @@ class ModulesView extends Component {
                             <>
                                 <Header as='h4' color='orange'>{item.name}</Header>
                                 <hr />
-                                <ReactMarkdown source={item.content} />
+                                <Markdown source={item.content} />
                             </>
                         ))}
 
@@ -137,7 +142,7 @@ class ModulesView extends Component {
 
     render() {
         const { board, infoMsgVisible } = this.state
-        
+
         return board.modules 
                     ? 
                         <Accordion fluid styled exclusive={false}>

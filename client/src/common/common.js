@@ -52,6 +52,7 @@ export const asyncRelativeFetch = (relativeUrl, contentType) => {
 
         options.headers['Accept'] = contentType
     }
+
     return fetch(buildUri(relativeUrl), options)
 }
 
@@ -120,7 +121,8 @@ function fillAuthHeaderIfAuthenticated() {
     const token = localStorage.getItem('authToken')//TODO: make a constant with 'authToken' since its used in /service/auth.js
     if (token)
         options.headers = {
-            Authorization: `Bearer ${token}`
+            //Authorization: `Bearer ${token}`
+            Authorization: 'Basic ZGF2ZUBnbWFpbC5jb206cGFzcw=='
         }
         
     return options

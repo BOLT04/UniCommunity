@@ -74,7 +74,7 @@ class BoardView extends BookmarkableComponent {
 
   renderBoard() {
     const { board } = this.state
-debugger
+    
     return (
       <>
         <Header 
@@ -102,15 +102,11 @@ debugger
     )
   }
 
-  //TODO: is there a better way of passing props than below? Like BoardHearder already have access to parent 
-  //props?
-  render() {
-    console.log(this.props.match)
-
-    return !this.state.board
-            ? <Loader active inline />
-            : this.renderBoard()
-  }
+  render = () => (
+    !this.state.board
+      ? <Loader active inline />
+      : this.renderBoard()
+  )
 }
 
 export default withUtilsConsumer(BoardView)

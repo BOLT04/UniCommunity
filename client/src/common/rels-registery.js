@@ -9,6 +9,7 @@ import routes from './routes'
 
 export const rels = {
     getForumItems: '/rels/getForumItems',
+    getForum: '/rels/getForum',
     createBlackboardItem: '/rels/createBlackboardItem',
     editBlackboard: '/rels/editBlackboard',
     createForumItem: '/rels/createForumItem',
@@ -19,12 +20,13 @@ export const rels = {
     getBoards: '/rels/getBoards',
     getBoard: '/rels/getBoard',
     editBoard: '/rels/editBoard',
-    addMemberToBoard: '/rels/addMemberToBoard',
-    removeMemberToBoard: '/rels/removeMemberToBoard',
+    addMemberToBoard: '/rels/subscribe',
+    removeMemberToBoard: '/rels/unsubscribe',
 
     createBoard: '/rels/createBoard',
     login: '/rels/login',
     getBlackboards: '/rels/getBlackboards',
+    getBlackboardItems: '/rels/getBlackboardItems',
     nav: '/rels/nav',
     feed: '/rels/feed',
     userProfile: '/rels/userProfile'

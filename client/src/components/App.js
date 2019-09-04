@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
+import ProtectedRoute from './ProtectedRoute'
+
 import NavBar from './NavBar'
 import Footer from './Footer'
 import Login from './Login'
@@ -50,6 +52,7 @@ export default class App extends Component {
 
       this.setState({ home })
     } catch(e) {
+      console.log({e})
       alert('Couldn\'t contact the server')//TODO: render an error page instead of this 
     }
   }
@@ -91,7 +94,7 @@ export default class App extends Component {
                   asyncRelativeFetch={this.props.asyncRelativeFetch} />} 
               />
 
-              <Route exact path='/boards/new' render={props => 
+              <ProtectedRoute exact path='/boards/new' render={props => 
                 <CreateBoard 
                   {...props}
                   api={createBoardApi}
