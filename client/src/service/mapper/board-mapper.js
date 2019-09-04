@@ -17,20 +17,20 @@ import Blackboard from '../../components/pages/board_details/model/Blackboard'
 import HypermediaObject from './HypermediaObject'
 import { MappingError } from '../../common/errors'
 
+import asyncBaseMapper from './base-mapper'
+
 /**
  * @throws {MappingError} - Throws this exception in case the Content-Type header isn't the correct one.
  * @returns {Board}       - The board object that represents the UI.
  * @param {Response} rsp  - Represents the response of the API that comes in HAL+JSON format.
  */
-export default async function rspToBoardAsync(rsp) {//TODO: maybe move these constants strings to another file. Like how its done on the server
-    const contentType = rsp.headers.get('Content-Type')
-
-    if (contentType.includes(APPLICATION_HAL_JSON)) {
+export default async function rspToBoardAsync(rsp) {
+    const parseRsp = async () => {
         // Sanity check. In the HTTP request we sent the header Accept, so we check if the server does support it.
-        const { name, description, _links, _embedded } = await rsp.json()
+        const { id, name, description, _links, _embedded } = await rsp.json()
 
-        const board = new Board(name, description, {})
-        let forumLink
+        const board = new Board(id, name, description, {})
+        let forumHref
 
         if (_links) {//TODO: i dont know what to do here...
             // Add methods to board object to simplify operations on the links array.
@@ -57,9 +57,9 @@ export default async function rspToBoardAsync(rsp) {//TODO: maybe move these con
             if (addMemberToBoardHref)
                 board.addMemberHref = addMemberToBoardHref
             
-                const forumRel = rels.getForumItems// TODO: can this be hardcoded here?
-            if (_links[forumRel] && relsRegistery[rels.getForumItems]) //TODO: fix hardcoded relsRegistery[forumRel]
-                forumLink = _links[forumRel].href
+            const forumRel = rels.getForum
+            if (_links[forumRel])
+                forumHref = _links[forumRel].href
         }
 
         // Check if the blackboards rel is present
@@ -78,8 +78,6 @@ export default async function rspToBoardAsync(rsp) {//TODO: maybe move these con
                     // Then fetch and add the blackboards property to modules
                     let rsp = await asyncRelativeFetch(rels.getBlackboards)
                     const { _templates: { default: reqInfo } } = await asyncParseHalFormRsp(rsp)
-                    /*const { _templates: { default: reqInfo } } = await asyncRelativeFetch(rels.getBlackboards)
-                            .then(asyncParseHalFormRsp)*/
 
                     rsp = await asyncRelativeHttpRequest(blackboardsHref, reqInfo.method)
                     const blackboardsArr = (await asyncCollectionRspToList(rsp)).items
@@ -92,14 +90,13 @@ export default async function rspToBoardAsync(rsp) {//TODO: maybe move these con
             }
         }
 
-        // Make a request to get the forum and add it to the modules array
-        board.modules.forum = await fetchForumAsync(forumLink)
-
-        return board
+        if (forumHref)
+            board.modules.forum = await fetchForumAsync(forumHref)
+        
+            return board
     }
-
-    //TODO: add check of Problem+json! and throw an error perhaps
-    throw new MappingError()
+//TODO: make a react component that handles errors that are thrown
+    return asyncBaseMapper(rsp, APPLICATION_HAL_JSON, parseRsp)
 }
 
 /**
@@ -120,16 +117,21 @@ async function halItemToBlackboardAsync(board, { _links }) {
     return parseOutputModelToBlackboard(board, body)
 }
 
-export function parseOutputModelToBlackboard(board, body) {
+export async function parseOutputModelToBlackboard(board, body) {
     const {
         id,
         name,
         notificationLevel,
         description,
-        items,
         _links: blackboardLinks
     } = body
 
+    const itemsLink = blackboardLinks && blackboardLinks[rels.getBlackboardItems]
+    let items = []
+    if (itemsLink) {
+        const rsp = await asyncRelativeFetch(itemsLink.href, COLLECTION_JSON)
+        items = (await asyncCollectionRspToList(rsp)).items
+    }
     const blackboard = new Blackboard(id, name, notificationLevel, description, items)
     const createItemLink = blackboardLinks[rels.createBlackboardItem]
     const createBlackboardItemHref = createItemLink && createItemLink.href
@@ -159,12 +161,26 @@ export function parseOutputModelToBlackboard(board, body) {
  *     }
  * }
  * 
- * @param {string} forumLink 
+ * @param {string} forumHref 
  */
-async function fetchForumAsync(forumLink) {
+async function fetchForumAsync(forumHref) {
     //TODO: what if the self link isnt there... we need to be prepared for that and put content = [] maybe
-    const rsp = await asyncRelativeFetch(forumLink, COLLECTION_JSON)
+    // Auxiliar function
+    const getForumItemsHref = async () => {
+        const rsp = await asyncRelativeFetch(forumHref, APPLICATION_HAL_JSON)
+        const { _links } = await rsp.json()
+        
+        if (_links) {
+            const forumItemsRel = rels.getForumItems
+            if (_links[forumItemsRel] && relsRegistery[forumItemsRel])
+                return _links[forumItemsRel].href
+        } else return null
+    }
 
+    const forumItemsHref = await getForumItemsHref()
+    if (!forumItemsHref) return null
+
+    const rsp = await asyncRelativeFetch(forumItemsHref, COLLECTION_JSON)
     const { collection: { links, items } } = await rsp.json()
 
     //TODO: use asyncCollectionRspToList in collectionJson mapper since its the same code
