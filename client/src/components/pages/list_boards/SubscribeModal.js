@@ -30,11 +30,13 @@ class SubscribeModal extends Component {
 			
 			const body = { token }
 			const rsp = await utilsObj.asyncRelativeHttpRequest(url, reqInfo.method, APPLICATION_JSON, body)
+			console.log({rsp})
 			if (!rsp.ok) { }//TODO: handle error
 
 			const redirectPath = routes.getBoardUri(board.id)
 			this.props.history.push(redirectPath, { board: removeFunctionsFrom(board) })
-		} catch (e) {
+		} catch (error) {
+			console.log({error})
 			//TODO: handle error
 		}
 	}
@@ -48,7 +50,7 @@ class SubscribeModal extends Component {
 			<Modal trigger={
 				<Button primary content='Subscribe' />
 			} basic size='small'>
-				<Header icon='archive' content={`Subscribe to ${board.name}`} />
+				<Header icon='bell' content={`Subscribe to ${board.name}`} />
 				<Modal.Content>
 					<p>
 						Are you sure you want to subscribe to this board?

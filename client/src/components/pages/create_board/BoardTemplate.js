@@ -44,6 +44,7 @@ class BoardTemplate extends Component {
 
   templateToRow = template => (
     <Grid.Column
+      key={template.id}
       width={8}
       className='template-item'
       onClick={this.activateTemplate.bind(this, template.id)}

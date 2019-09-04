@@ -29,9 +29,6 @@ export default class CreatePost extends Component {
   // An arrow function is used because this function is used in an onClick prop, meaning there 
   // is no need to use Function::bind() to capture "this".
   submitCreatePostHandler = async (title, content) => {
-    console.log(title)
-    console.log(content)
-
     const url = this.props.location.state.createPostUrl
 
     const rsp = await createForumPostsAsync(url, title, content, this.isAnonymous)
@@ -51,9 +48,7 @@ export default class CreatePost extends Component {
 
         const boardRsp = await asyncRelativeFetch(boardUrl.href, APPLICATION_HAL_JSON)
         let board = await rspToBoardAsync(boardRsp)
-    
-        board.id = 1 // TODO: remove when this is in server impl.
-        
+            
         // We need to remove any functions because history.push doesn't support that state has functions
         board = removeFunctionsFrom(board)
         this.props.history.push(routes.getBoardUri(board.id), { board })

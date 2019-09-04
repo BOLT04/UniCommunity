@@ -28,10 +28,14 @@ class PostDetails extends Component {
     }
 
     async componentDidMount() {
-        const rsp = await this.props.utilsObj.asyncRelativeFetch(this.props.location.state.getPostUrl, APPLICATION_HAL_JSON)
-        const post = await rspToForumItemAsync(rsp)
-        
-        this.setState({ post, loading: false })
+        //try {
+            const rsp = await this.props.utilsObj.asyncRelativeFetch(this.props.location.state.getPostUrl, APPLICATION_HAL_JSON)
+            const post = await rspToForumItemAsync(rsp)
+            
+            this.setState({ post, loading: false })
+        //} catch (e) {
+            //this.props.handleError(e)
+        //}
     }
 
     onCreateCommentHandler = (e, comment) => {
@@ -51,7 +55,7 @@ debugger
         //TODO: if this gets too big consider making a functional component for it, receiving 'post obj' as a prop
         const renderPost = () => (
             <Segment>
-                <ForumPostHeader post={post} />
+                <ForumPostHeader authorName={post.authorName} createdAt={post.createdAt} />
                 <Header
                     className='ui blue header'
                     header={post.name}
@@ -87,3 +91,4 @@ debugger
 }
 
 export default withUtilsConsumer(PostDetails)
+//export default withErrorHandler(withUtilsConsumer(PostDetails))
