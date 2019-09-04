@@ -1,9 +1,9 @@
 {
     "clientHost": "localhost",
-    "serverHost": "localhost",
+    "serverHost": "unicommunity.ddns.net",
     "clientPort": 3000,
-    "serverPort": 443,
-    "serverEntryPoint": "/home",
+    "serverPort": 80,
+    "serverEntryPoint": "/",
     "firebase": {
         "apiKey": "AIzaSyDUKMc1kpuv192IesEX12OPZS2XFT9N3-8",
         "authDomain": "unicommunity-f7bc8.firebaseapp.com",

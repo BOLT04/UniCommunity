@@ -3,7 +3,10 @@ import PropTypes from 'prop-types'
 import { withRouter } from 'react-router-dom'
 import { Menu, Segment, Message, Transition } from 'semantic-ui-react'
 
+import LogoutButton from './LogoutButton'
+
 import NavBarApi from '../service/NavBarApi'
+import auth from '../service/auth'
 
 import { APPLICATION_HAL_JSON } from '../common/constants'
 import relsRegistery from '../common/rels-registery'
@@ -31,14 +34,14 @@ class NavBar extends Component {
     const { firebase } = this.props
     const messaging = firebase.messaging()
     messaging.onMessage(payload => {
-      console.log(1)
       console.log({ payload })
-      this.setState({ payload, visible:true })
-    }, e => console.log({ e }), c => console.log({ c }))
+      this.setState({ payload, visible: true })
+    }, e => console.error({ e }), c => console.log({ c }))
   }
 
   async componentDidUpdate(prevProps) {
-    if (this.props.reRender !== prevProps.reRender)
+    debugger
+    if (this.props.toReRender !== prevProps.toReRender)
       await this.fetchData()
   }
 
@@ -46,7 +49,7 @@ class NavBar extends Component {
     const rsp = await this.props.utilsObj.asyncRelativeFetch(this.props.navMenuUrl, APPLICATION_HAL_JSON)
     const rspObj = await rsp.json()
     const navMenu = rspObj._links
-
+debugger
     this.setState({ navMenu })
   }
 
@@ -77,6 +80,16 @@ class NavBar extends Component {
           <p>{payload.notification.body}</p>
         </Message>
       )
+  }
+
+  onLogoutClickHandler = async e => {
+    auth.logout()
+    // Redirect to home page
+    await this.fetchData()
+console.log('aqui')
+    this.props.history.push('/')
+console.log('aqui2')
+
   }
 
   buildLinks() {
@@ -156,11 +169,9 @@ class NavBar extends Component {
         )
         }
         
-            <Transition visible={visible} animation='slide left' duration={500}>
-              { 
-                this.decideRender()
-              }
-            </Transition> 
+        <Transition visible={visible} animation='slide left' duration={500}>
+          {this.decideRender()}
+        </Transition> 
       </>
     )
   }
@@ -169,6 +180,10 @@ class NavBar extends Component {
     <Segment inverted size='tiny'>
       <Menu inverted pointing secondary stackable>
         {this.buildLinks()}
+
+        { auth.isAuthenticated() && 
+            <LogoutButton onClickHandler={this.onLogoutClickHandler} />
+        }
       </Menu>
     </Segment>
   )
@@ -192,13 +207,10 @@ class NavBarLink extends Component {
         active={activeItem === reg.name}
         onClick={this.onClickHandler}
       >
-    
-            {reg.render
-              ? reg.render()
-              : reg.name
-            }
-      
-      
+        {reg.render
+          ? reg.render()
+          : reg.name
+        }
       </Menu.Item>
     )
   }

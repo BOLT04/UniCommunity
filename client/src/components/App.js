@@ -73,7 +73,8 @@ export default class App extends Component {
           <div className='ui container' style={{ flex: 1 }}>
             {home.navMenuUrl && 
               <NavBar
-                reRender= {this.state.reRenderNavBar}
+                toReRender= {this.state.reRenderNavBar}
+                reRender={this.reRenderNavBar}
                 navMenuUrl={home.navMenuUrl}
                 asyncRelativeFetch={this.props.asyncRelativeFetch}
                 api={new NavBarApiImpl()} /> 

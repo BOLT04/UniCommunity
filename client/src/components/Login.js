@@ -8,7 +8,7 @@ import auth from '../service/auth'
 import routes from '../common/routes'
 
 export default class Login extends Component {
-  
+
   constructor(props) {
     super(props)
 
@@ -26,16 +26,25 @@ export default class Login extends Component {
 
   submitLoginHandler = async e => {
     try {
-      //if (!this.addServerHrefOf('/rels/login'))
-        //throw new Error('Error: Not possible to contact the server!')
-      
-      const success = await auth.asyncLogin()
-      if (!success) throw new Error('')
+      const links = await auth.asyncLogin(this.props.location.state.serverHref, this.emailVal, this.passVal)
 
-      this.props.reRender() // Update Navbar
+      if (links) {
+        this.props.reRender() // Update Navbar
+        //this.props.requestNotificationPermission()
+        /*
+        try {
+          debugger
+            const messaging = firebase.messaging()
+            await messaging.requestPermission()
+            const token = await messaging.getToken()
+            console.log(token)
+        } catch (e) {
+            alert('You won\'t receive notifications.')
+        }*/
 
-      const redirectPath = this.props.location.state.redirectTo || routes.home
-      this.props.history.push(redirectPath)
+        const redirectPath = this.props.location.state.redirectTo || routes.home
+        this.props.history.push(redirectPath)
+      }
     } catch (error) {
       if (error.json) {
         const errorBody = await error.json()
@@ -54,51 +63,45 @@ export default class Login extends Component {
 
     return (
       <>
-        <div className='ui middle aligned center aligned grid'>
-          <div className='column'>
-            <h2 className='ui teal header'>
-              <img src={`${process.env.PUBLIC_URL}/favicon.ico`} className='image' alt={`Couldn't load favicon`}></img>
-              <div className='content'>
+        <div className="ui middle aligned center aligned grid">
+          <div className="column">
+            <h2 className="ui teal header">
+              <img src={`${process.env.PUBLIC_URL}/img/logo.png`} className="image"></img>
+              <div className="content">
                 Log-in
-              </div>
+            </div>
             </h2>
-
             <form className='ui large form'>
               <div className='ui stacked segment'>
+                <div className='field'>
+                  <div className='ui left icon input'>
+                    <i className='user icon' />
+                    <input
+                      type='text'
+                      name='email'
+                      placeholder='Email'
+                      onChange={this.onEmailChange} />
+                  </div>
+                </div>
+                <div className='field'>
+                  <div className='ui left icon input'>
+                    <i className='lock icon' />
+                    <input
+                      type='password'
+                      name='password'
+                      placeholder='Password'
+                      onChange={this.onPasswordChange} />
+                  </div>
+                </div>
                 <div className='ui fluid large teal submit button' onClick={this.submitLoginHandler}>
                   Login
-                </div>
+              </div>
               </div>
             </form>
           </div>
-        </div>
-        { error && <ErrorMessage error={error} /> }
-        {/*
-          <Form>
-            <Form.Field>
-              <label>Username</label>
-              <div className='ui left icon input'>
-                <i className='user icon'></i>
-                <Input
-                  name='username'
-                  placeholder='Username'
-                  onChange={this.onUsernameChange}
-                />
-              </div>
-            </Form.Field>
-            <Form.Field>
-              <label>Password</label>
-              <div className='ui left icon input'>
-                <i className='lock icon'></i>
-                <Input
-                  name='password'
-                  placeholder='Password'
-                  onChange={this.onPasswordChange}
-                />
-              </div>
-            </Form.Field>
-          </Form>
-          */}
+
+          {error && <ErrorMessage error={error} />}
+          </div>
       </>
     )
   }

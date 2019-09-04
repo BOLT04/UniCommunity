@@ -3,7 +3,7 @@
 import { UserManager } from 'oidc-client'
 import { LogoutError } from '../common/errors'
 import config from '../unicommunity-config.json'
-import { baseClientUri } from '../common/common'
+import { baseClientUri, buildUri } from '../common/common'
 
 require('../common/storage-extensions')() //TODO: why is this needed if index.js already executes this code? 
 
@@ -33,18 +33,40 @@ function Auth() {
         }
     })
 
-    /**
-     * This function returns an object that represent the user from oidc-client library.
+     /**
+     * This function returns an object with links that represent where the client can navigate after a
+     * successful authentication. If null is returned than it means an error occured.
      */
-    this.asyncLogin = async () => {
-        let user = await userManager.getUser()
-        if (!user)
-            user = await userManager.signinPopup()
+    this.asyncLogin = async (relativeUrl, email, password) => {
+        const body = { email, password }
 
-        localStorage.setItem(AUTH_TOKEN, user.access_token)
-        localStorage.setObject(USER, user)
-        authenticated = true
-        return true
+        try {
+            const rsp = await fetch(buildUri(relativeUrl), {
+                method: 'post',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(body)
+            })
+
+            if (!rsp.ok) throw rsp
+
+            const json = await rsp.json()
+            const user = {
+                email,
+                name: json.name
+            }
+        
+            this.token = new Buffer(`${email}:${password}`).toString('base64')
+            localStorage.setItem(AUTH_TOKEN, this.token)
+            localStorage.setObject(USER, user)
+            authenticated = true
+
+            return json._links
+        } catch (e) {
+            authenticated = false
+            throw e
+        }
     }
 
     /**
@@ -61,7 +83,6 @@ function Auth() {
         localStorage.clear()
     
         authenticated = false
-        return true
     }
     
     this.isAuthenticated = () => authenticated || localStorage.getItem(AUTH_TOKEN) !== null
