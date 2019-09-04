@@ -2,7 +2,6 @@ package pt.isel.g20.unicommunity.board.service
 
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
-import org.hibernate.Hibernate
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.repository.findByIdOrNull
@@ -217,10 +216,6 @@ class BoardService(
         val allowedToChangeState = (user.id == board.creator.id || user.role == ADMIN)
         if (!allowedToChangeState)
             throw UnauthorizedException()
-
-        Hibernate.initialize(board.blackBoards)
-        Hibernate.initialize(board.forum)
-        Hibernate.initialize(board.usersBoards)
 
         boardsRepo.delete(board)
         return board

@@ -1,6 +1,5 @@
 package pt.isel.g20.unicommunity.forum.service
 
-import org.hibernate.Hibernate
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import pt.isel.g20.unicommunity.common.ADMIN
@@ -46,8 +45,6 @@ class ForumService(
     override fun deleteForum(user: User, boardId: Long): Forum {
         val forum = getForumById(boardId)
         if(user.id != forum.board.creator.id && user.role != ADMIN) throw UnauthorizedException()
-
-        Hibernate.initialize(forum.items)
 
         forumsRepo.delete(forum)
         return forum

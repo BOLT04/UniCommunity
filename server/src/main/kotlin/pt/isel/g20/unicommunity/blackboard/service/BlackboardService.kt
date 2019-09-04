@@ -1,6 +1,5 @@
 package pt.isel.g20.unicommunity.blackboard.service
 
-import org.hibernate.Hibernate
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import pt.isel.g20.unicommunity.blackboard.model.Blackboard
@@ -86,9 +85,6 @@ class BlackboardService(
     override fun deleteBlackboard(user: User, boardId: Long, bbId: Long): Blackboard {
         val blackboard = getBlackboardById(boardId, bbId)
         if(user.id != blackboard.board.creator.id && user.role != ADMIN) throw UnauthorizedException()
-
-        Hibernate.initialize(blackboard.items)
-        Hibernate.initialize(blackboard.usersSettings)
 
         blackboardsRepo.delete(blackboard)
         return blackboard

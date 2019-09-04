@@ -1,6 +1,5 @@
 package pt.isel.g20.unicommunity.user.service
 
-import org.hibernate.Hibernate
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Service
@@ -58,9 +57,9 @@ class UserService(
             githubId: String?
     ): User {
         val user = getUserById(userId)
-        if(user.id != sessionUser.id || sessionUser.role != ADMIN) throw UnauthorizedException()
+        if(user.id != sessionUser.id && sessionUser.role != ADMIN) throw UnauthorizedException()
 
-        if(sessionUser.role != ADMIN && user.role != role)
+        if(user.role != role && sessionUser.role != ADMIN)
             throw UnauthorizedException()
 
         if(email != user.email && (getAllUsers().map { it.email }.contains(email)))
@@ -76,13 +75,7 @@ class UserService(
 
     override fun deleteUser(sessionUser: User, userId: Long): User {
         val user = getUserById(userId)
-        if(user.id != sessionUser.id || sessionUser.role != ADMIN) throw UnauthorizedException()
-
-        Hibernate.initialize(user.bbItems)
-        Hibernate.initialize(user.usersBoards)
-        Hibernate.initialize(user.comments)
-        Hibernate.initialize(user.forumItems)
-        Hibernate.initialize(user.blackboardsSettings)
+        if(user.id != sessionUser.id && sessionUser.role != ADMIN) throw UnauthorizedException()
 
         usersRepo.delete(user)
         return user

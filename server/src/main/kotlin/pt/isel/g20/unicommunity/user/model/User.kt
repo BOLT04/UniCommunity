@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 import pt.isel.g20.unicommunity.blackboardItem.model.BlackboardItem
 import pt.isel.g20.unicommunity.comment.model.Comment
 import pt.isel.g20.unicommunity.forumItem.model.ForumItem
+import pt.isel.g20.unicommunity.report.model.Report
 import pt.isel.g20.unicommunity.usersBlackboards.UsersBlackboards
 import pt.isel.g20.unicommunity.usersBoards.UsersBoards
 import javax.persistence.*
@@ -48,6 +49,10 @@ class User(
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "author", cascade = [CascadeType.REMOVE])
     val bbItems: MutableList<BlackboardItem> = mutableListOf()
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = [CascadeType.REMOVE])
+    val reports: MutableList<Report> = mutableListOf()
 
     fun getBoards() = usersBoards.map { it.board }
 }

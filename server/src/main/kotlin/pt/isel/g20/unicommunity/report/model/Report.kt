@@ -8,11 +8,11 @@ import javax.persistence.*
 @Entity(name = "reports")
 class Report(
 
-        @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name="userId") var user: User,
+        @ManyToOne @JoinColumn(name="userId") var user: User,
 
-        @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name="forumItemId") var forumItem: ForumItem? = null,
+        @ManyToOne @JoinColumn(name="forumItemId") var forumItem: ForumItem? = null,
 
-        @ManyToOne(fetch = FetchType.LAZY) @JoinColumn(name="commentId") var comment: Comment? = null,
+        @ManyToOne @JoinColumn(name="commentId") var comment: Comment? = null,
 
         @Column(nullable = false)
         var numberOfReports: Long

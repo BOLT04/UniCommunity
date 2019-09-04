@@ -59,6 +59,8 @@ class CommentService(
         val comment = getCommentById(boardId, forumItemId, commentId)
         if(user.id != comment.author.id && user.role != ADMIN) throw UnauthorizedException()
 
+        //Hibernate.initialize(comment.reports)
+
         commentsRepo.delete(comment)
         return comment
     }

@@ -1,8 +1,10 @@
 package pt.isel.g20.unicommunity.comment.model
 
 import com.fasterxml.jackson.annotation.JsonFormat
+import com.fasterxml.jackson.annotation.JsonIgnore
 import org.hibernate.annotations.CreationTimestamp
 import pt.isel.g20.unicommunity.forumItem.model.ForumItem
+import pt.isel.g20.unicommunity.report.model.Report
 import pt.isel.g20.unicommunity.user.model.User
 import java.util.*
 import javax.persistence.*
@@ -24,4 +26,8 @@ class Comment(
     @Column
     @CreationTimestamp
     var createdAt: Date? = null
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "comment", cascade = [CascadeType.REMOVE])
+    val reports: MutableList<Report> = mutableListOf()
 }
