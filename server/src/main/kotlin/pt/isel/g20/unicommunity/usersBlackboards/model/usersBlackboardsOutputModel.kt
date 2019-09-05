@@ -12,6 +12,7 @@ class SingleUsersBlackboardResponse(
     val userId = usersBlackboard.user.id
     val bbId = usersBlackboard.blackboard.id
     val notificationLevel = usersBlackboard.notificationLevel
+    val fcmTopicName = usersBlackboard.blackboard.getFcmTopicName()
 
     init {
         val blackboard = usersBlackboard.blackboard

@@ -1,9 +1,9 @@
 package pt.isel.g20.unicommunity.auth.model
 
-import pt.isel.g20.unicommunity.hateoas.HalObject
-import pt.isel.g20.unicommunity.hateoas.Link
 import pt.isel.g20.unicommunity.common.Rels
 import pt.isel.g20.unicommunity.common.Uri
+import pt.isel.g20.unicommunity.hateoas.HalObject
+import pt.isel.g20.unicommunity.hateoas.Link
 import pt.isel.g20.unicommunity.user.model.User
 
 class LoginResponse(user: User)
@@ -11,7 +11,8 @@ class LoginResponse(user: User)
         mutableMapOf(
                 "self" to Link(Uri.LOGIN_ROUTE),
                 Rels.GET_MULTIPLE_BOARDS to Link(Uri.forAllBoards()),
-                Rels.NAVIGATION to Link(Uri.NAVIGATION_ROUTE)
+                Rels.NAVIGATION to Link(Uri.NAVIGATION_ROUTE),
+                Rels.GET_USER_BLACKBOARDS_SETTINGS to Link(Uri.forAllUsersBlackboards(user.id))
                 //Rels.LOGOUT to Link("/logout"), //TODO: for now since we don't have cookie auth, we don't need logout
         )
 ){

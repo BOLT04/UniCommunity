@@ -1,4 +1,4 @@
-package pt.isel.g20.unicommunity.UsersBlackboardsBlackboards
+package pt.isel.g20.unicommunity.usersBlackboards
 
 import org.springframework.web.bind.annotation.*
 import pt.isel.g20.unicommunity.common.*
@@ -10,11 +10,11 @@ import pt.isel.g20.unicommunity.usersBlackboards.service.UsersBlackboardsService
 
 @RestController
 @RequestMapping(produces = [APPLICATION_HAL_JSON, APPLICATION_JSON, APPLICATION_COLLECTION_JSON])
-class UsersBlackboardsBlackboardsController(private val service: UsersBlackboardsService) {
+class UsersBlackboardsController(private val service: UsersBlackboardsService) {
 
     @AuthorizationRequired
     @GetMapping(path = [Uri.USERS_BLACKBOARDS_ROUTE], produces = [APPLICATION_COLLECTION_JSON])
-    fun getAllUsersBlackboardsBlackboards(
+    fun getAllUsersBlackboards(
             @PathVariable userId: Long,
             @SessionAttribute("user") user: User
     ) =

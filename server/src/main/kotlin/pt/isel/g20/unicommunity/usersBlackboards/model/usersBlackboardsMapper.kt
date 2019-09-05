@@ -11,6 +11,7 @@ fun UsersBlackboards.toItemRepr() : Item {
     val bbId = this.blackboard.id
     val boardId = this.blackboard.board.id
     val notificationLevel = this.notificationLevel
+    val bbFcmTopicName = this.blackboard.getFcmTopicName()
 
     val links = mutableListOf(
             CollectionLink(
@@ -52,7 +53,8 @@ fun UsersBlackboards.toItemRepr() : Item {
             data = listOf(
                     Data(name = "userId", value = userId.toString()),
                     Data(name = "bbId", value = bbId.toString()),
-                    Data(name = "notificationLevel", value = notificationLevel)
+                    Data(name = "notificationLevel", value = notificationLevel),
+                    Data(name = "bbFcmTopicName", value = bbFcmTopicName)
             ),
             links = links
     )
