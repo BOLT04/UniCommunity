@@ -14,7 +14,6 @@ class UserService(
         val usersRepo: UserRepository,
         val boardsRepo: BoardRepository,
         val usersBoardsRepo: UsersBoardsRepository
-        //val passwordEncoder: PasswordEncoder
 ) {
 
     fun getAllUsers(): Iterable<User> = usersRepo.findAll()

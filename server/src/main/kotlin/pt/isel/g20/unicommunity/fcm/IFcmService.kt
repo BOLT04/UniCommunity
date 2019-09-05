@@ -29,7 +29,7 @@ interface IiidService {
 
     @Headers("Authorization: Bearer ${API_KEY}")
     @DELETE("v1/web/iid/{registrationToken}")
-    suspend fun unsubscribeAppToTopic(
+    suspend fun unsubscribeAppFromTopic(
             @Path("registrationToken", encoded= true) registrationToken: String
     ): Response<Empty>
 }
@@ -52,7 +52,7 @@ object GoogleServiceFactory {
                 .build()
 
         return Retrofit.Builder()
-                .baseUrl(GOOGLE_IID_API_BASE_URL)
+                .baseUrl(GOOGLE_FCM_API_BASE_URL)
                 .client(client)
                 .addConverterFactory(JacksonConverterFactory.create())
                 .build().create(IFcmService::class.java)

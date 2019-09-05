@@ -302,6 +302,23 @@ class ExceptionResolver : ResponseEntityExceptionHandler() {
                 .body(error)
     }
 
+    @ExceptionHandler(UnsubscribeFromTopicException::class)
+    fun handleUnsubscribeFromTopic(
+            ex: UnsubscribeFromTopicException,
+            request: WebRequest
+    ): ResponseEntity<ProblemJson> {
+        val error = ProblemJson(
+                title = "Unsubscription failed",
+                detail = "An error occurred when trying to unsubscribe from the board",
+                status = HttpStatus.INTERNAL_SERVER_ERROR.value()
+        )
+
+        return ResponseEntity
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .contentType(MediaType.APPLICATION_PROBLEM_JSON)
+                .body(error)
+    }
+
     @ExceptionHandler(ForbiddenException::class)
     fun handleForbidden(
             ex: ForbiddenException,

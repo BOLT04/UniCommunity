@@ -196,6 +196,28 @@ class BoardService(
         } }
         board = boardsRepo.save(board)
 
+        runBlocking {
+            val promisses = board.blackBoards.map {
+                async {
+                    //TODO: This topic name has a problem. Since we are separating the ids by the char '-', then
+                    //TODO: the blackboard name can't contain that character.
+                    //TODO: Also, I'm only using the blackboard name so that the topic name is more readable (not just ids)
+                    val topicName = "${board.id}-${it.id}-${it.name}"
+
+                    iidService.unsubscribeAppFromTopic(topicName)
+                }
+            }
+
+            promisses.forEach {
+                val rsp = it.await()
+                println("in unsubscribe: ${rsp.code()}")
+                if (!rsp.isSuccessful) throw SubscribeToTopicException()
+            }
+
+            println("in subscribe: returning")
+            board
+        }
+
         return board
     }
 
@@ -214,7 +236,7 @@ class BoardService(
     }
 
     fun deleteBoard(user: User, boardId: Long): Board {
-        var board = getBoardById(boardId)
+        val board = getBoardById(boardId)
         val allowedToChangeState = (user.id == board.creator.id || user.role == ADMIN)
         if (!allowedToChangeState)
             throw ForbiddenException()

@@ -1,9 +1,13 @@
 package pt.isel.g20.unicommunity.blackboardItem.service
 
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import pt.isel.g20.unicommunity.blackboardItem.model.BlackboardItem
 import pt.isel.g20.unicommunity.common.*
+import pt.isel.g20.unicommunity.fcm.FcmMessage
+import pt.isel.g20.unicommunity.fcm.GoogleServiceFactory
 import pt.isel.g20.unicommunity.repository.BlackboardItemRepository
 import pt.isel.g20.unicommunity.repository.BlackboardRepository
 import pt.isel.g20.unicommunity.repository.BoardRepository
@@ -29,6 +33,8 @@ class BlackboardItemService(
         return blackboardItemsRepo.findByBlackboardIdAndId(bbId, itemId) ?: throw NotFoundBlackboardItemException()
     }
 
+    val fcmService = GoogleServiceFactory.makeFcmService()
+
     fun createBlackboardItem(
             boardId: Long,
             bbId: Long,
@@ -47,6 +53,31 @@ class BlackboardItemService(
         usersRepo.save(user)
         blackboard.items.add(newBlackboardItem)
         blackboardsRepo.save(blackboard)
+
+        runBlocking {
+            val promise =
+                    async {
+                        fcmService.sendMessageToTopic(
+                                FcmMessage(
+                                        to = "/topics/${blackboard.getFcmTopicName()}",
+                                        data = mutableMapOf(
+                                                "notificationLevel" to blackboard.notificationLevel
+                                        ),
+                                        notification = mutableMapOf(
+                                                "title" to blackboardItem.name,
+                                                "body" to blackboardItem.content
+                                        )
+                                )
+                        )
+                    }
+
+            val rsp = promise.await()
+            println("sending fcm message: ${rsp.code()}")
+            if (!rsp.isSuccessful) throw SubscribeToTopicException()
+
+            println("in create BlackboardItem: returning")
+            blackboard
+        }
 
         return newBlackboardItem
     }
