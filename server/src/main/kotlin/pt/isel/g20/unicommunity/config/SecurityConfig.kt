@@ -12,11 +12,4 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
 
         http.csrf().disable()
     }
-
-    /* TODO: CAUSES CIRCULAR DEPENDENCY
-    @Bean
-    fun passwordEncoder() : PasswordEncoder {
-        return BCryptPasswordEncoder()
-    }
-     */
 }

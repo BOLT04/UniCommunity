@@ -148,27 +148,37 @@ class BoardService(
         return if (token == null)
             board
         else
-            runBlocking {
-                val promisses = board.blackBoards.map {
-                    async {
-                        //TODO: This topic name has a problem. Since we are separating the ids by the char '-', then
-                        //TODO: the blackboard name can't contain that character.
-                        //TODO: Also, I'm only using the blackboard name so that the topic name is more readable (not just ids)
-                        val topicName = "${board.id}-${it.id}-${it.name}"
+            subscribeToFcm(boardId, userId, token)
+    }
 
-                        iidService.subscribeAppToTopic(token, topicName)
-                    }
+    fun subscribeToFcm(boardId: Long, userId: Long, token: String): Board{
+        var board = getBoardById(boardId)
+
+        if(usersBoardsRepo.findByUserIdAndBoardId(userId, boardId) == null)
+            throw NotAMemberException()
+
+        runBlocking {
+            val promisses = board.blackBoards.map {
+                async {
+                    //TODO: This topic name has a problem. Since we are separating the ids by the char '-', then
+                    //TODO: the blackboard name can't contain that character.
+                    //TODO: Also, I'm only using the blackboard name so that the topic name is more readable (not just ids)
+                    val topicName = "${board.id}-${it.id}-${it.name}"
+
+                    iidService.subscribeAppToTopic(token, topicName)
                 }
-
-                promisses.forEach {
-                    val rsp = it.await()
-                    println("in subscribe: ${rsp.code()}")
-                    if (!rsp.isSuccessful) throw SubscribeToTopicException()
-                }
-
-                println("in subscribe: returning")
-                board
             }
+
+            promisses.forEach {
+                val rsp = it.await()
+                println("in subscribe: ${rsp.code()}")
+                if (!rsp.isSuccessful) throw SubscribeToTopicException()
+            }
+
+            println("in subscribe: returning")
+            board
+        }
+        return board
     }
 
     fun unsubscribe(boardId: Long, userId: Long):Board {

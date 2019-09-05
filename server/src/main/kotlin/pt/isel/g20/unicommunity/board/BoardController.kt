@@ -12,6 +12,7 @@ import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.common.Uri.ACTIVE_BOARDS_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.BOARDS_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.BOARD_MEMBERS
+import pt.isel.g20.unicommunity.common.Uri.FCM_SUBSCRIBE
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_BOARD_ROUTE
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
 import pt.isel.g20.unicommunity.hateoas.CollectionObject
@@ -156,6 +157,19 @@ class BoardController(private val service: BoardService) {
             cacheOkResponse(
                     SubscribeResponse(
                             service.subscribe(boardId, user.id, subscribeDto?.token)
+                    )
+            )
+
+    @AuthorizationRequired
+    @PostMapping(path = [FCM_SUBSCRIBE], produces = [APPLICATION_HAL_JSON])
+    fun subscribeToFcm(
+            @PathVariable boardId: Long,
+            @SessionAttribute("user") user: User,
+            @RequestBody subscribeDto: SubscribeDto
+    ) =
+            cacheOkResponse(
+                    SubscribeResponse(
+                            service.subscribeToFcm(boardId, user.id, subscribeDto.token)
                     )
             )
 

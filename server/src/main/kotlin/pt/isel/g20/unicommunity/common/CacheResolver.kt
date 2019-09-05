@@ -10,7 +10,7 @@ fun cacheOkResponse(responseBody: Any) =
                 .ok()
                 .cacheControl(
                         CacheControl
-                                .maxAge(1, TimeUnit.HOURS)
+                                .maxAge(1, TimeUnit.SECONDS)
                                 .cachePrivate())
                 .eTag(responseBody.hashCode().toString())
                 .body(responseBody)
@@ -21,7 +21,7 @@ fun cacheCreatedResponse(responseBody: Any, resourceHref: URI) =
                 .created(resourceHref)
                 .cacheControl(
                         CacheControl
-                                .maxAge(1, TimeUnit.HOURS)
+                                .maxAge(1, TimeUnit.SECONDS)
                                 .cachePrivate())
                 .eTag(responseBody.hashCode().toString())
                 .body(responseBody)

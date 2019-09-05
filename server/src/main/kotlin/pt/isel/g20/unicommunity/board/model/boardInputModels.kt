@@ -17,4 +17,4 @@ data class BoardDto @JsonCreator constructor(
         val description: String?
 )
 
-data class SubscribeDto @JsonCreator constructor(val token: String? = null)
+data class SubscribeDto @JsonCreator constructor(val token: String)

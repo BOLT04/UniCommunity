@@ -60,6 +60,7 @@ object Uri {
     const val ACTIVE_BOARDS_ROUTE = "/activeBoards"
     const val SINGLE_BOARD_ROUTE = "$BOARDS_ROUTE/{boardId}"
     const val BOARD_MEMBERS = "$SINGLE_BOARD_ROUTE/members"
+    const val FCM_SUBSCRIBE = "$SINGLE_BOARD_ROUTE/fcm"
 
     //Templates
     private val singleBoardTemplate = UriTemplate(SINGLE_BOARD_ROUTE)

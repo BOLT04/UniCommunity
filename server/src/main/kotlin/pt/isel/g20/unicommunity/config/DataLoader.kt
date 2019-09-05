@@ -14,7 +14,6 @@ import pt.isel.g20.unicommunity.user.model.User
 class DataLoader(
         val templatesRepo: TemplateRepository,
         val usersRepo: UserRepository
-        //val passwordEncoder: PasswordEncoder
 ) : ApplicationRunner {
 
     override fun run(args: ApplicationArguments) {
