@@ -50,6 +50,7 @@ fun Report.toItemRepr(): Item {
             data = listOf(
                     Data(name = "id", value = this.id.toString()),
                     Data(name = "userId", value = this.user.id.toString()),
+                    Data(name = "userName", value = this.user.name),
                     Data(name = "forumItemId", value = forumItem?.id?.toString() ?: "null"),
                     Data(name = "commentId", value = comment?.id?.toString() ?: "null"),
                     Data(name = "numberOfReports", value = this.numberOfReports.toString())

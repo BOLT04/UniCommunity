@@ -73,6 +73,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
 	implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+
 	runtimeOnly 'com.h2database:h2'
 
 	compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.1.7.RELEASE'
