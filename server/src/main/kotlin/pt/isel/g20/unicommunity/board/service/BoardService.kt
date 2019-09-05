@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service
 import pt.isel.g20.unicommunity.blackboard.service.BlackboardService
 import pt.isel.g20.unicommunity.board.model.Board
 import pt.isel.g20.unicommunity.common.*
-import pt.isel.g20.unicommunity.fcm.FcmServiceFactory
+import pt.isel.g20.unicommunity.fcm.GoogleServiceFactory
 import pt.isel.g20.unicommunity.forum.service.ForumService
 import pt.isel.g20.unicommunity.repository.*
 import pt.isel.g20.unicommunity.user.model.User
@@ -43,11 +43,29 @@ class BoardService(
     fun getBoardById(boardId: Long) =
             boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
 
+    fun createBoard(
+            creatorId: Long,
+            name: String,
+            templateId: Long?,
+            description: String?,
+            blackboardNames: List<String>?,
+            hasForum: Boolean?,
+            fcmToken: String? = null
+    ): Board {
+        val board: Board = if(templateId != null)
+            createBoardWithTemplate(creatorId, name,  description, templateId, fcmToken)
+        else
+            createBoardWithCustomModules(creatorId, name, blackboardNames, hasForum, description, fcmToken)
+
+        return boardsRepo.save(board)
+    }
+
     private fun createBoardWithTemplate(
             creatorId: Long,
             name: String,
             description: String?,
-            templateId: Long
+            templateId: Long,
+            fcmToken: String? = null
     ): Board {
         val template = templatesRepo.findByIdOrNull(templateId) ?: throw NotFoundTemplateException()
 
@@ -62,32 +80,28 @@ class BoardService(
             name: String,
             blackboardNames: List<String>?,
             hasForum: Boolean?,
-            description: String?
+            description: String?,
+            fcmToken: String? = null
     ): Board {
         if (blackboardNames.isNullOrEmpty() || hasForum == null)
             throw InvalidTemplateConfigurationException()
 
-        return createBoard(creatorId, name, blackboardNames, hasForum, description)
+        return finalStepCreateBoard(creatorId, name, blackboardNames, hasForum, description)
     }
 
-    private fun createBoard(
+    private fun finalStepCreateBoard(
             creatorId: Long,
             name: String,
             blackboardNames: List<String>,
             hasForum: Boolean,
             description: String?,
-            token: String? = null
+            fcmToken: String? = null
     ): Board {
         val creator = usersRepo.findByIdOrNull(creatorId) ?: throw NotFoundUserException()
         if(creator.role != ADMIN && creator.role != TEACHER) throw ForbiddenException()
 
         var board = Board(creator, name, description)
         boardsRepo.save(board)
-
-        val userBoard = UsersBoards(creator, board)
-        usersBoardsRepo.save(userBoard)
-
-        subscribe(board.id, creatorId, token)
 
         if (hasForum) {
             forumService.createForum(board.id)
@@ -98,10 +112,12 @@ class BoardService(
             blackboardService.createBlackboard(creatorId, board.id, it, "priority")
         }
 
+        subscribe(board.id, creatorId, fcmToken)
+
         return boardsRepo.save(board)
     }
 
-    val fcmService = FcmServiceFactory.makeFcmServiceService()
+    val iidService = GoogleServiceFactory.makeIidService()
 
     fun subscribe(boardId: Long, userId: Long, token: String? = null): Board {
         var board = getBoardById(boardId)
@@ -140,7 +156,7 @@ class BoardService(
                         //TODO: Also, I'm only using the blackboard name so that the topic name is more readable (not just ids)
                         val topicName = "${board.id}-${it.id}-${it.name}"
 
-                        fcmService.subscribeAppToTopic(token, topicName)
+                        iidService.subscribeAppToTopic(token, topicName)
                     }
                 }
 
@@ -181,22 +197,6 @@ class BoardService(
         board = boardsRepo.save(board)
 
         return board
-    }
-
-    fun createBoard(
-            creatorId: Long,
-            name: String,
-            templateId: Long?,
-            description: String?,
-            blackboardNames: List<String>?,
-            hasForum: Boolean?
-    ): Board {
-        val board: Board = if(templateId != null)
-            createBoardWithTemplate(creatorId, name,  description, templateId)
-        else
-            createBoardWithCustomModules(creatorId, name, blackboardNames, hasForum, description)
-
-        return boardsRepo.save(board)
     }
 
     fun editBoard(user: User, boardId: Long, name: String, isActive: Boolean, description: String?): Board {

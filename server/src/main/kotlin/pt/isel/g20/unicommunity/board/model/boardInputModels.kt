@@ -7,7 +7,8 @@ data class CreateBoardDto @JsonCreator constructor(
     val templateId: Long?,
     val description: String?,
     val blackboardNames: List<String>?,
-    val hasForum: Boolean?
+    val hasForum: Boolean?,
+    val fcmToken: String? = null
 )
 
 data class BoardDto @JsonCreator constructor(

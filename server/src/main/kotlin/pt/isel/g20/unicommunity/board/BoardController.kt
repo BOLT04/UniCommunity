@@ -138,7 +138,8 @@ class BoardController(private val service: BoardService) {
                     boardDto.templateId,
                     boardDto.description,
                     boardDto.blackboardNames,
-                    boardDto.hasForum
+                    boardDto.hasForum,
+                    boardDto.fcmToken
             ).let {
                 val responseBody = SingleBoardResponse(user, it)
                 val newResourceHref = Uri.forSingleBoardUri(it.id)
