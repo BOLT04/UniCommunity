@@ -44,16 +44,6 @@ class BlackboardService(
         var blackboard = Blackboard(name, notificationLevel, description, board)
         blackboard = blackboardsRepo.save(blackboard)
 
-
-        /*val userBlackboard = UsersBlackboards(user, blackboard, notificationLevel)
-        usersBlackboardsRepository.save(userBlackboard)
-
-        blackboard.usersSettings.add(userBlackboard)
-        blackboard = blackboardsRepo.save(blackboard)
-
-        user.blackboardsSettings.add(userBlackboard)
-        usersRepo.save(user)*/
-
         val newBlackboard = blackboardsRepo.save(blackboard)
 
         board.blackBoards.add(newBlackboard)

@@ -151,11 +151,11 @@ class BoardController(private val service: BoardService) {
     fun subscribe(
             @PathVariable boardId: Long,
             @SessionAttribute("user") user: User,
-            @RequestBody subscribeDto: SubscribeDto
+            @RequestBody subscribeDto: SubscribeDto?
     ) =
             cacheOkResponse(
                     SubscribeResponse(
-                            service.subscribe(boardId, user.id, subscribeDto.token)
+                            service.subscribe(boardId, user.id, subscribeDto?.token)
                     )
             )
 
