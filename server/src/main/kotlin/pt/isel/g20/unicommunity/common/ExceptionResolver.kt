@@ -302,15 +302,15 @@ class ExceptionResolver : ResponseEntityExceptionHandler() {
                 .body(error)
     }
 
-    @ExceptionHandler(UnauthorizedException::class)
-    fun handleUnauthorized(
-            ex: UnauthorizedException,
+    @ExceptionHandler(ForbiddenException::class)
+    fun handleForbidden(
+            ex: ForbiddenException,
             request: WebRequest
     ): ResponseEntity<ProblemJson> {
         val error = ProblemJson(
-                title = "Unauthorized",
+                title = "Forbidden",
                 detail = "You're not logged in or dont have authorization to perform this operation",
-                status = HttpStatus.UNAUTHORIZED.value()
+                status = HttpStatus.FORBIDDEN.value()
         )
 
         return ResponseEntity

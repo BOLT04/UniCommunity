@@ -37,7 +37,7 @@ class BlackboardService(
     ): Blackboard {
         val board = boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
         val user = usersRepo.findByIdOrNull(userId) ?: throw NotFoundUserException()
-        if(user.role != ADMIN && user.role != TEACHER) throw UnauthorizedException()
+        if(user.role != ADMIN && user.role != TEACHER) throw ForbiddenException()
 
         if(notificationLevel != "none" && notificationLevel != "priority" && notificationLevel != "all")
             throw InvalidNotificationLevelException()
@@ -71,7 +71,7 @@ class BlackboardService(
             description: String?
     ): Blackboard {
         val blackboard = getBlackboardById(boardId, bbId)
-        if(user.id != blackboard.board.creator.id && user.role != ADMIN) throw UnauthorizedException()
+        if(user.id != blackboard.board.creator.id && user.role != ADMIN) throw ForbiddenException()
 
         if(name != null)
             blackboard.name = name
@@ -87,7 +87,7 @@ class BlackboardService(
 
     fun deleteBlackboard(user: User, boardId: Long, bbId: Long): Blackboard {
         val blackboard = getBlackboardById(boardId, bbId)
-        if(user.id != blackboard.board.creator.id && user.role != ADMIN) throw UnauthorizedException()
+        if(user.id != blackboard.board.creator.id && user.role != ADMIN) throw ForbiddenException()
 
         blackboardsRepo.delete(blackboard)
         return blackboard

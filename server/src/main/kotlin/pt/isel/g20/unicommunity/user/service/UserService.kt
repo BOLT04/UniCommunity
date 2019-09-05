@@ -31,8 +31,8 @@ class UserService(
     }
 
     fun createUser(sessionUserId:Long, name: String, email: String, password: String, role: String, githubId: String?): User {
-        val sessionUser = usersRepo.findByIdOrNull(sessionUserId) ?: throw UnauthorizedException()
-        if(sessionUser.role != ADMIN) throw UnauthorizedException()
+        val sessionUser = usersRepo.findByIdOrNull(sessionUserId) ?: throw ForbiddenException()
+        if(sessionUser.role != ADMIN) throw ForbiddenException()
 
         if (getAllUsers().map { it.email }.contains(email)) {
             throw InvalidUserEmailException()
@@ -57,10 +57,10 @@ class UserService(
             githubId: String?
     ): User {
         val user = getUserById(userId)
-        if(user.id != sessionUser.id && sessionUser.role != ADMIN) throw UnauthorizedException()
+        if(user.id != sessionUser.id && sessionUser.role != ADMIN) throw ForbiddenException()
 
         if(user.role != role && sessionUser.role != ADMIN)
-            throw UnauthorizedException()
+            throw ForbiddenException()
 
         if(email != user.email && (getAllUsers().map { it.email }.contains(email)))
             throw InvalidUserEmailException()
@@ -75,7 +75,7 @@ class UserService(
 
     fun deleteUser(sessionUser: User, userId: Long): User {
         val user = getUserById(userId)
-        if(user.id != sessionUser.id && sessionUser.role != ADMIN) throw UnauthorizedException()
+        if(user.id != sessionUser.id && sessionUser.role != ADMIN) throw ForbiddenException()
 
         usersRepo.delete(user)
         return user

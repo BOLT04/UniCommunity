@@ -153,8 +153,7 @@ class BoardController(private val service: BoardService) {
             @RequestBody subscribeDto: SubscribeDto
     ) =
             cacheOkResponse(
-                    SingleBoardResponse(
-                            user,
+                    SubscribeResponse(
                             service.subscribe(boardId, user.id, subscribeDto.token)
                     )
             )
@@ -166,8 +165,7 @@ class BoardController(private val service: BoardService) {
             @SessionAttribute("user") user: User
     ) =
             cacheOkResponse(
-                    SingleBoardResponse(
-                            user,
+                    UnsubscribeResponse(
                             service.unsubscribe(boardId, user.id)
                     )
             )

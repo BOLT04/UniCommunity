@@ -48,7 +48,7 @@ class CommentService(
 
     fun editComment(user: User, boardId: Long, forumItemId: Long, commentId: Long, content: String?): Comment {
         val comment = getCommentById(boardId, forumItemId, commentId)
-        if(user.id != comment.author.id && user.role != ADMIN) throw UnauthorizedException()
+        if(user.id != comment.author.id && user.role != ADMIN) throw ForbiddenException()
         if(content != null)
             comment.content = content
 
@@ -57,7 +57,7 @@ class CommentService(
 
     fun deleteComment(user: User, boardId: Long, forumItemId: Long, commentId: Long): Comment {
         val comment = getCommentById(boardId, forumItemId, commentId)
-        if(user.id != comment.author.id && user.role != ADMIN) throw UnauthorizedException()
+        if(user.id != comment.author.id && user.role != ADMIN) throw ForbiddenException()
 
         //Hibernate.initialize(comment.reports)
 

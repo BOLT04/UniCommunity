@@ -75,10 +75,11 @@ class BoardService(
             name: String,
             blackboardNames: List<String>,
             hasForum: Boolean,
-            description: String?
+            description: String?,
+            token: String? = null
     ): Board {
         val creator = usersRepo.findByIdOrNull(creatorId) ?: throw NotFoundUserException()
-        if(creator.role != ADMIN && creator.role != TEACHER) throw UnauthorizedException()
+        if(creator.role != ADMIN && creator.role != TEACHER) throw ForbiddenException()
 
         var board = Board(creator, name, description)
         boardsRepo.save(board)
@@ -86,11 +87,7 @@ class BoardService(
         val userBoard = UsersBoards(creator, board)
         usersBoardsRepo.save(userBoard)
 
-        board.usersBoards.add(userBoard)
-        board = boardsRepo.save(board)
-
-        creator.usersBoards.add(userBoard)
-        usersRepo.save(creator)
+        subscribe(board.id, creatorId, token)
 
         if (hasForum) {
             forumService.createForum(board.id)
@@ -106,7 +103,7 @@ class BoardService(
 
     val fcmService = FcmServiceFactory.makeFcmServiceService()
 
-    fun subscribe(boardId: Long, userId: Long, token: String): Board {
+    fun subscribe(boardId: Long, userId: Long, token: String? = null): Board {
         var board = getBoardById(boardId)
         val user = usersRepo.findByIdOrNull(userId) ?: throw NotFoundUserException()
 
@@ -132,28 +129,30 @@ class BoardService(
             item.usersSettings.add(userBlackboard)
             blackboardsRepo.save(item)
         } }
-
-        return runBlocking {
-            val promisses = board.blackBoards.map {
-                async {
-                    //TODO: This topic name has a problem. Since we are separating the ids by the char '-', then
-                    //TODO: the blackboard name can't contain that character.
-                    //TODO: Also, I'm only using the blackboard name so that the topic name is more readable (not just ids)
-                    val topicName = "${board.id}-${it.id}-${it.name}"
-
-                    fcmService.subscribeAppToTopic(token, topicName)
-                }
-            }
-
-            promisses.forEach {
-                val rsp = it.await()
-                println("in addUserToBoard: ${rsp.code()}")
-                if (!rsp.isSuccessful) throw SubscribeToTopicException()
-            }
-
-            println("in addUserToBoard: returning")
+        return if (token == null)
             board
-        }
+        else
+            runBlocking {
+                val promisses = board.blackBoards.map {
+                    async {
+                        //TODO: This topic name has a problem. Since we are separating the ids by the char '-', then
+                        //TODO: the blackboard name can't contain that character.
+                        //TODO: Also, I'm only using the blackboard name so that the topic name is more readable (not just ids)
+                        val topicName = "${board.id}-${it.id}-${it.name}"
+
+                        fcmService.subscribeAppToTopic(token, topicName)
+                    }
+                }
+
+                promisses.forEach {
+                    val rsp = it.await()
+                    println("in subscribe: ${rsp.code()}")
+                    if (!rsp.isSuccessful) throw SubscribeToTopicException()
+                }
+
+                println("in subscribe: returning")
+                board
+            }
     }
 
     fun unsubscribe(boardId: Long, userId: Long):Board {
@@ -204,7 +203,7 @@ class BoardService(
         val board = getBoardById(boardId)
         val allowedToChangeState = (user.id == board.creator.id || user.role == ADMIN)
         if (!allowedToChangeState)
-            throw UnauthorizedException()
+            throw ForbiddenException()
 
         board.name = name
         board.active = isActive
@@ -218,7 +217,7 @@ class BoardService(
         var board = getBoardById(boardId)
         val allowedToChangeState = (user.id == board.creator.id || user.role == ADMIN)
         if (!allowedToChangeState)
-            throw UnauthorizedException()
+            throw ForbiddenException()
 
         boardsRepo.delete(board)
         return board

@@ -60,7 +60,7 @@ class BlackboardItemService(
             content: String?
     ): BlackboardItem {
         val blackboardItem = getBlackboardItemById(boardId, bbId, itemId)
-        if(user.id != blackboardItem.blackboard.board.creator.id && user.role != ADMIN) throw UnauthorizedException()
+        if(user.id != blackboardItem.blackboard.board.creator.id && user.role != ADMIN) throw ForbiddenException()
 
         if(name != null)
             blackboardItem.name = name
@@ -73,7 +73,7 @@ class BlackboardItemService(
 
     fun deleteBlackboardItem(user: User, boardId: Long, bbId: Long, itemId: Long): BlackboardItem {
         val blackboardItem = getBlackboardItemById(boardId, bbId, itemId)
-        if(user.id != blackboardItem.blackboard.board.creator.id && user.role != ADMIN) throw UnauthorizedException()
+        if(user.id != blackboardItem.blackboard.board.creator.id && user.role != ADMIN) throw ForbiddenException()
 
         blackboardItemsRepo.delete(blackboardItem)
         return blackboardItem

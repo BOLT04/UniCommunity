@@ -59,7 +59,7 @@ class ForumItemService(
             content: String?
     ): ForumItem {
         val forumItem = getForumItemById(boardId, forumItemId)
-        if(user.id != forumItem.author.id && user.role != ADMIN) throw UnauthorizedException()
+        if(user.id != forumItem.author.id && user.role != ADMIN) throw ForbiddenException()
 
         if(name != null)
             forumItem.name = name
@@ -72,7 +72,7 @@ class ForumItemService(
 
     fun deleteForumItem(user: User, boardId: Long, forumItemId: Long): ForumItem {
         val forumItem = getForumItemById(boardId, forumItemId)
-        if(user.id != forumItem.author.id && user.role != ADMIN) throw UnauthorizedException()
+        if(user.id != forumItem.author.id && user.role != ADMIN) throw ForbiddenException()
 
         forumItemsRepo.delete(forumItem)
         return forumItem

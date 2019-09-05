@@ -18,12 +18,12 @@ class ReportService(
         val commentsRepo: CommentRepository
 ) {
     fun getAllReports(user: User): Iterable<Report> {
-        if(user.role != ADMIN) throw UnauthorizedException()
+        if(user.role != ADMIN) throw ForbiddenException()
         return reportsRepo.findAll()
     }
 
     fun getReportById(user: User, reportId: Long): Report {
-        if(user.role != ADMIN) throw UnauthorizedException()
+        if(user.role != ADMIN) throw ForbiddenException()
         return reportsRepo.findByIdOrNull(reportId) ?: throw NotFoundReportException()
     }
 

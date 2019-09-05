@@ -80,6 +80,35 @@ class SingleBoardResponse(user: User, board: Board) : HalObject(mutableMapOf(), 
     }
 }
 
+class SubscribeResponse(board: Board) : HalObject(mutableMapOf(), mutableMapOf()) {
+    val topics = board.blackBoards.map { it.getFcmTopicName() }
+    init {
+        val boardId = board.id
+        super._links?.putAll(sequenceOf(
+                Rels.GET_SINGLE_BOARD to Link(Uri.forSingleBoardText(boardId)),
+                Rels.GET_BOARD_MEMBERS to Link(Uri.forBoardMembers(boardId)),
+                Rels.GET_MULTIPLE_BLACKBOARDS to Link(Uri.forAllBlackboards(boardId)),
+                Rels.GET_SINGLE_USER to Link(Uri.forSingleUserText(board.creator.id)),
+                Rels.UNSUBSCRIBE to Link(Uri.forBoardMembers(boardId))
+        ))
+    }
+}
+
+
+class UnsubscribeResponse(board: Board) : HalObject(mutableMapOf(), mutableMapOf()) {
+    val topics = board.blackBoards.map { it.getFcmTopicName() }
+    init {
+        val boardId = board.id
+        super._links?.putAll(sequenceOf(
+                Rels.GET_SINGLE_BOARD to Link(Uri.forSingleBoardText(boardId)),
+                Rels.GET_BOARD_MEMBERS to Link(Uri.forBoardMembers(boardId)),
+                Rels.GET_MULTIPLE_BLACKBOARDS to Link(Uri.forAllBlackboards(boardId)),
+                Rels.GET_SINGLE_USER to Link(Uri.forSingleUserText(board.creator.id)),
+                Rels.SUBSCRIBE to Link(Uri.forBoardMembers(boardId))
+        ))
+    }
+}
+
 
 class MultipleBoardsResponse(
         boardsPage : Page<Item>,
