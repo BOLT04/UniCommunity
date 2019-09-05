@@ -9,7 +9,7 @@ import pt.isel.g20.unicommunity.repository.BoardRepository
 import pt.isel.g20.unicommunity.repository.UserRepository
 import pt.isel.g20.unicommunity.repository.UsersBlackboardsRepository
 import pt.isel.g20.unicommunity.user.model.User
-import pt.isel.g20.unicommunity.usersBlackboards.UsersBlackboards
+import pt.isel.g20.unicommunity.usersBlackboards.model.UsersBlackboards
 
 @Service
 class BlackboardService(
@@ -33,11 +33,14 @@ class BlackboardService(
             boardId: Long,
             name: String,
             notificationLevel: String,
-            description: String?
+            description: String? = null
     ): Blackboard {
         val board = boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
         val user = usersRepo.findByIdOrNull(userId) ?: throw NotFoundUserException()
         if(user.role != ADMIN && user.role != TEACHER) throw UnauthorizedException()
+
+        if(notificationLevel != "none" && notificationLevel != "priority" && notificationLevel != "all")
+            throw InvalidNotificationLevelException()
 
         var blackboard = Blackboard(name, notificationLevel, description, board)
         blackboard = blackboardsRepo.save(blackboard)

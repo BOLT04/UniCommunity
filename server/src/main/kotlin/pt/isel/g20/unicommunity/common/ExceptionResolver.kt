@@ -29,6 +29,23 @@ class ExceptionResolver : ResponseEntityExceptionHandler() {
                 .body(error)
     }
 
+    @ExceptionHandler(NotFoundUsersBlackboardsException::class)
+    fun handleNotFoundUsersBlackboards(
+            ex: NotFoundUsersBlackboardsException,
+            request: WebRequest
+    ): ResponseEntity<ProblemJson> {
+        val error = ProblemJson(
+                title = "User's blackboard config was not found",
+                detail = "The specified user blackboard config was not found",
+                status = HttpStatus.NOT_FOUND.value()
+        )
+
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
+                .contentType(MediaType.APPLICATION_PROBLEM_JSON)
+                .body(error)
+    }
+
     @ExceptionHandler(NotFoundTemplateException::class)
     fun handleNotFoundTemplate(
             ex: NotFoundTemplateException,
@@ -199,6 +216,23 @@ class ExceptionResolver : ResponseEntityExceptionHandler() {
                 .body(error)
     }
 
+    @ExceptionHandler(InvalidNotificationLevelException::class)
+    fun handleInvalidNotificationLevel(
+            ex: InvalidNotificationLevelException,
+            request: WebRequest
+    ): ResponseEntity<ProblemJson> {
+        val error = ProblemJson(
+                title = "Invalid notification level",
+                detail = "An error occurred because the specified email is invalid",
+                status = HttpStatus.BAD_REQUEST.value()
+        )
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .contentType(MediaType.APPLICATION_PROBLEM_JSON)
+                .body(error)
+    }
+
     @ExceptionHandler(InvalidUserRoleException::class)
     fun handleInvalidUserRole(
             ex: InvalidUserRoleException,
@@ -240,7 +274,8 @@ class ExceptionResolver : ResponseEntityExceptionHandler() {
     ): ResponseEntity<ProblemJson> {
         val error = ProblemJson(
                 title = "Invalid configuration",
-                detail = "An error occurred because the specified board configuration is invalid",
+                detail = "An error occurred because the notification level " +
+                        "is not one of the following values ['none', 'priority', 'all']",
                 status = HttpStatus.BAD_REQUEST.value()
         )
 

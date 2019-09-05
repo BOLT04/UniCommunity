@@ -13,7 +13,7 @@ import pt.isel.g20.unicommunity.fcm.FcmServiceFactory
 import pt.isel.g20.unicommunity.forum.service.ForumService
 import pt.isel.g20.unicommunity.repository.*
 import pt.isel.g20.unicommunity.user.model.User
-import pt.isel.g20.unicommunity.usersBlackboards.UsersBlackboards
+import pt.isel.g20.unicommunity.usersBlackboards.model.UsersBlackboards
 import pt.isel.g20.unicommunity.usersBoards.UsersBoards
 
 @Service
@@ -98,7 +98,7 @@ class BoardService(
         }
 
         blackboardNames.map {
-            blackboardService.createBlackboard(creatorId, board.id, it, "TODO", "TODO")
+            blackboardService.createBlackboard(creatorId, board.id, it, "priority")
         }
 
         return boardsRepo.save(board)
@@ -167,7 +167,10 @@ class BoardService(
         usersRepo.save(user)
 
         board.blackBoards.forEach { item -> run {
-            val userBlackboard = usersBlackboardsRepo.findByUserIdAndBlackboardId(userId, item.id)
+            val userBlackboard =
+                    usersBlackboardsRepo.findByUserIdAndBlackboardId(userId, item.id) ?:
+                        throw NotFoundUsersBlackboardsException()
+
             usersBlackboardsRepo.delete(userBlackboard)
 
             user.blackboardsSettings.remove(userBlackboard)

@@ -23,17 +23,17 @@ class DataLoader(
                         Template(
                                 "Basic board w/ forum",
                                 true,
-                                "Anuncios, Sumarios"
+                                "Anuncios,Sumarios"
                         ),
                         Template(
                                 "Basic board w/o forum",
                                 false,
-                                "Anuncios, Sumarios"
+                                "Anuncios,Sumarios"
                         ),
                         Template(
                                 "Advanced Board",
                                 true,
-                                "Anuncios, Sumarios, Bibliografia"
+                                "Anuncios,Sumarios,Bibliografia"
                         )
                 )
 

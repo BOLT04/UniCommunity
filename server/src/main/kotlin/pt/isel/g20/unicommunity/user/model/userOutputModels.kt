@@ -4,7 +4,7 @@ import pt.isel.g20.unicommunity.board.model.PartialBoardObject
 import pt.isel.g20.unicommunity.common.Rels
 import pt.isel.g20.unicommunity.common.Uri
 import pt.isel.g20.unicommunity.hateoas.*
-import pt.isel.g20.unicommunity.usersBlackboards.PartialUsersBlackboardsObject
+import pt.isel.g20.unicommunity.usersBlackboards.model.PartialUsersBlackboardsObject
 
 class SingleUserResponse(sessionUser: User, user: User) : HalObject(mutableMapOf(), mutableMapOf()){
     val id = user.id
@@ -88,6 +88,7 @@ class SingleUserResponse(sessionUser: User, user: User) : HalObject(mutableMapOf
                                 it.blackboard.board.name,
                                 it.blackboard.name,
                                 it.notificationLevel,
+                                it.blackboard.getFcmTopicName(),
                                 mapOf()
                         )
                     })
@@ -106,14 +107,14 @@ class SingleUserResponse(sessionUser: User, user: User) : HalObject(mutableMapOf
 
 
 class MultipleUsersResponse(
-        users : Iterable<User>
+        users : List<Item>
 ): JsonCollection(
         version = "1.0",
         href = Uri.forAllUsers(),
         links = mutableListOf(
                 CollectionLink("self",Uri.forAllUsers())
         ),
-        items = users.map { Item( Uri.forSingleUserText(it.id)) }
+        items = users
 )
 
 class PartialUserObject(

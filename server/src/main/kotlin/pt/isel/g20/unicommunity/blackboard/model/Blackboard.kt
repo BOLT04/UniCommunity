@@ -3,7 +3,7 @@ package pt.isel.g20.unicommunity.blackboard.model
 import com.fasterxml.jackson.annotation.JsonIgnore
 import pt.isel.g20.unicommunity.blackboardItem.model.BlackboardItem
 import pt.isel.g20.unicommunity.board.model.Board
-import pt.isel.g20.unicommunity.usersBlackboards.UsersBlackboards
+import pt.isel.g20.unicommunity.usersBlackboards.model.UsersBlackboards
 import javax.persistence.*
 
 @Entity
@@ -25,4 +25,6 @@ class Blackboard(
     @JsonIgnore
     @OneToMany(mappedBy = "blackboard", cascade = [CascadeType.REMOVE])
     val usersSettings : MutableList<UsersBlackboards> = mutableListOf()
+
+    fun getFcmTopicName() :String = "${this.board.id}-${this.id}-${this.name}"
 }

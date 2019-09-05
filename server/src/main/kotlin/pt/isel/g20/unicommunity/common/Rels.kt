@@ -66,4 +66,9 @@ object Rels {
     const val CREATE_REPORT = "$RELS_PREFIX/createReport"
     const val GET_SINGLE_REPORT = "$RELS_PREFIX/getReport"
     const val GET_MULTIPLE_REPORTS = "$RELS_PREFIX/getReports"
+
+    const val GET_SINGLE_USERS_BLACKBOARD = "$RELS_PREFIX/getUsersBlackboard"
+    const val GET_MULTIPLE_USERS_BLACKBOARDS = "$RELS_PREFIX/getUsersBlackboards"
+    const val EDIT_USERS_BLACKBOARD = "$RELS_PREFIX/editUsersBlackboard"
+    const val DELETE_USERS_BLACKBOARD = "$RELS_PREFIX/deleteUsersBlackboard"
 }

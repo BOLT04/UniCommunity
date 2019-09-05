@@ -5,7 +5,7 @@ import pt.isel.g20.unicommunity.blackboardItem.model.BlackboardItem
 import pt.isel.g20.unicommunity.comment.model.Comment
 import pt.isel.g20.unicommunity.forumItem.model.ForumItem
 import pt.isel.g20.unicommunity.report.model.Report
-import pt.isel.g20.unicommunity.usersBlackboards.UsersBlackboards
+import pt.isel.g20.unicommunity.usersBlackboards.model.UsersBlackboards
 import pt.isel.g20.unicommunity.usersBoards.UsersBoards
 import javax.persistence.*
 

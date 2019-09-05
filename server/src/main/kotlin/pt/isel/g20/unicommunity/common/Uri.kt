@@ -13,6 +13,9 @@ object Uri {
     const val REPORTS_ROUTE = "/reports"
     const val SINGLE_REPORT_ROUTE = "$REPORTS_ROUTE/{reportId}"
 
+
+    fun forMyBoards() =
+            URI(MY_BOARDS).toString()
     //Templates
     private val singleReportTemplate = UriTemplate(SINGLE_REPORT_ROUTE)
 
@@ -201,4 +204,23 @@ object Uri {
 
     fun forSingleTemplateText(templateId: Long) =
             forSingleTemplateUri(templateId).toString()
+
+
+
+    const val USERS_BLACKBOARDS_ROUTE = "$SINGLE_USER_ROUTE/config"
+    const val SINGLE_USERS_BLACKBOARD_ROUTE = "$USERS_BLACKBOARDS_ROUTE/{bbId}"
+
+    //Templates
+    private val singleUsersBlackboardTemplate = UriTemplate(SINGLE_USERS_BLACKBOARD_ROUTE)
+    private val multipleUsersBlackboardsTemplate = UriTemplate(USERS_BLACKBOARDS_ROUTE)
+
+    //Getters
+    fun forAllUsersBlackboards(userId: Long) =
+            multipleUsersBlackboardsTemplate.expand(userId).toString()
+
+    fun forSingleUsersBlackboardUri(userId: Long, bbId: Long) =
+            singleUsersBlackboardTemplate.expand(userId, bbId)
+
+    fun forSingleUsersBlackboardText(userId: Long, bbId: Long) =
+            Uri.forSingleUsersBlackboardUri(userId, bbId).toString()
 }

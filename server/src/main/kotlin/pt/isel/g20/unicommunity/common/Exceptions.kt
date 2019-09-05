@@ -35,3 +35,7 @@ class NotAMemberException : Exception()
 class NotFoundReportException : Exception()
 
 class InvalidReportTypeException: Exception()
+
+class NotFoundUsersBlackboardsException: Exception()
+
+class InvalidNotificationLevelException: Exception()

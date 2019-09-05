@@ -1,4 +1,4 @@
-package pt.isel.g20.unicommunity.usersBlackboards
+package pt.isel.g20.unicommunity.usersBlackboards.model
 
 import com.fasterxml.jackson.annotation.JsonIgnore
 import pt.isel.g20.unicommunity.blackboard.model.Blackboard
@@ -13,8 +13,9 @@ class UsersBlackboards(
         @JsonIgnore @ManyToOne @JoinColumn(name = "blackboardId")
         val blackboard :Blackboard,
 
-        val notificationLevel: String
+        var notificationLevel: String
 ) {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0
