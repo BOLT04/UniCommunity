@@ -86,7 +86,7 @@ class BoardService(
         if (blackboardNames.isNullOrEmpty() || hasForum == null)
             throw InvalidTemplateConfigurationException()
 
-        return finalStepCreateBoard(creatorId, name, blackboardNames, hasForum, description)
+        return finalStepCreateBoard(creatorId, name, blackboardNames, hasForum, description, fcmToken)
     }
 
     private fun finalStepCreateBoard(
@@ -112,7 +112,7 @@ class BoardService(
             blackboardService.createBlackboard(creatorId, board.id, it, "priority")
         }
 
-        subscribe(board.id, creatorId, fcmToken)
+        board = subscribe(board.id, creatorId, fcmToken)
 
         return boardsRepo.save(board)
     }
