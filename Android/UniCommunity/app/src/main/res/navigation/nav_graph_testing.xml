@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools" android:id="@+id/nav_graph"
+            app:startDestination="@id/fragmentA">
+    <fragment android:id="@+id/fragmentA" android:name="isel.pt.unicommunity.testing.fragmentTesting.fragment.FragmentA"
+              android:label="FragmentA">
+        <action android:id="@+id/action_fragmentA_to_fragmentB" app:destination="@id/fragmentB"/>
+        <action android:id="@+id/action_fragmentA_to_fragmentC" app:destination="@id/fragmentC"/>
+        <action android:id="@+id/action_fragmentA_self" app:destination="@id/fragmentA"/>
+    </fragment>
+    <fragment android:id="@+id/fragmentB" android:name="isel.pt.unicommunity.testing.fragmentTesting.fragment.FragmentB"
+              android:label="FragmentB">
+        <action android:id="@+id/action_fragmentB_to_fragmentC" app:destination="@id/fragmentC"/>
+    </fragment>
+    <fragment android:id="@+id/fragmentC" android:name="isel.pt.unicommunity.testing.fragmentTesting.fragment.FragmentC"
+              android:label="FragmentC"/>
+</navigation>
