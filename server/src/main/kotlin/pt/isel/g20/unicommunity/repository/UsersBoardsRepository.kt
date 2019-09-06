@@ -3,7 +3,7 @@ package pt.isel.g20.unicommunity.repository
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Transactional
-import pt.isel.g20.unicommunity.usersBoards.UsersBoards
+import pt.isel.g20.unicommunity.features.usersBoards.UsersBoards
 
 @Repository
 @Transactional

@@ -4,8 +4,8 @@ import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.repository.PagingAndSortingRepository
 import org.springframework.stereotype.Repository
-import pt.isel.g20.unicommunity.board.model.Board
-import pt.isel.g20.unicommunity.usersBoards.UsersBoards
+import pt.isel.g20.unicommunity.features.board.model.Board
+import pt.isel.g20.unicommunity.features.usersBoards.UsersBoards
 import javax.transaction.Transactional
 
 @Repository

@@ -4,12 +4,12 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.web.method.HandlerMethod
 import org.springframework.web.servlet.HandlerInterceptor
-import pt.isel.g20.unicommunity.auth.service.AuthService
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationException
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationOptional
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
-import pt.isel.g20.unicommunity.user.model.User
-import pt.isel.g20.unicommunity.user.service.UserService
+import pt.isel.g20.unicommunity.features.auth.service.AuthService
+import pt.isel.g20.unicommunity.features.user.model.User
+import pt.isel.g20.unicommunity.features.user.service.UserService
 import java.io.UnsupportedEncodingException
 import java.net.HttpURLConnection
 import java.net.URL

@@ -1,10 +1,10 @@
 package pt.isel.g20.unicommunity.common.presentation
 
 import org.springframework.http.HttpStatus
+import pt.isel.g20.unicommunity.common.ExtendedProblemJson
+import pt.isel.g20.unicommunity.common.Link
 import pt.isel.g20.unicommunity.common.Rels
 import pt.isel.g20.unicommunity.common.Uri
-import pt.isel.g20.unicommunity.hateoas.ExtendedProblemJson
-import pt.isel.g20.unicommunity.hateoas.Link
 
 @Target(AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY)
 /**

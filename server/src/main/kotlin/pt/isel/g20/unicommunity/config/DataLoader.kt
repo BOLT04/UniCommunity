@@ -5,10 +5,10 @@ import org.springframework.boot.ApplicationRunner
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.stereotype.Component
 import pt.isel.g20.unicommunity.common.ADMIN
+import pt.isel.g20.unicommunity.features.template.model.Template
+import pt.isel.g20.unicommunity.features.user.model.User
 import pt.isel.g20.unicommunity.repository.TemplateRepository
 import pt.isel.g20.unicommunity.repository.UserRepository
-import pt.isel.g20.unicommunity.template.model.Template
-import pt.isel.g20.unicommunity.user.model.User
 
 @Component
 class DataLoader(

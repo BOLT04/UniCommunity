@@ -2,7 +2,7 @@ package pt.isel.g20.unicommunity.repository
 
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
-import pt.isel.g20.unicommunity.blackboardItem.model.BlackboardItem
+import pt.isel.g20.unicommunity.features.blackboardItem.model.BlackboardItem
 import javax.transaction.Transactional
 
 @Repository

@@ -2,10 +2,10 @@ package pt.isel.g20.unicommunity.repository
 
 import org.springframework.data.repository.CrudRepository
 import org.springframework.stereotype.Repository
-import pt.isel.g20.unicommunity.comment.model.Comment
-import pt.isel.g20.unicommunity.forumItem.model.ForumItem
-import pt.isel.g20.unicommunity.report.model.Report
-import pt.isel.g20.unicommunity.user.model.User
+import pt.isel.g20.unicommunity.features.comment.model.Comment
+import pt.isel.g20.unicommunity.features.forumItem.model.ForumItem
+import pt.isel.g20.unicommunity.features.report.model.Report
+import pt.isel.g20.unicommunity.features.user.model.User
 import javax.transaction.Transactional
 
 @Repository

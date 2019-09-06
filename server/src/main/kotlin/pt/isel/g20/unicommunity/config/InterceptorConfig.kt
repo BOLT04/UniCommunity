@@ -10,11 +10,11 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.servlet.config.annotation.EnableWebMvc
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
-import pt.isel.g20.unicommunity.auth.service.AuthService
+import pt.isel.g20.unicommunity.common.ProblemJson
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationException
 import pt.isel.g20.unicommunity.common.presentation.authorizationProblemJson
-import pt.isel.g20.unicommunity.hateoas.ProblemJson
-import pt.isel.g20.unicommunity.user.service.UserService
+import pt.isel.g20.unicommunity.features.auth.service.AuthService
+import pt.isel.g20.unicommunity.features.user.service.UserService
 
 @Configuration
 @ControllerAdvice
