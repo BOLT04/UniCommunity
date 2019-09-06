@@ -12,15 +12,16 @@ class NavigationLink(href: String): NavLink<NavigationInputDto>(Rels.NAVIGATION,
 
 class HomeLink (href: String): NavLink<HomeInputDto>(Rels.HOME, href, HomeInputDto::class.java)
 class LoginLink (href: String): BodyNavLink<LoginOutputDto, LoginInputDto>(Rels.LOGIN, href, LoginOutputDto::class.java, LoginInputDto::class.java)
-//todo class LogoutLink (href: String): NavLink(Rels.LOGOUT, href)
 class MyBoardsLink (href: String): NavLink<CollectionJson>(Rels.MY_BOARDS, href, CollectionJson::class.java)
 class UserProfileLink (href: String): NavLink<UserProfileInputDto>(Rels.USER_PROFILE, href, UserProfileInputDto::class.java)
 
-class SubscribeLink (href: String) : BodyNavLink<SubscribeDto, BoardInputDto>(Rels.SUBSCRIBE, href, SubscribeDto::class.java, BoardInputDto::class.java)
 
-class SubscribeDto {
 
-}
+class BlackBoardSettingsLink (href: String) : NavLink<BlackBoardSettingsInputDto>(Rels.GET_USER_BLACKBOARDS_SETTINGS, href, BlackBoardSettingsInputDto::class.java)
+
+class BlackBoardSettingsInputDto(
+
+)
 
 
 class NavigationInputDto(
@@ -36,7 +37,14 @@ class NavigationInputDtoLinkStruct (
 )
 
 
-class HomeInputDto //todo
+class HomeInputDto(
+    val _links : LinkStruct
+){
+    class LinkStruct(
+        val self: HomeLink?,
+        @JsonProperty(Rels.LOGIN) val login : LoginLink?
+    )
+}
 
 class LoginInputDto(
     val email : String,

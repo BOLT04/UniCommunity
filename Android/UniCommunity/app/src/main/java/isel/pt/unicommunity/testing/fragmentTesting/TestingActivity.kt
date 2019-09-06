@@ -94,7 +94,7 @@ class TestingActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
-            R.id.nav_home -> {
+            R.id.nav_logout -> {
                 Log.v("testing", "camera")
                 navigateTo(A)
 

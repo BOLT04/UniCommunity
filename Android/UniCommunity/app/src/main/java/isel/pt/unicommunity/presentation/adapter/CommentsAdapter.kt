@@ -2,8 +2,10 @@ package isel.pt.unicommunity.presentation.adapter
 
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import isel.pt.unicommunity.R
 import isel.pt.unicommunity.model.links.GetSingleCommentLink
+import kotlinx.android.synthetic.main.fragment_home.view.*
 
 class PartialCommentView(
     val userName : String?,
@@ -12,7 +14,7 @@ class PartialCommentView(
     val self : GetSingleCommentLink
 )
 
-class GenericCommentsAdapter(
+class CommentsAdapter(
     list: List<PartialCommentView>,
     onClickListener: OnClickListener<PartialCommentView>
 ) : AbstractAdapter<PartialCommentView>(
@@ -29,8 +31,11 @@ class CommentViewHolder(
     onClickListener: OnClickListener<PartialCommentView>
 ) : AbstractViewHolder<PartialCommentView>(view) {
 
+    val commentText = view.findViewById<TextView>(R.id.comment_txt)
+    val commentUser = view.findViewById<TextView>(R.id.comment_user)
 
     override fun bindToView(value: PartialCommentView) {
-        //todo
+        commentText.text = value.content
+        commentUser.text = value.userName ?: "Anonymus"
     }
 }

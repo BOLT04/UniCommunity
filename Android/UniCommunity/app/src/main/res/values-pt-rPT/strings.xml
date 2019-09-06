@@ -11,4 +11,5 @@
     <string name="comments">Comentários</string>
     <string name="anonymus">Anónimo</string>
     <string name="action_settings">Definições</string>
+    <string name="logout">Sair</string>
 </resources>

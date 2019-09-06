@@ -13,7 +13,8 @@
             android:supportsRtl="true"
             android:theme="@style/AppTheme"
             android:usesCleartextTraffic="true">
-        <activity android:name=".presentation.activity.LoginActivity">
+        <activity android:name=".presentation.activity.SplashActivity"
+                android:noHistory="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -51,6 +52,9 @@
         <activity android:name=".testing.markdowntesting.ExternalLibActivity"/>
         <activity android:name=".testing.scroolTesting.ScrollingActivity"/>
         <activity android:name=".presentation.activity.SimpleActivity"/>
+        <activity android:name=".presentation.activity.LoginActivity"
+                android:noHistory="true"/>
+        <activity android:name=".testing.SubscribeActivity" />
 
         <service
                 android:name="isel.pt.unicommunity.repository.fcm.MyFirebaseMessagingService"

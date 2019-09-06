@@ -9,14 +9,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import isel.pt.unicommunity.R
-import isel.pt.unicommunity.common.ProgressObs
+import isel.pt.unicommunity.presentation.common.ProgressObs
 import isel.pt.unicommunity.kotlinx.getUniCommunityApp
 import isel.pt.unicommunity.kotlinx.getViewModel
 import isel.pt.unicommunity.model.links.GetSingleBlackBoardLink
 import isel.pt.unicommunity.presentation.activity.BackStackManagingActivity
-import isel.pt.unicommunity.common.OptionalProgressBar
+import isel.pt.unicommunity.presentation.common.OptionalProgressBar
 import isel.pt.unicommunity.presentation.adapter.BlackBoardItemView
-import isel.pt.unicommunity.presentation.adapter.GenericBlackBoardsAdapter
+import isel.pt.unicommunity.presentation.adapter.BlackBoardsAdapter
 import isel.pt.unicommunity.presentation.adapter.OnClickListener
 import isel.pt.unicommunity.presentation.viewmodel.BlackBoardViewModel
 import kotlinx.android.synthetic.main.fragment_blackboard.*
@@ -89,7 +89,7 @@ class BlackBoardFragment(val blackBoardLink: GetSingleBlackBoardLink) : Fragment
         viewModel.blackBoardItemsLd.observe(
             this,
             ProgressObs(progress) {
-                blackboard_recylcerview.adapter = GenericBlackBoardsAdapter(it, onBlackBoardItemViewClickListener)
+                blackboard_recylcerview.adapter = BlackBoardsAdapter(it, onBlackBoardItemViewClickListener)
             },
             ProgressObs(progress) {
                 Toast.makeText(activity, it, Toast.LENGTH_SHORT).show()

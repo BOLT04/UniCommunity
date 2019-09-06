@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore
 
 
 object Rels {
-    private const val RELS_PREFIX = "/rels"
+    const val RELS_PREFIX = "/rels"
 
     const val NAVIGATION = "$RELS_PREFIX/nav"
     const val HOME = "$RELS_PREFIX/home"
@@ -65,6 +65,10 @@ object Rels {
     const val DELETE_TEMPLATE = "$RELS_PREFIX/deleteTemplate"
 
     const val GET_USER_BLACKBOARDS_SETTINGS = "$RELS_PREFIX/blackboardsSettings"
+
+    const val CREATE_REPORT = "$RELS_PREFIX/createReport"
+    const val GET_SINGLE_REPORT = "$RELS_PREFIX/getReport"
+    const val GET_MULTIPLE_REPORTS = "$RELS_PREFIX/getReports"
 }
 
 

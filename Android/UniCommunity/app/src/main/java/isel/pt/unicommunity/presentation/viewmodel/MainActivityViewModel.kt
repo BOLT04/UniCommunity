@@ -1,11 +1,18 @@
 package isel.pt.unicommunity.presentation.viewmodel
 
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.android.volley.Response
 import isel.pt.unicommunity.UniCommunityApp
 import isel.pt.unicommunity.model.links.NavigationInputDto
+import isel.pt.unicommunity.presentation.activity.LoginActivity
+import isel.pt.unicommunity.presentation.activity.SplashActivity
 import isel.pt.unicommunity.repository.network.BasicAuthenticationGetRequest
 
 class MainActivityViewModel(val app:UniCommunityApp) : ViewModel(){
@@ -41,6 +48,23 @@ class MainActivityViewModel(val app:UniCommunityApp) : ViewModel(){
 
             else -> null
         }
+    }
+
+    fun logout(activity : AppCompatActivity){
+
+        val edit =
+            activity.getSharedPreferences(app.SharedPreferences_FileName, Context.MODE_PRIVATE).edit()
+
+        edit.putBoolean("isLoggedIn", false)
+        edit.apply()
+
+        app.email = ""
+        app.password = ""
+
+        val intent = Intent(activity, SplashActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        activity.startActivity(intent)
+
     }
 
 }

@@ -1,14 +1,12 @@
 package isel.pt.unicommunity.testing.navigationTesting
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.util.Log
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.navigation.NavigationView
 import isel.pt.unicommunity.R
 import kotlinx.android.synthetic.main.activity_main.*
@@ -54,7 +52,7 @@ class RoidedMainActivity: AppCompatActivity(), NavigationView.OnNavigationItemSe
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         // Handle navigation view item clicks here.
         when (item.itemId) {
-            R.id.nav_home -> {
+            R.id.nav_logout -> {
                 //hostFragment.navController.navigate(R.id.action_loginFragment_to_homeFragment)
 
             }

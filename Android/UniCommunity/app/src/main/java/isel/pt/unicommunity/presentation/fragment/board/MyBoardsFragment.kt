@@ -17,7 +17,7 @@ import isel.pt.unicommunity.presentation.adapter.old.MyBoardsAdapter*/
 import isel.pt.unicommunity.kotlinx.getViewModel
 import isel.pt.unicommunity.model.links.MyBoardsLink
 import isel.pt.unicommunity.presentation.activity.BackStackManagingActivity
-import isel.pt.unicommunity.presentation.adapter.GenericMyBoardsAdapter
+import isel.pt.unicommunity.presentation.adapter.MyBoardsAdapter
 import isel.pt.unicommunity.presentation.adapter.OnClickListener
 import isel.pt.unicommunity.presentation.adapter.PartialBoardView
 import isel.pt.unicommunity.presentation.viewmodel.MyBoardsViewModel
@@ -30,7 +30,7 @@ class MyBoardsFragment(private val myBoards: MyBoardsLink) : Fragment() {
             savedInstanceState: Bundle?
         ): View? {
             // Inflate the layout for this fragment
-            return inflater.inflate(R.layout.fragment_my_boards, container, false)
+            return inflater.inflate(R.layout.fragment_all_boards, container, false)
         }
 
         override fun onStart() {
@@ -59,7 +59,7 @@ class MyBoardsFragment(private val myBoards: MyBoardsLink) : Fragment() {
             viewModel.myboardsLD.observe(
                 this,
                 Observer {
-                    recyclerView.adapter = GenericMyBoardsAdapter(it, onBoardClickListener)
+                    recyclerView.adapter = MyBoardsAdapter(it, onBoardClickListener)
                 },
                 Observer { Toast.makeText(activity, it, Toast.LENGTH_LONG).show() }
             )

@@ -1,3 +1,7 @@
 package isel.pt.unicommunity
 
-val BASEURL = "http://35.246.92.42"
+import isel.pt.unicommunity.model.links.HomeLink
+
+val BASEURL = "http://unicommunity.ddns.net"
+val SERVER_ENTRY_POINT = HomeLink("$BASEURL/")
+

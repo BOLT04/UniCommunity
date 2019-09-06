@@ -6,7 +6,7 @@ import isel.pt.unicommunity.UniCommunityApp
 import isel.pt.unicommunity.model.collectionjson.toBoardCollection
 import isel.pt.unicommunity.model.links.MyBoardsLink
 import isel.pt.unicommunity.presentation.adapter.PartialBoardView
-import isel.pt.unicommunity.repository.network.NavLinkRequest
+import isel.pt.unicommunity.repository.network.BasicAuthNavLinkGetRequest
 
 class MyBoardsViewModel(
     private val myBoards: MyBoardsLink,
@@ -17,7 +17,7 @@ class MyBoardsViewModel(
 
     fun getMyBoards(){
 
-        val req = NavLinkRequest(
+        val req = BasicAuthNavLinkGetRequest(
             myBoards,
             Response.Listener {
                 myboardsLD.success(it.toBoardCollection().boards.map { board ->
@@ -25,7 +25,9 @@ class MyBoardsViewModel(
                         board.self,
                         board.name,
                         board.id,
-                        board.description
+                        board.description,
+                        board.subscribeLink,
+                        board.unsubscribeLink
                     )
                 })
             },

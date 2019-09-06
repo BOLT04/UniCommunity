@@ -10,8 +10,8 @@ import isel.pt.unicommunity.model.links.GetMultipleBoardsLink
 import isel.pt.unicommunity.model.links.GetSingleBlackBoardLink
 import isel.pt.unicommunity.model.links.GetSingleBoardLink
 import isel.pt.unicommunity.model.links.GetSingleForumLink
-import isel.pt.unicommunity.presentation.adapter.old.MenuView
-import isel.pt.unicommunity.repository.network.NavLinkRequest
+import isel.pt.unicommunity.presentation.adapter.MenuView
+import isel.pt.unicommunity.repository.network.BasicAuthNavLinkGetRequest
 
 class BoardViewModel(val app: UniCommunityApp, val getSingleBoardLink: GetSingleBoardLink) : ViewModel(){
 
@@ -24,7 +24,7 @@ class BoardViewModel(val app: UniCommunityApp, val getSingleBoardLink: GetSingle
 
     fun fetchBoard(){
 
-        val navLinkRequest = NavLinkRequest(
+        val navLinkRequest = BasicAuthNavLinkGetRequest(
             getSingleBoardLink,
             Response.Listener {
                 boardLd.success(it)
@@ -52,7 +52,7 @@ class BoardViewModel(val app: UniCommunityApp, val getSingleBoardLink: GetSingle
     ) {
 
         if(multipleBlackBoardsLink!=null) {
-            val getBlackBoards = NavLinkRequest(
+            val getBlackBoards = BasicAuthNavLinkGetRequest(
                 multipleBlackBoardsLink,
                 Response.Listener { collectionJson ->
                     val blackBoards = collectionJson.toBlackBoardCollection()
@@ -88,7 +88,10 @@ class BoardViewModel(val app: UniCommunityApp, val getSingleBoardLink: GetSingle
                 val link = it._links.self
 
                 if (name == null || link == null) {
-                    fetchModules(board._links.getMultipleBlackBoardsLink, board._links.getSingleForumLink)
+                    fetchModules(
+                        board._links.getMultipleBlackBoardsLink,
+                        board._links.getSingleForumLink
+                    )
                     return
                 }
 

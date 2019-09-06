@@ -1,16 +1,14 @@
 package isel.pt.unicommunity.presentation.viewmodel
 
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.android.volley.Response
 import isel.pt.unicommunity.UniCommunityApp
 import isel.pt.unicommunity.model.collectionjson.toForumItemCollection
 import isel.pt.unicommunity.model.inputdto.ForumInputDto
 import isel.pt.unicommunity.model.links.GetMultipleForumItemsLink
-import isel.pt.unicommunity.model.links.GetSingleForumItemLink
 import isel.pt.unicommunity.model.links.GetSingleForumLink
 import isel.pt.unicommunity.presentation.adapter.PartialForumItemView
-import isel.pt.unicommunity.repository.network.NavLinkRequest
+import isel.pt.unicommunity.repository.network.BasicAuthNavLinkGetRequest
 
 class ForumViewModel(val app: UniCommunityApp, val getSingleForumLink: GetSingleForumLink) : ViewModel(){
 
@@ -20,7 +18,7 @@ class ForumViewModel(val app: UniCommunityApp, val getSingleForumLink: GetSingle
     val forumItems = ErrorHandlingMLD<List<PartialForumItemView>, String>()
 
     fun getForum(){
-        val getBlackBoardRequest = NavLinkRequest(
+        val getBlackBoardRequest = BasicAuthNavLinkGetRequest(
             getSingleForumLink,
             Response.Listener {
                 forum.success(it)
@@ -65,7 +63,7 @@ class ForumViewModel(val app: UniCommunityApp, val getSingleForumLink: GetSingle
 
     fun getForumItems(getMultipleForumItemsLink: GetMultipleForumItemsLink) {
 
-        val getMultipleForumItemsRequest = NavLinkRequest(
+        val getMultipleForumItemsRequest = BasicAuthNavLinkGetRequest(
             getMultipleForumItemsLink,
             Response.Listener { collectionJson ->
                 forumItems.success(

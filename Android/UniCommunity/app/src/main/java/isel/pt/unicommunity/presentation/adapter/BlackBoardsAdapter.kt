@@ -14,20 +14,20 @@ class BlackBoardItemView(
 )
 
 
-class GenericBlackBoardsAdapter(
+class BlackBoardsAdapter(
     blackboards: List<BlackBoardItemView>,
     private val onBlackBoardClickListener: OnClickListener<BlackBoardItemView>
 ): AbstractAdapter<BlackBoardItemView>(
     blackboards,
-    R.layout.item_all_boards,
+    R.layout.item_blackboard,
     object : ViewHolderProvider<BlackBoardItemView>{
         override fun getInstance(
             view: ViewGroup
-        )= GenericBlackBoardVH(view,onBlackBoardClickListener)
+        )= BlackBoardVH(view,onBlackBoardClickListener)
     }
 )
 
-class GenericBlackBoardVH(
+class BlackBoardVH(
     view: ViewGroup,
     private val onClickListener: OnClickListener<BlackBoardItemView>
 ) : AbstractViewHolder<BlackBoardItemView>(view) {

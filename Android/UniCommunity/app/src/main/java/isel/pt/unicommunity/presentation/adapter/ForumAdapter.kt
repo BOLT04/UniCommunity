@@ -13,7 +13,7 @@ class PartialForumItemView(
 )
 
 
-class GenericForumAdapter(
+class ForumAdapter(
     partialForumItemView: List<PartialForumItemView>,
     private val onClickListener: OnClickListener<PartialForumItemView>
 ): AbstractAdapter<PartialForumItemView>(

@@ -1,4 +1,4 @@
-package isel.pt.unicommunity.common
+package isel.pt.unicommunity.presentation.common
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer

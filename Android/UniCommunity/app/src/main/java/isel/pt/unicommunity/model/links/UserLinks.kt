@@ -4,10 +4,8 @@ import isel.pt.unicommunity.model.BodyNavLink
 import isel.pt.unicommunity.model.Rels
 import isel.pt.unicommunity.model.CollectionJson
 import isel.pt.unicommunity.model.NavLink
-
-
-class UserInputDto
-class UserOutputDto
+import isel.pt.unicommunity.model.inputdto.UserInputDto
+import isel.pt.unicommunity.model.outputdto.UserOutputDto
 
 
 class CreateUserLink (href: String): BodyNavLink<UserOutputDto, UserInputDto>(Rels.CREATE_USER, href, UserOutputDto::class.java, UserInputDto::class.java)

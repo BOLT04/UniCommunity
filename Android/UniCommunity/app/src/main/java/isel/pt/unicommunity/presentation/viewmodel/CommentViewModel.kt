@@ -6,7 +6,7 @@ import isel.pt.unicommunity.UniCommunityApp
 import isel.pt.unicommunity.model.collectionjson.toCommentCollection
 import isel.pt.unicommunity.model.links.GetMultipleCommentsLink
 import isel.pt.unicommunity.presentation.adapter.PartialCommentView
-import isel.pt.unicommunity.repository.network.NavLinkRequest
+import isel.pt.unicommunity.repository.network.BasicAuthNavLinkGetRequest
 
 
 class CommentViewModel(
@@ -21,7 +21,7 @@ class CommentViewModel(
 
     fun fetchComments(){
 
-        val req = NavLinkRequest(
+        val req = BasicAuthNavLinkGetRequest(
             multipleCommentsLink,
             Response.Listener {
                 comments.success(

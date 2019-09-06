@@ -15,7 +15,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import isel.pt.unicommunity.R
-import isel.pt.unicommunity.common.ProgressBarActivity
+import isel.pt.unicommunity.presentation.common.ProgressBarActivity
 import isel.pt.unicommunity.kotlinx.getUniCommunityApp
 import isel.pt.unicommunity.presentation.fragment.*
 import isel.pt.unicommunity.kotlinx.getViewModel
@@ -23,7 +23,6 @@ import isel.pt.unicommunity.presentation.fragment.board.AllBoardsFragment
 import isel.pt.unicommunity.presentation.fragment.board.MyBoardsFragment
 import isel.pt.unicommunity.presentation.viewmodel.MainActivityViewModel
 import isel.pt.unicommunity.presentation.viewmodel.BackStackManagingViewModel
-import isel.pt.unicommunity.testing.fragmentTesting.fragment.HomeFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener,
@@ -93,12 +92,15 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
                 nav_view.menu.forEach { it.isVisible = false }
 
+                (nav_view as NavigationView).menu.findItem(R.id.nav_logout).isVisible = true
+
+
+
+
+
+
                 val links = navigationInputDto._links
 
-                if(links.home != null) {
-                    mainActivityVm.homeFragment = HomeFragment(links.home)
-                    (nav_view as NavigationView).menu.findItem(R.id.nav_home).isVisible = true
-                }
                 if(links.allBoards != null) {
                     mainActivityVm.allBoardsFragment = AllBoardsFragment(links.allBoards)
                     (nav_view as NavigationView).menu.findItem(R.id.nav_all_boards).isVisible = true
@@ -115,9 +117,10 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     (nav_view as NavigationView).menu.findItem(R.id.nav_profile).isVisible = true
                 }
 
-                initialNavigation()
 
                 nav_view.setNavigationItemSelectedListener(this)
+
+                initialNavigation()
 
             },
             Observer {
@@ -131,12 +134,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     private fun initialNavigation() {
             nav_view.menu.forEach {
                 if(it.isVisible){
-                    val starter = mainActivityVm.getStarter(it.title.toString())
+
+                    it.isChecked = true
+                    //nav_view.menu.performIdentifierAction(it.itemId, 0)
+                    return
+                    /*val starter = mainActivityVm.getStarter(it.title.toString())
                     if(starter!=null){
                         navigateTo(starter)
                         it.isChecked = true
                         return
-                    }
+                    }*/
                 }
             }
 
@@ -171,7 +178,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle navigation view item clicks here.
         when (item.itemId) {
 
-            R.id.nav_home -> navigateTo(mainActivityVm.homeFragment,reseting = true)
+            R.id.nav_logout -> mainActivityVm.logout(this)
 
             R.id.nav_my_boards -> navigateTo(mainActivityVm.myBoardsFragment, reseting = true)
 

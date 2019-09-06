@@ -1,4 +1,4 @@
-package isel.pt.unicommunity.presentation.adapter.old
+package isel.pt.unicommunity.presentation.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

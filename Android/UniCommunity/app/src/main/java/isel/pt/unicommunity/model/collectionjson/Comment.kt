@@ -21,7 +21,8 @@ fun CollectionJson.toCommentCollection() : CommentCollection {
                         getLink(Rels.GET_MULTIPLE_COMMENTS, ::GetMultipleCommentsLink),
                         getLink(Rels.GET_SINGLE_FORUMITEM, ::GetSingleForumItemLink),
                         getLink(Rels.GET_SINGLE_BOARD, ::GetSingleBoardLink),
-                        getLink(Rels.GET_SINGLE_USER, ::GetSingleUserLink)
+                        getLink(Rels.GET_SINGLE_USER, ::GetSingleUserLink),
+                        getLink(Rels.CREATE_REPORT, ::CreateReportLink)
                     )
                 }
             }
@@ -49,7 +50,8 @@ class CommentCollection(
 
         val getSingleForumItemLink: GetSingleForumItemLink?,
         val getSingleBoardLink: GetSingleBoardLink?,
-        val getSingleUserLink: GetSingleUserLink?
+        val getSingleUserLink: GetSingleUserLink?,
+        val createReportLink: CreateReportLink?
 
 
     )

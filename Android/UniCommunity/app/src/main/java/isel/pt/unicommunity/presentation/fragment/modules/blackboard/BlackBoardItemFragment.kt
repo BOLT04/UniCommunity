@@ -8,11 +8,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import isel.pt.unicommunity.R
-import isel.pt.unicommunity.common.ProgressObs
+import isel.pt.unicommunity.presentation.common.ProgressObs
 import isel.pt.unicommunity.kotlinx.getUniCommunityApp
 import isel.pt.unicommunity.kotlinx.getViewModel
 import isel.pt.unicommunity.model.links.GetSingleBlackBoardItemLink
-import isel.pt.unicommunity.common.OptionalProgressBar
+import isel.pt.unicommunity.presentation.common.OptionalProgressBar
 import isel.pt.unicommunity.presentation.viewmodel.BlackBoardItemViewModel
 import kotlinx.android.synthetic.main.fragment_blackboard_item_md.*
 

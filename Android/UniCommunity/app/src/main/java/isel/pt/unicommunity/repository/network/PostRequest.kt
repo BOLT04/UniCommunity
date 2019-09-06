@@ -1,5 +1,6 @@
 package isel.pt.unicommunity.repository.network
 
+import android.util.Log
 import com.android.volley.NetworkResponse
 import com.android.volley.Request
 import com.android.volley.Response
@@ -93,6 +94,7 @@ open class PostRequest<O,I>(
     override fun getBody(): ByteArray {
         if(body==null)
             return super.getBody()
+        Log.v("POST", mapper.writeValueAsString(body))
         return mapper.writeValueAsString(body).toByteArray(Charset.forName("UTF-8"))
     }
 

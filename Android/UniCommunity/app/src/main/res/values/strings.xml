@@ -34,4 +34,6 @@
     <string name="communicate" translatable="false">Communicate</string>
     <string name="share">Share</string>
     <string name="send">Send</string>
+    <string name="logout">Logout</string>
+    <string name="unsubscribe" translatable="false">Unsubscribe</string>
 </resources>

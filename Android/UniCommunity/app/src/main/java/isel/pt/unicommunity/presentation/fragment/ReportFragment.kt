@@ -1,4 +1,4 @@
-package isel.pt.unicommunity.presentation.fragment.modules.comment
+package isel.pt.unicommunity.presentation.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,18 +9,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import isel.pt.unicommunity.R
-import isel.pt.unicommunity.presentation.common.OptionalProgressBar
-import isel.pt.unicommunity.presentation.common.ProgressObs
 import isel.pt.unicommunity.kotlinx.getUniCommunityApp
 import isel.pt.unicommunity.kotlinx.getViewModel
-import isel.pt.unicommunity.model.links.GetMultipleCommentsLink
-import isel.pt.unicommunity.presentation.adapter.CommentsAdapter
+import isel.pt.unicommunity.model.links.GetMultipleReportsLink
 import isel.pt.unicommunity.presentation.adapter.OnClickListener
-import isel.pt.unicommunity.presentation.adapter.PartialCommentView
-import isel.pt.unicommunity.presentation.viewmodel.CommentViewModel
+import isel.pt.unicommunity.presentation.adapter.ReportAdapter
+import isel.pt.unicommunity.presentation.adapter.ReportView
+import isel.pt.unicommunity.presentation.common.OptionalProgressBar
+import isel.pt.unicommunity.presentation.common.ProgressObs
+import isel.pt.unicommunity.presentation.viewmodel.ReportViewModel
 import kotlinx.android.synthetic.main.fragment_all_comments.*
 
-class MultipleCommentsFragment(val getMultipleCommentsLink: GetMultipleCommentsLink) : Fragment() {
+class ReportFragment (val getMultipleReportsLink: GetMultipleReportsLink) : Fragment(){
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
         inflater.inflate(R.layout.fragment_all_comments, container, false)
@@ -34,35 +34,32 @@ class MultipleCommentsFragment(val getMultipleCommentsLink: GetMultipleCommentsL
 
 
         val viewModel = appCompatActivity
-            .getViewModel("comments${getMultipleCommentsLink.href}"){
-                CommentViewModel(app, getMultipleCommentsLink)
-        }
+            .getViewModel("reports${getMultipleReportsLink.href}"){
+                ReportViewModel(app, getMultipleReportsLink)
+            }
 
         comments_rv.layoutManager = LinearLayoutManager(appCompatActivity)
 
 
         val progressBar = OptionalProgressBar(appCompatActivity){
-            viewModel.fetchComments()
+            viewModel.fetchReports()
         }
 
 
-        val onClickListener = object : OnClickListener<PartialCommentView> {
-            override fun onClick(value: PartialCommentView) {
+        val onClickListener = object : OnClickListener<ReportView> {
+            override fun onClick(value: ReportView) {
                 TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
             }
-
         }
 
 
-        viewModel.comments.observe(
+        viewModel.reportsLd.observe(
             this,
             ProgressObs(progressBar){
-
-                comments_rv.adapter = CommentsAdapter(
+                comments_rv.adapter = ReportAdapter(
                     it,
                     onClickListener
                 )
-
             },
             ProgressObs(progressBar){
                 Toast.makeText(activity, it, Toast.LENGTH_SHORT).show()
@@ -73,6 +70,8 @@ class MultipleCommentsFragment(val getMultipleCommentsLink: GetMultipleCommentsL
 
 
     }
+
+
 
 
 }

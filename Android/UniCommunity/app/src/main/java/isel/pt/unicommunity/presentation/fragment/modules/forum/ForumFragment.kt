@@ -10,13 +10,13 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import isel.pt.unicommunity.R
-import isel.pt.unicommunity.common.ProgressObs
+import isel.pt.unicommunity.presentation.common.ProgressObs
 import isel.pt.unicommunity.kotlinx.getUniCommunityApp
 import isel.pt.unicommunity.kotlinx.getViewModel
 import isel.pt.unicommunity.model.links.GetSingleForumLink
 import isel.pt.unicommunity.presentation.activity.BackStackManagingActivity
-import isel.pt.unicommunity.common.OptionalProgressBar
-import isel.pt.unicommunity.presentation.adapter.GenericForumAdapter
+import isel.pt.unicommunity.presentation.common.OptionalProgressBar
+import isel.pt.unicommunity.presentation.adapter.ForumAdapter
 import isel.pt.unicommunity.presentation.adapter.OnClickListener
 import isel.pt.unicommunity.presentation.adapter.PartialForumItemView
 import isel.pt.unicommunity.presentation.viewmodel.ForumViewModel
@@ -82,7 +82,7 @@ class ForumFragment(private val forumLink: GetSingleForumLink) : Fragment(){
             this,
             ProgressObs(progress) {
                 recyclerView_forum.adapter =
-                    GenericForumAdapter(
+                    ForumAdapter(
                         it,
                         onForumItemClickListener
                     )

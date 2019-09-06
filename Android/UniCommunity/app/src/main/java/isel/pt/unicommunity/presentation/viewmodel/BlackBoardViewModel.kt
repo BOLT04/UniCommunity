@@ -6,10 +6,9 @@ import isel.pt.unicommunity.UniCommunityApp
 import isel.pt.unicommunity.model.collectionjson.toBlackBoardItemCollection
 import isel.pt.unicommunity.model.inputdto.BlackBoardInputDto
 import isel.pt.unicommunity.model.links.GetMultipleBlackBoardItemsLink
-import isel.pt.unicommunity.model.links.GetSingleBlackBoardItemLink
 import isel.pt.unicommunity.model.links.GetSingleBlackBoardLink
 import isel.pt.unicommunity.presentation.adapter.BlackBoardItemView
-import isel.pt.unicommunity.repository.network.NavLinkRequest
+import isel.pt.unicommunity.repository.network.BasicAuthNavLinkGetRequest
 
 class BlackBoardViewModel(
     val app: UniCommunityApp,
@@ -23,7 +22,7 @@ class BlackBoardViewModel(
 
 
     fun getBlackBoard(){
-        val getBlackBoardRequest = NavLinkRequest(
+        val getBlackBoardRequest = BasicAuthNavLinkGetRequest(
             blackBoardLink,
             Response.Listener {
                 blackBoardLd.success(it)
@@ -40,7 +39,7 @@ class BlackBoardViewModel(
 
     fun getBlackBoardItems(getMultipleBlackBoardItemsLink: GetMultipleBlackBoardItemsLink?){
         if(getMultipleBlackBoardItemsLink!=null){
-            val navLinkRequest = NavLinkRequest(
+            val navLinkRequest = BasicAuthNavLinkGetRequest(
                 getMultipleBlackBoardItemsLink,
                 Response.Listener { collectionJson ->
                     blackBoardItemsLd.success(

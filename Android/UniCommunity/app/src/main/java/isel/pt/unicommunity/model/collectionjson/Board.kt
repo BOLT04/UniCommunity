@@ -19,8 +19,8 @@ fun CollectionJson.toBoardCollection() : BoardCollection {
                         getLink(Rels.EDIT_BOARD, ::EditBoardLink),
                         getLink(Rels.DELETE_BOARD, ::DeleteBoardLink),
                         getLink(Rels.GET_MULTIPLE_BOARDS, ::GetMultipleBoardsLink),
-                        getLink(Rels.SUBSCRIBE, ::SubscribeLink)
-                        //todo getLink(Rels.UNSUBSCRIBE, )
+                        getLink(Rels.SUBSCRIBE, ::SubscribeLink),
+                        getLink(Rels.UNSUBSCRIBE, ::UnsubscribeLink)
                     )
                 }
             }
@@ -44,7 +44,8 @@ class BoardCollection(
         val editBoardLink: EditBoardLink?,
         val deleteBoardLink: DeleteBoardLink?,
         val getMultipleBoardsLink: GetMultipleBoardsLink?,
-        val subscribeLink: SubscribeLink?
+        val subscribeLink: SubscribeLink?,
+        val unsubscribeLink: UnsubscribeLink?
         // add member
         // remove member
     )

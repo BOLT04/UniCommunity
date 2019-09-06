@@ -1,5 +1,6 @@
 package isel.pt.unicommunity.repository.fcm
 
+import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
@@ -10,6 +11,17 @@ import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.RemoteMessage
 import com.google.firebase.messaging.FirebaseMessagingService
 import isel.pt.unicommunity.presentation.activity.MainActivity
+import android.app.NotificationChannel
+import android.os.Build.VERSION_CODES.O
+import android.os.Build
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
+import android.os.Build.VERSION_CODES.O
+import androidx.core.content.ContextCompat.getSystemService
+import android.icu.lang.UCharacter.GraphemeClusterBreak.T
 import isel.pt.unicommunity.R
 
 
@@ -21,36 +33,39 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
-        sendMyNotification(remoteMessage?.notification?.body)
+
+        val notification = remoteMessage?.notification
+        sendMyNotification(notification?.title, notification?.body)
     }
 
+    private fun sendMyNotification(title : String?, body : String?){
 
-    private fun sendMyNotification(message : String?) {
+        val mNotificationManager: NotificationManager
+                = (this as Context).getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        //On click of notification it redirect to this Activity
-        val intent =  Intent(this, MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        val pendingIntent = PendingIntent.getActivity(
-            this,
-            0,
-            intent,
-            PendingIntent.FLAG_ONE_SHOT
+        val mBuilder = NotificationCompat.Builder(this.applicationContext, "notify_001")
+
+        val bigText = NotificationCompat.BigTextStyle()
+        bigText.setBigContentTitle(title)
+
+        mBuilder.setSmallIcon(R.mipmap.ic_launcher_round)
+        mBuilder.setContentTitle(title)
+        mBuilder.setContentText(body)
+        mBuilder.priority = NotificationManager.IMPORTANCE_DEFAULT
+        mBuilder.setStyle(bigText)
+
+
+        val channelId = "Your_channel_id"
+        val channel = NotificationChannel(
+            channelId,
+            "Channel human readable title",
+            NotificationManager.IMPORTANCE_HIGH
         )
+        mNotificationManager.createNotificationChannel(channel)
+        mBuilder.setChannelId(channelId)
 
-        val soundUri= RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
-        val notificationBuilder = NotificationCompat.Builder(this)
-            .setSmallIcon(R.mipmap.ic_launcher)
-            .setContentTitle("My Firebase Push notification")
-            .setContentText(message)
-            .setAutoCancel(true)
-            .setSound(soundUri)
-            .setContentIntent(pendingIntent)
 
-        val notificationManager =
-            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        notificationManager.notify(0, notificationBuilder.build())
+        mNotificationManager.notify(0, mBuilder.build())
     }
-
 
 }
