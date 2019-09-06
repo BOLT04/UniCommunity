@@ -152,24 +152,21 @@ class BoardService(
     }
 
     fun subscribeToFcm(boardId: Long, userId: Long, token: String): Board{
-        var board = getBoardById(boardId)
+        val board = getBoardById(boardId)
 
         if(usersBoardsRepo.findByUserIdAndBoardId(userId, boardId) == null)
             throw NotAMemberException()
 
         runBlocking {
-            val promisses = board.blackBoards.map {
+            val promises = board.blackBoards.map {
                 async {
-                    //TODO: This topic name has a problem. Since we are separating the ids by the char '-', then
-                    //TODO: the blackboard name can't contain that character.
-                    //TODO: Also, I'm only using the blackboard name so that the topic name is more readable (not just ids)
                     val topicName = "${board.id}-${it.id}-${it.name}"
 
                     iidService.subscribeAppToTopic(token, topicName)
                 }
             }
 
-            promisses.forEach {
+            promises.forEach {
                 val rsp = it.await()
                 println("in subscribe: ${rsp.code()}")
                 if (!rsp.isSuccessful) throw SubscribeToTopicException()
@@ -206,25 +203,31 @@ class BoardService(
         } }
         board = boardsRepo.save(board)
 
+        unsubscribeFromFcm(boardId, userId)
+
+        return board
+    }
+
+    fun unsubscribeFromFcm(boardId: Long, userId: Long): Board{
+        val board = getBoardById(boardId)
+        val user = usersRepo.findByIdOrNull(userId) ?: throw NotFoundUserException()
+
         runBlocking {
-            val promisses = board.blackBoards.map {
+            val promises = board.blackBoards.map {
                 async {
-                    //TODO: This topic name has a problem. Since we are separating the ids by the char '-', then
-                    //TODO: the blackboard name can't contain that character.
-                    //TODO: Also, I'm only using the blackboard name so that the topic name is more readable (not just ids)
                     val topicName = "${board.id}-${it.id}-${it.name}"
 
                     iidService.unsubscribeAppFromTopic(topicName)
                 }
             }
 
-            promisses.forEach {
+            promises.forEach {
                 val rsp = it.await()
                 println("in unsubscribe: ${rsp.code()}")
                 if (!rsp.isSuccessful) throw SubscribeToTopicException()
             }
 
-            println("in subscribe: returning")
+            println("in unsubscribe: returning")
             board
         }
 

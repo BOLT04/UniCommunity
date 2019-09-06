@@ -14,6 +14,7 @@ import pt.isel.g20.unicommunity.template.service.TemplateService
 @RequestMapping(produces = [APPLICATION_HAL_JSON, APPLICATION_JSON, APPLICATION_COLLECTION_JSON])
 class TemplateController(private val service: TemplateService) {
 
+    @AuthorizationRequired
     @GetMapping(path = [TEMPLATES_ROUTE], produces = [APPLICATION_COLLECTION_JSON])
     fun getAllTemplates() =
             cacheOkResponse(
@@ -24,6 +25,7 @@ class TemplateController(private val service: TemplateService) {
                     )
             )
 
+    @AuthorizationRequired
     @GetMapping(path = [SINGLE_TEMPLATE_ROUTE], produces = [APPLICATION_JSON])
     fun getTemplateById(@PathVariable templateId: Long) =
             cacheOkResponse(SingleTemplateResponse(service.getTemplateById(templateId)))

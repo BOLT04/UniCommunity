@@ -54,5 +54,11 @@ class ReportService(
         }
     }
 
+    fun deleteReport(user: User, reportId: Long): Report {
+        if(user.role != ADMIN) throw ForbiddenException()
+        val report = reportsRepo.findByIdOrNull(reportId) ?: throw NotFoundReportException()
 
+        reportsRepo.delete(report)
+        return report
+    }
 }

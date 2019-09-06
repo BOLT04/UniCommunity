@@ -17,6 +17,7 @@ import pt.isel.g20.unicommunity.user.model.User
 @RestController
 @RequestMapping(produces = [APPLICATION_HAL_JSON, APPLICATION_JSON, APPLICATION_COLLECTION_JSON])
 class BlackboardController(private val service: BlackboardService) {
+
     @AuthorizationRequired
     @GetMapping(path = [BLACKBOARDS_ROUTE], produces = [APPLICATION_COLLECTION_JSON])
     fun getAllBlackboards(

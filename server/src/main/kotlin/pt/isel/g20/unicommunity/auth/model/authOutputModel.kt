@@ -13,7 +13,6 @@ class LoginResponse(user: User)
                 Rels.GET_MULTIPLE_BOARDS to Link(Uri.forAllBoards()),
                 Rels.NAVIGATION to Link(Uri.NAVIGATION_ROUTE),
                 Rels.GET_USER_BLACKBOARDS_SETTINGS to Link(Uri.forAllUsersBlackboards(user.id))
-                //Rels.LOGOUT to Link("/logout"), //TODO: for now since we don't have cookie auth, we don't need logout
         )
 ){
     val email: String = user.email

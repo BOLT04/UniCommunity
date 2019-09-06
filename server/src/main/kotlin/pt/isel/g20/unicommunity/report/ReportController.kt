@@ -15,8 +15,8 @@ import pt.isel.g20.unicommunity.user.model.User
 @RequestMapping(produces = [APPLICATION_HAL_JSON, APPLICATION_JSON, APPLICATION_COLLECTION_JSON])
 class ReportController(private val service: ReportService) {
 
-    @GetMapping(path = [REPORTS_ROUTE], produces = [APPLICATION_COLLECTION_JSON])
     @AuthorizationRequired
+    @GetMapping(path = [REPORTS_ROUTE], produces = [APPLICATION_COLLECTION_JSON])
     fun getAllReports(
             @SessionAttribute("user") user: User
     ) =
@@ -30,7 +30,7 @@ class ReportController(private val service: ReportService) {
 
     @AuthorizationRequired
     @GetMapping(path = [SINGLE_REPORT_ROUTE], produces = [APPLICATION_HAL_JSON])
-    fun getBoardById(
+    fun getReportById(
             @PathVariable reportId: Long,
             @SessionAttribute("user") user: User
     ) =
@@ -39,7 +39,7 @@ class ReportController(private val service: ReportService) {
     @AuthorizationRequired
     @PostMapping(path = [REPORTS_ROUTE], produces = [APPLICATION_HAL_JSON])
     @ResponseStatus(HttpStatus.CREATED)
-    fun createBoard(
+    fun createReport(
             @RequestBody reportDto: ReportDto,
             @SessionAttribute("user")user: User
     ) =
@@ -52,4 +52,12 @@ class ReportController(private val service: ReportService) {
                 val newResourceHref = Uri.forSingleBoardUri(it.id)
                 cacheCreatedResponse(responseBody, newResourceHref)
             }
+
+    @AuthorizationRequired
+    @DeleteMapping(path = [SINGLE_REPORT_ROUTE], produces = [APPLICATION_HAL_JSON])
+    fun deleteReport(
+            @PathVariable reportId: Long,
+            @SessionAttribute("user") user: User
+    ) =
+            cacheOkResponse(SingleReportResponse(service.deleteReport(user, reportId)))
 }

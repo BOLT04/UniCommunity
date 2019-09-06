@@ -55,14 +55,14 @@ class BoardController(private val service: BoardService) {
         val service = RetrofitFactory.makeRetrofitService()
         return runBlocking {
             val blackboards = arrayOf(1, 2, 3, 4)
-            val promisses = blackboards.map {
+            val promises = blackboards.map {
                 async {
                     service.getPosts()
                 }
             }
 
             //TODO: Promise.all()??
-            promisses.forEach {
+            promises.forEach {
                 it.await()
             }
             emptyList<Post>()
@@ -103,8 +103,8 @@ class BoardController(private val service: BoardService) {
                     )
             )
 
-    @GetMapping(path = [Uri.MY_BOARDS], produces = [APPLICATION_COLLECTION_JSON])
     @AuthorizationRequired
+    @GetMapping(path = [Uri.MY_BOARDS], produces = [APPLICATION_COLLECTION_JSON])
     fun getMyBoards(
             @SessionAttribute("user") user: User,
             @RequestParam(value = "page", required = false, defaultValue = "0") page: Int
