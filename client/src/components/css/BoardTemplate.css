@@ -1,0 +1,16 @@
+.template-item:hover {
+    border-color: cornflowerblue;
+    border-width: thin;
+    border-style: solid
+}
+
+.template-item {
+    border-color: transparent;
+    border-width: thin;
+    border-style: solid;
+    cursor: pointer
+}
+
+.template-item-active {
+    border-color: green;
+}
