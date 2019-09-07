@@ -6,9 +6,8 @@ import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.common.Uri.SINGLE_TEMPLATE_ROUTE
 import pt.isel.g20.unicommunity.common.Uri.TEMPLATES_ROUTE
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
-import pt.isel.g20.unicommunity.features.template.model.MultipleTemplatesResponse
-import pt.isel.g20.unicommunity.features.template.model.SingleTemplateResponse
-import pt.isel.g20.unicommunity.features.template.model.TemplateDto
+import pt.isel.g20.unicommunity.features.template.model.*
+import pt.isel.g20.unicommunity.features.template.model.Template
 import pt.isel.g20.unicommunity.features.template.service.TemplateService
 
 @RestController
