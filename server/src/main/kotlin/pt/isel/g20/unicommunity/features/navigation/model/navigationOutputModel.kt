@@ -7,7 +7,6 @@ class NavigationResponse(user: User): HalObject(_links = mutableMapOf()) {
     init {
         _links!!.putAll(sequenceOf(
                 "self" to Link(Uri.NAVIGATION_ROUTE),
-                Rels.LOGOUT to Link("/logout"),
                 Rels.USER_PROFILE to Link(Uri.forSingleUserText(user.id)),
                 Rels.MY_BOARDS to Link("/myBoards"),
                 Rels.GET_MULTIPLE_BOARDS to Link(Uri.forAllBoards()),
@@ -129,8 +128,6 @@ class UnauthorizedNavigationResponse
     : HalObject(
         mutableMapOf(
                 "self" to Link(Uri.NAVIGATION_ROUTE),
-                //Rels.HOME to Link(Uri.HOME_ROUTE),
                 Rels.LOGIN to Link(Uri.LOGIN_ROUTE)
-                //Rels.LOGOUT to Link("/logout"), //TODO: for now since we don't have cookie auth, we don't need logout
         )
 )

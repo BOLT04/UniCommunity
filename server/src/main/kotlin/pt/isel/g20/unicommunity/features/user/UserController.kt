@@ -17,7 +17,7 @@ class UserController(private val service: UserService) {
     @AuthorizationRequired
     @GetMapping(path = [USERS_ROUTE], produces = [APPLICATION_COLLECTION_JSON])
     fun getAllUsers(@SessionAttribute("user") user: User) =
-            cacheOkResponse(
+            okResponse(
                     CollectionObject(
                             MultipleUsersResponse(
                                     service
@@ -33,7 +33,7 @@ class UserController(private val service: UserService) {
             @PathVariable userId: Long,
             @SessionAttribute("user") user: User
     ) =
-            cacheOkResponse(SingleUserResponse(user, service.getUserById(userId)))
+            okResponse(SingleUserResponse(user, service.getUserById(userId)))
 
     @AuthorizationRequired
     @GetMapping(path = [BOARD_MEMBERS], produces = [APPLICATION_COLLECTION_JSON])
@@ -41,7 +41,7 @@ class UserController(private val service: UserService) {
             @PathVariable boardId: Long,
             @SessionAttribute("user") user: User
     ) =
-            cacheOkResponse(
+            okResponse(
                     CollectionObject(
                             MultipleUsersResponse(
                                     service
@@ -68,7 +68,7 @@ class UserController(private val service: UserService) {
             ).let {
                 val responseBody = SingleUserResponse(user, it)
                 val newResourceHref = Uri.forSingleUserUri(it.id)
-                cacheCreatedResponse(responseBody, newResourceHref)
+                createdResponse(responseBody, newResourceHref)
             }
 
     @AuthorizationRequired
@@ -78,7 +78,7 @@ class UserController(private val service: UserService) {
             @RequestBody userDto: UserDto,
             @SessionAttribute("user")user: User
     ) =
-            cacheOkResponse(
+            okResponse(
                     SingleUserResponse(
                             user,
                             service.editUser(
@@ -97,5 +97,5 @@ class UserController(private val service: UserService) {
     @AuthorizationRequired
     @DeleteMapping(path = [SINGLE_USER_ROUTE], produces = [APPLICATION_HAL_JSON])
     fun deleteUser(@PathVariable userId: Long, @SessionAttribute("user")user: User) =
-            cacheOkResponse(SingleUserResponse(user, service.deleteUser(user, userId)))
+            okResponse(SingleUserResponse(user, service.deleteUser(user, userId)))
 }

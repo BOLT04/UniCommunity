@@ -6,6 +6,8 @@ import org.hibernate.annotations.CreationTimestamp
 import pt.isel.g20.unicommunity.features.forumItem.model.ForumItem
 import pt.isel.g20.unicommunity.features.report.model.Report
 import pt.isel.g20.unicommunity.features.user.model.User
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.persistence.*
 
@@ -22,7 +24,7 @@ class Comment(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long = 0
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm:ss", locale = "en_GB")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MMM-yyyy HH:mm:ss")
     @Column
     @CreationTimestamp
     var createdAt: Date? = null
@@ -30,4 +32,9 @@ class Comment(
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "comment", cascade = [CascadeType.REMOVE])
     val reports: MutableList<Report> = mutableListOf()
+
+    fun getDateFormatted() : String {
+        val dateFormat: DateFormat = SimpleDateFormat("dd-MMM-yyyy HH:mm:ss")
+        return dateFormat.format(createdAt)
+    }
 }

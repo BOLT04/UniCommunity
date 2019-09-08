@@ -6,7 +6,6 @@ object Rels {
     const val NAVIGATION = "$RELS_PREFIX/nav"
     const val HOME = "$RELS_PREFIX/home"
     const val LOGIN = "$RELS_PREFIX/login"
-    const val LOGOUT = "$RELS_PREFIX/logout"
     const val MY_BOARDS = "$RELS_PREFIX/myBoards"
     const val USER_PROFILE = "$RELS_PREFIX/userProfile"
 
@@ -66,9 +65,9 @@ object Rels {
     const val CREATE_REPORT = "$RELS_PREFIX/createReport"
     const val GET_SINGLE_REPORT = "$RELS_PREFIX/getReport"
     const val GET_MULTIPLE_REPORTS = "$RELS_PREFIX/getReports"
+    const val DELETE_REPORT = "$RELS_PREFIX/deleteReport"
 
-    const val GET_SINGLE_USERS_BLACKBOARD = "$RELS_PREFIX/getUsersBlackboard"
     const val GET_MULTIPLE_USERS_BLACKBOARDS = "$RELS_PREFIX/getUsersBlackboards"
+    const val GET_SINGLE_USERS_BLACKBOARD = "$RELS_PREFIX/getUsersBlackboard"
     const val EDIT_USERS_BLACKBOARD = "$RELS_PREFIX/editUsersBlackboard"
-    const val DELETE_USERS_BLACKBOARD = "$RELS_PREFIX/deleteUsersBlackboard"
 }

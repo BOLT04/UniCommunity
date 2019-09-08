@@ -744,7 +744,15 @@ class SubscribeHalFormsResponse : HalFormsObject(
         HalFormsTemplateObject(
                 HalFormsTemplate(
                         title = "Subscribe to a board",
-                        method = "post"
+                        method = "post",
+                        contentType = APPLICATION_JSON,
+                        properties = listOf(
+                                Property(
+                                        name = "fcmToken",
+                                        prompt = "Token used to subscribe to fcm topic. Used by web app only",
+                                        required = false
+                                )
+                        )
                 )
         )
 )
@@ -871,6 +879,18 @@ class GetReportHalFormsResponse : HalFormsObject(
                 HalFormsTemplate(
                         title = "Get a specific report",
                         method = "get"
+                )
+        )
+)
+
+class DeleteReportHalFormsResponse : HalFormsObject(
+        mapOf(
+                "self" to Link(Rels.DELETE_REPORT)
+        ),
+        HalFormsTemplateObject(
+                HalFormsTemplate(
+                        title = "Delete a specific report",
+                        method = "delete"
                 )
         )
 )

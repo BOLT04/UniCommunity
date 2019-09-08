@@ -7,6 +7,8 @@ import pt.isel.g20.unicommunity.features.comment.model.Comment
 import pt.isel.g20.unicommunity.features.forum.model.Forum
 import pt.isel.g20.unicommunity.features.report.model.Report
 import pt.isel.g20.unicommunity.features.user.model.User
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 import java.util.*
 import javax.persistence.*
 
@@ -30,9 +32,13 @@ class ForumItem(
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "forumItem", cascade = [CascadeType.REMOVE])
     val reports: MutableList<Report> = mutableListOf()
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd@HH:mm:ss", locale = "en_GB")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MMM-yyyy HH:mm:ss")
     @Column
     @CreationTimestamp
     var createdAt: Date? = null
-}
 
+    fun getDateFormatted() : String {
+        val dateFormat: DateFormat = SimpleDateFormat("dd-MMM-yyyy HH:mm:ss")
+        return dateFormat.format(createdAt)
+    }
+}

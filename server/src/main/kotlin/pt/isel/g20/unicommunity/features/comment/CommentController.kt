@@ -24,7 +24,7 @@ class CommentController(private val service: CommentService) {
             @PathVariable forumItemId: Long,
             @SessionAttribute("user") user: User
     ) =
-            cacheOkResponse(
+            okResponse(
                     CollectionObject(
                             MultipleCommentsResponse(
                                     boardId,
@@ -44,7 +44,7 @@ class CommentController(private val service: CommentService) {
             @PathVariable commentId: Long,
             @SessionAttribute("user") user: User
     ) =
-            cacheOkResponse(
+            okResponse(
                     SingleCommentResponse(
                             user,
                             service.getCommentById(boardId, forumItemId, commentId)
@@ -74,7 +74,7 @@ class CommentController(private val service: CommentService) {
                                 it.forumItem.id,
                                 it.id
                         )
-                cacheCreatedResponse(responseBody, newResourceHref)
+                createdResponse(responseBody, newResourceHref)
             }
 
     @AuthorizationRequired
@@ -86,7 +86,7 @@ class CommentController(private val service: CommentService) {
             @RequestBody commentDto: CommentDto,
             @SessionAttribute("user")user: User
     ) =
-            cacheOkResponse(
+            okResponse(
                     SingleCommentResponse(
                             user,
                             service.editComment(
@@ -107,7 +107,7 @@ class CommentController(private val service: CommentService) {
             @PathVariable commentId: Long,
             @SessionAttribute("user")user: User
     ) =
-            cacheOkResponse(
+            okResponse(
                     SingleCommentResponse(
                             user,
                             service.deleteComment(user, boardId, forumItemId, commentId)

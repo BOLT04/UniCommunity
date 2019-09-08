@@ -10,7 +10,7 @@ fun Comment.toItemRepr(user: User): Item {
     val data = mutableListOf(
             Data(name = "id", value = this.id.toString()),
             Data(name = "content", value = this.content),
-            Data(name = "createdAt", value = this.createdAt.toString())
+            Data(name = "createdAt", value = this.getDateFormatted())
     )
     val links = mutableListOf(
             CollectionLink(

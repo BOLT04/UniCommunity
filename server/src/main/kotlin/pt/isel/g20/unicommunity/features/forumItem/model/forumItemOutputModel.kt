@@ -12,7 +12,7 @@ class SingleForumItemResponse(user: User, forumItem: ForumItem) : HalObject(muta
     val id = forumItem.id
     val name = forumItem.name
     val content = forumItem.content
-    val createdAt = forumItem.createdAt.toString()
+    val createdAt = forumItem.getDateFormatted()
     val anonymousPost = forumItem.anonymousPost
 
     init{

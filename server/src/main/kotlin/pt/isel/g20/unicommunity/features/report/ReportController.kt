@@ -19,7 +19,7 @@ class ReportController(private val service: ReportService) {
     fun getAllReports(
             @SessionAttribute("user") user: User
     ) =
-            cacheOkResponse(
+            okResponse(
                     CollectionObject(
                             MultipleReportsResponse(
                                     service.getAllReports(user).map(Report::toItemRepr)
@@ -33,7 +33,7 @@ class ReportController(private val service: ReportService) {
             @PathVariable reportId: Long,
             @SessionAttribute("user") user: User
     ) =
-            cacheOkResponse(SingleReportResponse(service.getReportById(user, reportId)))
+            okResponse(SingleReportResponse(service.getReportById(user, reportId)))
 
     @AuthorizationRequired
     @PostMapping(path = [REPORTS_ROUTE], produces = [APPLICATION_HAL_JSON])
@@ -49,7 +49,7 @@ class ReportController(private val service: ReportService) {
             ).let {
                 val responseBody = SingleReportResponse(it)
                 val newResourceHref = Uri.forSingleBoardUri(it.id)
-                cacheCreatedResponse(responseBody, newResourceHref)
+                createdResponse(responseBody, newResourceHref)
             }
 
     @AuthorizationRequired
@@ -58,5 +58,5 @@ class ReportController(private val service: ReportService) {
             @PathVariable reportId: Long,
             @SessionAttribute("user") user: User
     ) =
-            cacheOkResponse(SingleReportResponse(service.deleteReport(user, reportId)))
+            okResponse(SingleReportResponse(service.deleteReport(user, reportId)))
 }

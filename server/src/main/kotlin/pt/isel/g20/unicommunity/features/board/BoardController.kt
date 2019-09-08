@@ -76,7 +76,7 @@ class BoardController(private val service: BoardService) {
             @SessionAttribute("user") user: User,
             @RequestParam(value = "page", required = false, defaultValue = "0") page: Int
     ) =
-            cacheOkResponse(
+            okResponse(
                     CollectionObject(
                             MultipleBoardsResponse(
                                     service
@@ -93,7 +93,7 @@ class BoardController(private val service: BoardService) {
             @SessionAttribute("user") user: User,
             @RequestParam(value = "page", required = false, defaultValue = "0") page: Int
     ) =
-            cacheOkResponse(
+            okResponse(
                     CollectionObject(
                             MultipleBoardsResponse(
                                     service
@@ -110,7 +110,7 @@ class BoardController(private val service: BoardService) {
             @SessionAttribute("user") user: User,
             @RequestParam(value = "page", required = false, defaultValue = "0") page: Int
     ) =
-            cacheOkResponse(
+            okResponse(
                     CollectionObject(
                             MultipleBoardsResponse(
                                     service.getMyBoards(user.id, page, 1000).map { it.toItemRepr(user) },
@@ -125,7 +125,7 @@ class BoardController(private val service: BoardService) {
             @PathVariable boardId: Long,
             @SessionAttribute("user") user: User
     ) =
-            cacheOkResponse(SingleBoardResponse(user, service.getBoardById(boardId)))
+            okResponse(SingleBoardResponse(user, service.getBoardById(boardId)))
 
     @AuthorizationRequired
     @PostMapping(path = [BOARDS_ROUTE], produces = [APPLICATION_HAL_JSON])
@@ -145,7 +145,7 @@ class BoardController(private val service: BoardService) {
             ).let {
                 val responseBody = SingleBoardResponse(user, it)
                 val newResourceHref = Uri.forSingleBoardUri(it.id)
-                cacheCreatedResponse(responseBody, newResourceHref)
+                createdResponse(responseBody, newResourceHref)
             }
 
     @AuthorizationRequired
@@ -155,7 +155,7 @@ class BoardController(private val service: BoardService) {
             @SessionAttribute("user") user: User,
             @RequestBody subscribeDto: SubscribeDto?
     ) =
-            cacheOkResponse(
+            okResponse(
                     SubscribeResponse(
                             service.subscribe(boardId, user.id, subscribeDto?.token)
                     )
@@ -168,7 +168,7 @@ class BoardController(private val service: BoardService) {
             @SessionAttribute("user") user: User,
             @RequestBody subscribeDto: SubscribeDto
     ) =
-            cacheOkResponse(
+            okResponse(
                     SubscribeResponse(
                             service.subscribeToFcm(boardId, user.id, subscribeDto.token)
                     )
@@ -180,7 +180,7 @@ class BoardController(private val service: BoardService) {
             @PathVariable boardId: Long,
             @SessionAttribute("user") user: User
     ) =
-            cacheOkResponse(
+            okResponse(
                     UnsubscribeResponse(
                             service.unsubscribe(boardId, user.id)
                     )
@@ -193,7 +193,7 @@ class BoardController(private val service: BoardService) {
             @RequestBody boardDto: BoardDto,
             @SessionAttribute("user") user: User
     ) =
-            cacheOkResponse(
+            okResponse(
                     SingleBoardResponse(
                             user,
                             service.editBoard(
@@ -212,5 +212,5 @@ class BoardController(private val service: BoardService) {
             @PathVariable boardId: Long,
             @SessionAttribute("user") user: User
     ) =
-            cacheOkResponse(SingleBoardResponse(user, service.deleteBoard(user, boardId)))
+            okResponse(SingleBoardResponse(user, service.deleteBoard(user, boardId)))
 }

@@ -17,7 +17,7 @@ class TemplateController(private val service: TemplateService) {
     @AuthorizationRequired
     @GetMapping(path = [TEMPLATES_ROUTE], produces = [APPLICATION_COLLECTION_JSON])
     fun getAllTemplates() =
-            cacheOkResponse(
+            okResponse(
                     CollectionObject(
                             MultipleTemplatesResponse(
                                     service.getAllTemplates().map(Template::toItemRepr)
@@ -28,7 +28,7 @@ class TemplateController(private val service: TemplateService) {
     @AuthorizationRequired
     @GetMapping(path = [SINGLE_TEMPLATE_ROUTE], produces = [APPLICATION_JSON])
     fun getTemplateById(@PathVariable templateId: Long) =
-            cacheOkResponse(SingleTemplateResponse(service.getTemplateById(templateId)))
+            okResponse(SingleTemplateResponse(service.getTemplateById(templateId)))
 
     @AuthorizationRequired
     @PostMapping(path = [TEMPLATES_ROUTE], produces = [APPLICATION_JSON])
@@ -41,13 +41,13 @@ class TemplateController(private val service: TemplateService) {
             ).let {
                 val responseBody = SingleTemplateResponse(it)
                 val newResourceHref = Uri.forSingleTemplateUri(it.id)
-                cacheCreatedResponse(responseBody, newResourceHref)
+                createdResponse(responseBody, newResourceHref)
             }
 
     @AuthorizationRequired
     @PutMapping(path = [SINGLE_TEMPLATE_ROUTE], produces = [APPLICATION_JSON])
     fun editTemplate(@PathVariable templateId: Long, @RequestBody templateDto: TemplateDto) =
-            cacheOkResponse(
+            okResponse(
                     SingleTemplateResponse(
                             service.editTemplate(
                                     templateId,
@@ -61,5 +61,5 @@ class TemplateController(private val service: TemplateService) {
     @AuthorizationRequired
     @DeleteMapping(path = [SINGLE_TEMPLATE_ROUTE], produces = [APPLICATION_JSON])
     fun deleteTemplate(@PathVariable templateId: Long) =
-            cacheOkResponse(SingleTemplateResponse(service.deleteTemplate(templateId)))
+            okResponse(SingleTemplateResponse(service.deleteTemplate(templateId)))
 }

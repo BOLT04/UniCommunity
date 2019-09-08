@@ -9,7 +9,7 @@ import pt.isel.g20.unicommunity.features.user.model.User
 class SingleCommentResponse(user: User, comment: Comment) : HalObject(mutableMapOf(), mutableMapOf()){
     val id = comment.id
     val content  = comment.content
-    val createdAt = comment.createdAt.toString()
+    val createdAt = comment.getDateFormatted()
     val anonymousComment = comment.anonymousComment
 
     init{

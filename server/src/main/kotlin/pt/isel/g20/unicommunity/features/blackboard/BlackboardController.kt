@@ -23,7 +23,7 @@ class BlackboardController(private val service: BlackboardService) {
             @PathVariable boardId: Long,
             @SessionAttribute("user") user: User
     ) =
-            cacheOkResponse(
+            okResponse(
                     CollectionObject(
                             MultipleBlackboardsResponse(
                                     boardId,
@@ -41,7 +41,7 @@ class BlackboardController(private val service: BlackboardService) {
             @PathVariable bbId: Long,
             @SessionAttribute("user") user: User
     ) =
-            cacheOkResponse(
+            okResponse(
                     SingleBlackboardResponse(
                             user,
                             service.getBlackboardById(boardId, bbId)
@@ -65,7 +65,7 @@ class BlackboardController(private val service: BlackboardService) {
             ).let {
                 val responseBody = SingleBlackboardResponse(user, it)
                 val newResourceHref = Uri.forSingleBlackboardUri(it.board.id, it.id)
-                cacheCreatedResponse(responseBody, newResourceHref)
+                createdResponse(responseBody, newResourceHref)
             }
 
     @AuthorizationRequired
@@ -76,7 +76,7 @@ class BlackboardController(private val service: BlackboardService) {
             @RequestBody blackboardDto: BlackboardDto,
             @SessionAttribute("user") user: User
     ) =
-            cacheOkResponse(
+            okResponse(
                     SingleBlackboardResponse(
                             user,
                             service.editBlackboard(
@@ -97,7 +97,7 @@ class BlackboardController(private val service: BlackboardService) {
             @PathVariable bbId: Long,
             @SessionAttribute("user") user: User
     ) =
-            cacheOkResponse(
+            okResponse(
                     SingleBlackboardResponse(
                             user,
                             service.deleteBlackboard(user, boardId, bbId)

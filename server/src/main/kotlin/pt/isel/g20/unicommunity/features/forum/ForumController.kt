@@ -16,7 +16,7 @@ class ForumController(private val service: ForumService) {
     @AuthorizationRequired
     @GetMapping(path = [FORUM_ROUTE], produces = [APPLICATION_HAL_JSON])
     fun getForumById(@PathVariable boardId: Long, @SessionAttribute("user")user: User) =
-            cacheOkResponse(SingleForumResponse(service.getForumById(boardId)))
+            okResponse(SingleForumResponse(service.getForumById(boardId)))
 
     @AuthorizationRequired
     @PostMapping(path = [FORUM_ROUTE], produces = [APPLICATION_HAL_JSON])
@@ -25,16 +25,16 @@ class ForumController(private val service: ForumService) {
             service.createForum(boardId).let {
                 val responseBody = SingleForumResponse(it)
                 val newResourceHref = Uri.forSingleForumUri(it.board.id)
-                cacheCreatedResponse(responseBody, newResourceHref)
+                createdResponse(responseBody, newResourceHref)
             }
 
     @AuthorizationRequired
     @PutMapping(path = [FORUM_ROUTE], produces = [APPLICATION_HAL_JSON])
     fun editForum(@PathVariable boardId: Long, @SessionAttribute("user")user: User) =
-            cacheOkResponse(SingleForumResponse(service.editForum(user, boardId)))
+            okResponse(SingleForumResponse(service.editForum(user, boardId)))
 
     @AuthorizationRequired
     @DeleteMapping(path = [FORUM_ROUTE], produces = [APPLICATION_HAL_JSON])
     fun deleteForum(@PathVariable boardId: Long, @SessionAttribute("user")user: User) =
-            cacheOkResponse(SingleForumResponse(service.deleteForum(user, boardId)))
+            okResponse(SingleForumResponse(service.deleteForum(user, boardId)))
 }

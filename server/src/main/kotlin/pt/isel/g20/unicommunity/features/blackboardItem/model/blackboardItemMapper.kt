@@ -53,7 +53,7 @@ fun BlackboardItem.toItemRepr(user: User) : Item {
                         Data(name = "id", value = this.id.toString()),
                         Data(name = "content", value = this.content),
                         Data(name = "authorName", value = this.author.name),
-                        Data(name = "createdAt", value = this.createdAt.toString())
+                        Data(name = "createdAt", value = this.getDateFormatted())
                 ),
                 links = links
         )

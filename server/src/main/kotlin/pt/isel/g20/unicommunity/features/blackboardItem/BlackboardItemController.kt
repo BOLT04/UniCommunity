@@ -24,7 +24,7 @@ class BlackboardItemController(private val service: BlackboardItemService) {
             @PathVariable bbId: Long,
             @SessionAttribute("user") user: User
     ) =
-            cacheOkResponse(
+            okResponse(
                     CollectionObject(
                             MultipleBlackboardItemsResponse(
                                     boardId,
@@ -44,7 +44,7 @@ class BlackboardItemController(private val service: BlackboardItemService) {
             @PathVariable itemId: Long,
             @SessionAttribute("user") user: User
     ) =
-            cacheOkResponse(
+            okResponse(
                     SingleBlackboardItemResponse(
                             user,
                             service.getBlackboardItemById(boardId, bbId, itemId)
@@ -73,7 +73,7 @@ class BlackboardItemController(private val service: BlackboardItemService) {
                         it.blackboard.id,
                         it.id
                 )
-                cacheCreatedResponse(responseBody, newResourceHref)
+                createdResponse(responseBody, newResourceHref)
             }
 
     @AuthorizationRequired
@@ -85,7 +85,7 @@ class BlackboardItemController(private val service: BlackboardItemService) {
             @RequestBody itemDto: BlackboardItemDto,
             @SessionAttribute("user") user: User
     ) =
-            cacheOkResponse(
+            okResponse(
                     SingleBlackboardItemResponse(
                             user,
                             service.editBlackboardItem(
@@ -107,7 +107,7 @@ class BlackboardItemController(private val service: BlackboardItemService) {
             @PathVariable itemId: Long,
             @SessionAttribute("user") user: User
     ) =
-            cacheOkResponse(
+            okResponse(
                     SingleBlackboardItemResponse(
                             user,
                             service.deleteBlackboardItem(user, boardId, bbId, itemId)

@@ -10,7 +10,7 @@ class SingleBlackboardItemResponse(user: User, bbItem: BlackboardItem) : HalObje
     val id = bbItem.id
     val name = bbItem.name
     val content = bbItem.content
-    val createdAt = bbItem.createdAt.toString()
+    val createdAt = bbItem.getDateFormatted()
 
     init{
         val board = bbItem.blackboard.board

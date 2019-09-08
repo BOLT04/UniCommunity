@@ -68,6 +68,7 @@ class DocumentationController {
     val listReportsRsp = ListReportsHalFormsResponse()
     val createReportRsp = CreateReportHalFormsResponse()
     val getReportRsp = GetReportHalFormsResponse()
+    val deleteReportRsp = DeleteReportHalFormsResponse()
 
     @GetMapping(path = [Rels.GET_MULTIPLE_BOARDS])
     fun getBoards() = listBoardsRsp
@@ -223,6 +224,8 @@ class DocumentationController {
     @GetMapping(path = [Rels.NAVIGATION])
     fun getNavigation() = getNavigation
 
+
+
     @GetMapping(path = [Rels.GET_MULTIPLE_REPORTS])
     fun getReports() = listReportsRsp
 
@@ -231,4 +234,7 @@ class DocumentationController {
 
     @GetMapping(path = [Rels.GET_SINGLE_REPORT])
     fun getReport() = getReportRsp
+
+    @GetMapping(path = [Rels.DELETE_REPORT])
+    fun deleteReport() = deleteReportRsp
 }

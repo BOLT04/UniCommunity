@@ -23,7 +23,7 @@ class ForumItemController(private val service: ForumItemService) {
             @PathVariable boardId: Long,
             @SessionAttribute("user") user: User
     )  =
-            cacheOkResponse(
+            okResponse(
                     CollectionObject(
                             MultipleForumItemsResponse(
                                     boardId,
@@ -41,7 +41,7 @@ class ForumItemController(private val service: ForumItemService) {
             @PathVariable forumItemId: Long,
             @SessionAttribute("user") user: User
     ) =
-            cacheOkResponse(
+            okResponse(
                     SingleForumItemResponse(
                             user,
                             service.getForumItemById(boardId, forumItemId)
@@ -65,7 +65,7 @@ class ForumItemController(private val service: ForumItemService) {
             ).let {
                 val responseBody = SingleForumItemResponse(user, it)
                 val newResourceUri = Uri.forSingleForumItemUri(it.forum.board.id, it.id)
-                cacheCreatedResponse(responseBody, newResourceUri)
+                createdResponse(responseBody, newResourceUri)
             }
 
     @AuthorizationRequired
@@ -76,7 +76,7 @@ class ForumItemController(private val service: ForumItemService) {
             @RequestBody forumItemDto: ForumItemDto,
             @SessionAttribute("user") user: User
     ) =
-            cacheOkResponse(
+            okResponse(
                     SingleForumItemResponse(
                             user,
                             service.editForumItem(
@@ -96,5 +96,5 @@ class ForumItemController(private val service: ForumItemService) {
             @PathVariable forumItemId: Long,
             @SessionAttribute("user") user: User
     ) =
-            cacheOkResponse(SingleForumItemResponse(user, service.deleteForumItem(user, boardId, forumItemId)))
+            okResponse(SingleForumItemResponse(user, service.deleteForumItem(user, boardId, forumItemId)))
 }

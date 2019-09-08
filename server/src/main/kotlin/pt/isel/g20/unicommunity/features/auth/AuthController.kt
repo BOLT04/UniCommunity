@@ -14,7 +14,7 @@ import pt.isel.g20.unicommunity.features.auth.service.AuthService
 class AuthenticationController(private val service: AuthService) {
     @PostMapping(Uri.LOGIN_ROUTE)
     fun login(@RequestBody loginDto: LoginDto) =
-            cacheOkResponse(
+            okResponse(
                     LoginResponse(
                             service.authenticate(loginDto.email, loginDto.password)
                     )

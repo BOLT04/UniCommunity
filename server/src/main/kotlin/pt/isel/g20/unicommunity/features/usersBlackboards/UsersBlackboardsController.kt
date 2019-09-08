@@ -17,7 +17,7 @@ class UsersBlackboardsController(private val service: UsersBlackboardsService) {
             @PathVariable userId: Long,
             @SessionAttribute("user") user: User
     ) =
-            cacheOkResponse(
+            okResponse(
                     CollectionObject(
                             MultipleUsersBlackboardsResponse(
                                     userId,
@@ -35,7 +35,7 @@ class UsersBlackboardsController(private val service: UsersBlackboardsService) {
             @PathVariable bbId: Long,
             @SessionAttribute("user") user: User
     ) =
-            cacheOkResponse(
+            okResponse(
                     SingleUsersBlackboardResponse(
                             service.getUsersBlackboardById(user, userId, bbId)
                     )
@@ -49,7 +49,7 @@ class UsersBlackboardsController(private val service: UsersBlackboardsService) {
             @RequestBody usersBlackboardDto: UsersBlackboardsDto,
             @SessionAttribute("user") user: User
     ) =
-            cacheOkResponse(
+            okResponse(
                     SingleUsersBlackboardResponse(
                             service.editUsersBlackboard(
                                     user,
