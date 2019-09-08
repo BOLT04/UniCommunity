@@ -108,6 +108,15 @@ class BoardService(
             board = boardsRepo.save(board)
         }
 
+        val userBoard = UsersBoards(creator, board)
+        usersBoardsRepo.save(userBoard)
+
+        board.usersBoards.add(userBoard)
+        creator.usersBoards.add(userBoard)
+
+        board = boardsRepo.save(board)
+        usersRepo.save(creator)
+
         blackboardNames.map {
             blackboardService.createBlackboard(creatorId, board.id, it, "priority")
         }
@@ -122,29 +131,33 @@ class BoardService(
     fun subscribe(boardId: Long, userId: Long, token: String? = null): Board {
         var board = getBoardById(boardId)
         val user = usersRepo.findByIdOrNull(userId) ?: throw NotFoundUserException()
+        val isCreator = user.id == board.creator.id
 
-        if(usersBoardsRepo.findByUserIdAndBoardId(userId, boardId) != null)
+        if(usersBoardsRepo.findByUserIdAndBoardId(userId, boardId) != null && !isCreator)
             throw AlreadyAMemberException()
 
-        val userBoard = UsersBoards(user, board)
-        usersBoardsRepo.save(userBoard)
+        if(!isCreator){
+            val userBoard = UsersBoards(user, board)
+            usersBoardsRepo.save(userBoard)
 
-        board.usersBoards.add(userBoard)
-        user.usersBoards.add(userBoard)
+            board.usersBoards.add(userBoard)
+            user.usersBoards.add(userBoard)
 
-        board = boardsRepo.save(board)
-        usersRepo.save(user)
-
-        board.blackBoards.forEach { item -> run {
-            val userBlackboard = UsersBlackboards(user, item, item.notificationLevel)
-            usersBlackboardsRepo.save(userBlackboard)
-
-            user.blackboardsSettings.add(userBlackboard)
+            board = boardsRepo.save(board)
             usersRepo.save(user)
 
-            item.usersSettings.add(userBlackboard)
-            blackboardsRepo.save(item)
-        } }
+            board.blackBoards.forEach { item -> run {
+                val userBlackboard = UsersBlackboards(user, item, item.notificationLevel)
+                usersBlackboardsRepo.save(userBlackboard)
+
+                user.blackboardsSettings.add(userBlackboard)
+                usersRepo.save(user)
+
+                item.usersSettings.add(userBlackboard)
+                blackboardsRepo.save(item)
+            } }
+        }
+
         return if (token == null)
             board
         else

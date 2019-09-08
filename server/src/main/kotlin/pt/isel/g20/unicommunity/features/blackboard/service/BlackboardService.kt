@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service
 import pt.isel.g20.unicommunity.common.*
 import pt.isel.g20.unicommunity.features.blackboard.model.Blackboard
 import pt.isel.g20.unicommunity.features.user.model.User
+import pt.isel.g20.unicommunity.features.usersBlackboards.model.UsersBlackboards
 import pt.isel.g20.unicommunity.repository.BlackboardRepository
 import pt.isel.g20.unicommunity.repository.BoardRepository
 import pt.isel.g20.unicommunity.repository.UserRepository
@@ -15,7 +16,7 @@ class BlackboardService(
         val blackboardsRepo: BlackboardRepository,
         val boardsRepo: BoardRepository,
         val usersRepo: UserRepository,
-        val usersBlackboardsRepository: UsersBlackboardsRepository
+        val usersBlackboardsRepo: UsersBlackboardsRepository
 ) {
     fun getAllBlackboards(boardId: Long): Iterable<Blackboard> {
         boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
@@ -36,38 +37,47 @@ class BlackboardService(
     ): Blackboard {
         val board = boardsRepo.findByIdOrNull(boardId) ?: throw NotFoundBoardException()
         val user = usersRepo.findByIdOrNull(userId) ?: throw NotFoundUserException()
-        if(user.role != ADMIN && user.role != TEACHER) throw ForbiddenException()
+        if(user.id != board.creator.id && user.role != ADMIN) throw ForbiddenException()
 
-        if(notificationLevel != "none" && notificationLevel != "priority" && notificationLevel != "all")
+        if(notificationLevel != NONE && notificationLevel != PRIORITY && notificationLevel != ALL)
             throw InvalidNotificationLevelException()
 
         var blackboard = Blackboard(name, notificationLevel, description, board)
         blackboard = blackboardsRepo.save(blackboard)
 
-        val newBlackboard = blackboardsRepo.save(blackboard)
+        board.getMembers().forEach {
+            val userBlackboard = UsersBlackboards(it, blackboard, blackboard.notificationLevel)
+            usersBlackboardsRepo.save(userBlackboard)
 
-        board.blackBoards.add(newBlackboard)
+            user.blackboardsSettings.add(userBlackboard)
+            usersRepo.save(it)
+
+            blackboard.usersSettings.add(userBlackboard)
+            blackboardsRepo.save(blackboard)
+        }
+
+        board.blackBoards.add(blackboard)
         boardsRepo.save(board)
 
-        return newBlackboard
+        return blackboard
     }
 
     fun editBlackboard(
             user: User,
             boardId: Long,
             bbId: Long,
-            name: String?,
-            notificationLevel: String? ,
+            name: String,
+            notificationLevel: String,
             description: String?
     ): Blackboard {
         val blackboard = getBlackboardById(boardId, bbId)
         if(user.id != blackboard.board.creator.id && user.role != ADMIN) throw ForbiddenException()
 
-        if(name != null)
-            blackboard.name = name
+        if(notificationLevel != NONE && notificationLevel != PRIORITY && notificationLevel != ALL)
+            throw InvalidNotificationLevelException()
 
-        if(notificationLevel != null)
-            blackboard.notificationLevel = notificationLevel
+        blackboard.name = name
+        blackboard.notificationLevel = notificationLevel
 
         if(description != null)
             blackboard.description = description
