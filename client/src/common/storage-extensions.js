@@ -4,7 +4,7 @@ module.exports = () => {
     }
 
     Storage.prototype.getObject = function(key) {
-        var value = this.getItem(key)
+        const value = this.getItem(key)
         return value && JSON.parse(value)
     }
 }

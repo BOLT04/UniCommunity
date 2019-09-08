@@ -27,12 +27,12 @@ class UnsubscribeModal extends Component {
     	const { _templates: { default: reqInfo } } = await utilsObj.asyncParseHalFormRsp(rsp)
 		try {
 			const rsp = await this.props.utilsObj.asyncRelativeHttpRequest(url, reqInfo.method)
-			if (!rsp.ok) {}//TODO: handle error
+			if (!rsp.ok) throw rsp
 
-			const redirectPath = routes.boards// TODO: redirect to /myboards or my home dashboard
+			const redirectPath = routes.boards
 			this.props.history.push(redirectPath)
-		} catch(e) {
-			//TODO: handle error
+		} catch(error) {
+			console.error(error)
 		}
 	}
 
@@ -63,7 +63,6 @@ class UnsubscribeModal extends Component {
 						</Button>
 					</Modal.Actions>
 			</Modal>
-				
 		)
 	}
 }

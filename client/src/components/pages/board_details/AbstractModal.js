@@ -109,8 +109,6 @@ class AbstractModal extends Component {
         this.setState({ formSuccess: false })
     }
 
-    // An arrow function is used because this function is used in an onClick prop, meaning there 
-    // is no need to use Function::bind() to capture "this".
     submitOnClickHandler = async e => {
         this.setState({ formSuccess: false })
 

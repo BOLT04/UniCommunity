@@ -4,10 +4,10 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import './index.css'
-import 'semantic-ui-css/semantic.min.css'//TODO: remove this since we are using semantic UI react
+import 'semantic-ui-css/semantic.min.css'
 
 import App from './components/App'
-import HomeApiImpl from './service/HomeApiImpl'
+import HomeApi from './service/HomeApi'
 import { 
     asyncRelativeFetch,
     asyncRelativeHttpRequest,
@@ -16,7 +16,6 @@ import {
 import asyncParseHalFormRsp from './service/mapper/halForms-mapper'
 
 import config from './unicommunity-config.json'
-import { userManager } from './service/auth'
 import UtilsContext, { withUtilsConsumer } from './components/withUtilsConsumer'
 
 // The core Firebase JS SDK is always required
@@ -31,23 +30,8 @@ messaging.requestPermission()
     console.log('has permission')
     return messaging.getToken()
 })
-.then(console.log)
 .catch(e => console.log(`error: ${e.message}`))
 
-userManager.signinPopupCallback()
-
-/*;
-(async () => {
-    try {
-        await messaging.requestPermission()
-        const token = await messaging.getToken()
-        console.log(token)
-        
-    } catch (e) {
-        console.log(`error: ${e.message}`)
-    }
-})()
-console.log(12)*/
 messaging.usePublicVapidKey('BIOXb526ZIqXFesteNvXDtm39e2Y_hTnv-iQUlFzDmmtQ4WgnMROs3XlVfGBJjjlxkD42Fdxcd7twP7QvHgV23g')
 
 require('./common/storage-extensions')()
@@ -61,6 +45,7 @@ const utilsObj = {
     asyncHalFormsRequest,
     asyncParseHalFormRsp,
 }
+
 ReactDOM.render(
     <UtilsContext.Provider value={{
         utilsObj,
@@ -68,6 +53,6 @@ ReactDOM.render(
     }}>
         <AppWithUtils
             baseUri={baseUri}
-            api={new HomeApiImpl(baseUri, config.serverEntryPoint)} />
+            api={new HomeApi(baseUri, config.serverEntryPoint)} />
     </UtilsContext.Provider>,
     document.getElementById('root'))

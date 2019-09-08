@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 import ProtectedRoute from './ProtectedRoute'
 
-import NavBar from './NavBar'
+import NavBar from './navbar/NavBar'
 import Footer from './Footer'
 import Login from './Login'
 
@@ -21,13 +21,11 @@ import CreateBlackboardItem from './pages/create_module_item/CreateBlackboardIte
 import HomeApi from '../service/HomeApi'
 import asyncRspToHome from '../service/mapper/home-mapper'
 
-import NavBarApiImpl from '../service/NavBarApiImpl'
-import CreateBoardApiImpl from '../service/CreateBoardApiImpl'
+//import NavBarApiImpl from '../service/NavBarApiImpl'
+import CreateBoardApi from '../service/CreateBoardApi'
 
 import { asyncRelativeHttpRequest } from '../common/common'
-//TODO: The App component might have too many responsabilities, because it has the one commented below
-//TODO: plus it serves as the Service Locator, the one responsible to give all components their dependencies,
-// and we are currently instantiating the API mocks in here...
+
 /**
  * This is the root component of the application (used in index.js).
  * The responsibility of this component is to setup the React Router with all Routes and their components.
@@ -52,8 +50,7 @@ export default class App extends Component {
 
       this.setState({ home })
     } catch(e) {
-      console.log({e})
-      alert('Couldn\'t contact the server')//TODO: render an error page instead of this 
+      alert('Couldn\'t contact the server')
     }
   }
 
@@ -62,11 +59,9 @@ export default class App extends Component {
   }
 
   render() {
-    const createBoardApi = new CreateBoardApiImpl()
+    const createBoardApi = new CreateBoardApi()
     const { home } = this.state
 
-    //TODO: this component depends on the propnames defined in rels-registery because it knows navMenuUrl...
-    //TODO: is there a way to avoid this dependency?
     return (
       <BrowserRouter>   
         <div className='App' style={{ display:'flex', minHeight:'100vh', flexDirection:'column' }}>
@@ -77,7 +72,7 @@ export default class App extends Component {
                 reRender={this.reRenderNavBar}
                 navMenuUrl={home.navMenuUrl}
                 asyncRelativeFetch={this.props.asyncRelativeFetch}
-                api={new NavBarApiImpl()} /> 
+              /> 
             }
 
             <Switch>
@@ -115,7 +110,6 @@ export default class App extends Component {
                   asyncRelativeHttpRequest={asyncRelativeHttpRequest} />} 
               />
 
-{/*//TODO: The URL for CreatePost should be /boards/:id/posts/new, since its an new post in the context of a board*/}
               <Route exact path='/posts/new' render={props => 
                 <CreatePost {...props} api={createBoardApi} />} 
               />
@@ -132,25 +126,16 @@ export default class App extends Component {
                   {...props}
                   asyncRelativeFetch={this.props.asyncRelativeFetch} />} 
               />
-
             </Switch>
           </div>
 
-{/*//todo: Since App.js is getting too big, a Home component will be created to substitute some features of
-//todo: this App.js, and the component below will be called HomeContent, since it displays the content of the home page (img, etc) */}
           <Switch>
             <Route exact path='/' render={props => 
               <Home {...props} api={this.props.api} />} 
             />
-
-{/*            <Route exact path='*' component={() => '404 NOT FOUND. Please visit the Home page at: /'} />*/}
           </Switch>
           
-          {
           <Footer />
-          /* //TODO: THESE componentes were buggy so are not being used for the moment
-          <BackToTopButton />
-          */}
         </div> 
       </BrowserRouter>
     )

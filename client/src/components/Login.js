@@ -30,17 +30,6 @@ export default class Login extends Component {
 
       if (links) {
         this.props.reRender() // Update Navbar
-        //this.props.requestNotificationPermission()
-        /*
-        try {
-          debugger
-            const messaging = firebase.messaging()
-            await messaging.requestPermission()
-            const token = await messaging.getToken()
-            console.log(token)
-        } catch (e) {
-            alert('You won\'t receive notifications.')
-        }*/
 
         const redirectPath = this.props.location.state.redirectTo || routes.home
         this.props.history.push(redirectPath)

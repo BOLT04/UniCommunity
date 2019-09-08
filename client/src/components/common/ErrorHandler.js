@@ -10,6 +10,8 @@ export default class ErrorHandler extends Component {
     }
 
     handleError = error => this.setState({ error })
+    
+    closeOnClickHandler = () => this.setState({ showError: false })
 
     /*render = () => this.state.showError
         ? <ErrorMessagePresenter 

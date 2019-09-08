@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import { Form, Checkbox } from 'semantic-ui-react'
  
-import { createForumPostsAsync } from '../../../service/ForumApiImpl'
+import { createForumPostsAsync } from '../../../service/ForumApi'
 import rspToBoardAsync from '../../../service/mapper/board-mapper'
 
 import { APPLICATION_HAL_JSON } from '../../../common/constants'
@@ -34,18 +34,10 @@ export default class CreatePost extends Component {
     const rsp = await createForumPostsAsync(url, title, content, this.isAnonymous)
     const rspObj = await rsp.json()
 
-    //TODO: move this code that handles hal+json and responses from the API to another place,
-    //todo: in this class its only logic related to this component
-    
-    //TODO: the idea behind looking at these links is to know if we can navigate/redirect to the board view
-    //todo: if the server says we can't (doesnt include the link on the response) then we cant.
     // Check if we can redirect to the Board page.
     if (rspObj._links) {
       const boardUrl = rspObj._links[rels.getBoard]
       if (boardUrl) {
-        // TODO: I think this should be refactored and moved to BoardView. So that this component isn't responsible
-        //for making requests to a board
-
         const boardRsp = await asyncRelativeFetch(boardUrl.href, APPLICATION_HAL_JSON)
         let board = await rspToBoardAsync(boardRsp)
             

@@ -16,41 +16,8 @@ export default class Forum extends Component {
         board: PropTypes.object
     }
 
-    state = {
-        posts: []
-    }
-
-    async componentDidMount() {
-        //const rsp = await this.props.api.getForumPostsAsync()
-        //const posts = await rspToForumPostsAsync(rsp)
-        this.setState({
-            posts: [
-                {
-                    title: "Anuncio 1",
-                    smallDesc: "Exemplo de um anuncio....",
-                    author: "Paulo Pereira",
-                    createdAt: "16-04-2019"
-                },
-                {
-                    title: "Anuncio 2",
-                    smallDesc: "Exemplo de um anuncio2....",
-                    author: "Pedro Pereira",
-                    createdAt: "16-04-2019"
-                },
-                {
-                    title: "Anuncio 2",
-                    smallDesc: "Exemplo de um anuncio2....",
-                    author: "Pedro Pereira",
-                    createdAt: "16-04-2019"
-                    //authorHref
-                }
-            ]
-        })
-    }
-
     render() {
-//TODO: clean this up later
-        const posts = this.props.posts || this.state.posts
+        const posts = this.props.posts || []
 
         return (
             <List divided link verticalAlign='middle'>
@@ -65,43 +32,41 @@ export default class Forum extends Component {
 function ForumItem({ post, board }) {
     const boardId = board.id
 
-    function decideContent() {
-        return (
-            <List.Content style={{marginTop: 10}}>
-                {post.content
-                    ? buildWithDesc() 
-                    : 
-                        <Link to={{
-                            pathname: routes.getPostDetailsUri(boardId, post.id),
-                            state: {getPostUrl: post.href}
-                        }}>
-                            <List.Header as='a'>{post.name}</List.Header>
-                        </Link>
-                }    
-            </List.Content>
-        )
-    }
+    const decideContent = () => (
+        <List.Content style={{marginTop: 10}}>
+            {post.content
+                ? buildWithDesc() 
+                : 
+                    <Link to={{
+                        pathname: routes.getPostDetailsUri(boardId, post.id),
+                        state: {getPostUrl: post.href}
+                    }}>
+                        <List.Header as='a'>{post.name}</List.Header>
+                    </Link>
+            }    
+        </List.Content>
+    )
+    
 
-    function buildWithDesc() {
-        return ( 
-            <Link to={{
-                pathname: routes.getPostDetailsUri(boardId, post.id),
-                state: {getPostUrl: post.href}
-            }}>
-                <List.Header as='a'>
-                    {post.authorName &&
-                        <div>
-                            Published by <strong>{post.authorName}</strong> at {post.createdAt.toLocaleString()}
-                        </div>
-                    } 
-                    {' '+ post.name}
-                </List.Header>
-                <List.Description>
-                    <ReactMarkdown source={post.content} />
-                </List.Description>
-            </Link>
-        )
-    }
+    const buildWithDesc = () => ( 
+        <Link to={{
+            pathname: routes.getPostDetailsUri(boardId, post.id),
+            state: {getPostUrl: post.href}
+        }}>
+            <List.Header as='a'>
+                {post.authorName &&
+                    <div>
+                        Published by <strong>{post.authorName}</strong> at {post.createdAt.toLocaleString()}
+                    </div>
+                } 
+                {' '+ post.name}
+            </List.Header>
+            <List.Description>
+                <ReactMarkdown source={post.content} />
+            </List.Description>
+        </Link>
+    )
+    
 
     return (
         <List.Item>

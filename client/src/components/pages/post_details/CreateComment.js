@@ -25,11 +25,9 @@ export default class CreateComment extends Component {
         this.props.onCreateCommentHandler(e, comment)
     }
 
-    //TODO: test this setState behaviour
     commentTxtAreaHandler = e => {
         if (e.target.value.length > 0)
             this.setState({hasText: true})
-        //else
 
         this.commentText = e.target.value
     }
@@ -42,7 +40,6 @@ export default class CreateComment extends Component {
     render() {
         const disabled = !this.state.hasText
         const style = disabled ? {cursor: 'not-allowed'} : {}
-        console.log('oi ' + auth.isAuthenticated())
         const user = localStorage.getObject('user')
 
         return (

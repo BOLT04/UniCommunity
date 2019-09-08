@@ -7,6 +7,7 @@ import './css/BoardTemplate.css'
 import asyncCollectionRspToList from '../../../service/mapper/collectionJson-mapper'
 import { COLLECTION_JSON } from '../../../common/constants'
 import { withUtilsConsumer } from '../../withUtilsConsumer'
+import { rels } from '../../../common/rels-registery'
 
 class BoardTemplate extends Component {
   static propTypes = {
@@ -22,18 +23,18 @@ class BoardTemplate extends Component {
   }
 
   async componentDidMount() {
+    const home = sessionStorage.getObject('home')
+    const href = home[rels.templates]
+    //TODO: test with href and TAKE OUT '/templates'
     const rsp = await this.props.utilsObj.asyncRelativeFetch('/templates', COLLECTION_JSON)
-    //TODO: remove hardcoded url
-    //TODO: catch error in case the promise is rejected
     const templates = (await asyncCollectionRspToList(rsp)).items
-    console.log(templates)
     
     this.setState({ templates })
   }
 
   onChangeCheckBox = e => {
     e.preventDefault()
-    // TODO: is there a better way of doing this?
+
     this.props.addToModules(e.target.innerHTML)
   }
 
@@ -63,7 +64,7 @@ class BoardTemplate extends Component {
         </Grid.Row>
       </Grid>
 
-      <h5 className="ui header">Or Choose manually</h5>
+      <h5 className='ui header'>Or Choose manually</h5>
       <Grid>
         <Grid.Row>
           <Grid.Column width={8}>
@@ -89,10 +90,6 @@ class BoardTemplate extends Component {
     </div>
   )
 
-  //TODO: Do I need to make all this code to have clickable templates...I need to manage this functionality
-  //TODO: or does it exist already made?
-  //TODO: change this to Toggle button using Semantic UI!!!!
-
   // No need for arrow function since Function.bind is being used.
   activateTemplate(templateId, e) {
     const activeElem = document.querySelector('.template-item-active')
@@ -107,7 +104,6 @@ class BoardTemplate extends Component {
       e.target.classList.add('template-item-active')
     }
 
-    console.log(templateId)
     this.props.activateTemplate(templateId) // update parent's state.
   }
 }

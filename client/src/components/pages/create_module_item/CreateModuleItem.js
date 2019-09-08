@@ -28,17 +28,13 @@ export default class CreateModuleItem extends Component {
     /**
      * An array of other React components that represent more form fields.
      * The child components should use the Form.Field SUI component.
-     * {@link https://developer.mozilla.org/pt-BR/docs/Web/API/Response} //TODO: make Form.Field link!!!!!!!
+     * {@link https://react.semantic-ui.com/collections/form/}
      */
     children: PropTypes.object.isRequired
   }
 
   titleVal = ''
   mdEditor = null
-
-  handleEditorChange({ html, text }) {
-    //console.log('handleEditorChange', html, text)
-  }
 
   onTitleChange = e => {
     e.preventDefault()
@@ -71,7 +67,6 @@ export default class CreateModuleItem extends Component {
             <MdEditor
               value=''
               ref={node => this.mdEditor = node}
-              onChange={this.handleEditorChange}
             />
           </Form.Field>
 

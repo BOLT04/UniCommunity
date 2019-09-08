@@ -1,7 +1,7 @@
 // This module contains functions that are used by multiple modules.
+import { AUTH_TOKEN } from './constants'
 
 /**
- * This function is used by the mapper functions - transforms a API response to a model object,
  * Returns an array with model objects that are representations of the UI. 
  * Each object has the format specified by the server
  * 
@@ -88,11 +88,7 @@ export const asyncHalFormsWithoutBodyRequest = async (rel, relativeUrl) => {
 
                     return asyncRelativeHttpRequest(relativeUrl, reqInfo.method)
 }*/
-//TODO: tou a fazer o unsub button e a dar fix no subscribe. Como é igua ao pedido que se faz no board-mapper pa ter o blackboards (fazer pedido ao halforms e dps com essa info fazer o pedido http)
-//TODO: mas tipo se vier properties eu n os uso...ou seja há um CONTRATO! eu sei que o "add member" e "remove member" são post e n recebe nada no body...ta no contrato da api
-// por isso ha uma expectativa que isso n esteja no hal forms, pk se estiver (caso a api "evolua") o cliente quebra...mas isto n pode ser o que se fala na evoluçao da api
-//pk é uma breaking change mudar o metodo que é usado no pedido http, ou mudar para "agora recebe info no body" ou precisa de certos headers.
-//essas mudanças na api trazem mudanças no cliente...tem de ser. N da para fazer algo generico, ou se der o custo é mt elevado e traz bastante complexidade à soluçao e ao codigo....
+
 /**
  * Makes a Post HTTP request with the given body.
  * @param {string} relativeUrl - The relative url to be prefixed by the base uri.
@@ -118,7 +114,7 @@ export function asyncRelativeHttpRequest(relativeUrl, method, contentType, body)
 // Auxiliary function
 function fillAuthHeaderIfAuthenticated() {
     let options = {}
-    const token = localStorage.getItem('authToken')//TODO: make a constant with 'authToken' since its used in /service/auth.js
+    const token = localStorage.getItem(AUTH_TOKEN)
     if (token)
         options.headers = {
             Authorization: `Basic ${token}`

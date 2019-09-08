@@ -38,13 +38,13 @@ export default ({ body, onClick }) => {
                         { name: 'page', value: data.activePage }
                     ]
                     const url = body.buildUriFromQueryRel('self', params)
-                    debugger
+
                     onClick(url)
                 }}
                 pointing
                 secondary
                 totalPages={body.totalPages}
             />
-           </div>
+        </div>
     )
 }

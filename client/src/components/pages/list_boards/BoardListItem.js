@@ -9,6 +9,7 @@ import { rels } from '../../../common/rels-registery'
 
 import SubscribeModal from './SubscribeModal'
 import UnsubscribeModal from './UnsubscribeModal'
+
 /**
  * This React functional component Describes a single board item in a list of boards.
  * The board property is used to send state to another component using React-Router, meaning
@@ -28,11 +29,10 @@ export class BoardListItem extends Component {
 
         const hasSubscribeLink = board.hasLinkRel(rels.addMemberToBoard)
         const hasUnsubscribeLink = board.hasLinkRel(rels.removeMemberToBoard)
-        //TODO: uncomment this when the server only provides 1 link (subscribe or unsubscribe)
-        return this.renderWithSubButton(board)
-        //hasSubscribeLink && !hasUnsubscribeLink
-            //? 
-            //: this.renderWithUnsubButton(board)
+        
+        return hasSubscribeLink && !hasUnsubscribeLink
+            ? this.renderWithSubButton(board)
+            : this.renderWithUnsubButton(board)
     }
 
     renderWithSubButton(board) {

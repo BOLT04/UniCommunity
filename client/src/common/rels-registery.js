@@ -3,7 +3,8 @@
 // It can be the corresponding client URL, strings containing the CSS classes to be used as props to
 // React elements or HTML elements, etc.
 import React from 'react'
-import UserProfileNavItem from '../components/UserProfileNavItem'
+import UserProfileNavItem from '../components/navbar/UserProfileNavItem'
+import MyBoardsNavItem from '../components/navbar/MyBoardsNavItem'
 
 import routes from './routes'
 
@@ -17,6 +18,7 @@ export const rels = {
     createComment: '/rels/createComment',
     getComments: '/rels/getComments',
 
+    myBoards: '/rels/myBoards',
     getBoards: '/rels/getBoards',
     getBoard: '/rels/getBoard',
     editBoard: '/rels/editBoard',
@@ -29,12 +31,16 @@ export const rels = {
     getBlackboardItems: '/rels/getBlackboardItems',
     nav: '/rels/nav',
     feed: '/rels/feed',
-    userProfile: '/rels/userProfile'
+    userProfile: '/rels/userProfile',
+    templates: '/rels/templates',
 }
+
+// Properties that are used on the context of a Navbar:
+// toDisplayOnRight; name
 
 const relsRegistery = {
     [rels.getForumItems]: {
-        clientHref: '/forum',//TODO: is this being used?
+        clientHref: '/forum',
         serverHref: null
     },
     [rels.createBlackboardItem]: {
@@ -46,7 +52,6 @@ const relsRegistery = {
     [rels.createForumItem]: {
         clientHref: '/posts/new'
     },
-    // This empty object is just to signal the mapper functions that the client app knows these link relations.
     [rels.createComment]: {
         propName: 'createComment'
     },
@@ -59,16 +64,15 @@ const relsRegistery = {
     },
     [rels.createBoard]: {
         clientHref: '/boards/new',
-        name: 'Create Board' // TODO: this property is unique to the rels belonging to navbar, so should they be separated in another object?
+        name: 'Create Board'
     },
     [rels.login]: {
         clientHref: '/login',
         name: 'Log in',
         class: 'ui primary basic button',
-        toDisplayOnRight: true // TODO: this property is unique to the rels belonging to navbar, so should they be separated in another object?
+        toDisplayOnRight: true
     },
     [rels.getBlackboards]: {
-        //TODO:
     },
     // The property 'propName' is used to specify the property's name of the object in each component's state
     // For example in App.js it will define state.home.navMenuUrl

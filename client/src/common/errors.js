@@ -8,13 +8,3 @@ export function MappingError(message) {
 export function LogoutError(message) {
     Error.apply(this, message || DEFAULT_LOGOUT_MSG)
 }
-
-/*
-export function PermissionError(message) {
-    Error.apply(this, message || ?)
-}
-
-export function DatabaseError(message) {
-    Error.apply(this, message || ?)
-}
-*/

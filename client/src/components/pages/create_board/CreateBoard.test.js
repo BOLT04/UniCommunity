@@ -7,12 +7,3 @@ it('renders without crashing', () => {
   ReactDOM.render(<CreateBoard />, div)
   ReactDOM.unmountComponentAtNode(div)
 })
-
-/*
-it('check the submitCreateBoardReq callback', () => {
-  const onClick = jest.fn(),
-        ButtonComponent = mount(<CreateBoard />).find('#submitBtn');
-  DateInputComponent.simulate('change', { target: {value: moment('2018-01-22')} });
-  expect(onChange).toHaveBeenCalledWith('22.01.2018');
-})
-*/

@@ -15,7 +15,6 @@ import ForumPostHeader from './ForumPostHeader'
 import Comments from './Comments'
 import CreateComment from './CreateComment'
 
-// api imports
 import rspToForumItemAsync from '../../../service/mapper/forumItem-mapper'
 
 import { APPLICATION_HAL_JSON } from '../../../common/constants'
@@ -28,14 +27,11 @@ class PostDetails extends Component {
     }
 
     async componentDidMount() {
-        //try {
-            const rsp = await this.props.utilsObj.asyncRelativeFetch(this.props.location.state.getPostUrl, APPLICATION_HAL_JSON)
-            const post = await rspToForumItemAsync(rsp)
-            
-            this.setState({ post, loading: false })
-        //} catch (e) {
-            //this.props.handleError(e)
-        //}
+        const { utilsObj, location } = this.props
+        const rsp = await utilsObj.asyncRelativeFetch(location.state.getPostUrl, APPLICATION_HAL_JSON)
+        const post = await rspToForumItemAsync(rsp)
+        
+        this.setState({ post, loading: false })
     }
 
     onCreateCommentHandler = (e, comment) => {
@@ -51,8 +47,7 @@ class PostDetails extends Component {
 
     render() {
         const { post, loading } = this.state
-debugger
-        //TODO: if this gets too big consider making a functional component for it, receiving 'post obj' as a prop
+
         const renderPost = () => (
             <Segment>
                 <ForumPostHeader authorName={post.authorName} createdAt={post.createdAt} />
@@ -91,4 +86,3 @@ debugger
 }
 
 export default withUtilsConsumer(PostDetails)
-//export default withErrorHandler(withUtilsConsumer(PostDetails))

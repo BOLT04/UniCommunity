@@ -5,7 +5,6 @@
   "dependencies": {
     "firebase": "^6.2.4",
     "immutable": "^4.0.0-rc.12",
-    "oidc-client": "^1.8.2",
     "react": "^16.8.5",
     "react-dom": "^16.8.5",
     "react-markdown": "^4.0.6",

@@ -29,10 +29,6 @@ export const Comment = ({ comment: { avatarSrc, author, createdAt, content, repl
                 <SUIComment.Text>
                     <ReactMarkdown source={content} />
                 </SUIComment.Text>
-                <SUIComment.Actions>
-                    <SUIComment.Action>Reply</SUIComment.Action>
-                    <Rating icon='star' defaultRating={1} maxRating={4} />
-                </SUIComment.Actions>
             </SUIComment.Content>
             {replies &&
                 <SUIComment.Group>

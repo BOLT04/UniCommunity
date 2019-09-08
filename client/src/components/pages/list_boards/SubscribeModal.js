@@ -20,24 +20,22 @@ class SubscribeModal extends Component {
 
 	yesOnClickHander = async e => {
 		const { board, utilsObj, firebase } = this.props
-		// TODO: remove all this code necessary for the HTTP request, and delegate it to an api object like the other components
 		const url = board.getHrefOfRel(rels.addMemberToBoard)
 		const rsp = await utilsObj.asyncRelativeFetch(rels.addMemberToBoard)
 		const { _templates: { default: reqInfo } } = await utilsObj.asyncParseHalFormRsp(rsp)
+		
 		try {
 			const messaging = firebase.messaging()
 			const token = await messaging.getToken()
 			
 			const body = { token }
 			const rsp = await utilsObj.asyncRelativeHttpRequest(url, reqInfo.method, APPLICATION_JSON, body)
-			console.log({rsp})
-			if (!rsp.ok) { }//TODO: handle error
+			if (!rsp.ok) throw rsp
 
 			const redirectPath = routes.getBoardUri(board.id)
 			this.props.history.push(redirectPath, { board: removeFunctionsFrom(board) })
 		} catch (error) {
-			console.log({error})
-			//TODO: handle error
+			console.error({error})
 		}
 	}
 

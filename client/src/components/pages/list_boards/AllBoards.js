@@ -29,7 +29,6 @@ class AllBoards extends BookmarkableComponent {
 		this.addServerHrefOf(rels.getBoards, { checkState: true })
 	}
 
-	//TODO: move this to the parent class, its the same in every child!
 	async componentDidMount() {
 		if (this.addServerHrefOf(rels.getBoards))
 			await this.fetchData(this.serverHref)

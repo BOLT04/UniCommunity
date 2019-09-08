@@ -12,10 +12,13 @@ import EditModuleButton from './EditModuleButton'
 import { withUtilsConsumer } from '../../withUtilsConsumer'
 
 /**
- * This component is used to display the modules/blackboards of a Board, for example the Summary and
- * Announcements.
+ * This component is used to display the modules of a Board, for example the Summary or Announcements.
  */
 class ModulesView extends Component {
+    static propTypes = {
+        board: PropTypes.object
+    }
+
     constructor(props) {
         super(props)
 
@@ -26,33 +29,20 @@ class ModulesView extends Component {
             board: props.board
         }
     }
-    static propTypes = {
-        board: PropTypes.object
-    }
-
+    
     handleClick = (e, titleProps) => {
         const { index } = titleProps
         const { activeIndex } = this.state
         const newIndex = activeIndex === index ? -1 : index
 
-        /*
-        React may batch multiple setState() calls into a single update for performance.
-        Because this.props and this.state may be updated asynchronously, we should not rely on their values 
-        for calculating the next state!
-        */
         this.setState(state => ({
             activeIndex: newIndex,
             visible: !state.visible
         }))
     }
-//TODO: maybe the way to clean code is through a function contentSupp, since that is the main difference between
-//todo: blackboards and forum
-    /**
-     * @param {Function} contentSupp??? - A function that returns the tree of React elements to be children of
-     * Accordion.Content, given a.
-     */
+
     blackboardToAccordion = (blackboard, index) => {
-        const { activeIndex, visible } = this.state
+        const { activeIndex } = this.state
         const isActive = activeIndex === index
 
         const updateBlackboard = updatedBlackboard =>
@@ -103,7 +93,6 @@ class ModulesView extends Component {
         )
     }
 
-    //TODO: remove redundant code later.
     renderForum(board) {
         const { posts, createPostHrefObj } = board.modules.forum
         

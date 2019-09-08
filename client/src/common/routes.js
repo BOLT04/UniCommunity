@@ -11,14 +11,11 @@ const routes = {
     },
     /**
      * @param {object} board - Represents a Board (model data type) object.
-     * @param {object} bb - Represents a Blackboard (model data type) object.
+     * @param {object} bb    - Represents a Blackboard (model data type) object.
      */
     getNewBlackboardItemUri(board, bb) {
         return `${board.id}/${bb.name}/blackboardItem/new`
     },
-    /**
-     * @param {string} userId
-     */
     getUserProfileUri(userId) {
         return `/user/${userId}`
     },

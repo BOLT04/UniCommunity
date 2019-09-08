@@ -30,15 +30,15 @@ const propertiesConfig = {
                     <label>{prompt}</label>
 
                     <Checkbox 
-                        data-value='1'
+                        data-value='none'
                         label='never receive notifications'
                         onChange={onChange} />
                     <Checkbox
-                        data-value='2'
+                        data-value='all'
                         label='always receive notifications'
                         onChange={onChange} />
                     <Checkbox
-                        data-value='3'
+                        data-value='priority'
                         label='only receive notifications with IMPORTANT'
                         onChange={onChange} />
                 </>
@@ -49,7 +49,7 @@ const propertiesConfig = {
 
 /**
  * This component handles the state required to update/edit a module (e.g. Blackboard) and the logic for
- * making that HTTP request.
+ * parsing the HTTP response.
  */
 class EditModuleButton extends Component {
     static propTypes = {

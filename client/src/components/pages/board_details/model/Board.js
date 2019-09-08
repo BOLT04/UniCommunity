@@ -10,13 +10,13 @@
  * Blackboard:
  * {
  *     name: string,
- *     content: array<Item>
+ *     items: array<Item>
  * }
  * 
  * Item has the format:
  * {
  *     name: string,
- *     text: string
+ *     content: string
  * }
  */
 export default function Board(id, name, description, modules) {

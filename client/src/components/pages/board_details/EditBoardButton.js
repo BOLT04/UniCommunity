@@ -33,7 +33,7 @@ class EditBoardButton extends Component {
                 asyncParseRspToModel={rspToBoardAsync}
                 updateUi={updateBoard}
                 triggerIcon='pencil alternate'
-                modalHeader={'Edit the Board\'s information'}
+                modalHeader={`Edit the Board's information`}
                 successHeader='Update Board Completed'
             />
         )

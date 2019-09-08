@@ -1,15 +1,14 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
-// Semantic UI imports
 import { Loader } from 'semantic-ui-react'
 
 import rspToBoardAsync from '../../../service/mapper/board-mapper'
 import { APPLICATION_HAL_JSON, httpStatus } from '../../../common/constants'
 import { rels } from '../../../common/rels-registery'
 import routes from '../../../common/routes'
-
 import BookmarkableComponent from '../../common/BookmarkableComponent'
+
 import ModulesView from './ModulesView'
 import EditBoardButton from './EditBoardButton'
 import Header from '../../Header'
@@ -17,11 +16,10 @@ import Header from '../../Header'
 import { withUtilsConsumer } from '../../withUtilsConsumer'
 
 class BoardView extends BookmarkableComponent {
-  //TODO: how do I specify the entrance of the model (board) to this component? 
-  //TODO: I dont want it to be in props.location.state.board because that is coupled to CreateBoard component!
   static propTypes = {
     home: PropTypes.object
   }
+
   constructor(props) {
     super(props)
 
@@ -61,12 +59,12 @@ class BoardView extends BookmarkableComponent {
 
   async fetchData() {
     const rsp = await this.props.utilsObj.asyncRelativeFetch(this.serverHref, APPLICATION_HAL_JSON)
-    if (rsp.status === httpStatus.UNAUTHORIZED) {//TODO: move this lgic to a reusable component!
+    if (rsp.status === httpStatus.UNAUTHORIZED) {
       this.props.history.push(routes.login, { redirectTo: this.props.location.pathname })
       return
     }
-    const board = await rspToBoardAsync(rsp)
 
+    const board = await rspToBoardAsync(rsp)
     this.setState({ board, loading: false })
   }
 
@@ -91,13 +89,8 @@ class BoardView extends BookmarkableComponent {
         <div className='ui divider' />
 
         { board.modules && 
-          <ModulesView board={board} />
+            <ModulesView board={board} />
         }
-        {/*//TODO: how to put nested routes? and what is the point bc /:bbName/blackboardItem/new doesnt work
-        <Route path='/boards/:boardId/:bbName/blackboardItem/new' render={props => 
-                <h1>bahhh</h1> } 
-              />
-        */ }
       </>
     )
   }

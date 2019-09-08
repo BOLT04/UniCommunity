@@ -1,9 +1,8 @@
 import React from 'react'
 
-// Semantic UI imports
 import { Image } from 'semantic-ui-react'
 
-import auth from '../service/auth'
+import auth from '../../service/auth'
 
 const UserProfileNavItem = () => (
     <>
