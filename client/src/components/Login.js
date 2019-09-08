@@ -26,9 +26,7 @@ export default class Login extends Component {
 
   submitLoginHandler = async e => {
     try {
-      debugger
       const links = await auth.asyncLogin(this.props.location.state.serverHref, this.emailVal, this.passVal)
-debugger
       if (links) {
         this.props.reRender() // Update Navbar
 

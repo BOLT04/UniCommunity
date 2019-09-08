@@ -50,7 +50,6 @@ export default class NavBarLink extends Component {
     render() {
       const { reg, activeItem, className, serverHref } = this.props
       const { href } = this.state
-      debugger
   
       return (
         <Menu.Item

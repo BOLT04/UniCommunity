@@ -47,7 +47,6 @@ export const buildUri = relativeUrl => `${baseUri}${relativeUrl}`
  */
 export const asyncRelativeFetch = (relativeUrl, contentType) => {
     const options = fillAuthHeaderIfAuthenticated()
-    debugger
     if (contentType) {
         if (!options.headers) options.headers = {}
 
