@@ -27,7 +27,7 @@ interface IiidService {
             @Path("topicName", encoded= true) topicName: String
     ): Response<Empty>
 
-    @Headers("Authorization: Bearer ${API_KEY}")
+    @Headers("Authorization: key=${API_KEY}")
     @DELETE("v1/web/iid/{registrationToken}")
     suspend fun unsubscribeAppFromTopic(
             @Path("registrationToken", encoded= true) registrationToken: String

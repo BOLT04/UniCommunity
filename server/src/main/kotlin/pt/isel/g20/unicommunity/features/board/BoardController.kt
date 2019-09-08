@@ -157,7 +157,7 @@ class BoardController(private val service: BoardService) {
     ) =
             okResponse(
                     SubscribeResponse(
-                            service.subscribe(boardId, user.id, subscribeDto?.token)
+                            service.subscribe(boardId, user.id, subscribeDto?.fcmToken)
                     )
             )
 
@@ -170,7 +170,7 @@ class BoardController(private val service: BoardService) {
     ) =
             okResponse(
                     SubscribeResponse(
-                            service.subscribeToFcm(boardId, user.id, subscribeDto.token)
+                            service.subscribeToFcm(boardId, user.id, subscribeDto.fcmToken)
                     )
             )
 
@@ -178,11 +178,12 @@ class BoardController(private val service: BoardService) {
     @DeleteMapping(path = [BOARD_MEMBERS], produces = [APPLICATION_HAL_JSON])
     fun unsubscribe(
             @PathVariable boardId: Long,
-            @SessionAttribute("user") user: User
+            @SessionAttribute("user") user: User,
+            @RequestBody subscribeDto: SubscribeDto?
     ) =
             okResponse(
                     UnsubscribeResponse(
-                            service.unsubscribe(boardId, user.id)
+                            service.unsubscribe(boardId, user.id, subscribeDto?.fcmToken)
                     )
             )
 

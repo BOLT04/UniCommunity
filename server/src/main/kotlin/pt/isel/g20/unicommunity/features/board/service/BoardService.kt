@@ -121,7 +121,8 @@ class BoardService(
             blackboardService.createBlackboard(creatorId, board.id, it, "priority")
         }
 
-        board = subscribe(board.id, creatorId, fcmToken)
+        if(fcmToken != null)
+        board = subscribeToFcm(board.id, creatorId, fcmToken)
 
         return boardsRepo.save(board)
     }
@@ -133,30 +134,28 @@ class BoardService(
         val user = usersRepo.findByIdOrNull(userId) ?: throw NotFoundUserException()
         val isCreator = user.id == board.creator.id
 
-        if(usersBoardsRepo.findByUserIdAndBoardId(userId, boardId) != null && !isCreator)
+        if(usersBoardsRepo.findByUserIdAndBoardId(userId, boardId) != null)
             throw AlreadyAMemberException()
 
-        if(!isCreator){
-            val userBoard = UsersBoards(user, board)
-            usersBoardsRepo.save(userBoard)
+        val userBoard = UsersBoards(user, board)
+        usersBoardsRepo.save(userBoard)
 
-            board.usersBoards.add(userBoard)
-            user.usersBoards.add(userBoard)
+        board.usersBoards.add(userBoard)
+        user.usersBoards.add(userBoard)
 
-            board = boardsRepo.save(board)
+        board = boardsRepo.save(board)
+        usersRepo.save(user)
+
+        board.blackBoards.forEach { item -> run {
+            val userBlackboard = UsersBlackboards(user, item, item.notificationLevel)
+            usersBlackboardsRepo.save(userBlackboard)
+
+            user.blackboardsSettings.add(userBlackboard)
             usersRepo.save(user)
 
-            board.blackBoards.forEach { item -> run {
-                val userBlackboard = UsersBlackboards(user, item, item.notificationLevel)
-                usersBlackboardsRepo.save(userBlackboard)
-
-                user.blackboardsSettings.add(userBlackboard)
-                usersRepo.save(user)
-
-                item.usersSettings.add(userBlackboard)
-                blackboardsRepo.save(item)
-            } }
-        }
+            item.usersSettings.add(userBlackboard)
+            blackboardsRepo.save(item)
+        } }
 
         return if (token == null)
             board
@@ -166,6 +165,7 @@ class BoardService(
 
     fun subscribeToFcm(boardId: Long, userId: Long, token: String): Board{
         val board = getBoardById(boardId)
+        val isCreator = userId == board.creator.id
 
         if(usersBoardsRepo.findByUserIdAndBoardId(userId, boardId) == null)
             throw NotAMemberException()
@@ -191,7 +191,7 @@ class BoardService(
         return board
     }
 
-    fun unsubscribe(boardId: Long, userId: Long):Board {
+    fun unsubscribe(boardId: Long, userId: Long, fcmToken: String?):Board {
         var board = getBoardById(boardId)
         val user = usersRepo.findByIdOrNull(userId) ?: throw NotFoundUserException()
         val userBoard = usersBoardsRepo.findByUserIdAndBoardId(userId, boardId) ?: throw NotAMemberException()
@@ -216,29 +216,26 @@ class BoardService(
         } }
         board = boardsRepo.save(board)
 
-        unsubscribeFromFcm(boardId, userId)
+        if(fcmToken != null)
+            unsubscribeFromFcm(boardId, userId, fcmToken)
 
         return board
     }
 
-    fun unsubscribeFromFcm(boardId: Long, userId: Long): Board{
+    fun unsubscribeFromFcm(boardId: Long, userId: Long, token: String): Board{
         val board = getBoardById(boardId)
         val user = usersRepo.findByIdOrNull(userId) ?: throw NotFoundUserException()
 
         runBlocking {
-            val promises = board.blackBoards.map {
-                async {
-                    val topicName = "${board.id}-${it.id}-${it.name}"
-
-                    iidService.unsubscribeAppFromTopic(topicName)
-                }
+            val promise =
+            async {
+                iidService.unsubscribeAppFromTopic(token)
             }
 
-            promises.forEach {
-                val rsp = it.await()
-                println("in unsubscribe: ${rsp.code()}")
-                if (!rsp.isSuccessful) throw SubscribeToTopicException()
-            }
+
+            val rsp = promise.await()
+            println("in unsubscribe: ${rsp.code()}")
+            if (!rsp.isSuccessful) throw SubscribeToTopicException()
 
             println("in unsubscribe: returning")
             board
