@@ -1,45 +1,95 @@
-import config from '../unicommunity-config.json'
-// TODO: this code is repeated in index.js. Is this that big of a problem?
-const baseUri = `http://${config.serverHost}:${config.serverPort}`
+// This module contains an object (relsRegistery) that maps the known custom link relations to whatever
+// information is considered important for a given link relation (rel). 
+// It can be the corresponding client URL, strings containing the CSS classes to be used as props to
+// React elements or HTML elements, etc.
+import React from 'react'
+import UserProfileNavItem from '../components/navbar/UserProfileNavItem'
 
-//TODO: if this is how its done, meaning i only have representations for modules that I know, for example Forum,
-//todo: then i can only render those modules => i cant render user created modules!
+import routes from './routes'
+
+export const rels = {
+    getForumItems: '/rels/getForumItems',
+    getForum: '/rels/getForum',
+    createBlackboardItem: '/rels/createBlackboardItem',
+    editBlackboard: '/rels/editBlackboard',
+    createForumItem: '/rels/createForumItem',
+    
+    createComment: '/rels/createComment',
+    getComments: '/rels/getComments',
+
+    myBoards: '/rels/myBoards',
+    getBoards: '/rels/getBoards',
+    getBoard: '/rels/getBoard',
+    editBoard: '/rels/editBoard',
+    addMemberToBoard: '/rels/subscribe',
+    removeMemberToBoard: '/rels/unsubscribe',
+
+    createBoard: '/rels/createBoard',
+    login: '/rels/login',
+    getBlackboards: '/rels/getBlackboards',
+    getBlackboardItems: '/rels/getBlackboardItems',
+    nav: '/rels/nav',
+    feed: '/rels/feed',
+    userProfile: '/rels/userProfile',
+    templates: '/rels/templates',
+}
+
+// Properties that are used on the context of a Navbar:
+// toDisplayOnRight; name
+
 const relsRegistery = {
-    '/rels/getForumItems': {
-        clientHref: '/forum',//TODO: is this being used?
+    [rels.getForumItems]: {
+        clientHref: '/forum',
         serverHref: null
     },
-    '/rels/createBlackboardItem': {
-        clientHref: '/blackboardItem/new',
+    [rels.createBlackboardItem]: {
+        clientHref(board, blackboard) {
+            return routes.getNewBlackboardItemUri(board, blackboard)
+        },
         serverHref: null
     },
-    'http://localhost:8080/rels/createForumItem': {
+    [rels.createForumItem]: {
         clientHref: '/posts/new'
     },
-    'http://localhost:8080/rels/getBoards': {//TODO: take out prefix localhost....
+    [rels.createComment]: {
+        propName: 'createComment'
+    },
+    [rels.getComments]: {
+        propName: 'getComments'
+    },
+    [rels.getBoards]: {
         clientHref: '/boards',
         name: 'All Boards'
     },
-    [`${baseUri}/rels/createBoard`]: {
+    [rels.createBoard]: {
         clientHref: '/boards/new',
-        name: 'Create Board' // TODO: this property is unique to the rels belonging to navbar, so should they be separated in another object?
+        name: 'Create Board'
     },
-    '/rels/login': {
+    [rels.login]: {
         clientHref: '/login',
         name: 'Log in',
         class: 'ui primary basic button',
-        toDisplayOnRight: true // TODO: this property is unique to the rels belonging to navbar, so should they be separated in another object?
+        toDisplayOnRight: true
     },
-    '/rels/getBlackboards': {
-        //TODO:
+    [rels.getBlackboards]: {
     },
-    // The property "propName" is used to specify the property's name of the object in each component's state
-    // For example in App.js it will define state.home.navUrl
-    [`${baseUri}/rels/nav`]: {
-        propName: "navMenuUrl"
+    // The property 'propName' is used to specify the property's name of the object in each component's state
+    // For example in App.js it will define state.home.navMenuUrl
+    [rels.nav]: {
+        propName: 'navMenuUrl'
     },
-    [`${baseUri}/rels/feed`]: {
-        propName: "feedUrl"
+    [rels.feed]: {
+        propName: 'feedUrl'
+    },
+    [rels.userProfile]: {
+        clientHref(userId) {
+            return routes.getUserProfileUri(userId)
+        },
+        name: 'User Profile',
+        toDisplayOnRight: true,
+        render(props) {
+            return <UserProfileNavItem {...props} />
+        }
     }
 }
 
