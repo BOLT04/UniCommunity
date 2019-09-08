@@ -23,51 +23,6 @@ import pt.isel.g20.unicommunity.features.user.model.User
 @RequestMapping(produces = [APPLICATION_HAL_JSON, APPLICATION_JSON, APPLICATION_COLLECTION_JSON])
 class BoardController(private val service: BoardService) {
 
-    @GetMapping(path = ["/retrofit"])
-    fun getRetrofit(): List<Post>? {
-        val service = RetrofitFactory.makeRetrofitService()
-        return runBlocking {
-            val response = withContext(Dispatchers.IO) {
-                service.getPosts()
-            }
-
-            //if (response.isSuccessful)
-                response.body()
-            //} else {
-            //    emptyList<List<Post>>()//"Error: ${response.code()}"
-            //}
-/*
-            try {
-                if (response.isSuccessful) {
-                    response.body()
-                } else {
-                    emptyList<List<Post>>()//"Error: ${response.code()}"
-                }
-            } catch (e: HttpException) {
-                emptyList<List<Post>>()//return "Exception ${e.message}"
-            } catch (e: Throwable) {
-                emptyList<List<Post>>()//return "Ooops: Something else went wrong"
-            }*/
-        }
-    }
-
-    @GetMapping(path = ["/retrofit/parallel"])
-    fun getRetrofitParallel(): List<Post> {
-        val service = RetrofitFactory.makeRetrofitService()
-        return runBlocking {
-            val blackboards = arrayOf(1, 2, 3, 4)
-            val promises = blackboards.map {
-                async {
-                    service.getPosts()
-                }
-            }
-
-            promises.forEach {
-                it.await()
-            }
-            emptyList<Post>()
-        }
-    }
 
     @AuthorizationRequired
     @GetMapping(path = [ACTIVE_BOARDS_ROUTE], produces = [APPLICATION_COLLECTION_JSON])
