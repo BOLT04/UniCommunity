@@ -62,6 +62,7 @@ class DocumentationController {
     val unsubscribeRsp = UnsubscribeHalFormsResponse()
     val getBoardMembers = GetBoardMembersHalFormsResponse()
     val getUserBlackboardsSettings = GetUserBlackboardsSettingsHalFormsResponse()
+    val getUserBlackboardSettings = GetUserBlackboardSettingsHalFormsResponse()
     val getMyBoards = GetMyBoardsHalFormsResponse()
     val getHome = GetHomeHalFormsResponse()
     val getNavigation = GetNavigationHalFormsResponse()
@@ -214,6 +215,10 @@ class DocumentationController {
 
     @GetMapping(path = [Rels.GET_USER_BLACKBOARDS_SETTINGS])
     fun getUserBlackboardsSettings() = getUserBlackboardsSettings
+
+    @GetMapping(path = [Rels.GET_SINGLE_USERS_BLACKBOARD])
+    fun getUserBlackboardSettings() = getUserBlackboardSettings
+
 
     @GetMapping(path = [Rels.MY_BOARDS])
     fun getMyBoards() = getMyBoards

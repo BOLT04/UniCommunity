@@ -793,6 +793,18 @@ class GetUserBlackboardsSettingsHalFormsResponse : HalFormsObject(
         )
 )
 
+class GetUserBlackboardSettingsHalFormsResponse : HalFormsObject(
+        mapOf(
+                "self" to Link(Rels.GET_SINGLE_USERS_BLACKBOARD)
+        ),
+        HalFormsTemplateObject(
+                HalFormsTemplate(
+                        title = "Get the notification settings of a specific blackboard of the logged user",
+                        method = "get"
+                )
+        )
+)
+
 class GetMyBoardsHalFormsResponse : HalFormsObject(
         mapOf(
                 "self" to Link(Rels.MY_BOARDS)
