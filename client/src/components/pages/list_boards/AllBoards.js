@@ -39,7 +39,7 @@ class AllBoards extends BookmarkableComponent {
 		if (this.props.location.state)
 			toUpdateData = this.props.location.state.toUpdateData
 
-		if (this.props.home !== prevProps.home && this.addServerHrefOf(rels.getBoards) || toUpdateData)
+		if ((this.props.home !== prevProps.home && this.addServerHrefOf(rels.getBoards)) || toUpdateData)
 			await this.fetchData(this.serverHref)
 	}
 

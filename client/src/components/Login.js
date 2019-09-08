@@ -54,7 +54,7 @@ export default class Login extends Component {
         <div className="ui middle aligned center aligned grid">
           <div className="column">
             <h2 className="ui teal header">
-              <img src={`${process.env.PUBLIC_URL}/img/logo.png`} className="image"></img>
+              <img src={`${process.env.PUBLIC_URL}/img/logo.png`} className="image" alt="logo not found"></img>
               <div className="content">
                 Log-in
             </div>

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Comment as SUIComment, Rating } from 'semantic-ui-react'
+import { Comment as SUIComment } from 'semantic-ui-react'
 
 import ReactMarkdown from 'react-markdown'
 

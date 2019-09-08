@@ -4,7 +4,6 @@
 // React elements or HTML elements, etc.
 import React from 'react'
 import UserProfileNavItem from '../components/navbar/UserProfileNavItem'
-import MyBoardsNavItem from '../components/navbar/MyBoardsNavItem'
 
 import routes from './routes'
 
