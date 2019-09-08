@@ -1,9 +1,5 @@
 package pt.isel.g20.unicommunity.features.board
 
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import pt.isel.g20.unicommunity.common.*

@@ -1,7 +1,5 @@
 package pt.isel.g20.unicommunity.config
 
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.web.method.HandlerMethod
 import org.springframework.web.servlet.HandlerInterceptor
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationException
@@ -11,8 +9,6 @@ import pt.isel.g20.unicommunity.features.auth.service.AuthService
 import pt.isel.g20.unicommunity.features.user.model.User
 import pt.isel.g20.unicommunity.features.user.service.UserService
 import java.io.UnsupportedEncodingException
-import java.net.HttpURLConnection
-import java.net.URL
 import java.nio.charset.Charset
 import java.util.*
 import javax.servlet.http.HttpServletRequest
@@ -45,7 +41,6 @@ class AuthorizationInterceptor(
                 }
                 else when (authHeaderList[0]) {
                     "Basic"  -> processBasicAuthorization(authHeaderList[1], request)
-                    "Bearer" -> processBearerAuthorization(authHeaderList[1], request)
                 }
             }
         }
@@ -78,45 +73,9 @@ class AuthorizationInterceptor(
         }
     }
 
-    private fun processBearerAuthorization(accessToken: String, request: HttpServletRequest) {
-        val token = sendPost(accessToken)
-        if (!token.active)
-            throw AuthorizationException()
-        val user = userService.getUserByName(token.user_id)
-        addToModelUserDetails(request.session, user)
-    }
-
     private fun addToModelUserDetails(session: HttpSession, user: User?) {
         session.setAttribute("user", user)
     }
-
-    private val objectMapper = ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
-
-    private fun sendPost(token: String): TokenIntrospect {
-        val url = URL("http://localhost:8080/openid-connect-server-webapp/introspect")
-
-        with(url.openConnection() as HttpURLConnection) {
-            requestMethod = "POST"
-            val userCredentials = "1c5f3ee5-a077-498e-8093-f77c70b2a677:AOOjTBV3mORH7th3uH0ZQzQ53MkkYExzAfceONi1qCw6kZKb6NY4jIXX7iQQrppNqgZ0NgayzdkCQF8lA3gWj9M"
-            val basicAuth = "Basic " + String(Base64.getEncoder().encode(userCredentials.toByteArray()))
-
-            this.setRequestProperty("Authorization", basicAuth)
-            this.setRequestProperty("Content-Type",  "application/x-www-form-urlencoded")
-            val body = "token=$token"
-            doOutput = true
-            this.outputStream.write(body.toByteArray())
-            println("\nSent 'POST' request to URL : $url; Response Code : $responseCode")
-            val json = inputStream.bufferedReader().readLine()
-
-            return objectMapper.readValue(json, TokenIntrospect::class.java)
-        }
-    }
-
-    class TokenIntrospect(
-        val active: Boolean = false,
-        val scope: String = "",
-        val user_id: String = ""
-    )
 }
 
 

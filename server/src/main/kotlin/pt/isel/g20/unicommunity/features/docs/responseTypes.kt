@@ -328,6 +328,11 @@ class CreateUserHalFormsResponse : HalFormsObject(
                                         prompt = "Password",
                                         required = true
                                 ),
+								Property(
+                                        name = "role",
+                                        prompt = "The role of the user",
+                                        required = true
+                                ),
                                 Property(
                                         name = "githubId",
                                         prompt = "Github ID",
