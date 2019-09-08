@@ -28,7 +28,7 @@ export default class Login extends Component {
     try {
       const links = await auth.asyncLogin(this.props.location.state.serverHref, this.emailVal, this.passVal)
       if (links) {
-        this.props.reRender() // Update Navbar
+        this.props.reRender(true) // Update Navbar
 
         const redirectPath = this.props.location.state.redirectTo || routes.home
         this.props.history.push(redirectPath)

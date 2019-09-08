@@ -35,12 +35,17 @@ class AllBoards extends BookmarkableComponent {
 	}
 
 	async componentDidUpdate(prevProps) {
-		if (this.props.home !== prevProps.home && this.addServerHrefOf(rels.getBoards))
+		let toUpdateData
+		if (this.props.location.state)
+			toUpdateData = this.props.location.state.toUpdateData
+
+		if (this.props.home !== prevProps.home && this.addServerHrefOf(rels.getBoards) || toUpdateData)
 			await this.fetchData(this.serverHref)
 	}
 
 	async fetchData(url) {
 		const rsp = await this.props.utilsObj.asyncRelativeFetch(url, COLLECTION_JSON)
+
 		if (rsp.status === httpStatus.UNAUTHORIZED) {
 			this.props.history.push(routes.login, { 
 				redirectTo: this.props.location.pathname,

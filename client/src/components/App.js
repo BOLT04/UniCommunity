@@ -21,7 +21,6 @@ import CreateBlackboardItem from './pages/create_module_item/CreateBlackboardIte
 import HomeApi from '../service/HomeApi'
 import asyncRspToHome from '../service/mapper/home-mapper'
 
-//import NavBarApiImpl from '../service/NavBarApiImpl'
 import CreateBoardApi from '../service/CreateBoardApi'
 
 import { asyncRelativeHttpRequest } from '../common/common'
@@ -45,8 +44,7 @@ export default class App extends Component {
       const rsp = await this.props.api.fetchHomeAsync()
       const home = await asyncRspToHome(rsp)
 
-      const homeString = JSON.stringify(home)
-      sessionStorage.setItem('home', homeString)
+      sessionStorage.setObject('home', home)
 
       this.setState({ home })
     } catch(e) {
@@ -54,8 +52,8 @@ export default class App extends Component {
     }
   }
 
-  reRenderNavBar = () => {
-    this.setState({ reRenderNavBar: true })
+  reRenderNavBar = reRenderNavBar => {
+    this.setState({ reRenderNavBar })
   }
 
   render() {

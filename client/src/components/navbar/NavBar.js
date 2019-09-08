@@ -10,6 +10,8 @@ import auth from '../../service/auth'
 
 import { APPLICATION_HAL_JSON } from '../../common/constants'
 import relsRegistery from '../../common/rels-registery'
+import { fetchHomeAsync } from '../../common/common'
+import asyncRspToHome from '../../service/mapper/home-mapper'
 
 import { withUtilsConsumer } from '../withUtilsConsumer'
 
@@ -49,6 +51,7 @@ class NavBar extends Component {
     const navMenu = rspObj._links
 
     this.setState({ navMenu })
+    this.props.reRender(false)
   }
 
   /**
@@ -99,16 +102,21 @@ class NavBar extends Component {
 
     await this.fetchData() // Update Navbar links
 
-    // Redirect to home page
+    // Fetch home resource again and redirect to home page
+    const rsp = await fetchHomeAsync()
+    const home = await asyncRspToHome(rsp)
+    sessionStorage.setObject('home', home)
+
     this.props.history.push('/')
   }
 
   buildLinks() {
     const { navMenu, activeItem } = this.state
 
-    const buildRightMenu = (reg, serverHref) => {
+    const buildRightMenu = (reg, serverHref, key) => {
       return (
         <NavBarLink
+          key={key}
           className='right'
           onClick={this.handleItemClick}
           reg={reg}
@@ -139,6 +147,7 @@ class NavBar extends Component {
       <>
         {leftMenuItems.map(({ reg, prop }) => (
           <NavBarLink
+            key={prop}
             onClick={this.handleItemClick}
             reg={reg}
             serverHref={navMenu[prop].href}
@@ -149,7 +158,7 @@ class NavBar extends Component {
         }
 
         {rightMenuItems.map(({ reg, prop }) =>
-          buildRightMenu(reg, navMenu[prop].href)
+          buildRightMenu(reg, navMenu[prop].href, prop)
         )}
       </>
     )

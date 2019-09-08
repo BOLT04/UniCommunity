@@ -26,9 +26,9 @@ class SubscribeModal extends Component {
 		
 		try {
 			const messaging = firebase.messaging()
-			const token = await messaging.getToken()
+			const fcmToken = await messaging.getToken()
 			
-			const body = { token }
+			const body = { fcmToken }
 			const rsp = await utilsObj.asyncRelativeHttpRequest(url, reqInfo.method, APPLICATION_JSON, body)
 			if (!rsp.ok) throw rsp
 

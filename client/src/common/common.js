@@ -39,6 +39,8 @@ export const baseClientUri = `http://${config.clientHost}:${config.clientPort}`
  */
 export const buildUri = relativeUrl => `${baseUri}${relativeUrl}`
 
+export const fetchHomeAsync = () => fetch(buildUri(config.serverEntryPoint))
+
 /**
  * Makes a GET HTTP request to the base URI configured in the project, appended with
  * the relative URL.

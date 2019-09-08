@@ -30,7 +30,7 @@ class UnsubscribeModal extends Component {
 			if (!rsp.ok) throw rsp
 
 			const redirectPath = routes.boards
-			this.props.history.push(redirectPath)
+			this.props.history.push(redirectPath, { toUpdateData: true })
 		} catch(error) {
 			console.error(error)
 		}
