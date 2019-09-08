@@ -8,9 +8,7 @@ class SubscribeLink (href: String) : BodyNavLink<SubscribeOutputDto, SubscribeIn
 
 class UnsubscribeLink (href: String) : NavLink<SubscribeInputDto>(Rels.UNSUBSCRIBE, href, SubscribeInputDto::class.java)
 
-class UnSubscribeInputDto {
 
-}
 
 class SubscribeInputDto(
     val topics : Array<String>

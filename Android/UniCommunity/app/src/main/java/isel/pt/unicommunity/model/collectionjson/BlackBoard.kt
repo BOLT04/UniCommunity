@@ -18,7 +18,6 @@ fun CollectionJson.toBlackBoardCollection() : BlackBoardCollection {
                         getOptionalValue("description"),
                         getOptionalValue("notificationLevel"),
                         getLink(Rels.EDIT_BLACKBOARD, ::EditBlackBoardLink),
-                        getLink(Rels.DELETE_BLACKBOARD, ::DeleteBlackBoardLink),
                         getLink(Rels.GET_MULTIPLE_BLACKBOARDS, ::GetMultipleBlackBoardsLink),
                         getLink(Rels.GET_SINGLE_BOARD, ::GetSingleBoardLink)
                     )
@@ -44,7 +43,6 @@ class BlackBoardCollection(
         val notificationLevel: String?,
 
         val editBlackBoardLink: EditBlackBoardLink?,
-        val deleteBlackBoardLink: DeleteBlackBoardLink?,
         val getMultipleBlackBoardsLink: GetMultipleBlackBoardsLink?,
         val getSingleBoardLink: GetSingleBoardLink?
     )

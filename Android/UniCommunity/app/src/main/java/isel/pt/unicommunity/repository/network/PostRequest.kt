@@ -26,7 +26,6 @@ class BasicAuthNavLinkPostRequest<O,I>(
     bodyNavLink.href,
     body,
     onSuccessListener, onErrorListener, email, password, headers, logger
-
 )
 
 class LinkPostRequest<O,I>(
@@ -68,12 +67,12 @@ open class PostRequest<O,I>(
     private val logger: ((String) -> Unit)? = null) : Request<I>(Method.POST, checkUrl(url), onErrorListener) {
 
     init {
-        this.setShouldCache(false) //todo development only take this out of here
+        this.setShouldCache(false)
     }
 
     override fun deliverResponse(response: I?) {
         if(response!=null)
-            onSuccessListener.onResponse(response) //todo seems weird
+            onSuccessListener.onResponse(response)
     }
 
     override fun parseNetworkResponse(response: NetworkResponse?): Response<I> {
@@ -93,13 +92,13 @@ open class PostRequest<O,I>(
 
     override fun getBody(): ByteArray {
         if(body==null)
-            return super.getBody()
+            return ByteArray(0)
         Log.v("POST", mapper.writeValueAsString(body))
         return mapper.writeValueAsString(body).toByteArray(Charset.forName("UTF-8"))
     }
 
     override fun getBodyContentType(): String {
-        return if(body!=null) "application/json" else super.getBodyContentType()
+        return "application/json"
     }
 
 

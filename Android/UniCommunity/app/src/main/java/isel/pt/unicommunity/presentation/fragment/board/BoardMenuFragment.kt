@@ -76,24 +76,15 @@ class BoardMenuFragment(val link: GetSingleBoardLink) : Fragment() {
         val forumClickListener = object :
             ForumClickListener {
             override fun onClickListener(forumLink: GetSingleForumLink) {
-                Toast.makeText(activity, forumLink.href , Toast.LENGTH_LONG).show()
-                (activity as BackStackManagingActivity).navigateTo(
-                    ForumFragment(
-                        forumLink
-                    )
-                )
+                (activity as BackStackManagingActivity).navigateTo(ForumFragment(forumLink))
             }
         }
 
         val blackBoardClickListener = object :
             BlackBoardClickListener {
             override fun onClickListener(blackBoardLink: GetSingleBlackBoardLink) {
-                Toast.makeText(activity, blackBoardLink.href , Toast.LENGTH_LONG).show()
-                (activity as BackStackManagingActivity).navigateTo(
-                    BlackBoardFragment(
-                        blackBoardLink
-                    )
-                )
+                (activity as BackStackManagingActivity).
+                    navigateTo(BlackBoardFragment(blackBoardLink))
             }
         }
 

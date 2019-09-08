@@ -36,8 +36,8 @@ class RoidedMainActivity: AppCompatActivity(), NavigationView.OnNavigationItemSe
     private fun setupSideNav(){
 
         val sideNav = findViewById<NavigationView>(R.id.nav_view)
-        val navGraphIds =
-            listOf(R.navigation.allboards, R.navigation.myboards, R.navigation.profile)
+        /*val navGraphIds =
+            listOf(R.navigation.allboards, R.navigation.myboards, R.navigation.profile)*/
 
         val toggle = ActionBarDrawerToggle(
             this, drawer_layout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
@@ -67,7 +67,7 @@ class RoidedMainActivity: AppCompatActivity(), NavigationView.OnNavigationItemSe
 
 
             }
-            R.id.nav_profile -> {
+            R.id.nav_reports -> {
                 //navigateTo(profile)
             }
             R.id.nav_share -> {

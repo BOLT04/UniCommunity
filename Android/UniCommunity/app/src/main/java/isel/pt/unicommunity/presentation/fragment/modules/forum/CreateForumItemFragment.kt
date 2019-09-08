@@ -16,7 +16,7 @@ import isel.pt.unicommunity.presentation.viewmodel.CreateForumItemViewModel
 import kotlinx.android.synthetic.main.__testing__demo.*
 import kotlinx.android.synthetic.main.fragment_create_forum_item.*
 
-class CreateForumItemFragment(val createForumItemLink: CreateForumItemLink) : Fragment() {
+class CreateForumItemFragment(private val createForumItemLink: CreateForumItemLink) : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
         inflater.inflate(R.layout.fragment_create_forum_item, container, false)

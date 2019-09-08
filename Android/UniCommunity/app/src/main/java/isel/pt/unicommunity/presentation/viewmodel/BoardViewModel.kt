@@ -13,7 +13,9 @@ import isel.pt.unicommunity.model.links.GetSingleForumLink
 import isel.pt.unicommunity.presentation.adapter.MenuView
 import isel.pt.unicommunity.repository.network.BasicAuthNavLinkGetRequest
 
-class BoardViewModel(val app: UniCommunityApp, val getSingleBoardLink: GetSingleBoardLink) : ViewModel(){
+class BoardViewModel(private val app: UniCommunityApp,
+                     private val getSingleBoardLink: GetSingleBoardLink
+) : ViewModel(){
 
     val board = MutableLiveData<BoardInputDto>()
     val menu = MutableLiveData<MenuView>()

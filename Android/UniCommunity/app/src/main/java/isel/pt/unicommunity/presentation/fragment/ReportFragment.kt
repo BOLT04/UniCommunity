@@ -20,7 +20,7 @@ import isel.pt.unicommunity.presentation.common.ProgressObs
 import isel.pt.unicommunity.presentation.viewmodel.ReportViewModel
 import kotlinx.android.synthetic.main.fragment_all_comments.*
 
-class ReportFragment (val getMultipleReportsLink: GetMultipleReportsLink) : Fragment(){
+class ReportFragment (private val getMultipleReportsLink: GetMultipleReportsLink) : Fragment(){
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
         inflater.inflate(R.layout.fragment_all_comments, container, false)
@@ -46,20 +46,10 @@ class ReportFragment (val getMultipleReportsLink: GetMultipleReportsLink) : Frag
         }
 
 
-        val onClickListener = object : OnClickListener<ReportView> {
-            override fun onClick(value: ReportView) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-        }
-
-
         viewModel.reportsLd.observe(
             this,
             ProgressObs(progressBar){
-                comments_rv.adapter = ReportAdapter(
-                    it,
-                    onClickListener
-                )
+                comments_rv.adapter = ReportAdapter(it)
             },
             ProgressObs(progressBar){
                 Toast.makeText(activity, it, Toast.LENGTH_SHORT).show()

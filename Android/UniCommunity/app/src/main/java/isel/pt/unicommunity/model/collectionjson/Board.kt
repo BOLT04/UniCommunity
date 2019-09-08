@@ -17,7 +17,6 @@ fun CollectionJson.toBoardCollection() : BoardCollection {
                         getValue("id"),
                         getOptionalValue("description"),
                         getLink(Rels.EDIT_BOARD, ::EditBoardLink),
-                        getLink(Rels.DELETE_BOARD, ::DeleteBoardLink),
                         getLink(Rels.GET_MULTIPLE_BOARDS, ::GetMultipleBoardsLink),
                         getLink(Rels.SUBSCRIBE, ::SubscribeLink),
                         getLink(Rels.UNSUBSCRIBE, ::UnsubscribeLink)
@@ -42,11 +41,8 @@ class BoardCollection(
         val description:String?,
 
         val editBoardLink: EditBoardLink?,
-        val deleteBoardLink: DeleteBoardLink?,
         val getMultipleBoardsLink: GetMultipleBoardsLink?,
         val subscribeLink: SubscribeLink?,
         val unsubscribeLink: UnsubscribeLink?
-        // add member
-        // remove member
     )
 }

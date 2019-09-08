@@ -6,9 +6,7 @@ class Model(
     val navigator : SimpleNavigator?
 )
 
-class SimpleNavigator(val url :String) {
-
-}
+class SimpleNavigator(val url :String)
 
 class ParsedComposite(
     val conc : String,

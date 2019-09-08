@@ -10,7 +10,8 @@ import isel.pt.unicommunity.model.links.GetSingleForumLink
 import isel.pt.unicommunity.presentation.adapter.PartialForumItemView
 import isel.pt.unicommunity.repository.network.BasicAuthNavLinkGetRequest
 
-class ForumViewModel(val app: UniCommunityApp, val getSingleForumLink: GetSingleForumLink) : ViewModel(){
+class ForumViewModel(private val app: UniCommunityApp,
+                     private val getSingleForumLink: GetSingleForumLink) : ViewModel(){
 
 
     val forum = ErrorHandlingMLD<ForumInputDto, String>()
@@ -61,7 +62,7 @@ class ForumViewModel(val app: UniCommunityApp, val getSingleForumLink: GetSingle
             getForumItems(multipleForumItemsLink)
     }
 
-    fun getForumItems(getMultipleForumItemsLink: GetMultipleForumItemsLink) {
+    private fun getForumItems(getMultipleForumItemsLink: GetMultipleForumItemsLink) {
 
         val getMultipleForumItemsRequest = BasicAuthNavLinkGetRequest(
             getMultipleForumItemsLink,

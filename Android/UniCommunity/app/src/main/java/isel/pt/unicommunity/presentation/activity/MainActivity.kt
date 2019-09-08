@@ -15,6 +15,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import isel.pt.unicommunity.R
+import isel.pt.unicommunity.UniCommunityApp
 import isel.pt.unicommunity.presentation.common.ProgressBarActivity
 import isel.pt.unicommunity.kotlinx.getUniCommunityApp
 import isel.pt.unicommunity.presentation.fragment.*
@@ -29,17 +30,18 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     BackStackManagingActivity, ProgressBarActivity {
 
 
-    lateinit var backstackVM : BackStackManagingViewModel
-    lateinit var mainActivityVm : MainActivityViewModel
+    private lateinit var backstackVM : BackStackManagingViewModel
+    private lateinit var mainActivityVm : MainActivityViewModel
 
-    lateinit var progress : ProgressDialog
+    private lateinit var progress : ProgressDialog
+    private lateinit var app : UniCommunityApp
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
 
-        val app = getUniCommunityApp()
+        app = getUniCommunityApp()
 
         backstackVM = getViewModel("MainActivity"){
             BackStackManagingViewModel(R.id.container)
@@ -61,7 +63,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         mainActivityVm.navigation.observe(
             this,
             Observer { navigationInputDto ->
-
 
                 setContentView(R.layout.activity_main)
 
@@ -95,10 +96,6 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 (nav_view as NavigationView).menu.findItem(R.id.nav_logout).isVisible = true
 
 
-
-
-
-
                 val links = navigationInputDto._links
 
                 if(links.allBoards != null) {
@@ -111,16 +108,13 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                     (nav_view as NavigationView).menu.findItem(R.id.nav_my_boards).isVisible = true
                 }
 
-
-                if(links.userProfile != null) {
-                    mainActivityVm.profile = ProfileFragment(links.userProfile)
-                    (nav_view as NavigationView).menu.findItem(R.id.nav_profile).isVisible = true
+                if(links.getMultipleReportsLink != null){
+                    mainActivityVm.reportsFragment = ReportFragment(links.getMultipleReportsLink)
+                    (nav_view as NavigationView).menu.findItem(R.id.nav_reports).isVisible = true
                 }
 
 
                 nav_view.setNavigationItemSelectedListener(this)
-
-                initialNavigation()
 
             },
             Observer {
@@ -130,31 +124,16 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
 
-
-    private fun initialNavigation() {
-            nav_view.menu.forEach {
-                if(it.isVisible){
-
-                    it.isChecked = true
-                    //nav_view.menu.performIdentifierAction(it.itemId, 0)
-                    return
-                    /*val starter = mainActivityVm.getStarter(it.title.toString())
-                    if(starter!=null){
-                        navigateTo(starter)
-                        it.isChecked = true
-                        return
-                    }*/
-                }
-            }
-
-    }
-
     override fun onBackPressed() {
         if (drawer_layout.isDrawerOpen(GravityCompat.START))
             drawer_layout.closeDrawer(GravityCompat.START)
         else
-            if(!backstackVM.navigateBack(supportFragmentManager))
+            if(!backstackVM.navigateBack(supportFragmentManager)){
+                if(!app.isRememberMe)
+                    app.stopService(app.messagingService)
                 super.onBackPressed()
+            }
+
 
     }
 
@@ -168,9 +147,9 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify allBoardsLd parent activity in AndroidManifest.xml.
-        when (item.itemId) {
-            R.id.action_settings -> return true
-            else -> return super.onOptionsItemSelected(item)
+        return when (item.itemId) {
+            R.id.action_settings -> true
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -184,7 +163,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
             R.id.nav_all_boards -> navigateTo(mainActivityVm.allBoardsFragment, reseting = true)
 
-            R.id.nav_profile -> navigateTo(mainActivityVm.profile, reseting = true)
+            R.id.nav_reports ->  navigateTo(mainActivityVm.reportsFragment, reseting = true)
 
             R.id.nav_share -> {
 

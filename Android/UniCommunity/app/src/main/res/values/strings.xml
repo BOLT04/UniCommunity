@@ -7,7 +7,7 @@
     <string name="nav_header_desc" translatable="false">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
+
     <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
     <string name="title_activity_all_boards" translatable="false">AllBoardsActivity</string>
     <string name="title_activity_markdown" translatable="false">MarkdownActivity</string>
@@ -30,10 +30,11 @@
     <string name="home" translatable="false">Home</string>
     <string name="my_boards" translatable="false">My Boards</string>
     <string name="all_boards" translatable="false">All Boards</string>
-    <string name="profile">Profile</string>
+    <string name="reports">Reports</string>
     <string name="communicate" translatable="false">Communicate</string>
     <string name="share">Share</string>
     <string name="send">Send</string>
     <string name="logout">Logout</string>
     <string name="unsubscribe" translatable="false">Unsubscribe</string>
+    <string name="create_blackboard_item">Publish</string>
 </resources>

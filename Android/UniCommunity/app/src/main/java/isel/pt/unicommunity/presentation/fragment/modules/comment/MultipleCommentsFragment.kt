@@ -20,7 +20,7 @@ import isel.pt.unicommunity.presentation.adapter.PartialCommentView
 import isel.pt.unicommunity.presentation.viewmodel.CommentViewModel
 import kotlinx.android.synthetic.main.fragment_all_comments.*
 
-class MultipleCommentsFragment(val getMultipleCommentsLink: GetMultipleCommentsLink) : Fragment() {
+class MultipleCommentsFragment(private val getMultipleCommentsLink: GetMultipleCommentsLink) : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
         inflater.inflate(R.layout.fragment_all_comments, container, false)
@@ -46,22 +46,12 @@ class MultipleCommentsFragment(val getMultipleCommentsLink: GetMultipleCommentsL
         }
 
 
-        val onClickListener = object : OnClickListener<PartialCommentView> {
-            override fun onClick(value: PartialCommentView) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-            }
-
-        }
-
 
         viewModel.comments.observe(
             this,
             ProgressObs(progressBar){
 
-                comments_rv.adapter = CommentsAdapter(
-                    it,
-                    onClickListener
-                )
+                comments_rv.adapter = CommentsAdapter(it)
 
             },
             ProgressObs(progressBar){

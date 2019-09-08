@@ -14,15 +14,15 @@
                                                    android:id="@+id/blackboardItem_layout">
 
     <TextView
-            android:text="TextView"
-            android:layout_width="118dp"
-            android:layout_height="24dp"
             android:id="@+id/date"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:textSize="14sp"
+            android:layout_width="163dp"
+            android:layout_height="30dp"
             android:layout_marginEnd="16dp"
+            android:text="TextView"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/author"
-            app:layout_constraintTop_toTopOf="@+id/author"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/author" />
 
     <TextView
             android:id="@+id/author"

@@ -19,7 +19,7 @@ class BoardInputDto(
         @JsonProperty(Rels.CREATE_BOARD) val createBoardLink: CreateBoardLink?,
         @JsonProperty(Rels.GET_MULTIPLE_BOARDS) val getMultipleBoardsLink: GetMultipleBoardsLink?,
         @JsonProperty(Rels.EDIT_BOARD) val editBoardLink: EditBoardLink?,
-        //@JsonProperty(Rels.DELETE_BOARD) val deleteBoardLink: DeleteBoardLink?, TODO
+
 
         @JsonProperty(Rels.GET_MULTIPLE_FORUMITEMS) val getMultipleForumItemsLink: GetMultipleForumItemsLink?,
         @JsonProperty(Rels.GET_SINGLE_FORUM) val getSingleForumLink: GetSingleForumLink?

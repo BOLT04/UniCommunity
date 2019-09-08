@@ -15,27 +15,25 @@ class PartialCommentView(
 )
 
 class CommentsAdapter(
-    list: List<PartialCommentView>,
-    onClickListener: OnClickListener<PartialCommentView>
+    list: List<PartialCommentView>
 ) : AbstractAdapter<PartialCommentView>(
     list,
     R.layout.item_comment,
     object : ViewHolderProvider<PartialCommentView>{
         override fun getInstance(view: ViewGroup)
-            = CommentViewHolder(view, onClickListener)
+            = CommentViewHolder(view)
     }
 )
 
 class CommentViewHolder(
-    view: View,
-    onClickListener: OnClickListener<PartialCommentView>
+    view: View
 ) : AbstractViewHolder<PartialCommentView>(view) {
 
-    val commentText = view.findViewById<TextView>(R.id.comment_txt)
-    val commentUser = view.findViewById<TextView>(R.id.comment_user)
+    private val commentText: TextView = view.findViewById(R.id.comment_txt)
+    private val commentUser: TextView = view.findViewById(R.id.comment_user)
 
     override fun bindToView(value: PartialCommentView) {
         commentText.text = value.content
-        commentUser.text = value.userName ?: "Anonymus"
+        commentUser.text = value.userName ?: "Anonymous"
     }
 }

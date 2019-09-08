@@ -27,13 +27,7 @@ import isel.pt.unicommunity.R
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {
 
-    override fun onNewToken(s: String?) {
-        super.onNewToken(s)
-        Log.e("NEW_TOKEN", s)
-    }
-
     override fun onMessageReceived(remoteMessage: RemoteMessage?) {
-
         val notification = remoteMessage?.notification
         sendMyNotification(notification?.title, notification?.body)
     }
@@ -54,16 +48,14 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         mBuilder.priority = NotificationManager.IMPORTANCE_DEFAULT
         mBuilder.setStyle(bigText)
 
-
-        val channelId = "Your_channel_id"
+        val channelId = "UniCommunity"
         val channel = NotificationChannel(
             channelId,
-            "Channel human readable title",
+            "UniCommunity title",
             NotificationManager.IMPORTANCE_HIGH
         )
         mNotificationManager.createNotificationChannel(channel)
         mBuilder.setChannelId(channelId)
-
 
         mNotificationManager.notify(0, mBuilder.build())
     }

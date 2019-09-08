@@ -1,16 +1,11 @@
 package isel.pt.unicommunity.testing.volleytesting.activity
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import com.android.volley.Response
-import isel.pt.unicommunity.BASEURL
 import isel.pt.unicommunity.R
 import isel.pt.unicommunity.kotlinx.getUniCommunityApp
 import isel.pt.unicommunity.kotlinx.getViewModel
-import isel.pt.unicommunity.repository.network.BasicAuthenticationGetRequest
-import kotlinx.android.synthetic.main.__testing__volleytesting.*
 
 
 class VolleyActivity : AppCompatActivity() {

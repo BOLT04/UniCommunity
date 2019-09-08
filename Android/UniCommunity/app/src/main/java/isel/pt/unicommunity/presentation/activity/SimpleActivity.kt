@@ -13,7 +13,7 @@ import isel.pt.unicommunity.presentation.viewmodel.BackStackManagingViewModel
 
 class SimpleActivity : AppCompatActivity(), BackStackManagingActivity {
 
-    lateinit var backstackVM : BackStackManagingViewModel
+    private lateinit var backstackVM : BackStackManagingViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

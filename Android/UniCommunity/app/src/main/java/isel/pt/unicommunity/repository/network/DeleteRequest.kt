@@ -43,9 +43,6 @@ class NavLinkDeleteRequest<T>(
 )
 
 
-
-
-
 open class BasicAuthenticationDeleteRequest<T>(
     clazz: Class<T>,
     url: String,
@@ -61,9 +58,6 @@ open class BasicAuthenticationDeleteRequest<T>(
 
 
 
-
-
-
 open class DeleteRequest<T>(
     private val clazz: Class<T>,
     url: String,
@@ -73,12 +67,12 @@ open class DeleteRequest<T>(
     private val logger: (() -> Unit)? = null) : Request<T>(Method.DELETE, checkUrl(url), onErrorListener) {
 
     init {
-        this.setShouldCache(false) //todo development only take this out of here
+        this.setShouldCache(false)
     }
 
     override fun deliverResponse(response: T?) {
         if(response!=null)
-            onSuccessListener.onResponse(response) //todo seems weird
+            onSuccessListener.onResponse(response)
     }
 
     override fun parseNetworkResponse(response: NetworkResponse?): Response<T> {

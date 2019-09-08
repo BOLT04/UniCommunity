@@ -29,6 +29,7 @@ class BlackboardItem(
 
     fun getDateFormatted() : String {
         val dateFormat: DateFormat = SimpleDateFormat("dd-MMM-yyyy HH:mm:ss")
+
         return dateFormat.format(createdAt)
     }
 }

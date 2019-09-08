@@ -68,9 +68,6 @@ open class BasicAuthenticationGetRequest<T>(
 
 
 
-
-
-
 open class GetRequest<T>(
     private val clazz: Class<T>,
     url: String,
@@ -80,12 +77,12 @@ open class GetRequest<T>(
     private val logger: (() -> Unit)? = null) : Request<T>(Method.GET, checkUrl(url), onErrorListener) {
 
     init {
-        this.setShouldCache(false) //todo development only take this out of here
+        this.setShouldCache(false)
     }
 
     override fun deliverResponse(response: T?) {
         if(response!=null)
-            onSuccessListener.onResponse(response) //todo seems weird
+            onSuccessListener.onResponse(response)
     }
 
     override fun parseNetworkResponse(response: NetworkResponse?): Response<T> {

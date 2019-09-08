@@ -7,10 +7,14 @@ import com.android.volley.VolleyError
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.google.firebase.messaging.FirebaseMessaging
 import isel.pt.unicommunity.UniCommunityApp
+import isel.pt.unicommunity.model.collectionjson.toBlackBoardSettingsCollection
+import isel.pt.unicommunity.model.links.BlackBoardSettingsLink
 import isel.pt.unicommunity.model.links.LoginInputDto
 import isel.pt.unicommunity.model.links.LoginLink
 import isel.pt.unicommunity.model.links.LoginOutputDto
+import isel.pt.unicommunity.repository.network.BasicAuthNavLinkGetRequest
 import isel.pt.unicommunity.repository.network.LinkPostRequest
 import java.util.logging.Handler
 
@@ -36,6 +40,25 @@ class LoginViewModel(private val app : UniCommunityApp, private val loginLink : 
         )
 
         app.queue.add(loginRequest)
+    }
+
+
+    fun subscribeToBoards(blackBoardSettingsLink: BlackBoardSettingsLink) {
+        val req = BasicAuthNavLinkGetRequest(
+            blackBoardSettingsLink,
+            Response.Listener { collectionJson ->
+
+                val fcm = FirebaseMessaging.getInstance()
+                collectionJson.toBlackBoardSettingsCollection().blackBoardseSttings.forEach {
+                    fcm.subscribeToTopic(it.bbFcmTopicName)
+                }
+            },
+            Response.ErrorListener {  },
+            app.email,
+            app.password
+        )
+
+        app.queue.add(req)
     }
 
 }

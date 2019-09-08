@@ -9,8 +9,8 @@ import isel.pt.unicommunity.presentation.adapter.ReportView
 import isel.pt.unicommunity.repository.network.BasicAuthNavLinkGetRequest
 
 class ReportViewModel(
-    val app: UniCommunityApp,
-    val multipleReportsLink: GetMultipleReportsLink
+    private val app: UniCommunityApp,
+    private val multipleReportsLink: GetMultipleReportsLink
 ): ViewModel() {
 
     val reportsLd = ErrorHandlingMLD<List<ReportView>, String>()
@@ -23,7 +23,7 @@ class ReportViewModel(
                 reportsLd.success(
                     collectionJson.toReportCollection().reports.map {
                         ReportView(
-                            "holder",
+                            it.userName,
                             it.numberOfReports,
                             it.self
                         )

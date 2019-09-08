@@ -17,17 +17,4 @@ class CommentFragment(val getSingleCommentLink: GetSingleCommentLink) : Fragment
         inflater.inflate(R.layout.fragment_comment, container, false)
 
 
-    override fun onStart() {
-        super.onStart()
-/*
-        val viewModel = (activity as AppCompatActivity).getViewModel("blackBoard"){
-            CommentViewModel(app, getMultipleCommentsLink)
-        }
-*/
-
-
-
-    }
-
-
 }

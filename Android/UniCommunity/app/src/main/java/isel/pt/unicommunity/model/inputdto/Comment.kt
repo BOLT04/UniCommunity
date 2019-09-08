@@ -15,9 +15,7 @@ class CommentInputDto(
     val _embedded : CommentInputDtoEmbeddedStruct?
 )
 
-class CommentInputDtoEmbeddedStruct {
-
-}
+class CommentInputDtoEmbeddedStruct
 
 class CommentInputDtoLinkStruct (
     val self : GetSingleCommentLink?,

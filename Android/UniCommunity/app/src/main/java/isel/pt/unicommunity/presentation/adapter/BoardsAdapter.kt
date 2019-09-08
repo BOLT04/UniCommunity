@@ -47,10 +47,10 @@ class BoardsVH(
 
 ) : AbstractViewHolder<PartialBoardView>(view) {
 
-    val name : TextView = view.findViewById(R.id.title_sb)
-    val desc : TextView = view.findViewById(R.id.desc_sb)
-    val subBtn : Button = view.findViewById(R.id.subBtn)
-    val layout : ConstraintLayout = view.findViewById(R.id.constraint_layout)
+    private val name : TextView = view.findViewById(R.id.title_sb)
+    private val desc : TextView = view.findViewById(R.id.desc_sb)
+    private val subBtn : Button = view.findViewById(R.id.subBtn)
+    private val layout : ConstraintLayout = view.findViewById(R.id.constraint_layout)
     
     override fun bindToView(value: PartialBoardView) {
         name.text = value.name
@@ -58,18 +58,22 @@ class BoardsVH(
 
         subBtn.isVisible = true
 
-        if(value.subscribeLink != null){
-            subBtn.text = context.getString(R.string.subscribe)
-            subBtn.setOnClickListener {
-                subscribeListener.onClick(value.subscribeLink)
+        when {
+            value.subscribeLink != null -> {
+                subBtn.text = context.getString(R.string.subscribe)
+                subBtn.setOnClickListener {
+                    subscribeListener.onClick(value.subscribeLink)
+                    subBtn.isVisible = false
+                }
             }
-        }else if(value.unsubscribeLink != null){
-            subBtn.text = context.getString(R.string.unsubscribe)
-            subBtn.setOnClickListener {
-                unsubscribeListener.onClick(value.unsubscribeLink)
+            value.unsubscribeLink != null -> {
+                subBtn.text = context.getString(R.string.unsubscribe)
+                subBtn.setOnClickListener {
+                    unsubscribeListener.onClick(value.unsubscribeLink)
+                    subBtn.isVisible = false
+                }
             }
-        }else{
-            subBtn.isVisible = false
+            else -> subBtn.isVisible = false
         }
 
 

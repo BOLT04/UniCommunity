@@ -39,7 +39,7 @@ class AllBoardsViewModel(val app: UniCommunityApp, val link: GetMultipleBoardsLi
 
         val req = BasicAuthNavLinkPostRequest(
             subscribeLink,
-            SubscribeOutputDto(  ),
+            null,
             Response.Listener {
                 val instance = FirebaseMessaging.getInstance()
                 it.topics.forEach { topicName ->

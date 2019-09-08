@@ -25,7 +25,6 @@ import isel.pt.unicommunity.presentation.adapter.BoardsAdapter
 import isel.pt.unicommunity.presentation.adapter.OnClickListener
 import isel.pt.unicommunity.presentation.adapter.PartialBoardView
 import isel.pt.unicommunity.presentation.viewmodel.AllBoardsViewModel
-import isel.pt.unicommunity.repository.fcm.MyFirebaseMessagingService
 import kotlinx.android.synthetic.main.fragment_all_boards.*
 
 
@@ -61,8 +60,6 @@ class AllBoardsFragment(val link: GetMultipleBoardsLink) : Fragment() {
         val onPartialBoardItemClickListener = object : OnClickListener<PartialBoardView> {
             override fun onClick(value: PartialBoardView) {
                 (activity as BackStackManagingActivity).navigateTo(BoardMenuFragment(value.self))
-
-                Toast.makeText(activity, value.self.href , Toast.LENGTH_LONG).show()
             }
         }
 

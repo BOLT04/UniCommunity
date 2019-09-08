@@ -56,7 +56,6 @@ class ForumFragment(private val forumLink: GetSingleForumLink) : Fragment(){
                         activity.navigateTo(CreateForumItemFragment(createForumItemLink))
                     }
                 }
-
                 viewModel.parseForumItems(it)
             },
             ProgressObs(progress) {
@@ -69,12 +68,7 @@ class ForumFragment(private val forumLink: GetSingleForumLink) : Fragment(){
         val onForumItemClickListener = object : OnClickListener<PartialForumItemView> {
             override fun onClick(value: PartialForumItemView) {
                 val singleForumItemLink = value.getSingleForumItemLink
-                Toast.makeText(activity, singleForumItemLink.href, Toast.LENGTH_SHORT).show()
-                activity.navigateTo(
-                    ForumItemFragment(
-                        singleForumItemLink
-                    )
-                )
+                activity.navigateTo(ForumItemFragment(singleForumItemLink))
             }
         }
 

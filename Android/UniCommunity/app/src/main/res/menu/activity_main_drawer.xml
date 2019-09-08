@@ -11,8 +11,8 @@
                 android:id="@+id/nav_all_boards"
                 android:title="@string/all_boards" />
         <item
-                android:id="@+id/nav_profile"
-                android:title="@string/profile" />
+                android:id="@+id/nav_reports"
+                android:title="@string/reports" />
         <item
                 android:id="@+id/nav_logout"
                 android:title="@string/logout" />

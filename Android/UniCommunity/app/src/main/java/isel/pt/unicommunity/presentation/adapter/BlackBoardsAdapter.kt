@@ -32,9 +32,9 @@ class BlackBoardVH(
     private val onClickListener: OnClickListener<BlackBoardItemView>
 ) : AbstractViewHolder<BlackBoardItemView>(view) {
 
-    val title : TextView = view.findViewById(R.id.title)
-    val autor : TextView = view.findViewById(R.id.author)
-    val date : TextView = view.findViewById(R.id.date)
+    private val title : TextView = view.findViewById(R.id.title)
+    private val autor : TextView = view.findViewById(R.id.author)
+    private val date : TextView = view.findViewById(R.id.date)
 
 
     val layout : ConstraintLayout = view.findViewById(R.id.blackboardItem_layout)

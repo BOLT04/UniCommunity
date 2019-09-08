@@ -12,9 +12,9 @@ import com.android.volley.toolbox.HurlStack
 class UniCommunityApp : Application(){
 
     lateinit var messagingService: Intent
-    val APP_NAME = "UniCommunity"
-    val SharedPreferences_FileName = "UniCommunity_SharedPreferences"
+    val sharedPreferencesFilename = "UniCommunity_SharedPreferences"
 
+    var isRememberMe : Boolean = false
 
 
     lateinit var queue : RequestQueue

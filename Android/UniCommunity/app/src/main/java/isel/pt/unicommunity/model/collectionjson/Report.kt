@@ -16,6 +16,7 @@ fun CollectionJson.toReportCollection(): ReportCollection{
                         GetSingleReportLink(it.href),
                         getValue("id"),
                         getValue("userId"),
+                        getValue("userName"),
                         getValue("numberOfReports"),
                         getOptionalValue("forumItemId"),
                         getOptionalValue("commentId")
@@ -38,6 +39,7 @@ class ReportCollection(
 
         val id: String,
         val userId: String,
+        val userName: String,
         val numberOfReports: String,
 
         val forumItemId : String?,
