@@ -8,7 +8,6 @@ import javax.transaction.Transactional
 @Repository
 @Transactional
 interface BlackboardRepository : CrudRepository<Blackboard, Long>{
-    fun findByName(name: String?): List<Blackboard>?
     fun findByBoardIdAndId(boardId: Long, blackboardId: Long): Blackboard?
     fun findByBoardId(boardId: Long): List<Blackboard>
 }

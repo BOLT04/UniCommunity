@@ -11,7 +11,6 @@ import javax.transaction.Transactional
 @Repository
 @Transactional
 interface BoardRepository : PagingAndSortingRepository<Board, Long> {
-    fun findByName(name: String?): List<Board>
     fun findByUsersBoardsIn(usersBoards: List<UsersBoards>, pageable: Pageable): Page<Board>
     fun findByActiveTrue(pageable: Pageable): Page<Board>
 }

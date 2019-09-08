@@ -92,7 +92,7 @@ class AuthorizationInterceptor(
 
     private val objectMapper = ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
-    fun sendPost(token: String): TokenIntrospect {
+    private fun sendPost(token: String): TokenIntrospect {
         val url = URL("http://localhost:8080/openid-connect-server-webapp/introspect")
 
         with(url.openConnection() as HttpURLConnection) {

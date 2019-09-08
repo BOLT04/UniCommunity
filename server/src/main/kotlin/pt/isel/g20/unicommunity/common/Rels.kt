@@ -1,7 +1,7 @@
 package pt.isel.g20.unicommunity.common
 
 object Rels {
-    const val RELS_PREFIX = "/rels"
+    private const val RELS_PREFIX = "/rels"
 
     const val NAVIGATION = "$RELS_PREFIX/nav"
     const val HOME = "$RELS_PREFIX/home"

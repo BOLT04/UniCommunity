@@ -8,5 +8,4 @@ import javax.transaction.Transactional
 @Repository
 @Transactional
 interface TemplateRepository : CrudRepository<Template, Long>{
-    fun findByName(name: String?): Template?
 }

@@ -23,11 +23,11 @@ object Uri {
     fun forAllReports() =
             URI(REPORTS_ROUTE).toString()
 
-    fun forSingleReportUri(reportId: Long) =
+    private fun forSingleReportUri(reportId: Long) =
             singleReportTemplate.expand(reportId)
 
     fun forSingleReportText(reportId: Long) =
-            Uri.forSingleReportUri(reportId).toString()
+            forSingleReportUri(reportId).toString()
 
 
 // Auth
@@ -219,9 +219,9 @@ object Uri {
     fun forAllUsersBlackboards(userId: Long) =
             multipleUsersBlackboardsTemplate.expand(userId).toString()
 
-    fun forSingleUsersBlackboardUri(userId: Long, bbId: Long) =
+    private fun forSingleUsersBlackboardUri(userId: Long, bbId: Long) =
             singleUsersBlackboardTemplate.expand(userId, bbId)
 
     fun forSingleUsersBlackboardText(userId: Long, bbId: Long) =
-            Uri.forSingleUsersBlackboardUri(userId, bbId).toString()
+            forSingleUsersBlackboardUri(userId, bbId).toString()
 }

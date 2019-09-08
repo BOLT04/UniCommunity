@@ -11,28 +11,6 @@ class SuccessMessage @JsonCreator constructor(
 )
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-class FcmUnsubscribe @JsonCreator constructor(
-        @JsonProperty("to")
-        val to: String? = null,
-
-        @JsonProperty("registration_tokens")
-        val registrationTokens: MutableList<String>? = null
-)
-
-
-@JsonInclude(JsonInclude.Include.NON_NULL)
-class FcmUnsubscribeResponse @JsonCreator constructor(
-        @JsonProperty("to")
-        val results: MutableList<FcmUnsubscribeResult>? = null
-)
-
-@JsonInclude(JsonInclude.Include.NON_NULL)
-class FcmUnsubscribeResult @JsonCreator constructor(
-        @JsonProperty("error")
-        val error: String? = null
-)
-
-@JsonInclude(JsonInclude.Include.NON_NULL)
 class FcmMessage @JsonCreator constructor(
         @JsonProperty("to")
         val to: String? = null,

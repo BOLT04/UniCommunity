@@ -8,8 +8,6 @@ import javax.transaction.Transactional
 @Repository
 @Transactional
 interface ForumItemRepository : CrudRepository<ForumItem, Long>{
-    fun findByAnonymousPostTrue(): List<ForumItem>?
-    fun findByAnonymousPostFalse(): List<ForumItem>?
     fun findByForumIdOrderByCreatedAtDesc(forumId: Long): List<ForumItem>
     fun findByForumIdAndId(forumId: Long, forumItemId: Long): ForumItem?
 }
