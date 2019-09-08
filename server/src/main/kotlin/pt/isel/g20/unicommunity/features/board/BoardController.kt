@@ -11,8 +11,6 @@ import pt.isel.g20.unicommunity.common.Uri.SINGLE_BOARD_ROUTE
 import pt.isel.g20.unicommunity.common.presentation.AuthorizationRequired
 import pt.isel.g20.unicommunity.features.board.model.*
 import pt.isel.g20.unicommunity.features.board.service.BoardService
-import pt.isel.g20.unicommunity.features.retrofit.Post
-import pt.isel.g20.unicommunity.features.retrofit.RetrofitFactory
 import pt.isel.g20.unicommunity.features.user.model.User
 
 @RestController
