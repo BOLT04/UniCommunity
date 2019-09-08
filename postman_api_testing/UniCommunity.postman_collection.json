@@ -1,0 +1,3976 @@
+{
+	"info": {
+		"_postman_id": "1d98e59a-442e-4c42-9a18-c3ec8c480b30",
+		"name": "UniCommunity",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Create Requests",
+			"item": [
+				{
+					"name": "Create Template",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\":\"DAW\",\n\t\"hasForum\": \"true\",\n\t\"blackboardNames\":\"Anuncios, Sumarios, Topkeks\"\n}"
+						},
+						"url": {
+							"raw": "{{baseurl}}/templates",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"templates"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Board",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f0c6480b-d241-4440-8bdb-b240b49dee35",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if board returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"    pm.expect(typeof jsonData.name).to.eql('string')",
+									"    pm.expect(typeof jsonData.description).to.eql('string');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\":\"DAW\",\n\t\"templateId\": 1,\n\t\"description\":\"Pagina da turma de DAW\",\n\t\"fcmToken\": \"eitCHrh3TUk:APA91bE84XjyHot8OV_F1WNlLjEVSWQmO86gGKNf6FmLYpSA564Hkse3PUrqW6jy82VN0OReyDWlx4v2gSjF-8KLn1dAtDI34fGJcGtSWHaPOJd7s9aji16YxR4gB6klP__IurFcsYYI\"\n}"
+						},
+						"url": {
+							"raw": "{{baseurl}}/boards",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Blackboard",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d2a47df5-99f4-4f9f-8b3e-c96dc719cb41",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if blackboard returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"    pm.expect(typeof jsonData.name).to.eql('string')",
+									"    pm.expect(typeof jsonData.description).to.eql('string');",
+									"    pm.expect(typeof jsonData.notificationLevel).to.eql('string');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\":\"Anuncios\",\n\t\"notificationLevel\":\"priority\",\n\t\"description\":\"Aqui vao ser publicados os anuncios referentes a turma de DAW\"\n}"
+						},
+						"url": {
+							"raw": "{{baseurl}}/boards/1/blackboards",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards",
+								"1",
+								"blackboards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Blackboard Item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a6b3ba94-b6b8-4aac-b890-a3432f907112",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if blackboard item returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"    pm.expect(typeof jsonData.name).to.eql('string')",
+									"    pm.expect(typeof jsonData.content).to.eql('string');",
+									"    pm.expect(typeof jsonData.createdAt).to.eql('string');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\":\"Waddup dawg\",\n\t\"content\":\"Now this work\"\n}"
+						},
+						"url": {
+							"raw": "{{baseurl}}/boards/1/blackboards/1/submissions",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards",
+								"1",
+								"blackboards",
+								"1",
+								"submissions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Forum",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e94945d5-b1bc-42a3-ab70-5a418b1f8e6a",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if forum returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"allowImagePosts\": \"false\"\n}"
+						},
+						"url": {
+							"raw": "{{baseurl}}/boards/1/forum",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards",
+								"1",
+								"forum"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Forum Item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "efcd6a44-25a8-4226-8197-60a3b2b22a94",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if forum item returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"    pm.expect(typeof jsonData.name).to.eql('string')",
+									"    pm.expect(typeof jsonData.content).to.eql('string');",
+									"    pm.expect(typeof jsonData.createdAt).to.eql('string');",
+									"    pm.expect(typeof jsonData.anonymousPost).to.eql('boolean');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\":\"Pessoal, ajuda\",\n\t\"content\":\"Nao percebo nade de HATEOAS, alguem consegue explicar a utilidade da coisa? EPAH QUE CHATICE!\"\n}"
+						},
+						"url": {
+							"raw": "{{baseurl}}/boards/1/forum/posts",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards",
+								"1",
+								"forum",
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Anon Forum Item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "efcd6a44-25a8-4226-8197-60a3b2b22a94",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if forum item returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"    pm.expect(typeof jsonData.name).to.eql('string')",
+									"    pm.expect(typeof jsonData.content).to.eql('string');",
+									"    pm.expect(typeof jsonData.createdAt).to.eql('string');",
+									"    pm.expect(typeof jsonData.anonymousPost).to.eql('boolean');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\":\"Pessoal, ajuda\",\n\t\"content\":\"Nao percebo nade de HATEOAS, alguem consegue explicar a utilidade da coisa? EPAH QUE CHATICE!\",\n\t\"anonymousPost\":true\n}"
+						},
+						"url": {
+							"raw": "{{baseurl}}/boards/1/forum/posts",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards",
+								"1",
+								"forum",
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Comment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c2085a99-f0ff-4a9d-85bb-e86dc56b17e2",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if comment returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"    pm.expect(typeof jsonData.content).to.eql('string');",
+									"    pm.expect(typeof jsonData.createdAt).to.eql('string');",
+									"    pm.expect(typeof jsonData.anonymousComment).to.eql('boolean');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"anonymous\": false,\n\t\"content\":\"ganda comment\"\n}"
+						},
+						"url": {
+							"raw": "{{baseurl}}/boards/1/forum/posts/1/comments",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards",
+								"1",
+								"forum",
+								"posts",
+								"1",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Anon Comment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c2085a99-f0ff-4a9d-85bb-e86dc56b17e2",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if comment returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"    pm.expect(typeof jsonData.content).to.eql('string');",
+									"    pm.expect(typeof jsonData.createdAt).to.eql('string');",
+									"    pm.expect(typeof jsonData.anonymousComment).to.eql('boolean');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"anonymous\": true,\n\t\"content\":\"ganda comment\"\n}"
+						},
+						"url": {
+							"raw": "{{baseurl}}/boards/1/forum/posts/1/comments",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards",
+								"1",
+								"forum",
+								"posts",
+								"1",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Student",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4ae81746-5e50-41cb-848f-739b097cd5c9",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if user returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"    pm.expect(typeof jsonData.name).to.eql('string')",
+									"    pm.expect(typeof jsonData.email).to.eql('string');",
+									"    pm.expect(jsonData.email).to.include('@')",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\":\"Sergiu Cozma\",\n\t\"email\":\"sergiu@gmail.com\",\n\t\"password\":\"password\",\n\t\"role\":\"student\",\n\t\"githubId\":\"SergiuCzm\"\n}"
+						},
+						"url": {
+							"raw": "{{baseurl}}/users",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Report Comment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "89f00ece-56a7-4651-a00b-6cf0c4579b79",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if user returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"    pm.expect(typeof jsonData.userId).to.eql('number')",
+									"    pm.expect(typeof jsonData.commentId).to.eql('number');",
+									"    pm.expect(typeof jsonData.numberOfReports).to.eql('number')",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"userId\": 1,\n\t\"forumItemId\": null,\n\t\"commentId\":1\n}"
+						},
+						"url": {
+							"raw": "{{baseurl}}/reports",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"reports"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Report ForumItem",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "89f00ece-56a7-4651-a00b-6cf0c4579b79",
+								"exec": [
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if user returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"    pm.expect(typeof jsonData.userId).to.eql('number')",
+									"    pm.expect(typeof jsonData.forumItemId).to.eql('number');",
+									"    pm.expect(typeof jsonData.numberOfReports).to.eql('number')",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"userId\": 1,\n\t\"forumItemId\": 1,\n\t\"commentId\":null\n}"
+						},
+						"url": {
+							"raw": "{{baseurl}}/reports",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"reports"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Subscribe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b3834996-500c-4155-bb1d-87fa1830c08f",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "sergiu@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseurl}}/boards/1/members",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards",
+								"1",
+								"members"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get Collection Requests",
+			"item": [
+				{
+					"name": "Get Multiple Templates",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fcff2be3-fde3-4e9e-833b-013b0593683e",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/vnd.collection+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/vnd.collection+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData.collection).to.be.an('object')",
+									"    pm.expect(jsonData.collection.links).to.be.an('array');",
+									"    pm.expect(jsonData.collection.items).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseurl}}/templates",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"templates"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get My Boards",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "89f00ece-56a7-4651-a00b-6cf0c4579b79",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/vnd.collection+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/vnd.collection+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData.collection).to.be.an('object')",
+									"    pm.expect(jsonData.collection.links).to.be.an('array');",
+									"    pm.expect(jsonData.collection.items).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseurl}}/myBoards",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"myBoards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Active Boards",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "89f00ece-56a7-4651-a00b-6cf0c4579b79",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/vnd.collection+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/vnd.collection+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData.collection).to.be.an('object')",
+									"    pm.expect(jsonData.collection.links).to.be.an('array');",
+									"    pm.expect(jsonData.collection.items).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseurl}}/activeBoards",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"activeBoards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Multiple Boards",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "89f00ece-56a7-4651-a00b-6cf0c4579b79",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/vnd.collection+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/vnd.collection+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData.collection).to.be.an('object')",
+									"    pm.expect(jsonData.collection.links).to.be.an('array');",
+									"    pm.expect(jsonData.collection.items).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseurl}}/boards",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Multiple Blackboards",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "44fbee24-a01e-493d-8f34-cf1d3bb17fe7",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/vnd.collection+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/vnd.collection+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData.collection).to.be.an('object')",
+									"    pm.expect(jsonData.collection.links).to.be.an('array');",
+									"    pm.expect(jsonData.collection.items).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/boards/1/blackboards",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards",
+								"1",
+								"blackboards"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Multiple Blackboard Items",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "04786bab-5dcf-497f-b22f-82cf87e5a578",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/vnd.collection+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/vnd.collection+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData.collection).to.be.an('object')",
+									"    pm.expect(jsonData.collection.links).to.be.an('array');",
+									"    pm.expect(jsonData.collection.items).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/boards/1/blackboards/1/submissions",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards",
+								"1",
+								"blackboards",
+								"1",
+								"submissions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Multiple Forum Items",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "bb85602f-4e01-4a01-a398-51169c0864dc",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/vnd.collection+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/vnd.collection+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData.collection).to.be.an('object')",
+									"    pm.expect(jsonData.collection.links).to.be.an('array');",
+									"    pm.expect(jsonData.collection.items).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/boards/1/forum/posts",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards",
+								"1",
+								"forum",
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Multiple Comments",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8262bc2a-3147-47a4-8d8c-5c35fcfdac5d",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/vnd.collection+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/vnd.collection+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData.collection).to.be.an('object')",
+									"    pm.expect(jsonData.collection.links).to.be.an('array');",
+									"    pm.expect(jsonData.collection.items).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/boards/1/forum/posts/1/comments",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards",
+								"1",
+								"forum",
+								"posts",
+								"1",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Multiple Reports",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "89f00ece-56a7-4651-a00b-6cf0c4579b79",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/vnd.collection+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/vnd.collection+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData.collection).to.be.an('object')",
+									"    pm.expect(jsonData.collection.links).to.be.an('array');",
+									"    pm.expect(jsonData.collection.items).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseurl}}/reports",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"reports"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Multiple Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a1f174fe-dff4-44fe-b8e9-47400ca2479c",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/vnd.collection+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/vnd.collection+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData.collection).to.be.an('object')",
+									"    pm.expect(jsonData.collection.links).to.be.an('array');",
+									"    pm.expect(jsonData.collection.items).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/users",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Multiple UsersBlackboards",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a1f174fe-dff4-44fe-b8e9-47400ca2479c",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/vnd.collection+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/vnd.collection+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData.collection).to.be.an('object')",
+									"    pm.expect(jsonData.collection.links).to.be.an('array');",
+									"    pm.expect(jsonData.collection.items).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/users/1/config",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"config"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Board Members",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a1f174fe-dff4-44fe-b8e9-47400ca2479c",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/vnd.collection+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/vnd.collection+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData.collection).to.be.an('object')",
+									"    pm.expect(jsonData.collection.links).to.be.an('array');",
+									"    pm.expect(jsonData.collection.items).to.be.an('array');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/boards/1/members",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards",
+								"1",
+								"members"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Home",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "e5c7656c-6f70-4762-a85d-74f5a8e2a5be",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Navigation",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "fc33a8db-2a9a-4d38-8f40-17b0cfb0bc36",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Data checking\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/navigation",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"navigation"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get Single Requests",
+			"item": [
+				{
+					"name": "Get Single Template",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/templates/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"templates",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single Board",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4e61e86e-bab4-4481-941d-404713c14d67",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if board returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"    pm.expect(typeof jsonData.name).to.eql('string')",
+									"    pm.expect(typeof jsonData.description).to.eql('string');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/boards/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single Blackboard",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a65a4069-174d-4d5a-a46c-84e69387b031",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if blackboard returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"    pm.expect(typeof jsonData.name).to.eql('string')",
+									"    pm.expect(typeof jsonData.notificationLevel).to.eql('string');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/boards/1/blackboards/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards",
+								"1",
+								"blackboards",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single Blackboard Item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ba0dc34e-d863-4b7f-ac7c-22eae265861f",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if blackboard item returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"    pm.expect(typeof jsonData.name).to.eql('string')",
+									"    pm.expect(typeof jsonData.content).to.eql('string');",
+									"    pm.expect(typeof jsonData.createdAt).to.eql('string');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/boards/1/blackboards/1/submissions/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards",
+								"1",
+								"blackboards",
+								"1",
+								"submissions",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single Forum",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "3bf0a62c-0904-4779-a33f-152fece0785b",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if forum returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/boards/1/forum",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards",
+								"1",
+								"forum"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single Forum Item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "9867141c-fa31-4913-a225-fea471b7102d",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if forum item returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"    pm.expect(typeof jsonData.name).to.eql('string')",
+									"    pm.expect(typeof jsonData.content).to.eql('string');",
+									"    pm.expect(typeof jsonData.createdAt).to.eql('string');",
+									"    pm.expect(typeof jsonData.anonymousPost).to.eql('boolean');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/boards/1/forum/posts/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards",
+								"1",
+								"forum",
+								"posts",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single Comment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8262bc2a-3147-47a4-8d8c-5c35fcfdac5d",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if comment returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"    pm.expect(typeof jsonData.content).to.eql('string');",
+									"    pm.expect(typeof jsonData.createdAt).to.eql('string');",
+									"    pm.expect(typeof jsonData.anonymousComment).to.eql('boolean');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/boards/1/forum/posts/1/comments/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards",
+								"1",
+								"forum",
+								"posts",
+								"1",
+								"comments",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single Report",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "89f00ece-56a7-4651-a00b-6cf0c4579b79",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if user returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"    pm.expect(typeof jsonData.userId).to.eql('number');",
+									"    pm.expect(typeof jsonData.numberOfReports).to.eql('number');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{baseurl}}/reports/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"reports",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ec0c20f8-8123-4249-8663-4c4729ae200e",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if user returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"    pm.expect(typeof jsonData.name).to.eql('string')",
+									"    pm.expect(typeof jsonData.email).to.eql('string');",
+									"    pm.expect(jsonData.email).to.include('@')",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseurl}}/users/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"users",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Single User Blackboard",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "ec0c20f8-8123-4249-8663-4c4729ae200e",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if user returned\", function () {",
+									"    pm.expect(typeof jsonData.userId).to.eql('number');",
+									"    pm.expect(typeof jsonData.bbId).to.eql('number')",
+									"    pm.expect(typeof jsonData.notificationLevel).to.eql('string');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseurl}}/users/1/config/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"config",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Edit Requests",
+			"item": [
+				{
+					"name": "Edit Template",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\":\"DAW\",\n\t\"hasForum\": \"true\",\n\t\"blackboardNames\":\"Anuncios, Sumarios, Avaliacoes\"\n}"
+						},
+						"url": {
+							"raw": "{{baseurl}}/templates/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"templates",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Board",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2d00268e-a897-45d0-9777-c70af97d422f",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if board returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"    pm.expect(typeof jsonData.name).to.eql('string')",
+									"    pm.expect(typeof jsonData.description).to.eql('string');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\":\"Better DAW\",\n\t\"description\":\"Just like DAW, but better\",\n\t\"isActive\":true\n}"
+						},
+						"url": {
+							"raw": "{{baseurl}}/boards/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Blackboard",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4504dec5-f47a-4990-9140-835de21c6db7",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if blackboard returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"    pm.expect(typeof jsonData.name).to.eql('string');",
+									"    pm.expect(typeof jsonData.notificationLevel).to.eql('string');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\":\"Anuncios\",\n\t\"notificationLevel\":\"none\",\n\t\"description\":\"Aqui vao ser publicados os anuncios referentes a turma de DAW\"\n}"
+						},
+						"url": {
+							"raw": "{{baseurl}}/boards/1/blackboards/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards",
+								"1",
+								"blackboards",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Blackboard Item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "54db20bf-4c90-4fbd-92c3-bc4eba350d96",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if blackboard item returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"    pm.expect(typeof jsonData.name).to.eql('string')",
+									"    pm.expect(typeof jsonData.content).to.eql('string');",
+									"    pm.expect(typeof jsonData.createdAt).to.eql('string');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\":\"VOU FALTAR!!\",\n\t\"content\":\"Pessoal, hoje nao vou conseguir dar aula!\"\n}"
+						},
+						"url": {
+							"raw": "{{baseurl}}/boards/1/blackboards/1/submissions/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards",
+								"1",
+								"blackboards",
+								"1",
+								"submissions",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Forum",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2ba300d9-b1f8-49a7-be30-e9c868c4b47a",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if forum returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"allowImagePosts\":\"true\"\n}"
+						},
+						"url": {
+							"raw": "{{baseurl}}/boards/1/forum",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards",
+								"1",
+								"forum"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Forum Item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "185676b9-c54f-4b0f-af43-93b48171cd2e",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if forum item returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"    pm.expect(typeof jsonData.name).to.eql('string')",
+									"    pm.expect(typeof jsonData.content).to.eql('string');",
+									"    pm.expect(typeof jsonData.createdAt).to.eql('string');",
+									"    pm.expect(typeof jsonData.anonymousPost).to.eql('boolean');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\":\"Pessoal, ajuda\",\n\t\"content\":\"Nao percebo nade de HATEOAS, alguem consegue explicar a utilidade da coisa?\"\n}"
+						},
+						"url": {
+							"raw": "{{baseurl}}/boards/1/forum/posts/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards",
+								"1",
+								"forum",
+								"posts",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit Comment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8262bc2a-3147-47a4-8d8c-5c35fcfdac5d",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if comment returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"    pm.expect(typeof jsonData.content).to.eql('string');",
+									"    pm.expect(typeof jsonData.createdAt).to.eql('string');",
+									"    pm.expect(typeof jsonData.anonymousComment).to.eql('boolean');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"anonymous\": false,\n\t\"content\":\"ganda comment XD\"\n}"
+						},
+						"url": {
+							"raw": "{{baseurl}}/boards/1/forum/posts/1/comments/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards",
+								"1",
+								"forum",
+								"posts",
+								"1",
+								"comments",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0cf187af-b9bd-43b0-a8a3-8ef06682d426",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if user returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"    pm.expect(typeof jsonData.name).to.eql('string')",
+									"    pm.expect(typeof jsonData.email).to.eql('string');",
+									"    pm.expect(jsonData.email).to.include('@')",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\":\"Sergiu Cozma\",\n\t\"email\":\"bestBoi@Sergiu\",\n\t\"password\":\"NaoDigoMesmoPah\",\n\t\"role\":\"admin\"\n}"
+						},
+						"url": {
+							"raw": "{{baseurl}}/users/2",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"users",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Edit User Blackboard",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0cf187af-b9bd-43b0-a8a3-8ef06682d426",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if user returned\", function () {",
+									"    pm.expect(typeof jsonData.userId).to.eql('number');",
+									"    pm.expect(typeof jsonData.bbId).to.eql('number')",
+									"    pm.expect(typeof jsonData.notificationLevel).to.eql('string');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"notificationLevel\":\"all\"\n}"
+						},
+						"url": {
+							"raw": "{{baseurl}}/users/1/config/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"users",
+								"1",
+								"config",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Delete Requests",
+			"item": [
+				{
+					"name": "Unsubscribe",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "b3834996-500c-4155-bb1d-87fa1830c08f",
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "sergiu@gmail.com",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseurl}}/boards/1/members",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards",
+								"1",
+								"members"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Report",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f8e2832c-ddb2-49a9-93f9-440d8d8fedd7",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if user returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"    pm.expect(typeof jsonData.userId).to.eql('number');",
+									"    pm.expect(typeof jsonData.numberOfReports).to.eql('number');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/reports/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"reports",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Comment",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "8262bc2a-3147-47a4-8d8c-5c35fcfdac5d",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if comment returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"    pm.expect(typeof jsonData.content).to.eql('string');",
+									"    pm.expect(typeof jsonData.createdAt).to.eql('string');",
+									"    pm.expect(typeof jsonData.anonymousComment).to.eql('boolean');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/boards/1/forum/posts/1/comments/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards",
+								"1",
+								"forum",
+								"posts",
+								"1",
+								"comments",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Forum Item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "d45b6e6a-b493-4d11-97ff-e8e1d60b050a",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if forum item returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"    pm.expect(typeof jsonData.name).to.eql('string')",
+									"    pm.expect(typeof jsonData.content).to.eql('string');",
+									"    pm.expect(typeof jsonData.createdAt).to.eql('string');",
+									"    pm.expect(typeof jsonData.anonymousPost).to.eql('boolean');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/boards/1/forum/posts/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards",
+								"1",
+								"forum",
+								"posts",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Forum",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "a296b861-3484-4350-9acf-e77a9704a526",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if forum returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/boards/1/forum",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards",
+								"1",
+								"forum"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Blackboard Item",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "0f3d5e9b-f3f8-47ad-90f9-2b533d1c3857",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if blackboard item returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"    pm.expect(typeof jsonData.name).to.eql('string')",
+									"    pm.expect(typeof jsonData.content).to.eql('string');",
+									"    pm.expect(typeof jsonData.createdAt).to.eql('string');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/boards/1/blackboards/1/submissions/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards",
+								"1",
+								"blackboards",
+								"1",
+								"submissions",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Blackboard",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "46013110-0be4-4ea7-8c15-5c9fada57809",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if blackboard returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"    pm.expect(typeof jsonData.name).to.eql('string')",
+									"    pm.expect(typeof jsonData.description).to.eql('string');",
+									"    pm.expect(typeof jsonData.notificationLevel).to.eql('string');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/boards/1/blackboards/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards",
+								"1",
+								"blackboards",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Deactivate Board",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2d00268e-a897-45d0-9777-c70af97d422f",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if board returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"    pm.expect(typeof jsonData.name).to.eql('string')",
+									"    pm.expect(typeof jsonData.description).to.eql('string');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"type": "text",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"name\":\"Better DAW\",\n\t\"description\":\"Just like DAW, but better\",\n\t\"isActive\":false\n}"
+						},
+						"url": {
+							"raw": "{{baseurl}}/boards/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Board",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "03a42ac5-a8df-4da3-9b59-1918249d668f",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if board returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"    pm.expect(typeof jsonData.name).to.eql('string')",
+									"    pm.expect(typeof jsonData.description).to.eql('string');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/boards/1",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"boards",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "f8e2832c-ddb2-49a9-93f9-440d8d8fedd7",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present and is application/hal+json\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include('application/hal+json')",
+									"});",
+									"",
+									"let jsonData = pm.response.json()",
+									"",
+									"pm.test(\"Checking if correct format was used\", function () {",
+									"    pm.expect(jsonData).to.be.an('object');",
+									"    pm.expect(jsonData._links).to.be.an('object')",
+									"    pm.expect(jsonData._embedded).to.be.an('object');",
+									"});",
+									"",
+									"pm.test(\"Checking if user returned\", function () {",
+									"    pm.expect(typeof jsonData.id).to.eql('number');",
+									"    pm.expect(typeof jsonData.name).to.eql('string')",
+									"    pm.expect(typeof jsonData.email).to.eql('string');",
+									"    pm.expect(jsonData.email).to.include('@')",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/users/2",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"users",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Template",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "{{pw}}",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "{{user}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseurl}}/templates/4",
+							"host": [
+								"{{baseurl}}"
+							],
+							"path": [
+								"templates",
+								"4"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "72fe72eb-39e3-4f9d-ac42-f7575e7d6ce4",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "6fa09f36-77ba-433a-a18a-89ddedc46edf",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

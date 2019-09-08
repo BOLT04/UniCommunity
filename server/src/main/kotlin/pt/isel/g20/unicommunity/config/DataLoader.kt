@@ -17,34 +17,39 @@ class DataLoader(
 ) : ApplicationRunner {
 
     override fun run(args: ApplicationArguments) {
-        val templates =
-                mutableListOf(
-                        Template(
-                                "Basic board w/ forum",
-                                true,
-                                "Anuncios,Sumarios"
-                        ),
-                        Template(
-                                "Basic board w/o forum",
-                                false,
-                                "Anuncios,Sumarios"
-                        ),
-                        Template(
-                                "Advanced Board",
-                                true,
-                                "Anuncios,Sumarios,Bibliografia"
-                        )
-                )
 
-        templatesRepo.saveAll(templates)
+        if(templatesRepo.findAll().count() == 0){
+            val templates =
+                    mutableListOf(
+                            Template(
+                                    "Basic board w/ forum",
+                                    true,
+                                    "Anuncios,Sumarios"
+                            ),
+                            Template(
+                                    "Basic board w/o forum",
+                                    false,
+                                    "Anuncios,Sumarios"
+                            ),
+                            Template(
+                                    "Advanced Board",
+                                    true,
+                                    "Anuncios,Sumarios,Bibliografia"
+                            )
+                    )
 
-        val user = User(
-                "Admin",
-                "admin@gmail.com",
-                BCryptPasswordEncoder().encode("admin"),
-                ADMIN,
-                "gitAdmin"
-        )
-        usersRepo.save(user)
+            templatesRepo.saveAll(templates)
+        }
+
+        if(usersRepo.findAll().count() == 0){
+            val user = User(
+                    "Admin",
+                    "admin@gmail.com",
+                    BCryptPasswordEncoder().encode("admin"),
+                    ADMIN,
+                    "gitAdmin"
+            )
+            usersRepo.save(user)
+        }
     }
 }
