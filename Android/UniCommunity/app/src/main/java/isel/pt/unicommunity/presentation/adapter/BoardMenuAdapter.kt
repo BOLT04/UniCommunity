@@ -19,8 +19,8 @@ class MenuView(
 
 class BoardMenuAdapter(
     menu: MenuView,
-    val onBlackBoardClickListener: BlackBoardClickListener,
-    val onForumClickListener : ForumClickListener
+    private val onBlackBoardClickListener: BlackBoardClickListener,
+    private val onForumClickListener : ForumClickListener
 ): RecyclerView.Adapter<ModuleViewHolder>()
 {
     class Module(
@@ -41,7 +41,7 @@ class BoardMenuAdapter(
             if (forum != null) {
                 list.add(Module("Forum") {
                     onForumClickListener.onClickListener(forum)
-                })//TODO generalizar
+                })
             }
         }
 
@@ -69,8 +69,8 @@ class BoardMenuAdapter(
 
 class ModuleViewHolder(view:ViewGroup):RecyclerView.ViewHolder(view){
 
-    val moduleName : TextView = view.findViewById(R.id.moduleName)
-    val layout : ConstraintLayout = view.findViewById(R.id.menuItemLayout)
+    private val moduleName : TextView = view.findViewById(R.id.moduleName)
+    private val layout : ConstraintLayout = view.findViewById(R.id.menuItemLayout)
 
 
     fun bindToView(smallModule: BoardMenuAdapter.Module){

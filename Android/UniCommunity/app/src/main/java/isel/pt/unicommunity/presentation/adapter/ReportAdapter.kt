@@ -14,31 +14,27 @@ class ReportView(
 )
 
 class ReportAdapter(
-    reports : List<ReportView>,
-    val onClickListener: OnClickListener<ReportView>
+    reports : List<ReportView>
 ): AbstractAdapter<ReportView>(
     reports,
     R.layout.item_report,
     object : ViewHolderProvider<ReportView>{
         override fun getInstance(view: ViewGroup)
-            = ReportItemVH(view, onClickListener)
+            = ReportItemVH(view)
     }
 )
 
 class ReportItemVH(
-    view : View,
-    private val onClickListener: OnClickListener<ReportView>
+    view : View
 ): AbstractViewHolder<ReportView>(view) {
 
-    val nReports = view.findViewById<TextView>(R.id.number_reports)
-    val username = view.findViewById<TextView>(R.id.username)
+    private val nReports : TextView = view.findViewById(R.id.number_reports)
+    private val username : TextView = view.findViewById(R.id.username)
 
-    val layout = view.findViewById<ConstraintLayout>(R.id.report_layout)
+    private val layout : ConstraintLayout = view.findViewById(R.id.report_layout)
 
     override fun bindToView(value: ReportView) {
         nReports.text = value.nReports
         username.text = value.username
-
-        layout.setOnClickListener { onClickListener.onClick(value) }
     }
 }

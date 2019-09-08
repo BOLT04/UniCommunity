@@ -15,7 +15,7 @@ import isel.pt.unicommunity.kotlinx.getViewModel
 import isel.pt.unicommunity.presentation.viewmodel.HomeViewModel
 
 class SplashActivity : AppCompatActivity(), ProgressBarActivity{
-        lateinit var progress : ProgressDialog
+        private lateinit var progress : ProgressDialog
 
         override fun startProgressBar() {
             progress.setTitle("Loading");
@@ -29,7 +29,6 @@ class SplashActivity : AppCompatActivity(), ProgressBarActivity{
 
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
-            setContentView(R.layout.emptylayout)
 
             val app = getUniCommunityApp()
             val viewModel = getViewModel("Home"){
@@ -48,8 +47,6 @@ class SplashActivity : AppCompatActivity(), ProgressBarActivity{
             viewModel.homeLD.observe(
                 this,
                 ProgressObs(progressBar) {
-
-                    Toast.makeText(this, "FUCKING YEET", Toast.LENGTH_SHORT).show()
 
                     val login = it._links.login
                     if (login!=null){

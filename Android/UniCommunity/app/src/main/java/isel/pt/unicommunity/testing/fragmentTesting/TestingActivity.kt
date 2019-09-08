@@ -85,9 +85,9 @@ class TestingActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify allBoardsLd parent activity in AndroidManifest.xml.
-        when (item.itemId) {
-            R.id.action_settings -> return true
-            else -> return super.onOptionsItemSelected(item)
+        return when (item.itemId) {
+            R.id.action_settings -> true
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
@@ -107,7 +107,7 @@ class TestingActivity : AppCompatActivity(), NavigationView.OnNavigationItemSele
                 Log.v("testing", "camera")
                 navigateTo(C)
             }
-            R.id.nav_profile -> {
+            R.id.nav_reports -> {
                 startActivity(Intent(this, EmptyAFActivity::class.java))
 
 

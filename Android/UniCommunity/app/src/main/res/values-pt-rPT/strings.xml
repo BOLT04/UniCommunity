@@ -5,11 +5,12 @@
     <string name="share">Partilhar</string>
     <string name="send">Enviar</string>
     <string name="remember_me">Lembrar-me</string>
-    <string name="profile">Perfil</string>
+    <string name="reports">Denúncias</string>
     <string name="post">Publicar</string>
     <string name="forum">Fórum</string>
     <string name="comments">Comentários</string>
     <string name="anonymus">Anónimo</string>
     <string name="action_settings">Definições</string>
     <string name="logout">Sair</string>
+    <string name="create_blackboard_item">Publicar</string>
 </resources>

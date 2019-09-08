@@ -48,10 +48,7 @@ class MyBoardsFragment(private val myBoards: MyBoardsLink) : Fragment() {
 
             val onBoardClickListener = object : OnClickListener<PartialBoardView> {
                 override fun onClick(value: PartialBoardView) {
-
                     (activity as BackStackManagingActivity).navigateTo(BoardMenuFragment(value.self))
-
-                    Toast.makeText(activity, value.name, Toast.LENGTH_LONG).show()
                 }
             }
 

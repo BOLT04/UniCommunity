@@ -13,15 +13,12 @@ class NavigationLink(href: String): NavLink<NavigationInputDto>(Rels.NAVIGATION,
 class HomeLink (href: String): NavLink<HomeInputDto>(Rels.HOME, href, HomeInputDto::class.java)
 class LoginLink (href: String): BodyNavLink<LoginOutputDto, LoginInputDto>(Rels.LOGIN, href, LoginOutputDto::class.java, LoginInputDto::class.java)
 class MyBoardsLink (href: String): NavLink<CollectionJson>(Rels.MY_BOARDS, href, CollectionJson::class.java)
-class UserProfileLink (href: String): NavLink<UserProfileInputDto>(Rels.USER_PROFILE, href, UserProfileInputDto::class.java)
 
 
 
-class BlackBoardSettingsLink (href: String) : NavLink<BlackBoardSettingsInputDto>(Rels.GET_USER_BLACKBOARDS_SETTINGS, href, BlackBoardSettingsInputDto::class.java)
 
-class BlackBoardSettingsInputDto(
+class BlackBoardSettingsLink (href: String) : NavLink<CollectionJson>(Rels.GET_USER_BLACKBOARDS_SETTINGS, href, CollectionJson::class.java)
 
-)
 
 
 class NavigationInputDto(
@@ -31,9 +28,9 @@ class NavigationInputDto(
 class NavigationInputDtoLinkStruct (
     val self : NavigationLink?,
     @JsonProperty(Rels.HOME) val home : HomeLink?,
-    @JsonProperty(Rels.USER_PROFILE) val userProfile : UserProfileLink?,
     @JsonProperty(Rels.GET_MULTIPLE_BOARDS) val allBoards : GetMultipleBoardsLink?,
-    @JsonProperty(Rels.MY_BOARDS) val myBoards : MyBoardsLink? = null
+    @JsonProperty(Rels.MY_BOARDS) val myBoards : MyBoardsLink?,
+    @JsonProperty(Rels.GET_MULTIPLE_REPORTS) val getMultipleReportsLink: GetMultipleReportsLink?
 )
 
 
@@ -55,7 +52,9 @@ class LoginInputDto(
 class LoginInputDtoLinkStructure(
     val self : LoginLink?,
     @JsonProperty(Rels.NAVIGATION) val nav : NavigationLink?,
-    @JsonProperty(Rels.GET_MULTIPLE_BOARDS) val getMultipleBoardsLink: GetMultipleBoardsLink?
+    @JsonProperty(Rels.GET_MULTIPLE_BOARDS) val getMultipleBoardsLink: GetMultipleBoardsLink?,
+    @JsonProperty(Rels.GET_USER_BLACKBOARDS_SETTINGS) val getBlackBoardSettingsLink: BlackBoardSettingsLink?
+
 )
 
 
@@ -63,4 +62,3 @@ class LoginOutputDto(val email: String, val password:String)
 
 
 
-class UserProfileInputDto //todo

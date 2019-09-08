@@ -12,7 +12,7 @@ class GetMultipleBoardsLink (href: String): NavLink<CollectionJson>(Rels.GET_MUL
 class GetSingleBoardLink (href: String): NavLink<BoardInputDto>(Rels.GET_SINGLE_BOARD, href, BoardInputDto::class.java)
 class CreateBoardLink (href: String): BodyNavLink<BoardOutputDto, BoardInputDto>(Rels.CREATE_BOARD, href, BoardOutputDto::class.java, BoardInputDto::class.java)
 class EditBoardLink (href: String): BodyNavLink<BoardOutputDto, BoardInputDto>(Rels.EDIT_BOARD, href, BoardOutputDto::class.java, BoardInputDto::class.java)
-class DeleteBoardLink (href: String)//todo: NavLink(Rels.DELETE_BOARD, href)
+
 
 
 

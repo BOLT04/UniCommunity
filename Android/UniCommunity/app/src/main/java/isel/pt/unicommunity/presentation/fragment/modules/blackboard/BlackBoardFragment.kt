@@ -22,7 +22,7 @@ import isel.pt.unicommunity.presentation.viewmodel.BlackBoardViewModel
 import kotlinx.android.synthetic.main.fragment_blackboard.*
 
 
-class BlackBoardFragment(val blackBoardLink: GetSingleBlackBoardLink) : Fragment(){
+class BlackBoardFragment(private val blackBoardLink: GetSingleBlackBoardLink) : Fragment(){
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
@@ -76,12 +76,7 @@ class BlackBoardFragment(val blackBoardLink: GetSingleBlackBoardLink) : Fragment
 
         val onBlackBoardItemViewClickListener = object : OnClickListener<BlackBoardItemView>{
             override fun onClick(value: BlackBoardItemView) {
-                Toast.makeText(activity, value.getSingleBlackBoardItemLink.href , Toast.LENGTH_LONG).show()
-                activity.navigateTo(
-                    BlackBoardItemFragment(
-                        value.getSingleBlackBoardItemLink
-                    )
-                )
+                activity.navigateTo(BlackBoardItemFragment(value.getSingleBlackBoardItemLink))
             }
         }
 

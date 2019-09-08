@@ -14,7 +14,7 @@ class GetSingleForumItemLink (href: String): NavLink<ForumItemInputDto>(Rels.GET
 class GetMultipleForumItemsLink (href: String): NavLink<CollectionJson>(Rels.GET_MULTIPLE_FORUMITEMS, href, CollectionJson::class.java)
 class EditForumItemLink (href: String): BodyNavLink<ForumItemOutputDto, ForumItemInputDto>(
     Rels.EDIT_FORUMITEM, href, ForumItemOutputDto::class.java, ForumItemInputDto::class.java)
-//todo class DeleteForumItemLink (href: String): NavLink(Rels.DELETE_FORUMITEM, href)
+
 
 
 

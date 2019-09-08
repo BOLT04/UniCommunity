@@ -36,7 +36,7 @@ class ForumItemCollection(
         val name: String,
         val content: String?,
         val createdAt: String,
-        val authorName: String?, //todo
+        val authorName: String?,
 
         val self: GetSingleForumItemLink,
         val getMultipleCommentsLink: GetMultipleCommentsLink?

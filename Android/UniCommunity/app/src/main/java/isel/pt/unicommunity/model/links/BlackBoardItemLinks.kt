@@ -8,46 +8,35 @@ import isel.pt.unicommunity.model.inputdto.BlackBoardItemInputDto
 import isel.pt.unicommunity.model.outputdto.BlackBoardItemOutputDto
 
 
-class GetMultipleBlackBoardItemsLink (
+class GetMultipleBlackBoardItemsLink(
     href: String
-): NavLink<CollectionJson>(
-        Rels.GET_MULTIPLE_BLACKBOARDITEMS,
-        href,
-        CollectionJson::class.java
-    )
+) : NavLink<CollectionJson>(
+    Rels.GET_MULTIPLE_BLACKBOARDITEMS,
+    href,
+    CollectionJson::class.java
+)
 
-class GetSingleBlackBoardItemLink ( href: String )
-    : NavLink<BlackBoardItemInputDto>(
-        Rels.GET_SINGLE_BLACKBOARDITEM,
-        href,
-        BlackBoardItemInputDto::class.java
-    )
+class GetSingleBlackBoardItemLink(href: String) : NavLink<BlackBoardItemInputDto>(
+    Rels.GET_SINGLE_BLACKBOARDITEM,
+    href,
+    BlackBoardItemInputDto::class.java
+)
 
-class CreateBlackBoardItemLink (
+class CreateBlackBoardItemLink(
     href: String
 ) : BodyNavLink<BlackBoardItemOutputDto, BlackBoardItemInputDto>(
-        Rels.CREATE_BLACKBOARDITEM,
-        href,
-        BlackBoardItemOutputDto::class.java,
-        BlackBoardItemInputDto::class.java
-    )
+    Rels.CREATE_BLACKBOARDITEM,
+    href,
+    BlackBoardItemOutputDto::class.java,
+    BlackBoardItemInputDto::class.java
+)
 
-class EditBlackBoardItemLink (
+class EditBlackBoardItemLink(
     href: String
-): BodyNavLink<BlackBoardItemOutputDto, BlackBoardItemInputDto>(
-        Rels.EDIT_BLACKBOARDITEM,
-        href,
-        BlackBoardItemOutputDto::class.java,
-        BlackBoardItemInputDto::class.java
-    )
-
-class DeleteBlackBoardItemLink (href: String)//todo : NavLink(Rels.DELETE_BLACKBOARDITEM, href)
-
-
-
-
-
-
-
-
+) : BodyNavLink<BlackBoardItemOutputDto, BlackBoardItemInputDto>(
+    Rels.EDIT_BLACKBOARDITEM,
+    href,
+    BlackBoardItemOutputDto::class.java,
+    BlackBoardItemInputDto::class.java
+)
 

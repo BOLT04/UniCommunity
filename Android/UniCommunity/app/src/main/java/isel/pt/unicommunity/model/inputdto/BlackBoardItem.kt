@@ -21,6 +21,5 @@ class BlackBoardItemInputDto(
         @JsonProperty(Rels.CREATE_BLACKBOARDITEM) val createBlackBoardItemLink: CreateBlackBoardItemLink?,
         @JsonProperty(Rels.GET_MULTIPLE_BLACKBOARDITEMS) val getMultipleBlackBoardItemsLink: GetMultipleBlackBoardItemsLink?,
         @JsonProperty(Rels.EDIT_BLACKBOARDITEM) val editBlackBoardItemLink: EditBlackBoardItemLink?//,
-        //todo @JsonProperty(Rels.DELETE_BLACKBOARDITEM) val deleteBlackBoardItemLink: DeleteBlackBoardItemLink?
     )
 }

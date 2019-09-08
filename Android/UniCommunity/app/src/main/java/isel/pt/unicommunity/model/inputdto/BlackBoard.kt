@@ -19,7 +19,7 @@ class BlackBoardInputDto(
         @JsonProperty(Rels.GET_MULTIPLE_BLACKBOARDITEMS) val getMultipleBlackBoardItemsLink: GetMultipleBlackBoardItemsLink?,
         @JsonProperty(Rels.CREATE_BLACKBOARDITEM) val createBlackBoardItemLink: CreateBlackBoardItemLink?,
         @JsonProperty(Rels.EDIT_BLACKBOARD) val editBlackBoardLink: EditBlackBoardLink?
-        //todo @JsonProperty(Rels.DELETE_BLACKBOARD) val deleteBlackBoardLink: DeleteBlackBoardLink?
+
     )
 
     class EmbeddedStruct(

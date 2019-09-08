@@ -11,8 +11,8 @@ import isel.pt.unicommunity.presentation.adapter.BlackBoardItemView
 import isel.pt.unicommunity.repository.network.BasicAuthNavLinkGetRequest
 
 class BlackBoardViewModel(
-    val app: UniCommunityApp,
-    val blackBoardLink: GetSingleBlackBoardLink
+    private val app: UniCommunityApp,
+    private val blackBoardLink: GetSingleBlackBoardLink
 ) : ViewModel(){
 
     val blackBoardLd = ErrorHandlingMLD<BlackBoardInputDto, String>()

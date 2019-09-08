@@ -12,7 +12,7 @@ class CreateCommentLink (href: String): BodyNavLink<CommentOutputDto, CommentInp
 class GetSingleCommentLink (href: String): NavLink<CommentInputDto>(Rels.GET_SINGLE_COMMENT, href, CommentInputDto::class.java)
 class GetMultipleCommentsLink (href: String): NavLink<CollectionJson>(Rels.GET_MULTIPLE_COMMENTS, href, CollectionJson::class.java)
 class EditCommentLink (href: String): BodyNavLink<CommentOutputDto, CommentInputDto>(Rels.EDIT_COMMENT, href, CommentOutputDto::class.java, CommentInputDto::class.java)
-//todo class DeleteCommentLink (href: String): NavLink(Rels.DELETE_COMMENT, href)
+
 
 
 

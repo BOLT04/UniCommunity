@@ -20,7 +20,7 @@ import isel.pt.unicommunity.presentation.fragment.modules.comment.MultipleCommen
 import isel.pt.unicommunity.presentation.viewmodel.ForumItemViewModel
 import kotlinx.android.synthetic.main.fragment_forum_item_md.*
 
-class ForumItemFragment(val singleForumItemLink: GetSingleForumItemLink) : Fragment() {
+class ForumItemFragment(private val singleForumItemLink: GetSingleForumItemLink) : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? =
         inflater.inflate(R.layout.fragment_forum_item_md, container, false)
