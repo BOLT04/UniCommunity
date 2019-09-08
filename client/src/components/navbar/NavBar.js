@@ -39,7 +39,7 @@ class NavBar extends Component {
   }
 
   async componentDidUpdate(prevProps) {
-    if (this.props.toReRender !== prevProps.toReRender)
+    if ((this.props.toReRender !== prevProps.toReRender) || this.props.toReRender)
       await this.fetchData()
   }
 
@@ -47,7 +47,7 @@ class NavBar extends Component {
     const rsp = await this.props.utilsObj.asyncRelativeFetch(this.props.navMenuUrl, APPLICATION_HAL_JSON)
     const rspObj = await rsp.json()
     const navMenu = rspObj._links
-
+    debugger
     this.setState({ navMenu })
   }
 
@@ -121,7 +121,7 @@ class NavBar extends Component {
 
     const leftMenuItems = []
     const rightMenuItems = []
-
+debugger
     if (navMenu)
       Object.keys(navMenu)
         .forEach(prop => {

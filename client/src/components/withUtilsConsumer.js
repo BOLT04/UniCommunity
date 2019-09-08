@@ -18,4 +18,3 @@ export default UtilsContext
             }
         </UtilsContext.Consumer>
     )
-    //TODO: add a type for utilsObj, so that the consumers know what properties the object has

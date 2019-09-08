@@ -7,69 +7,6 @@
 importScripts('https://www.gstatic.com/firebasejs/4.8.1/firebase-app.js')
 importScripts('https://www.gstatic.com/firebasejs/4.8.1/firebase-messaging.js')
 
-//import config from '../src/unicommunity-config.json'
-/*
-var CACHE_NAME = 'dependencies-cache';
-
-self.addEventListener('install', function(event) {
-    console.log('[install] Kicking off service worker registration!');
-
-    event.waitUntil(caches.open(CACHE_NAME)
-        .then(function(cache) {
-            return fetch('../src/unicommunity-config.json')
-                .then(function(response) {
-                    return response.json();
-                }).then(function(files) {
-                    console.log('[install] Adding files from JSON file: ', files);
-                    return cache.addAll(files);
-                })
-        })
-        .then(function() {
-            console.log(
-                '[install] All required resources have been cached;',
-                'the Service Worker was successfully installed!'
-            );
-            return self.skipWaiting();
-        })
-    )
-})
-
-self.addEventListener('fetch', function(event) {
-    event.respondWith(
-      caches.match(event.request)
-        .then(function(response) {
-            if (response) {
-                console.log(
-                  '[fetch] Returning from Service Worker cache: ',
-                  event.request.url
-                );
-                console.log({response})
-                return response;
-            }
-
-            console.log('[fetch] Returning from server: ', event.request.url);
-        	return fetch(event.request);
-        })
-    )
-})
-
-self.addEventListener('activate', function(event) {
-    console.log('[activate] Activating service worker!');
-    console.log('[activate] Claiming this service worker!');
-    event.waitUntil(self.clients.claim());
-})
-*/
-/* //TODO: when this app is deployed, we'll be able to fetch the json file since its deployed an intermediary that serves
-static content
-
-fetch('../src/unicommunity-config.json')
-.then(rsp => {
-    console.log({rsp})
-    return rsp.text()
-}).then(body => {
-    console.log({body})
-})*/
-
 const config = {
     "apiKey": "AIzaSyDUKMc1kpuv192IesEX12OPZS2XFT9N3-8",
     "authDomain": "unicommunity-f7bc8.firebaseapp.com",

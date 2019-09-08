@@ -47,6 +47,7 @@ export const buildUri = relativeUrl => `${baseUri}${relativeUrl}`
  */
 export const asyncRelativeFetch = (relativeUrl, contentType) => {
     const options = fillAuthHeaderIfAuthenticated()
+    debugger
     if (contentType) {
         if (!options.headers) options.headers = {}
 
@@ -56,7 +57,6 @@ export const asyncRelativeFetch = (relativeUrl, contentType) => {
     return fetch(buildUri(relativeUrl), options)
 }
 
-//TODO: these two function below will disappear after we use HAL+forms to specify how actions are made!
 /**
  * Makes a Post HTTP request with the given body.
  * @param {string} relativeUrl - The relative url to be prefixed by the base uri.
@@ -77,17 +77,6 @@ export const asyncHalFormsRequest = (reqInfo, relativeUrl) => {
 
     return asyncRelativeHttpRequest(relativeUrl, reqInfo.method, reqInfo.contentType, body)
 }
-/*
-export const asyncHalFormsWithoutBodyRequest = async (rel, relativeUrl) => {
-
-     //TODO: maybe make a function that given a rel and href/relativeUrl, makes a halforms req to then use asyncRelativeHttpRequest
-                    let rsp = await asyncRelativeFetch(rel)
-                    //const { _templates: { default: reqInfo } } = await asyncParseHalFormRsp(rsp)
-                    const { _templates: { default: reqInfo } } = await asyncRelativeFetch(rels.getBlackboards)
-                            .then(asyncParseHalFormRsp)
-
-                    return asyncRelativeHttpRequest(relativeUrl, reqInfo.method)
-}*/
 
 /**
  * Makes a Post HTTP request with the given body.

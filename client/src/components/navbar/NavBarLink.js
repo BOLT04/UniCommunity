@@ -36,7 +36,7 @@ export default class NavBarLink extends Component {
     /**
      * @param {function} buildClientHref - Function that builds the client href. Descriptor (string) -> string.
      * The function takes the id necesary to build the complete href.
-     * @param {*} serverHref - Server URL for the resource that we want to build a client URL. This resource needs
+     * @param {string} serverHref - Server URL for the resource that we want to build a client URL. This resource needs
      * to provide an "id" property on the response payload, representing the resource identifier.
      */
     async buildHref(buildClientHref, serverHref) {
@@ -50,7 +50,7 @@ export default class NavBarLink extends Component {
     render() {
       const { reg, activeItem, className, serverHref } = this.props
       const { href } = this.state
-      
+      debugger
   
       return (
         <Menu.Item

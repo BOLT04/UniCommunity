@@ -7,7 +7,6 @@ import './css/BoardTemplate.css'
 import asyncCollectionRspToList from '../../../service/mapper/collectionJson-mapper'
 import { COLLECTION_JSON } from '../../../common/constants'
 import { withUtilsConsumer } from '../../withUtilsConsumer'
-import { rels } from '../../../common/rels-registery'
 
 class BoardTemplate extends Component {
   static propTypes = {
@@ -23,9 +22,6 @@ class BoardTemplate extends Component {
   }
 
   async componentDidMount() {
-    const home = sessionStorage.getObject('home')
-    const href = home[rels.templates]
-    //TODO: test with href and TAKE OUT '/templates'
     const rsp = await this.props.utilsObj.asyncRelativeFetch('/templates', COLLECTION_JSON)
     const templates = (await asyncCollectionRspToList(rsp)).items
     
