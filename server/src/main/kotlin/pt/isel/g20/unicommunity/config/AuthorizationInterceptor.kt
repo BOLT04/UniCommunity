@@ -90,7 +90,6 @@ class AuthorizationInterceptor(
         session.setAttribute("user", user)
     }
 
-    //TODO: Refactor this code to use an HTTP library instead
     private val objectMapper = ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
 
     fun sendPost(token: String): TokenIntrospect {

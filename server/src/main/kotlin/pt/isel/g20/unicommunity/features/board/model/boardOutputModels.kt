@@ -123,7 +123,7 @@ class MultipleBoardsResponse(
         queries = listOf(
                 Query(
                         href = Uri.forAllBoards(),
-                        rel = "self" /*TODO: what rel should we use here?*/,
+                        rel = "self",
                         data = listOf(
                                 Data(name = "page", value = "")
                         )

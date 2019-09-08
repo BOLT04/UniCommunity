@@ -62,7 +62,6 @@ class BoardController(private val service: BoardService) {
                 }
             }
 
-            //TODO: Promise.all()??
             promises.forEach {
                 it.await()
             }

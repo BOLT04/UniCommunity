@@ -95,7 +95,6 @@ abstract class ExtendedJsonCollection(
 ) : JsonCollection(version, href, links, items, queries, template)
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-//TODO: is @JsonCreator really needed???
 data class CollectionLink @JsonCreator constructor(
         val rel: String,
         val href: String,
@@ -111,7 +110,7 @@ data class Item(
 @JsonInclude(JsonInclude.Include.NON_NULL)
 data class Data(
     val name: String,
-    val value: String? = null,// TODO: change the type from string to Value. According to the specification it can be string or number or boolean: A VALUE data type MUST be a NUMBER, STRING, or one of the following literal names: false, null, or true.
+    val value: String? = null,
     val prompt: String? = null
 )
 
@@ -124,7 +123,7 @@ data class Query(
 )
 
 data class Template(
-        val data: String//todo:Array<Data>
+        val data: String
 )
 
 
