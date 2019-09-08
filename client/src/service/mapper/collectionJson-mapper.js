@@ -1,18 +1,17 @@
 import { itemsToModelRepr } from '../../common/common'
 import { COLLECTION_JSON } from '../../common/constants'
 
+import asyncBaseMapper from './base-mapper'
+
 /**
  * This function ignores the links, queries and other parts of the media type. Its supposed to be
  * a very simple version of a mapper to only get the list of items inside the response.
  * @param {object} rsp Represents the response of the API that comes in vnd.collection+JSON format.
  */
 export default async function asyncCollectionRspToList(rsp) {
-    const contentType = rsp.headers.get('Content-Type')
-
-    if (contentType.includes(COLLECTION_JSON)) {
-        // Sanity check. In the HTTP request we sent the header Accept, so we check if the server does support it.
+    const parseRsp = async () => {
         let body = await rsp.json()
-        debugger
+
         const { collection: { items } } = body
         
         // These functions are usefull in any object that has links
@@ -35,7 +34,7 @@ export default async function asyncCollectionRspToList(rsp) {
         }
     }
 
-    return null // TODO: should I throw error instead?
+    return asyncBaseMapper(rsp, COLLECTION_JSON, parseRsp)
 }
 
 /**
@@ -51,8 +50,6 @@ function parseQueryTemplate(query, params) {
     let queryString = ''
     for (const [i, data] of query.data.entries()) {
         const p = params.find(p => p.name === data.name)
-        //TODO: we are currently assuming that the caller of the function only provides the required param values, and
-        // no more like not defined params. if (!p) throw Error(`Error: The required query param: ${}`)
         if (i > 0)
             queryString += '&'
         queryString += `${p.name}=${p.value}`

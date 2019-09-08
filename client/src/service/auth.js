@@ -1,27 +1,8 @@
 // The type Auth defined in this module is responsible for authentication services.
 // It tracks the login status, so if the user is authenticated or not for example.
-import { UserManager } from 'oidc-client'
 import { LogoutError } from '../common/errors'
-import config from '../unicommunity-config.json'
-import { baseClientUri, buildUri } from '../common/common'
-
-require('../common/storage-extensions')() //TODO: why is this needed if index.js already executes this code? 
-
-const AUTH_TOKEN = 'authToken'
-const USER = 'user'
-
-const settings = {
-    authority: config.authority,
-    client_id: config.clientId,
-	// This redirect URI needs to match one of the registered redirectUrls in the OpenID provider.
-    redirect_uri: `${baseClientUri}/index.html`,
-    popup_redirect_uri: `${baseClientUri}/index.html`,
-    response_type: 'code',
-    scope: 'openid email',
-    loadUserInfo: true
-}
-
-export const userManager = new UserManager(settings)
+import { buildUri } from '../common/common'
+import { AUTH_TOKEN, USER } from '../common/constants'
 
 function Auth() {
     let authenticated = false
@@ -33,7 +14,7 @@ function Auth() {
         }
     })
 
-     /**
+    /**
      * This function returns an object with links that represent where the client can navigate after a
      * successful authentication. If null is returned than it means an error occured.
      */

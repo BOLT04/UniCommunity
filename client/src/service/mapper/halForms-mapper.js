@@ -15,6 +15,5 @@ export default async function asyncParseHalFormRsp(rsp) {
         return await rsp.json()
     }
 
-    //TODO: add check of Problem+json! and throw an error perhaps
     throw new MappingError()
 }

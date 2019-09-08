@@ -15,7 +15,6 @@ import Board from '../../components/pages/board_details/model/Board'
 import Blackboard from '../../components/pages/board_details/model/Blackboard'
 
 import HypermediaObject from './HypermediaObject'
-import { MappingError } from '../../common/errors'
 
 import asyncBaseMapper from './base-mapper'
 
@@ -26,28 +25,19 @@ import asyncBaseMapper from './base-mapper'
  */
 export default async function rspToBoardAsync(rsp) {
     const parseRsp = async () => {
-        // Sanity check. In the HTTP request we sent the header Accept, so we check if the server does support it.
         const { id, name, description, _links, _embedded } = await rsp.json()
 
         const board = new Board(id, name, description, {})
         let forumHref
 
-        if (_links) {//TODO: i dont know what to do here...
+        if (_links) {
             // Add methods to board object to simplify operations on the links array.
             const hypermediaObj = new HypermediaObject(_links)
             Object.setPrototypeOf(board, hypermediaObj)
 
             if ('self' in _links)
                 board.serverHref = _links['self'].href
-            /*
-            Object.keys(body._links)
-                .forEach(prop => {
-                    const relObj = relsRegistery[prop]
-                    if (relObj)
-                        relObj.serverHref = body._links[prop].href
-                })
-            board.forumLinks = relsRegistery['/rels/forum']
-            */
+            
             const editBoardHref = board.getHrefOfRelHal(rels.editBoard)
             if (editBoardHref)
                 board.editBoardHref = editBoardHref
@@ -74,8 +64,7 @@ export default async function rspToBoardAsync(rsp) {
             else {
                 const blackboardsHref = board.getHrefOfRelHal(rels.getBlackboards)
                 if (blackboardsHref) {
-                    //TODO: maybe make a function that given a rel and href/relativeUrl, makes a halforms req to then use asyncRelativeHttpRequest
-                    // Then fetch and add the blackboards property to modules
+                    // Given the "get blackboards" rel, fetch that resource, making a hal+forms request first
                     let rsp = await asyncRelativeFetch(rels.getBlackboards)
                     const { _templates: { default: reqInfo } } = await asyncParseHalFormRsp(rsp)
 
@@ -95,7 +84,7 @@ export default async function rspToBoardAsync(rsp) {
         
             return board
     }
-//TODO: make a react component that handles errors that are thrown
+
     return asyncBaseMapper(rsp, APPLICATION_HAL_JSON, parseRsp)
 }
 
@@ -111,7 +100,6 @@ async function colItemToBlackboardAsync(board, { href }) {
 }
 
 async function halItemToBlackboardAsync(board, { _links }) {
-    //TODO: what if the self link isnt there... we need to be prepared for that and put content = [] maybe
     const rsp = await asyncRelativeFetch(_links.self.href, APPLICATION_HAL_JSON)
     const body = await rsp.json()
     return parseOutputModelToBlackboard(board, body)
@@ -164,7 +152,6 @@ export async function parseOutputModelToBlackboard(board, body) {
  * @param {string} forumHref 
  */
 async function fetchForumAsync(forumHref) {
-    //TODO: what if the self link isnt there... we need to be prepared for that and put content = [] maybe
     // Auxiliar function
     const getForumItemsHref = async () => {
         const rsp = await asyncRelativeFetch(forumHref, APPLICATION_HAL_JSON)
@@ -183,7 +170,6 @@ async function fetchForumAsync(forumHref) {
     const rsp = await asyncRelativeFetch(forumItemsHref, COLLECTION_JSON)
     const { collection: { links, items } } = await rsp.json()
 
-    //TODO: use asyncCollectionRspToList in collectionJson mapper since its the same code
     const posts = items.length === 0 ? [] : itemsToModelRepr(items)
     let createPostHrefObj
     // Check if the link to create a post exists
