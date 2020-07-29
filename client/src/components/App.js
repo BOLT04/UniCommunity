@@ -24,6 +24,7 @@ import asyncRspToHome from '../service/mapper/home-mapper'
 import CreateBoardApi from '../service/CreateBoardApi'
 
 import { asyncRelativeHttpRequest } from '../common/common'
+import { HalForm, exampleHalFormsDocument } from './HalForm'
 
 /**
  * This is the root component of the application (used in index.js).
@@ -134,6 +135,7 @@ export default class App extends Component {
           </Switch>
           
           <Footer />
+          <HalForm doc={exampleHalFormsDocument} />
         </div> 
       </BrowserRouter>
     )
